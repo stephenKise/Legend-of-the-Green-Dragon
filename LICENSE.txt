@@ -1,0 +1,66 @@
+I'm going to take a few moments to try and explain this new license and
+the reasons behind it in plain English.  The legalese for the license can
+be found online at http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
+and should be read and understood in detail before you use this code.
+
+This new license was chosen because of a failing with the GPL.  It only
+covered distribution of source if and only if binaries were distributed.
+
+In a web environment, specifically an interpreted web environment, merely
+installing a game does not constitute distribution, and therefore people
+were taking our work, making modifications to it and not releasing the
+source code to their modifications so that the entire community could
+benefit.  They worked with the letter but not the spirit of the law.
+
+Investigation on the part of the authors however, led to the fact that the
+right of public performance was one of the rights normally restricted to
+copyright holders, AND that computer programs, specifically video games and
+interactive ones such as Legend of the Green Dragon were considered to be
+publically performed if run from a public server.
+
+The new license restricts public performance of the work unless the source
+code of the modified work is made available on demand.
+
+In plain English, this means that if you put this game on a web server and
+allow people 'outside of a normal circle of family and its social
+acquaintances' to play there, then you are publically performing this work and
+MUST either a) make any and ALL changes which you make to the game available
+on request (note this doesn't have to be available via the online source
+display link, but they must be able to ask you for the code AND receive it
+in toto), b) make arrangements privately with the authors wherein they
+grant you a special license, or c) remove the code entirely from the machine.
+
+We do recognize that people want to have areas of their game which are theirs
+and theirs alone.  To that end we will make the following exception to the
+normal requirements for source code distribution -- any module file which is
+not modified or derived from a module file included in the base distribution
+AND which does not require any other module files AND which does not require
+any modifications to the core code (code distributed with the base release)
+may be withheld at the authors discretion.
+
+For purposes of this license, base releases of this code include all versions
+created and distributed by Eric Stevens and JT Traub.  In addition to these
+versions, the developers at Dragonprime.net are hereby granted a revokable
+authority to produce new distributions which enjoy the same restrictions and
+exceptions as this entire license.  This authority may be revoked at any time,
+but such revocation will be purely proactive, and existing releases will still
+enjoy the full liberty of this license. 
+Although revocation may be for any reason, the only foreseeable reason that such
+revocation would be enacted is if these distributions were discovered to contain
+module hooks designed to circumvent the spirit of this license. The intention is
+to let these developers continue where Eric and JT have left off.
+
+We also want to make very clear that version 0.9.7 (also known as version
+0.9.7+jt) was the final version released under the GPL.  All versions,
+starting with the 0.9.8-prerelease code are only licensed under the Creative
+Commons license.  We EXPLICITLY deny the right to import any code from a
+0.9.8-prerelease or later release into a 0.9.7 and earlier release.  Allowing
+this would cause that imported code to be released under the GPL and that is
+not something we wish to allow.  Authors of modifications to 0.9.7 will
+need to re-release their modifications as derivitives/modifications to
+0.9.8 code and place them under the same Creative Commons license. It must
+be done by the original author since only the original author has the right
+to change the copyright or license upon their work.  [Additionally,
+reworking the modifications will be a good idea anyway as the mechanism for
+making modifications is substantially cleaner/clearer starting with the
+0.9.8-prerelease code.]

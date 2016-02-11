@@ -1,0 +1,195 @@
+<!--!popuphead-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href='templates/Red.css' rel='stylesheet' type='text/css'>
+{headscript}{script}
+</head>
+<body bgcolor='#190000' text='#ff0000'>
+<table border='0' cellpadding='4' cellspacing='0' width='100%'>
+  <tr>
+    <td class='popupheader' valign='top'>
+      <img src='templates/Red/redtitle.gif' alt='LotGD' align='right'>
+      <span class='pagetitle'><br>{title}</span>
+    </td>
+  </tr>
+  <tr>
+    <td width='100%' valign='top' bgcolor='#190000'>
+<!--!popupfoot-->
+    </td>
+  </tr>
+  <tr>
+    <td class='footer'>
+      <table border='0' cellpadding='0' cellspacing='0' width='100%' class='noborder'>
+        <tr valign='top'>
+          <td class='noborder'>
+            {copyright}Design: Red skin by Red Yates<br>
+            Based on: amber skin by
+            <a href="http://blargmedia.ca/" target="_blank">Ben Wong</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!header-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href='templates/Red.css' rel='stylesheet' type='text/css'>
+{headscript}{script}
+</head>
+<body bgcolor='#190000' text='#ff0000'>
+<table border='0' cellpadding='4' cellspacing='0' width='100%'>
+  <tr> 
+    <td colspan='2' class='pageheader' valign='top' align='left'> 
+      {petitiondisplay}
+      <span class='pagetitle'>{title}</span><br><br>
+      [ {motd} | {mail} | {petition} ]
+    </td>
+  </tr>
+  <tr>
+    <td width='175' bgcolor='#190000' valign='top'>
+      <div align='center'>{navad}</div>
+      <table cellspacing='0' cellpadding='4' class='nav'>
+        <tr>
+          <td class='nav' width='175'>
+          {nav}
+          </td>
+        </tr>
+      </table>
+      <br>
+    </td>
+    <td width='100%' rowspan='1' valign='top' bgcolor='#190000'>
+      <table>
+        <tr>
+          <td valign='top' width='100%'>
+            {headerad}{bodyad}
+<!--!footer-->
+          </td>
+          <td valign='top' width='200'>
+            <table width='200' align='right' cellpadding='4' cellspacing='0' class='vitalinfo'>
+              <tr>
+                <td>{stats}<br></td>
+              </tr>
+              <tr>
+                <td width='200' bgcolor='#190000' align='center' valign='top'>
+                  <br>
+                  {paypal}{verticalad}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  <tr>
+    <td colspan='2' class='footer'>
+      <table border='0' cellpadding='0' cellspacing='0' width='100%' class='noborder'>
+        <tr>
+          <td class='noborder'>
+            {copyright}Design: Red skin by Red Yates<br>
+            Based on: amber skin by
+            <a href="http://blargmedia.ca/" target="_blank">Ben Wong</a>
+          </td>
+          <td align='right' class='noborder' valign='top'>
+            {source}<br>
+            {version}<br>
+            {pagegen}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!navhead-->
+<span class='navhead'>{title}</span><br clear='all'>
+<!--!navhelp-->
+<span class='navhelp'>{text}</span><br clear='all'>
+<!--!navitem-->
+<a href="{link}"{accesskey}class='nav' {popup}>{text}</a><br clear='all'>
+<!--!statstart-->
+<table cellpadding='1' cellspacing='0' class='charinfo'>
+<!--!stathead-->
+  <tr>
+    <td class='charhead' colspan='2'><b>{title}</b></td>
+  </tr>
+<!--!statrow-->
+  <tr>
+    <td class='charinfo'>{title}</td>
+    <td class='charinfo'>{value}</td>
+  </tr>
+<!--!statbuff-->
+  <tr>
+    <td class='charhead' colspan='2'><b>{title}</b></td>
+  </tr>
+  <tr>
+    <td class='charinfo' colspan='2'>{value}</td>
+  </tr>
+<!--!statend-->
+</table>
+<!--!petitioncount-->
+<table border='0' cellpadding='5' cellspacing='0' align='right'>
+  <tr>
+    <td>{petitioncount}</td>
+  </tr>
+</table>
+<!--!adwrapper-->
+<table cellpadding='3' cellspacing='0'>
+  <tr><td>{content}</td></tr>
+</table>
+<!--!login-->
+<br><br>
+<table border='0' cellpadding='3' cellspacing='0'>
+  <tr>
+    <td align='center'>
+      <img src='templates/Red/reddragon.gif' class='noborder'>
+    </td>
+  </tr>
+  <tr>
+    <td valign='center' align='center' class='noborder'>
+      <table border='0'>
+        <tr>
+          <td align='center'>
+            <font color='#ff0000'>{username}:</font>
+          </td>
+          <td align='center'>
+            <font color='#ff0000'>{password}:</font>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input name='name' id="name" accesskey='u' size='10'>
+          </td>
+          <td>
+            <input name='password' id="password" accesskey='p' type='password' size='10'>
+          </td>
+        </tr>
+        <tr>
+          <td colspan='2' align='center' valign='top'>
+            <input type='submit' value='{button}' class='button'><br>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--!loginfull-->
+<table border='0' cellpadding='3' cellspacing='0'>
+  <tr>
+    <td align='center'>
+      <img src='templates/Red/reddragon.gif' class='noborder'>
+    </td>
+  </tr>
+  <tr>
+    <td valign='center' align='center' class='noborder'>
+      <font color='#ff0000'><b>Server Full!</b></font>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,212 @@
+<!--!popuphead-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href='templates/ailean.css' rel='stylesheet' type='text/css'>
+{headscript}{script}
+</head>
+<body bgcolor='#303030' text='#e7e7e7'>
+<table border='0' cellpadding='4' cellspacing='0' width='100%'>
+  <tr>
+    <td class='popupheader' valign='bottom' align='left' width='144'>
+      <img src='templates/ailean/logo.jpg' width='192' height='64'>
+    </td>
+    <td class='popupheader' valign='bottom' align='right'>
+      <span class='pagetitle'><br>{title}</span>
+    </td>
+  </tr>
+  <tr>
+    <td width='100%' valign='top' bgcolor='#303030' colspan='2'>
+<!--!popupfoot-->
+    </td>
+  </tr>
+  <tr>
+    <td class='footer' colspan='2'>
+      <table border='0' cellpadding='0' cellspacing='0' width='100%' class='withborder'>
+        <tr valign='top'>
+          <td class='noborder'>
+          {copyright}Design: aileans skin by 
+          <a href="http://blargmedia.ca/" target="_blank">Ben Wong</a>,
+          based on a concept by 
+          <a href="http://ancientk.ath.cx/" target="_blank">Ailean</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!header-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href='templates/ailean.css' rel='stylesheet' type='text/css'>
+{headscript}{script}
+</head>
+<body bgcolor='#303030' text='#e7e7e7'>
+<table border='0' cellpadding='0' cellspacing='0' width='100%'>
+  <tr> 
+    <td class='pageheader' valign='bottom' align='left' width='150'> 
+      <img src='templates/ailean/logo.jpg' width='192' height='64'>
+    </td>
+    <td class='pageheader' valign='bottom' style='padding-left: 2em'>
+      {headerad}
+      <br>
+      {motd}
+      <img src='templates/ailean/bullet.gif'>
+      {mail}
+      <img src='templates/ailean/bullet.gif'>
+      {petition}
+      {petitiondisplay}
+    </td>
+    <td class='pageheader' valign='bottom' align='right'>
+      <span class='pagetitle'>{title}</span>
+    </td>
+  </tr>
+  <tr>
+    <td width='175' bgcolor='#303030' valign='top'>
+      <div align='center'>{navad}<br></div>
+      <table class='nav' cellspacing='0' cellpadding='0'>
+        <tr>
+          <td class='nav' width='175'>
+          {nav}
+          </td>
+        </tr>
+      </table>
+      <br>
+      <table width='200' valign='top' align='left' cellpadding='4' cellspacing='0' class='vitalinfo'>
+        <tr>
+          <td>{stats}</td>
+        </tr>
+        <tr>
+          <td width='200' bgcolor='#303030' align='left' valign='top'>
+            <br>{verticalad}
+          </td>
+        </tr>
+      </table>
+      <br>
+    </td>
+    <td width='100%' rowspan='1' colspan='2' valign='top' bgcolor='#303030' style='padding-left: 1em'>
+      {bodyad}
+      <fieldset>
+        <legend>{title}</legend>
+          <table width='200' valign='top' align='right' cellpadding='4' cellspacing='0' class='vitalinfo'>
+            <tr><td>{paypal}</td></tr>
+          </table>
+        <div class='block'>
+<!--!footer-->
+        </div>
+      </fieldset>
+      <br>
+    </td>
+  <tr>
+    <td colspan='3' class='footer'>
+      <table border='0' cellpadding='0' cellspacing='0' width='100%' class='withborder'>
+        <tr>
+          <td class='noborder'>
+          {copyright}Design: aileans skin by 
+          <a href="http://blargmedia.ca/" target="_blank">Ben Wong</a>,
+          based on a concept by 
+          <a href="http://ancientk.ath.cx/" target="_blank">Ailean</a>
+          </td>
+          <td align='right' class='noborder' valign='top'>
+            {source}<br>
+            {version}<br>
+            {pagegen}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!navhead-->
+<span class='navhead'>
+<img src='templates/ailean/rarrow.gif' width='13' height='13' align='middle'>
+{title}</span><br clear='all'>
+<!--!navhelp-->
+<span class='navhelp'>{text}</span><br clear='all'>
+<!--!navitem-->
+<a href="{link}"{accesskey}class='nav' {popup}>{text}</a><br clear='all'>
+<!--!statstart-->
+<table cellpadding='1' cellspacing='0' class='charinfo'>
+<!--!stathead-->
+  <tr>
+    <td class='charhead' colspan='2'>
+    <img src='templates/ailean/rarrow.gif' height='13' width='13' align='middle'>
+    <b>{title}</b>
+    </td>
+  </tr>
+<!--!statrow-->
+  <tr>
+    <td class='charinfo'><b>{title}</b></td>
+    <td class='charinfo'>{value}</td>
+  </tr>
+<!--!statbuff-->
+  <tr>
+    <td class='charhead' colspan='2'><b>{title}</b></td>
+  </tr>
+  <tr>
+    <td class='charinfo' colspan='2'>{value}</td>
+  </tr>
+<!--!statend-->
+</table>
+<!--!petitioncount-->
+<img src='templates/ailean/bullet.gif'> {petitioncount}
+<!--!adwrapper-->
+<table cellpadding='3' cellspacing='0'>
+  <tr><td>{content}</td></tr>
+</table>
+<!--!login-->
+<br><br>
+<table border='0' cellpadding='3' cellspacing='0'>
+  <tr>
+    <td align='center'>
+      <img src='images/logindragon.gif' class='noborder'>
+    </td>
+  </tr>
+  <tr>
+    <td valign='center' align='center' class='noborder'>
+      <table border='0'>
+        <tr>
+          <td align='center'>
+            <font color='#ffff00'>{username}:</font>
+          </td>
+          <td align='center'>
+            <font color='#ffff00'>{password}:</font>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input name='name' id="name" accesskey='u' size='10'>
+          </td>
+          <td>
+            <input name='password' id="password" accesskey='p' type='password' size='10'>
+          </td>
+        </tr>
+        <tr>
+          <td colspan='2' align='center' valign='top'>
+            <input type='submit' value='{button}' class='button'><br>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--!loginfull-->
+<table border='0' cellpadding='3' cellspacing='0'>
+  <tr>
+    <td align='center'>
+      <img src='images/logindragon.gif' class='noborder'>
+    </td>
+  </tr>
+  <tr>
+    <td valign='center' align='center' class='noborder'>
+      <font color='#ff0000'><b>Server Full!</b></font>
+    </td>
+  </tr>
+</table>

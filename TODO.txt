@@ -1,0 +1,29 @@
+Eternal tasks:
+- Poke MightyE to keep the todo list up to date
+
+Would be nice for 1.0 release:
+- Move some other forest events onto the travel events hook as well.
+- Change the way mounts are enabled in certain areas only in order to be
+  consistent.
+- Explain the advertising opt-out link (cost, etc) in the lodge.
+
+Miscellaneous suggestions to be worked on 'sometime':
+- Have a method for allowing the village to decide the 'danger level'
+  of travel between any other place and it.  Or to require the trip to
+  be something other than just fights (for instance, the way Strider has
+  the Eythgim village set up on Legendgaard).  Aes' worldmap module is a nice
+  start on this.
+- Implement two-pass hotkey system so that links which want a specific hot-key
+  get first choice.
+- Make an in-game task list for deletions/cleanup so that all of it isn't
+  run in big chunks.
+
+Ideas which probably won't be done anytime soon:
+- Suggestion by JRMinga: it seems less glorious somehow to have the statue
+  only in d'burg. perhaps at least in one's home city, one can see a
+  representation of the latest DK of that race?
+- anyanka wants an internal description for clan members in addition to the
+  external description for all and a motd for clan members
+- investigate alternate gem procurement methods (black market?)
+- investigate means to talk in the village after a person is dead
+  (Ramius, costing a few favor?)

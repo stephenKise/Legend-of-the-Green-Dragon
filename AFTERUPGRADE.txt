@@ -1,0 +1,18 @@
+Things you have to do after an upgrade:
+
+
+All:
+-check your races...remove the hook to "charstats" if they only add in the race under Vital Info. Now the core does this for you, including the translation.
+-all with datacache turned on: as the caching has been shifted to the dbconnect.php file... you need to edit this file and place in:
+
+$DB_USEDATACACHE = 1;
+$DB_DATACACHEPATH = "/your/caching/dir";
+
+where you put in your directory/path to the cache directory WITHOUT ending /
+
+
+
+Translators:
+-Replace the Ramius/Karissa/Cedrik names with %s using the Translation Wizard... or translate the sentences anew.
+-Check if your language was de-it-fr-en-es-dk ... if not, then you need to add your language to the game settings as server supported language and also add all languages you WANT and drop those you DON'T WANT
+

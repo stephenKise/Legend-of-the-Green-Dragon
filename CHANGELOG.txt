@@ -1,0 +1,170 @@
+Changelog
+Changes from 1.1.1 to 1.1.2
+[FIX] - Moved gardener away from foot-gardens hook so it doesn't appear in events
+[FIX] - Minor colouring errors and typos
+[FIX] - You have been healed for 1 points! changed and translatable
+[FIX] - newest player cache for homepage now invalidates on account creation
+[FIX] - regdate preserved on dk
+
+[UPDATE] - Raw SQL/PHP usage now added to debuglog
+[UPDATE] - Bans cleaned up on newday-runonce
+
+Changes from 1.1.0 to 1.1.1
+[FIX] - configuration.php--lib/pageparts.php made the text "Legend of the Green Dragon Site Donation from" in the donationscreen settable in the grotto.
+[FIX] - configuration.php--lib/pageparts.php made a setting for the primarily country in order to select the correct paypal language when the button 'site admin' is clicked. Normally this would be the paypal account owners country. But in some cases this might differ.
+[FIX] - lib/pageparts.php page_header fixed (had infinite loop when calling page_header twice and the base call was not from a module)
+[FIX] - motd.php now does not only refresh the last X (setting) motd news by pressing the ">" button but browses through the last messages like it was supposed to. Alteration: motd is ONLY cached for the last X items, if you browse they are queried normally. Also the archive IS now cached (was not before) and this really makes sense normally.
+[FIX] - lib/battle-buffs.php did show an extra line if regen message was left out
+[FIX] - lib/modules.php in the module manager it showed greyed navs after inactive modules, added a `0
+[FIX] - /lib/partner.php set marriedto=0 when called for a player with spouse but w/o the $player variable
+[FIX] - home.php now displays correctly when cookies are blocked from the browser
+[FIX] - /modules/cities.php fixed a tl-glitch together with lib/forestoutcomes.php
+[FIX] - clans now fully functional for custom ranks
+[FIX] - /modules/abigail.php now speaks English with the spouse and is translation ready
+[FIX] - /modules/lovers.php module buff now translatable
+[FIX] - Now several timeout-incorrect login etc message are translatable
+[FIX] - taunts.php: when you saved a new taunt, it did not save the taunt but only inserted a new empty row.
+[FIX] - installer.php did display the 1ast recommended module as not recommended, now it does (install did work)
+[FIX] - tl-readiness of the racecities -> urlencode was missing in the addnav in the do_hook -> case travel
+[FIX] - modules/gardener.php is now translation-ready (questions were not translatable)
+[FIX] - modules/petra.php on line 232 there was a variable missspelled
+[FIX] - hook queries slightly changed and also added an index at the module_hooks table to "location"
+[FIX] - user.php now also searches *again* for email address, IP, ID etc... formerly did only search for name + loginname
+[FIX] - goodwordlist was not cached which caused the lotgdnet.php to make too many queries
+[FIX] - /modules/outhouse.php had a `2 missing after the name which caused colour errors
+[FIX] - corrected create.php who had two queries with emailvalidation='$id' AND emailvalidation!='' ... where the last part made no sense
+[FIX] - translatortool.php are the namespace+intext now readonly...they should *not* be editable, same goes for untranslated.php
+[FIX] - lib/datetime.php reltime($date,$short=true) is now tl-ready, you can have minutes/hours etc in your language. also the date outputs there are not in the tlschema "datetime"
+[FIX] - validation email now translation ready
+
+[FIX] - Moved datacache settings into dbconnect.php. Otherwise settings-query could not be cached.
+[FIX] - pvp and bio now do not use the players' login as reference but their acctid (changes to pvp.php, bio.php, lib/commentary.php, lib/pvplist.php, lib/pvpsupport.php)
+[FIX] - Fixed a bug in lib/commentary.php which lead to mysql errors if browsing through commentaries and then clicking on a bio link in a comment that hasn't been posted when started browsing
+[FIX] - Fixed an error in lib/modules.php which prevented objprefs to be shown correctly. They were saved correctly, but the module_objpref_edit() function did not show the values.
+[FIX] - Inserted constant CLAN_FOUNDER.
+[FIX] - Fixed a typo in specialtymysticpower.php. Thanks to Maeher for reporting!
+
+[FIX] - Character expiration email is now tl-ready
+[FIX] - Many unset variables/indexes
+[FIX] - Donation point mail now tl-ready for when 1 point is given
+[FIX] - Many incorrect slashes fixed (\letter when it should be \\letter)
+[FIX] - dragon death page now more translation ready
+[FIX] - Multifight limits now use the settings
+[FIX] - $options['denyflawless'] now passed to forestvictory()
+[FIX] - Misspelled variables
+[FIX] - setting $charsleft to false in previewfrom() now works
+[FIX] - favour needed to restore your soul now shown on every page when talking with Ramius
+[FIX] - Updating from <0.9.8 should now work
+[FIX] - haberdasher now appears in main city
+[FIX] - meaninglesscode doesn't remove new colour codes
+[FIX] - installer can now create database without dying
+
+[FEATURE] - new hook  $drunkadd = modulehook("modify-drunkeness",$row); added to modules/drinks/run.php to modify each drink drunkeness. An elf gets faster drunk than a dwarf... just modify after the hook $args['drunkeness'] like you want it to. You will get all drink informations via this hook.
+[FEATURE] - now you have in your talkine view a little javascript tell you "You have xxx characters left" counting down when you type. Lets you know when to make a new line.
+[FEATURE] - now moderators can delete post by directly clicking on a "Del" Button beside the post.
+[FEATURE] - added a village-$city hook and a village-desc-$city hook where $city is $session['user']['location']. I.e. you can now save lots of unnecessary queries when you want only to execute at ONE certain village square. To incorporate in a module, either add a hook to i.e. village-Glorfindal ... (bad if you want to have working all-round modules) but make a location setting, also changesetting (like always before) and upon a changesetting or a change in your module you *HAVE* to reinstall it. Make sure to do so, else the hook won't be fired off.
+[FEATURE] - clans can now be turned off (auto set to on)
+[FEATURE] - now translations can be cached via a setting in the grotto. *warning* test if this really speeds up your game. tests on a very big server showed that this function even slowed down the page generation. so handle with care. needless to say that this won't work without having the datacache turned on
+[FEATURE] - the % you lose when die in the forest is now settable (standard 10%)
+[FEATURE] - the skins now get sorted in natural order, not arbitrary anymore (themes in /lib/showform.php)
+[FEATURE] - now Cedrik (barkeep), Ramius (death overlord) and Karissa (clan registrar) can be (game settings) changed to any name you like. NOTICE TO TRANSLATORS: change "`\$Ramius"to "%s", "Cedrik" to "%s" and also Karissa to "%s" (there may also be other changes needed, but should be very few) in your translations table. (You may use the search+replace function in the Translation Wizard)
+[FEATURE] - modules/avatar.php changed to let the users have linked avatar pictures, coming with a validation in the grotto for moderators. It does not check if it has been changed on the remote server, but it should be ok. You can turn all of this on or off.
+[FEATURE] - /lib/modules.php incorporates an increment_module_objpref function you can use to increase numerical values with little effort. Do not use it for ASCII values! Signature of the function: increment_module_objpref($objtype,$objid,$name,$value=1,$module=false)
+[FEATURE] - addnav_notl($text,$link=false,$priv=false,$pop=false,$popsize="500x300") is now possible, the content in the text won't get translated
+[FEATURE] - added a hook to the gemchance... so you can modify the gem chance via module too. name: "alter-gemchance"
+[FEATURE] - added two hooks to the battle.php -> battle-pvp-victory and battle-pvp-defeat to make it easier to decide without having to boost the victory hook for *every* fight just for a pvp battle.
+[FEATURE] - user.php added a hook to put more informations about the user to the main view when you edit a user, hook: modulehook("modifyuserview", array("userinfo"=>$userinfo, "user"=>$row))..usage explained in user.php at the given location
+[FEATURE] - battle.php now knows also a $badguy['hidehitpoints'] which you can set to true in your module when creating it ("hidehitpoints"=>1) and then the enemy will have "?" hitpoints... good for some specials... more exitement. You can drop a line in your module "your enemy is now about half-dead" or so
+[FEATURE] - newday turns after resurrection can now be modified by a game setting (default -6 turns) that handles also a percentage (integer with a % afterwards)... turns can't turn negative and the base is (turns per day) + (dk points spent for turns)
+[FEATURE] - now the superuserflag SU_IS_GAMEMASTER exists, which can be set at the grotto. It invocates no hiding from HOF etc, and its function is simple: to post comments without name into a chat. Not more. /game is replaced (only when gamemaster) with no text at all. Also the preview will only hide it for gamemasters. modules/drinks/dohook.php has been changed, it does NOT differ if /game was from a SU_IS_GAMEMASTER or not.
+
+[FEATURE] - fighting multiple enemies now possible
+[FEATURE] - badguys can now have new flags set:
+			1) essentialleader: either "true" or a text like "{badguy} falls and all other enemies surrender".
+				This flag defines one or more enemies as "essential" for the fight. Should one of them die, the fight will be won, even if some badguys are still alive.
+			2) cannotbetarget: pretty much self-explanatory. A creature with this flag set can never be your target in battle. In can only be damaged by riposting or area buffs. To win such a battle, the following flag should be set, too.
+			3) fleesifalone: If only badguys with this flag set are left living, they will abort the fight and flee.
+			4) alwaysattacks: Normally only a certain amount of enemies can attack per round (default: 4). Enemies with this flag do not count towards this limit. (Imagine a swarm of bees. ;) )
+[FEATURE] - Buffs can have new flags set:
+			1) aura: If this is set to true, 1/3 of the healing power is also given to any healable companion. This flag only works for buffs with the "regen" power.
+			2) areadamage: Normally a buff will only harm the enemy you have targetted. Areadamge harms every enemy around. (Only valid for buffs with "minioncount").
+[FEATURE] - companions can now join you in fights
+[FEATURE] - companions can be suspended just like buffs
+[FEATURE] - last motd item now shown in daily news
+[FEATURE] - new function "previetext()" used in commentary section. This function will support coloured preview throughout the whole game with just a single declaration of usable colours.
+[FEATURE] - Last MotD item now shown on top of the news page.
+[FEATURE] - Petition categories now extendable via modules.
+[FEATURE] - New showform type: "textarearesizeable". Exactly like "textarea" but will show two buttons to increase/decrease size of the field. Needs javascript enabled.
+[FEATURE] - mysqli support has been implemented. To use mysqli instead of mysql go to lib/dbwrapper.php and change the dbtype. If you don't know what this means it's probably best you simply ignore this fact.
+[FEATURE] - increment_specialty() now also supports incrementing specialties which are not your's. just call increment_specialty('`$', "DA") e.g. to increment someone's level in Dark Arts, even they are a thief.
+[FEATURE] - Abigail's gifts are now extendable / changeable via a modulehook.
+[FEATURE] - Especially important for european servers: There's now a setting to add an impressum to the about page.
+
+[FEATURE] - Modules now need _install, _uninstall and _getmoduleinfo functions before the can be installed
+[FEATURE] - Setting to allow packs of badguys (all same type)
+[FEATURE] - invalidatedatacache() can now invalidate a full path name
+[FEATURE] - on install, default settings that haven't been set are now added to the database
+[FEATURE] - game masters can now send YoMs from anyone
+[FEATURE] - added blocknavcat() and unblocknavcat()
+[FEATURE] - can now stop page_footer from saving the user by calling page_footer(false);
+[FEATURE] - added invisible setting type
+[FEATURE] - new hooks: everyhit-loggedin, everyfooter-loggedin, everyheader-loggedin
+
+[UPDATE] - languages in prefs.php and configuration.php depend now on a setting "serverlanguages" where you can enter a string (enum) to make sure you have your language in the translator tool. No hardcode edits anymore.
+[UPDATE] - home.php altered the select query from laston etc to a simple counting statement which is enough for what we need here
+[UPDATE] - now mail.php shows in reply "Original Message from {username}" which makes it easiert to keep track
+[UPDATE] - now lotgdnet only notices main server at the login. There are no additional "pings" out. This will reduce traffic and increase performance.
+[UPDATE] - Skin selection now gets sorted alphabetically and not anymore in chronological order
+[UPDATE] - lib/expire_chars now runs after 23h if called, not after 24. Reason: if you have the newdays at the same time, it might occurr that hit the next exactly at or even bevor the daytime of the last. So only at the next newday the chars expire... which leads to more than 1 day expirations. This fixes it.
+[UPDATE] - moved the char, commentary, debuglog expiration to the newday_runonce (also fixed the debuglog bug when set to 0 days...)
+[UPDATE] - cron.php ... now guarded by a htaccess file to NOT let peopl trigger newdays from the outside... (security issue). Also removed the redundancy, now the same code is executed.
+[UPDATE] - /modules/gardener.php removed the footer-runmodule hook and put in footer-newbieisland. better performance.
+[UPDATE] - Edorians idea of moving the output field from the accounts table to a new table implemented. Now the large output field (needed only for badnavs) is not loaded each pagehit anymore (yet updated like always)
+[UPDATE] - donators.php removed the debugs and made clear outputs, saying the reason and also after the submit a real sentence.
+[UPDATE] - commentary posting limiter (limits posts for one user to 50% of the posting area, normally 10) can be deactivated in the game settings
+[UPDATE] - hooking into events now uses the following hook: #modulehook("runevent_$module", array("type"=>$type, "baselink"=>$baseLink, "get"=>httpallget(), "post"=>httpallpost()));# so you can now hook at "runevent_abigail" and get executed there (pls don't call a page_footer in your module there, only if you know what you do)
+[UPDATE] - added "ob_start('ob_gzhandler');" to the common.php to enable the gzip compression. This will produce a bit more CPU load, but the traffic will decrease by 30%-40% estimated and your users will have the pages displayed usually a bit quicker as less bytes need to be transferred. This setting proved to be worth adding on smaller and bigger servers, so it is now going to be core.
+[UPDATE/FIX] - in the user editor (and if you call the lib/lookup_user.php yourself in any module) you can now use % as tags like in a mysql query. in 1.1.0 it was introduced that you have to enter the *exact* (case-insensitive) name/login of the player. Which was ... not good. Now you can look for an exact match (enter the name normally) or use the % tags to search for any number of letters at this point. I.e. '%man' finds 'Talisman', but not 'Chadmann', 'Tali%' finds 'Talisman', but not 'ReTailMan'.. you can use them at any position (even '%man%' which would find any usernames containing 'man').
+[UPDATE/FIX] - get_module_pref now check first if the pref has been loaded previously and THEN calls load_module_prefs (and check again). As most guys have prefs for certain modules sooner or later, on if-isset afterwards is faster than many function calls who come back empty.
+[UPDATE] - lib/forestoutcomes.php now also shows a creaturewin phrase automatically if entered in the creature table, same like the creaturelose phrase that is displayed normally. also edited creatures.php (small code cleanup)
+[UPDATE] - lib/battleskills has now a is_buff_active($buffname) to determine if a buff is active&not suspended or not active or suspended. If you want to check if the buff exists use hasbuff($buffname)
+[UPDATE] - added a few more key indices to the account table to be more innodb friendly
+[UPDATE] - lib/translator.php modified, now a translate_inline($intext,$namespace=FALSE) is possible, i.e you don't need to construct for a single line a tlschema and reset it afterwards
+[UPDATE] - mail.php,lib/systemmail.php,lib/pageparts.php now cache the amount of mails the user has, this speeds things up on the servers (nasty sum query...(Edorian)
+[UPDATE] - game settings are cached now (were not before) which caused the move of the datacachepath and the usedatacache to be shifted to the dbconnect.php ... fresh installs will get this automatically, upgrades need to do it manually (see AFTERUPGRADE.txt)
+[UPDATE] - lib/checkban.php has its messages now in the ban scheme and those are therefore translatable
+[UPDATE] - now races don't need to hook into charstats (an everyhit hook) anymore just to display the race the user has. It has been moved into core.
+[UPDATE] - racenames SHOULD now be adressed within the "race" scheme... translate_inline($session['user']['race'],"race") should therefore get you the race name. For people who don't want to remember the scheme and add a few more chars to their translate_inline please use the function get_racename($thisuser=TRUE). If you want the race of the current user, call get_racename(), if you have fetched the race i.e. from the DB directly for a third user, enter the plain race as parameter $thisuser.
+[UPDATE] - now core includes .htaccess files who (if apache accepts them) block ANY direct access from the outside to the lib+modules directory (incl. subdirs) to prevent execution of code from the outside without the runmodule or other files in your homeroot. This affects all php files, no other files
+[UPDATE] - Many module files have been split up into libs to decrease memory usage (lib files for / files in lib/$filename and for modules in /modules/$filename):
+		-modules/oldman.php
+		-graveyard.php (optimized for tormenting)
+		-user.php (split up)
+		-petition.php (2/3 FAQs are not needed for petitions, and the other way around)
+		-installer.php (though not needed often, it is better to have the steps better displayed -better to modify-)
+		-newday.php (some parts like dk-point spending)
+		-about.php (general split up)
+		-inn.php (sanity reasons, also switched the villagenav up)
+		-modules/cities.php (village doesn't need travels loaded everytime)
+		-modules/customeq.php (gets called only in charstats mostly)
+		-modules/scavenge.php (village special not executed 20kb of code all the time... only when running it needs it)
+
+[UPDATE] - updated specialtydarkarts.php to summon a skeleton warrior as companion, not as a buff
+[UPDATE] - updated specialtymysticpower.php to have an aura buff (regeneration) and an area buff (earth fist)
+[UPDATE] - updated thieves.php. Lonestrider will now truly attack with multiple thieves. Module also shows how "essentialleader" and "fleesifalone" attributes for badguys work
+[UPDATE] - removed admin ability to change passwords.
+[UPDATE] - objprefs now cached, too.
+
+[UPDATE] - Creatures editor now uses formula to generate stats, instead of a large table
+[UPDATE] - After killing dragon, location is set to the server setting, not LOCATION_FIELDS
+[UPDATE] - When succesfully fleeing, one fight companions expire
+[UPDATE] - module download link can now be https,ftp,ftps or http
+[UPDATE] - companions can now have a longer name and category
+[UPDATE] - If $module_install() returns false, installing stops
+[UPDATE] - default module settings are set before calling _install()
+[UPDATE] - page title is now sanitized
+[UPDATE/FIX] - JS from collapse is now in HTML comments
+[UPDATE] - can now specify wether content/nav sections can be collapsed on a system wide level
+[UPDATE] - prizemount payments are now cumulative
+[UPDATE/FIX] - pvpblock now checks bands are valid
+[UPDATE] - source.php now displays files by folders, decreasing clutter

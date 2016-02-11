@@ -1,0 +1,188 @@
+<!--!popuphead-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href='templates/vcpp.css' rel='stylesheet' type='text/css'>
+{headscript}{script}
+</head>
+<body bgcolor='#ffffff' text='#000000'>
+<table border='0' cellpadding='4' cellspacing='0' width='100%'>
+  <tr>
+    <td class='popupheader' valign='top'>
+      <span class='pagetitle'><br>{title}</span>
+    </td>
+  </tr>
+  <tr>
+    <td width='100%' valign='top' bgcolor='#ffffff'>
+<!--!popupfoot-->
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <hr>
+      <table border='0' cellpadding='0' cellspacing='0' width='100%' class='noborder'>
+        <tr valign='top'>
+          <td class='noborder'>
+            {copyright}Design: vcpp skin by 
+            <a href="http://blargmedia.ca/" target="_blank">Ben Wong</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!header-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href='templates/vcpp.css' rel='stylesheet' type='text/css'>
+{headscript}{script}
+</head>
+<body bgcolor='#ffffff' text='#333333'>
+<table border='0' cellpadding='4' cellspacing='0' width='100%'>
+  <tr> 
+    <td colspan=2 class='pageheader' valign='top' align='right'> 
+      <span class='pagetitle'>{title}</span><br><br>
+      {motd}<br>{mail}<br>{petition} 
+    </td>
+  </tr>
+  <tr>
+    <td width='200' bgcolor='#d4d0c8' valign='top'>
+      <div align='center'>{navad}</div>
+      <img src='templates/vcpp/tblhdr.gif' width='200' height='15' alt='[header]'>
+      <br>
+      <table cellspacing='0' cellpadding='0' class='nav'>
+        <tr>
+          <td>
+          {nav}
+          </td>
+        </tr>
+      </table>
+      <br>
+    </td>
+    <td width='100%' rowspan='3' valign='top' bgcolor='#ffffff' class='body'>
+      {headerad}{bodyad}
+      <!--!footer-->
+      {petitiondisplay}
+    </td>
+  </tr>
+  <tr>
+    <td width='200' valign='top' bgcolor='#d4d0c8'>
+      <img src='templates/vcpp/tblhdr.gif' width='200' height='15' alt='[heading]'>
+      <table border='0' cellpadding='0' cellspacing='0' class='vitalinfo'>
+        <tr>
+          <td>{stats}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td width='200' bgcolor='#d4d0c8' align='center'>
+      {paypal}{verticalad}
+    </td>
+  </tr>
+  <tr>
+    <td colspan='2'>
+      <hr>
+      <table border='0' cellpadding='0' cellspacing='0' width='100%' class='noborder'>
+        <tr>
+          <td class='noborder' valign='top'>
+            {copyright}Design: vcpp skin by 
+            <a href="http://blargmedia.ca/" target="_blank">Ben Wong</a>
+            ({pagegen}) 
+          </td>
+          <td align='right' class='noborder' valign='top'>
+            {source}
+            <br><br>
+            {version}
+          </td>
+        </tr>
+        <tr>
+          <td colspan='2' bgcolor='d4d0c8' align='left' height='17'>
+          <img src='templates/vcpp/ftrtabs.gif' height='17' width='348'>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!navhead-->
+            <span class='navhead'>&#151; {title} &#151;</span><br clear='all'>
+<!--!navhelp-->
+            <span class='navhelp'>{text}</span><br clear='all'>
+<!--!navitem-->
+            <a href="{link}"{accesskey}class='nav' {popup}>{text}</a><br clear='all'>
+<!--!statstart-->
+<table width='200' cellpadding='1' cellspacing='0' class='charinfo'>
+<!--!stathead-->
+  <tr>
+    <td class='charhead' colspan='2'><b>{title}</b></td>
+  </tr>
+<!--!statrow-->
+  <tr>
+    <td class='charinfo'><b>{title}</b></td>
+    <td class='charinfo'>{value}</td>
+  </tr>
+<!--!statbuff-->
+  <tr>
+    <td class='charhead' colspan='2'><b>{title}</b></td>
+  </tr>
+  <tr>
+    <td class='charinfo' colspan='2'>{value}</td>
+  </tr>
+<!--!statend-->
+</table>
+<!--!petitioncount-->
+<table border='0' cellpadding='5' cellspacing='0' align='right'>
+  <tr>
+    <td>{petitioncount}</td>
+  </tr>
+</table>
+<!--!adwrapper-->
+<table cellpadding='3' cellspacing='0'>
+  <tr><td>{content}</td></tr>
+</table>
+<!--!login-->
+<br><br>
+<table border='0' cellpadding='3' cellspacing='0' class='login'>
+  <tr>
+    <td height='50%' colspan='2'>
+      <br>
+    </td>
+  </tr>
+  <tr>
+    <td valign='bottom' align='left' style='padding-left: 20px'>
+      <font color='#000000'>{username}:</font>
+    </td>
+    <td valign='bottom' align='left'>
+      <font color='#000000'>{password}:</font>
+    </td>
+  </tr>
+  <tr>
+    <td valign='top' align='left' style='padding-left: 20px;'>
+      <input name='name' id="name" accesskey='u' size='10'>
+    </td>
+    <td valign='top' align='left'>
+      <input name='password' id="password" accesskey='p' type='password' size='10'>
+    </td>
+  </tr>
+  <tr>
+    <td colspan='2' align='center' valign='top'>
+      <input type='submit' value='{button}' class='button'><br>
+    </td>
+  </tr>
+</table>
+<!--!loginfull-->
+<table border='0' cellpadding='3' cellspacing='0' class='login'>
+  <tr>
+    <td valign='center' align='center' class='noborder'>
+      <font color='#ff0000'><b>Server Full!</b></font>
+    </td>
+  </tr>
+</table>

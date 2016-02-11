@@ -1,0 +1,283 @@
+/* CSS Document */
+caption {
+	white-space: nowrap;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+a{
+	color: #0099FF;
+	text-decoration: none;
+}
+a.nav {
+	text-decoration: none;
+	width: 181px;
+	height: auto;
+	padding: 1px;
+	float: left;
+	clear: none;
+	border-top: thin solid #003366;
+	border-bottom: thin solid #003366;
+	border-right: thin none #003366;
+	border-left: thin none #003366;
+}
+a:hover.nav {
+	background-color: #003366;
+	border-top: thin outset #003366;
+	border-right: thin none #003366;
+	border-bottom: thin outset #003366;
+	border-left: thin none #003366;
+}
+a.navhilite {
+	text-decoration: none;
+	width: 150px;
+	height: auto;
+	padding: 1px;
+	float: right;
+	clear: none;
+	color:#FFFF00;
+	background-color: #330000;
+	border-top: thin solid #330000;
+	border-bottom: thin solid #330000;
+	border-right: thin none #330000;
+	border-left: thin none #330000;
+}
+a:hover.navhilite {
+	background-color: #990000;
+	border-top: thin outset #CC0000;
+	border-right: thin none #CC0000;
+	border-bottom: thin outset #CC0000;
+	border-left: thin none #CC0000;
+}
+.navhelp {
+	text-decoration: none;
+	width: 181px;
+	height: auto;
+	padding: 1px;
+	float: left;
+	clear: none;
+	border-top: thin solid #003366;
+	border-bottom: thin solid #003366;
+	border-right: thin none #003366;
+	border-left: thin none #003366;
+	cursor: default;
+}
+.navhead {
+	text-decoration: none;
+	width: 180px;
+	border: thin #003366;
+	height: auto;
+	padding: 1px;
+	line-height: 18px;
+	float: left;
+	clear: none;
+/*	background-color: #000066; */
+	font-weight: bold;
+	color: #00CCFF;
+	cursor: default;
+	text-align: center;
+}
+table {
+}
+td.charinfo {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #009900;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	cursor: default;
+}
+td.charhead {
+	background-color: #009900;
+	border: none;
+	cursor: default;
+	color: #FFFF00;
+}
+table.charinfo {
+	border: none;
+	width: 182px;
+}
+td.pageheader {
+	background-color: #333399;
+	background-image: url(../images/headbkg.GIF);
+	height: 69px;
+}
+td.popupheader {
+	background-color: #333399;
+	background-image: url(../images/headbkg.GIF);
+	height: 20px;
+}
+td.noborder {
+	border: none;
+}
+table.noborder {
+	border: none;
+}
+input {
+	background-color: #433828;
+	border: 1px solid #806B4D;
+	color: #CCCCCC;
+}
+.button {
+font-family: verdana,arial,helvetica,sans-serif;  
+	 font-size: 12px;  
+	 color: #F8DB83;  
+	 background-color: #6b563f;  
+	 border-top: 1px solid #947356;  
+	 border-left: 1px solid #947356;  
+	 border-right: 1px solid #403225;  
+	 border-bottom: 1px solid #403225;
+}
+.input {
+	background-color: #433828;
+	border: 1px solid #806B4D;
+	color: #CCCCCC;
+}
+select {
+	background-color: #433828;
+	border: 1px solid #806B4D;
+	color: #CCCCCC;
+}
+table.vitalinfo {
+	background-color: #003300;
+	border: 1px solid #000000;
+	width: 182px;
+}
+table.nav {
+	background-color: #003366;
+	border: 1px solid #000000;
+	width: 182px;
+}
+a.motd {
+	text-decoration: none;
+	text-align: center;
+	color:#FF9900;
+	width: 179px;
+	height: 14px;
+	padding: 1px;
+	float: left;
+	clear: none;
+	background-color: #433828;
+	border: thin solid #433828; 
+}
+a:hover.motd {
+	height: 14px;
+	width: 179px;
+	background-color: #806B4D;
+	border: thin solid #FF9900;
+}
+a.hotmotd {
+	text-decoration: none;
+	text-align: center;
+	color:#FF9900;
+	width: 181px;
+	height: auto;
+	padding: 1px;
+	float: left;
+	clear: none;
+
+	background-color: #806B4D;
+	border-top: thin solid #FF9900;
+	border-bottom: thin solid #FF9900;
+	border-right: thin solid #FF9900;
+	border-left: thin solid #FF9900;
+}
+.pagetitle {
+	font-family: "Old English Text MT", "Times New Roman";
+	font-size: 20px;
+	color: #FFFFFF;
+}
+td.footer {
+	background-image: url(../images/rule.gif);
+	background-repeat: repeat-x;
+	background-position: top;
+}
+.navhi {
+	color: #00FF00;
+	text-decoration: underline;
+}
+
+a.t {
+	width: 7px;
+	height: 7px;
+	border: 1px dotted #0000FF;
+	background-color: #9999FF;
+	color: #FFFFFF;
+	font-size: 7px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+a.thot {
+	width: 7px;
+	height: 7px;
+	border: 1px dotted #FF0000;
+	background-color: #FF9999;
+	color: #FFFFFF;
+	font-size: 7px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+div.debug {
+	background-color: #FFFFFF;
+	color: #000000;
+	border: 1px dotted #000000;
+	width: auto;
+	height: auto;
+	font-size: 10px;
+}
+.colDkBlue	{ color: #0000B0; }
+.colDkGreen   { color: #00B000; }
+.colDkCyan	{ color: #00B0B0; }
+.colDkRed	 { color: #B00000; }
+.colDkMagenta { color: #B000CC; }
+.colDkYellow  { color: #B0B000; }
+.colDkWhite   { color: #B0B0B0; }
+.colLtBlue	{ color: #0000FF; }
+.colLtGreen   { color: #00FF00; }
+.colLtCyan	{ color: #00FFFF; }
+.colLtRed	 { color: #FF0000; }
+.colLtMagenta { color: #FF00FF; }
+.colLtYellow  { color: #FFFF00; }
+.colLtWhite   { color: #FFFFFF; }
+.colLtBlack   { color: #999999; }
+.colDkOrange  { color: #994400; }
+.colLtOrange  { color: #FF9900; }
+.colBlue  		{ color: #0070FF; }
+.colLime  		{ color: #DDFFBB; }
+.colBlack  		{ color: #000000; }
+.colRose 		{ color: #EEBBEE; }
+.colblueviolet 	{ color: #9A5BEE; }
+.coliceviolet	{ color: #AABBEE; }
+.colLtBrown 	{ color: #F8DB83; }
+.colDkBrown 	{ color: #6b563f; }
+.colXLtGreen	{ color: #aaff99; }
+.colAttention 	{ background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
+.colBack  		{ background-color: #00FFFF; color: #000000; }
+.colbeige  { color: #F5F5DC; }
+.colkhaki  { color: #F0E68C; }
+.coldarkkhaki  { color: #BDB76B; }
+.colaquamarine  { color: #7FFFD4; }
+.coldarkseagreen  { color: #8FBC8F; }
+.collightsalmon  { color: #FFA07A; }
+.colsalmon  { color: #FA8072; }
+.colwheat  { color: #F5DEB3; }
+.coltan  { color: #D2B48C; }.colLtLinkBlue { color: #0099FF; }
+.colDkLinkBlue { color: #006BB3; }
+.colDkRust { color: #8D6060; }
+.colLtRust { color: #B07878; }
+.colMdBlue { color: #0000F0; }
+.colMdGrey { color: #DDDDDD; }
+.colburlywood { color: #DEB887; }
+.trhead  { background-color:#990000; color:#FFFFFF; }
+.trlight { background-color:#330000; }
+.trhilight { background-color:#550000; }
+.trdark  { background-color:#000000; }

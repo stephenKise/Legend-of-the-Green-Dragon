@@ -1,0 +1,174 @@
+/* CSS Document */
+caption {
+	white-space: nowrap;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+td {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+a{
+	color: #003399;
+}
+a:hover {
+	color: #FF0000;
+}
+a.nav {
+	color: #003399;
+}
+a.nav:hover {
+	color: #FF0000;
+}
+.navhelp {
+	text-decoration: none;
+	color: #003399;
+	cursor: default;
+	display: table;
+}
+.navhead {
+	text-decoration: none;
+	font-weight: bold;
+	color: #330000;
+	cursor: default;
+	display: table;
+}
+a.motd {
+	text-decoration: none;
+	color:#FFFFFF;
+	background-color: #000000;
+}
+a.motd:hover {
+	color: #FF0000;
+	background-color: #000000;
+}
+a.hotmotd {
+	text-decoration: none;
+	color:#FF0000;
+	background-color: #000000;
+}
+td.charinfo {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #999999;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	cursor: default;
+}
+td.charhead {
+	background-color: #1478EB;
+	color: #FFFFFF;
+	font-weight: bold;
+	cursor: default;
+}
+table.charinfo { border: none; }
+td.pageheader { background-color: #000066; }
+td.noborder { border: none; }
+table.noborder { border: none; }
+input {
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	color: #000000;
+}
+.input {
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	color: #000000;
+}
+select {
+	background-color: #FFFFFF;
+	border: 1px solid #999999;
+	color: #000000;
+}
+td.nav a.thot {
+	position: absolute;
+	left: 0px;
+	height: auto;
+}
+td.nav a.t {
+	position: absolute;
+	left: 0px;
+	height: auto;
+}
+a.t {
+	width: 7px;
+	height: 7px;
+	border: 1px dotted #0000FF;
+	background-color: #9999FF;
+	color: #FFFFFF;
+	font-size: 7px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+a.thot {
+	width: 7px;
+	height: 7px;
+	border: 1px dotted #FF0000;
+	background-color: #FF9999;
+	color: #FFFFFF;
+	font-size: 7px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+div.debug {
+	background-color: #F0FFF0;
+	color: #003366;
+	border: 1px dotted #000000;
+	width: auto;
+	height: auto;
+	font-size: 10px;
+}
+.navhi { color: #000000; }
+.colDkBlue	{ color: #000033; }
+.colDkGreen   { color: #003300; }
+.colDkCyan	{ color: #003333; }
+.colDkRed	 { color: #330000; }
+.colDkMagenta { color: #330033; }
+.colDkYellow  { color: #333300; }
+.colDkWhite   { color: #666666; }
+.colLtBlue	{ color: #000099; }
+.colLtGreen   { color: #009900; }
+.colLtCyan	{ color: #009999; }
+.colLtRed	 { color: #990000; }
+.colLtMagenta { color: #990099; }
+.colLtYellow  { color: #999900; }
+.colLtWhite   { color: #333333; }
+.colLtBlack   { color: #999999; }
+.colDkOrange  { color: #994400; }
+.colLtOrange  { color: #FF9900; }
+.colBlue  		{ color: #0070FF; }
+.colLime  		{ color: #DDFFBB; }
+.colBlack  		{ color: #000000; }
+.colRose 		{ color: #EEBBEE; }
+.colbeige  { color: #F5F5DC; }
+.colkhaki  { color: #F0E68C; }
+.coldarkkhaki  { color: #BDB76B; }
+.colaquamarine  { color: #7FFFD4; }
+.coldarkseagreen  { color: #8FBC8F; }
+.collightsalmon  { color: #FFA07A; }
+.colsalmon  { color: #FA8072; }
+.colwheat  { color: #F5DEB3; }
+.coltan  { color: #D2B48C; }.colblueviolet 	{ color: #9A5BEE; }
+.coliceviolet	{ color: #AABBEE; }
+.colLtBrown 	{ color: #F8DB83; }
+.colDkBrown 	{ color: #6b563f; }
+.colXLtGreen	{ color: #aaff99; }
+.colAttention 	{ background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
+.colBack  		{ background-color: #00FFFF; color: #000000; }
+.colLtLinkBlue { color: #0099FF; }
+.colDkLinkBlue { color: #006BB3; }
+.colDkRust { color: #8D6060; }
+.colLtRust { color: #B07878; }
+.colMdBlue { color: #0000F0; }
+.colMdGrey { color: #DDDDDD; }
+.colburlywood { color: #DEB887; }
+.trhead  { background-color:#006699; color:#FFFFFF; }
+.trlight { background-color:#FFFFFF; }
+.trdark  { background-color:#F0F0F0; }
+.trhilight { background-color:#999999; }
