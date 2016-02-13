@@ -199,7 +199,7 @@ function abigail_runevent($type, $link)
                 ];
                 systemmail($session['user']['marriedto'], $subject, $body);
                 if (e_rand(1, 100) <= get_module_setting('charm_chance')) {
-                    increment_module_pref('liked', 1);
+                    increment_module_pref('liked');
                 }
                 else {
                     set_module_pref('liked', -1);

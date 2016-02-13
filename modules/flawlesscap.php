@@ -43,16 +43,16 @@ function flawlesscap_dohook($hook, $args)
                 (!isset($args['diddamage']) || $args['diddamage'] != 1)
             ) {
                 $runonce = true;
-                if(get_module_pref('amount') >= get_module_setting('max')) {
+                if (get_module_pref('amount') >= get_module_setting('max')) {
                     $options['denyflawless'] = '`nYou have already received the maximum flawless fight rewards for today.`n`n`0';
                 }
                 else{
-                    increment_module_pref('flaw');
+                    increment_module_pref('amount');
                 }
             }
             break;
         case 'newday':
-            set_module_pref('flaw', 0);
+            set_module_pref('amount', 0);
             break;
     }
     return $args;
