@@ -144,4 +144,3 @@ function nasty_word_list(void): array
     updatedatacache('nastywordlist', $search);
     return $search;
 }
-?>

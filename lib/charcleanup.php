@@ -1,65 +1,65 @@
 <?php
+declare(strict_types=1);
 
-function char_cleanup($id, $type)
+function char_cleanup(int $id, int $type): bool
 {
-	// this function handles the grunt work of character cleanup.
-
-	// Run any modules hooks who want to deal with character deletion, or stop it
-	$return = modulehook("delete_character",
-			array("acctid"=>$id, "deltype"=>$type, "dodel"=>true));
-			
-	if(!$return['dodel']) return false;
-
-	// delete the output field from the accounts_output table introduced in 1.1.1
-
-	db_query("DELETE FROM " . db_prefix("accounts_output") . " WHERE acctid=$id;");
-
-	// delete the comments the user posted, necessary to have the systemcomments with acctid 0 working
-
-	db_query("DELETE FROM " . db_prefix("commentary") . " WHERE author=$id;");
-
-	// Clean up any clan positions held by this character
-	$sql = "SELECT clanrank,clanid FROM " . db_prefix("accounts") .
-		" WHERE acctid=$id";
-	$res = db_query($sql);
-	$row = db_fetch_assoc($res);
-	if ($row['clanid'] != 0 && $row['clanrank'] == CLAN_LEADER) {
-		$cid = $row['clanid'];
-		// We need to auto promote or disband the clan.
-		$sql = "SELECT name,acctid,clanrank FROM " . db_prefix("accounts") .
-			" WHERE clanid=$cid AND clanrank > " . CLAN_APPLICANT . " AND acctid<>$id ORDER BY clanrank DESC, clanjoindate";
-		$res = db_query($sql);
-		if (db_num_rows($res)) {
-			// Okay, we can promote if needed
-			$row = db_fetch_assoc($res);
-			if ($row['clanrank'] != CLAN_LEADER) {
-				// No other leaders, promote this one
-				$id1 = $row['acctid'];
-				$sql = "UPDATE " . db_prefix("accounts") .
-					" SET clanrank=" . CLAN_LEADER . " WHERE acctid=$id1";
-				db_query($sql);
-			}
-		} else {
-			// this clan needs to be disbanded.
-			$sql = "DELETE FROM " . db_prefix("clans") . " WHERE clanid=$cid";
-			db_query($sql);
-			// And just in case we goofed, no players associated with a
-			// deleted clan  This shouldn't be important, but.
-			$sql = "UPDATE " . db_prefix("accounts") . " SET clanid=0,clanrank=0,clanjoindate='0000-00-00 00:00;00' WHERE clanid=$cid";
-			db_query($sql);
-		}
-	}
-
-	// Delete any module user prefs
-	module_delete_userprefs($id);
-	
-	// Delete any mail to or from the user
-	db_query('DELETE FROM ' . db_prefix('mail') . ' WHERE msgto=' . $id . ' OR msgfrom=' . $id);
-	
-	// Delete any news from the user
-	db_query('DELETE FROM ' . db_prefix('news') . ' WHERE accountid=' . $id);
-	
-	return true;
+    $return = modulehook(
+        'delete_character',
+        [
+            'acctid' => $id,
+            'deltype' => $type,
+            'dodel' => true 
+        ]
+    );
+    if (!$return['dodel']) {
+        return false;
+    }
+    $accounts = db_prefix('accounts');
+    $accountsOutput = db_prefix('accounts_output');
+    $commentary = db_prefix('commentary');
+    $mail = db_prefix('mail');
+    $news = db_prefix('news');
+    $clans = db_prefix('clans');
+    db_query("DELETE FROM $accountsOutput WHERE acctid = '$id'");
+    db_query("DELETE FROM $commentary WHERE author = '$id'");
+    db_query("DELETE FROM $mail WHERE msgto = '$id' OR msgfrom = '$id'");
+    db_query("DELETE FROM $news WHERE accountid = '$id'");
+    module_delete_userprefs($id);
+    $leader = CLAN_LEADER;
+    $applicant = CLAN_APPLICANT;
+    $sql = db_query("SELECT clanrank, clanid FROM $accounts WHERE acctid = '$id'");
+    $row = db_fetch_assoc($sql);
+    if ($row['clanid'] != 0 && $row['clanrank'] == $leader) {
+        $cid = $row['clanid'];
+        $sql = db_query(
+            "SELECT acctid, clanrank
+            FROM $accounts
+            WHERE clanid = '{$row['clanid']}'
+            AND clanrank > '$applicant'
+            AND acctid != '$id'
+            ORDER BY clanrank DESC, clanjoindate"
+        );
+        if (db_num_rows($sql)) {
+            $row = db_fetch_assoc($sql);
+            if ($row['clanrank'] != $leader) {
+                db_query("UPDATE $accounts SET clanrank = '$leader' WHERE acctid = {$row['acctid']}");
+            }
+        }
+        else {
+            db_query("DELETE FROM $clans WHERE clanid = '{$row['clanid']}'");
+            db_query(
+                "UPDATE $accounts
+                SET clanid = '0',
+                clanrank = '0',
+                clanjoindate = '0000-00-00 00:00:00'
+                WHERE clanid = '{$row['clanid']}'"
+            );
+        }
+    }
+    $sql = db_query("DELETE FROM $accounts WHERE acctid = '$id'");
+    if (!$sql) {
+        return false;
+    }
+    return true;
 }
 
-?>

@@ -72,5 +72,3 @@ myDefine('MODULE_FILE_NOT_PRESENT', 8);
 myDefine('MODULE_VERSION_TOO_LOW', 16);
 myDefine('MODULE_ACTIVE', 32);
 myDefine('MODULE_INJECTED', 64);
-
-?>

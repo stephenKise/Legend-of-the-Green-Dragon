@@ -55,5 +55,3 @@ function checkban(string $login, bool $connect = false): bool
         return true;
     }
 }
-
-?>
