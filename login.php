@@ -40,11 +40,7 @@ if ($name!=""){
 			$companions = @unserialize($session['user']['companions']);
 			if (!is_array($companions)) $companions = array();
 			$baseaccount = $session['user'];
-			checkban($session['user']['login']); //check if this account is banned
-			checkban(); //check if this computer is banned
-			// If the player isn't allowed on for some reason, anything on
-			// this hook should automatically call page_footer and exit
-			// itself.
+			checkban($session['user']['login'], true); 
 			modulehook("check-login");
 
 			if ($session['user']['emailvalidation']!="" && substr($session['user']['emailvalidation'],0,1)!="x"){
@@ -107,7 +103,7 @@ if ($name!=""){
 			//now we'll log the failed attempt and begin to issue bans if
 			//there are too many, plus notify the admins.
 			$sql = "DELETE FROM " . db_prefix("faillog") . " WHERE date<'".date("Y-m-d H:i:s",strtotime("-".(getsetting("expirecontent",180)/4)." days"))."'";
-			checkban();
+			checkban($name, true);
 			db_query($sql);
 			$sql = "SELECT acctid FROM " . db_prefix("accounts") . " WHERE login='$name'";
 			$result = db_query($sql);

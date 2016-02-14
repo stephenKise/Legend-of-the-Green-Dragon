@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 function soap(string $input, bool $debug = false, bool $skiphook = false): string
 {
