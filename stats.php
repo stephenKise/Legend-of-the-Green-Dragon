@@ -3,7 +3,6 @@
 // addnews ready
 // mail ready
 require_once("common.php");
-require_once("lib/dhms.php");
 
 tlschema("stats");
 

@@ -92,7 +92,7 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
     }
 }
 
-function good_word_list(void): array
+function good_word_list(): array
 {
     $nastyWords = db_prefix('nastywords');
     $sql = db_query_cached(
@@ -103,7 +103,7 @@ function good_word_list(void): array
     return explode(' ', $row['words']);
 }
 
-function nasty_word_list(void): array
+function nasty_word_list(): array
 {
     $search  = datacache('nastywordlist', 86400);
     if ($search !== false && is_array($search)) {

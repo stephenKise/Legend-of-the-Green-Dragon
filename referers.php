@@ -3,8 +3,6 @@
 // addnews ready
 // mail ready
 require_once("common.php");
-require_once("lib/dhms.php");
-require_once("lib/http.php");
 
 tlschema("referers");
 
