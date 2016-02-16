@@ -152,7 +152,7 @@ function table_create_from_descriptor($tablename,$descriptor){
 		$sql .= descriptor_createsql($val);
 		$i++;
 	}
-	$sql .= ") Type=$type";
+	$sql .= ") engine=$type";
 	return $sql;
 }
 

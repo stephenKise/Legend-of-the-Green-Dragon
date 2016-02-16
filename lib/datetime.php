@@ -65,13 +65,13 @@ function relativedate(string $indate): string
 {
     $lastOn = round((strtotime('now') - strtotime($indate)) / 86400, 0) . 'days';
     tlschema('datetime');
-    if (substr($laston, 0, 2) == '1 ') {
+    if (substr($lastOn, 0, 2) == '1 ') {
         $lastOn = translate_inline('1 day');
     }
-    else if (date('Y-m-d', strtotime($laston)) == date('Y-m-d')) {
+    else if (date('Y-m-d', strtotime($lastOn)) == date('Y-m-d')) {
         $lastOn = translate_inline('Today');
     }
-    else if (date('Y-m-d', strtotime($laston)) == date('Y-m-d', strtotime('-1 day'))) {
+    else if (date('Y-m-d', strtotime($lastOn)) == date('Y-m-d', strtotime('-1 day'))) {
         $lastOn = translate_inline('Yesterday');
     }
     else if (strpos($indate, '0000-00-00') !== false){
@@ -92,7 +92,7 @@ function checkday(bool $force = true): bool
 {
     global $session, $revertsession, $REQUEST_URI;
     output_notl('<!--checkday()-->', true);
-    if(is_new_day()) {
+    if (is_new_day()) {
         if ($force && $session['user']['loggedin']) {
             $session = $revertsession;
             $session['user']['restorepage'] = $REQUEST_URI;
@@ -101,6 +101,9 @@ function checkday(bool $force = true): bool
             redirect('newday.php');
         }
         return true;
+    }
+    else {
+        return false;
     }
 }
 
@@ -132,7 +135,7 @@ function gametime(): string
     return $time;
 }
 
-function convertgametime(string $intime, bool $debug = false): string
+function convertgametime(string $intime, bool $debug = false): int
 {
     $inTime -= getsetting('gameoffsetseconds',0);
     $epoch = strtotime(
@@ -150,14 +153,14 @@ function convertgametime(string $intime, bool $debug = false): string
             gmdate('Y-m-d H:i:s', $logdTimestamp)
         );
     }
-    return $logd_timestamp;
+    return $logdTimestamp;
 }
 
 function gametimedetails(): array
 {
     $gameTime = gametime();
     $today = strtotime(gmdate('Y-m-d 00:00:00 O'), $gameTime);
-    $tomorrow = strtotime(gmdate('Y-m-d 00:00:00 O'), $gameTime . '+1 day');
+    $tomorrow = strtotime(gmdate('Y-m-d 00:00:00 O') . '+1 day', $gameTime);
     $daysPerDay = getsetting('daysperday', 4);
     $details = [
         'now' => date('Y-m-d H:i:s'),
@@ -175,7 +178,7 @@ function gametimedetails(): array
     return $details;
 }
 
-function secondstonextgameday($details = false): string
+function secondstonextgameday($details = false): int
 {
     if ($details === false) {
         $details = gametimedetails();
