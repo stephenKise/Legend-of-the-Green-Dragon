@@ -129,13 +129,13 @@ function getgametime(): string
     return gmdate('g:i a', gametime());
 }
 
-function gametime(): string
+function gametime(): int
 {
     $time = convertgametime(strtotime('now'));
     return $time;
 }
 
-function convertgametime(string $intime, bool $debug = false): int
+function convertgametime(int $intime, bool $debug = false): int
 {
     $inTime -= getsetting('gameoffsetseconds',0);
     $epoch = strtotime(

@@ -171,7 +171,7 @@ function abigail_runevent($type, $link)
             );
             $gifts[SEX_FEMALE] = translate_inline($gifts['gifts'][SEX_FEMALE]);
             $gifts[SEX_MALE] = translate_inline($gifts['gifts'][SEX_MALE]);
-            $randomGift = e_rand(0, count($gifts[$session['user']['sex'])-1);
+            $randomGift = e_rand(0, count($gifts[$session['user']['sex']])-1);
             $trinket = $gifts[$session['user']['sex']][$randomGift];
             set_module_pref('trinket', $trinket);
             output(
@@ -203,7 +203,7 @@ function abigail_runevent($type, $link)
                 addnav('Do not buy anything', $link . 'op=nope');
             }
             else {
-                addnav('Walk away', $link . 'op=leave')
+                addnav('Walk away', $link . 'op=leave');
             }
             addnav('Shout at Abigail', $link . 'op=shout');
             break;
