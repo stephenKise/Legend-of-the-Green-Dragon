@@ -62,39 +62,6 @@ function applebob_run()
     page_header("Sichae's Apple Stand");
     output("`&`c`bApple Bobbing Stand`b`c");
     switch ($op) {
-        case default:
-            output("`7You begin to approach the apple stand, peering into the barrels with interest.");
-            output("Inside are apples of red, yellow and green.");
-            output(
-                "Sichae stands with her hands on her hips, and regards you with a mysterious smile.`n`n"
-            );
-            output(
-                "Her silken garments of jade and blue swish in the cool breeze, and her lithe muscles flex as she pads over to where you stand.`n`n"
-            );
-            output("`&\"Ah! A visitor to the realms! So you think you can do this, do you?");
-            output("It shall be amusing to see you try.\"`n`n");
-            output("`7She arches her delicate neck back, and laughs a deep and beautiful sound, that immediately makes you relax.");
-            output("She motions to the barrel in front of you.");
-            output(
-                "`&\"%s gold to show me what talent you posess.",
-                $cost
-            );
-            output("And one of the apples is special indeed...\"");
-            addnav(array("Try your luck (%s gold)",$cost),"runmodule.php?module=applebob&op=bob");
-            if ($eatToday >= $eatAllowed) {
-                output("`7Much as you'd like to play, your stomach protests fitfully.");
-            }
-            else if ($session['user']['gold'] < $cost) {
-                output("`7Unfortunately your pockets do not seem to be full enough to play!");
-            }
-            else {
-                addnav(
-                    ['Try your luck (%s gold)', $cost],
-                    'runmodule.php?module=applebob&bob=bob'
-                );
-            }
-            villagenav();
-            break;
         case 'bob':
             increment_module_pref('ate_today', 1);
             $session['user']['gold'] -= $cost;
@@ -158,6 +125,39 @@ function applebob_run()
                 ['Try again (%s gold)', $cost],
                 'runmodule.php?module=applebob&op=bob'
             );
+            villagenav();
+            break;
+        default:
+            output("`7You begin to approach the apple stand, peering into the barrels with interest.");
+            output("Inside are apples of red, yellow and green.");
+            output(
+                "Sichae stands with her hands on her hips, and regards you with a mysterious smile.`n`n"
+            );
+            output(
+                "Her silken garments of jade and blue swish in the cool breeze, and her lithe muscles flex as she pads over to where you stand.`n`n"
+            );
+            output("`&\"Ah! A visitor to the realms! So you think you can do this, do you?");
+            output("It shall be amusing to see you try.\"`n`n");
+            output("`7She arches her delicate neck back, and laughs a deep and beautiful sound, that immediately makes you relax.");
+            output("She motions to the barrel in front of you.");
+            output(
+                "`&\"%s gold to show me what talent you posess.",
+                $cost
+            );
+            output("And one of the apples is special indeed...\"");
+            addnav(array("Try your luck (%s gold)",$cost),"runmodule.php?module=applebob&op=bob");
+            if ($eatToday >= $eatAllowed) {
+                output("`7Much as you'd like to play, your stomach protests fitfully.");
+            }
+            else if ($session['user']['gold'] < $cost) {
+                output("`7Unfortunately your pockets do not seem to be full enough to play!");
+            }
+            else {
+                addnav(
+                    ['Try your luck (%s gold)', $cost],
+                    'runmodule.php?module=applebob&bob=bob'
+                );
+            }
             villagenav();
             break;
     }

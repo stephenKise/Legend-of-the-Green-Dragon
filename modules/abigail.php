@@ -95,62 +95,6 @@ function abigail_runevent($type, $link)
     $trinket = get_module_pref('trinket');
     $op = httpget('op');
     switch ($op) {
-        case default:
-            $session['user']['specialinc'] = '';
-            $gifts[SEX_FEMALE] = [
-                'pair of cufflinks',
-                'leather belt',
-                'hat',
-                'pair of boots',
-            ];
-            $gifts[SEX_MALE] = [
-                'pair of earrings',
-                'pair of satin slippers',
-                'jeweled necklace',
-                'pretty bracelet',
-            ];
-            $gifts = modulehook(
-                'abigail-gifts',
-                ['gifts' => $gifts]
-            );
-            $gifts[SEX_FEMALE] = translate_inline($gifts['gifts'][SEX_FEMALE]);
-            $gifts[SEX_MALE] = translate_inline($gifts['gifts'][SEX_MALE]);
-            $randomGift = e_rand(0, count($gifts[$session['user']['sex'])-1);
-            $trinket = $gifts[$session['user']['sex']][$randomGift];
-            set_module_pref('trinket', $trinket);
-            output(
-                "`7While you are wandering idly, minding your own business, you are approached by a diminutive elf in a green cloak. `n`n`0"
-            );
-            $greeting = translate_inline($session['user']['sex'] ? 'Madam' : 'Sir');
-            output(
-                "\"`&Happy day to ye, %s!",
-                $greeting
-            );
-            output(
-                "Can I interest you in a lovely %s for somebody special?",
-                $trinket
-            );
-            output("It's a fine gift, crafted with care and skill!");
-            if ($cost == 1) {
-                output("And, for you, only `%%s`& gem!`7\"`n`n`0", $cost);
-            }
-            else {
-                output("And, for you, only `%%s`& gems!`7\"`n`n`0", $cost);
-            }
-            output(
-                "`7You survey the %s, admiring the fine craftsmanship, and try to imagine `^%s`7 wearing such a gift.",
-                $trinket,
-                $partner
-            );
-            if ($session['user']['gems'] > $cost) {
-                addnav('Purchase this gift', $link . 'op=shop');
-                addnav('Do not buy anything', $link . 'op=nope');
-            }
-            else {
-                addnav('Walk away', $link . 'op=leave')
-            }
-            addnav('Shout at Abigail', $link . 'op=shout');
-            break;
         case 'leave':
             $session['user']['specialinc'] = '';
             output(
@@ -206,6 +150,62 @@ function abigail_runevent($type, $link)
                 }
             }
             addnav('Return to whence you came', $link);
+            break;
+        default:
+            $session['user']['specialinc'] = '';
+            $gifts[SEX_FEMALE] = [
+                'pair of cufflinks',
+                'leather belt',
+                'hat',
+                'pair of boots',
+            ];
+            $gifts[SEX_MALE] = [
+                'pair of earrings',
+                'pair of satin slippers',
+                'jeweled necklace',
+                'pretty bracelet',
+            ];
+            $gifts = modulehook(
+                'abigail-gifts',
+                ['gifts' => $gifts]
+            );
+            $gifts[SEX_FEMALE] = translate_inline($gifts['gifts'][SEX_FEMALE]);
+            $gifts[SEX_MALE] = translate_inline($gifts['gifts'][SEX_MALE]);
+            $randomGift = e_rand(0, count($gifts[$session['user']['sex'])-1);
+            $trinket = $gifts[$session['user']['sex']][$randomGift];
+            set_module_pref('trinket', $trinket);
+            output(
+                "`7While you are wandering idly, minding your own business, you are approached by a diminutive elf in a green cloak. `n`n`0"
+            );
+            $greeting = translate_inline($session['user']['sex'] ? 'Madam' : 'Sir');
+            output(
+                "\"`&Happy day to ye, %s!",
+                $greeting
+            );
+            output(
+                "Can I interest you in a lovely %s for somebody special?",
+                $trinket
+            );
+            output("It's a fine gift, crafted with care and skill!");
+            if ($cost == 1) {
+                output("And, for you, only `%%s`& gem!`7\"`n`n`0", $cost);
+            }
+            else {
+                output("And, for you, only `%%s`& gems!`7\"`n`n`0", $cost);
+            }
+            output(
+                "`7You survey the %s, admiring the fine craftsmanship, and try to imagine `^%s`7 wearing such a gift.",
+                $trinket,
+                $partner
+            );
+            if ($session['user']['gems'] > $cost) {
+                addnav('Purchase this gift', $link . 'op=shop');
+                addnav('Do not buy anything', $link . 'op=nope');
+            }
+            else {
+                addnav('Walk away', $link . 'op=leave')
+            }
+            addnav('Shout at Abigail', $link . 'op=shout');
             break;
     }
 }
