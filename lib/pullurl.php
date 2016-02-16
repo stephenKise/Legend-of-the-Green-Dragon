@@ -28,7 +28,7 @@ function _curl($url)
 	// close curl resource, and free up system resources
 	curl_close($ch);
 
-	$val = split("\n", $ret);
+	$val = explode("\n", $ret);
 	$total = count($val);
 	$cur = 0;
 	foreach($val as $k=>$a) {

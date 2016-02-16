@@ -24,11 +24,11 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 		else $keyout = $key;
 		if (is_array($val)) {
 			$v = $val[0];
-			$info = split(",", $v);
+			$info = explode(",", $v);
 			$val[0] = $info[0];
 			$info[0] = $val;
 		} else {
-			$info = split(",",$val);
+			$info = explode(",",$val);
 		}
 		if (is_array($info[0])) {
 			$info[0] = call_user_func_array("sprintf_translate", $info[0]);

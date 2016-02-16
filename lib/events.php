@@ -44,7 +44,7 @@ function handle_event($location, $baseLink=false, $needHeader=false)
 
 		output("`^`c`bSomething Special!`c`b`0");
 		if (strchr($specialinc, ":")) {
-			$array = split(":", $specialinc);
+			$array = explode(":", $specialinc);
 			$starttime = getmicrotime();
 			module_do_event($location, $array[1], $allowinactive,$baseLink);
 			$endtime = getmicrotime();

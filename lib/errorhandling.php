@@ -32,7 +32,3 @@ if (!get_magic_quotes_gpc()){
 	set_magic_quotes($HTTP_COOKIE_VARS);
 	ini_set("magic_quotes_gpc",1);
 }
-
-// magic_quotes_runtime is OFF
-set_magic_quotes_runtime(0);
-?>

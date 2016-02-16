@@ -68,7 +68,7 @@ function page_header(){
  * @return string
  */
 function popup($page,$size="550x300"){
-	$s = split("x",$size);
+	$s = explode("x",$size);
   return "window.open('$page','".preg_replace("([^[:alnum:]])","",$page)."','scrollbars=yes,resizable=yes,width={$s[0]},height={$s[1]}').focus()";
 }
 

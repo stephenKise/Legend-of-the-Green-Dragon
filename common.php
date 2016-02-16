@@ -88,7 +88,8 @@ require_once("lib/debuglog.php");
 require_once("lib/forcednavigation.php");
 require_once("lib/php_generic_environment.php");
 
-session_register("session");
+session_start();
+$session = [];
 $session =& $_SESSION['session'];
 
 // lets us provide output in dbconnect.php that only appears if there's a
