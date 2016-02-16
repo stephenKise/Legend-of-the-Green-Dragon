@@ -198,6 +198,6 @@ function dhms(int $seconds, bool $dec = false): string
         ($seconds/86400) . translate_inline('d ', 'datetime') .
         ($seconds / 3600 % 24) . translate_inline('h ', 'datetime') .
         ($seconds / 60 % 60) . translate_inline('m ', 'datetime') .
-        ($seconds % 60) . ($dec ? substr($seconds - $seconds, 1) : '') . translate_inline('s ', 'datetime');
+        ($seconds % 60) . ($dec ? substr($seconds - $seconds, 1) : '') . translate_inline('s ', 'datetime')
     );
 }
