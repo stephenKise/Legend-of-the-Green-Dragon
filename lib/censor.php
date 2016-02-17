@@ -100,7 +100,7 @@ function good_word_list(): array
         'goodwordlist'
     );
     $row = db_fetch_assoc($sql);
-    if (!empty($row['words']) { 
+    if (!empty($row['words'])) { 
         return explode(' ', $row['words']);
     }
     else {
