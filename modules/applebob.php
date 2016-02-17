@@ -145,7 +145,6 @@ function applebob_run()
                 $cost
             );
             output("And one of the apples is special indeed...\"");
-            addnav(array("Try your luck (%s gold)",$cost),"runmodule.php?module=applebob&op=bob");
             if ($eatToday >= $eatAllowed) {
                 output("`7Much as you'd like to play, your stomach protests fitfully.");
             }
@@ -154,7 +153,7 @@ function applebob_run()
             }
             else {
                 addnav(
-                    ['Try your luck (%s gold)', $cost],
+                    ['Try your luck (`^%s gold`0)', $cost],
                     'runmodule.php?module=applebob&bob=bob'
                 );
             }
