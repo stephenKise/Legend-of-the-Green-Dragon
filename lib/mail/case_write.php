@@ -1,171 +1,247 @@
 <?php
-$subject=httppost('subject');
-$body="";
-$row="";
-$replyto = (int)httpget('replyto');
-if ($session['user']['superuser'] & SU_IS_GAMEMASTER) {
-	$from = httppost('from');
-}
-if ($replyto!=""){
-	$mail = db_prefix("mail");
-	$accounts = db_prefix("accounts");
-	$sql = "SELECT ".$mail.".sent,".$mail.".body,".$mail.".msgfrom, ".$mail.".subject,".$accounts.".login, ".$accounts.".superuser, ".$accounts.".name FROM ".$mail." LEFT JOIN ".$accounts." ON ".$accounts.".acctid=".$mail.".msgfrom WHERE msgto=\"".$session['user']['acctid']."\" AND messageid=\"".$replyto."\"";
-	$result = db_query($sql);
-	if ($row = db_fetch_assoc($result)){
-		if ($row['login']=="") {
-			output("You cannot reply to a system message.`n");
-			$row=array();
-		}
-	}else{
-		output("Eek, no such message was found!`n");
-	}
-}
+
+$mail = db_prefix('mail');
+$accounts = db_prefix('accounts');
+$subject = httppost('subject');
+$replyTo = httpget('replyto');
 $to = httpget('to');
-if ($to){
-	$sql = "SELECT login,name, superuser FROM " . db_prefix("accounts") . " WHERE login=\"$to\"";
-	$result = db_query($sql);
-	if (!($row = db_fetch_assoc($result))){
-		output("Could not find that person.`n");
-	}
+if ($session['user']['superuser'] & SU_IS_GAMEMASTER) {
+    $from = httppost('from');
 }
-if (is_array($row)){
-	if (isset($row['subject']) && $row['subject']){
-		if ((int)$row['msgfrom']==0){
-			$row['name']=translate_inline("`i`^System`0`i");
-			// No translation for subject if it's not an array
-			$row_subject = @unserialize($row['subject']);
-			if ($row_subject !== false) {
-				$row['subject'] = call_user_func_array("sprintf_translate", $row_subject);
-			}
-			// No translation for body if it's not an array
-			$row_body = @unserialize($row['body']);
-			if ($row_body !== false) {
-				$row['body'] = call_user_func_array("sprintf_translate", $row_body);
-			}
-		}
-		$subject=$row['subject'];
-		if (strncmp($subject,"RE: ",4) !== 0 ) {
-			$subject="RE: $subject";
-		}
-	}
-	if (isset($row['body']) && $row['body']){
-		$body="\n\n---".sprintf_translate(array("Original Message from %s (%s)",sanitize($row['name']),date("Y-m-d H:i:s",strtotime($row['sent']))))."---\n".$row['body'];
-	}
+$body = '';
+$row = '';
+if ($replyTo) {
+    $sql = db_query(
+        "SELECT m.sent, m.body, m.msgfrom, m.subject, a.login, a.superuser, a.name
+        FROM $mail AS m
+        LEFT JOIN $accounts AS a ON a.acctid = m.msgfrom
+        WHERE msgto = '{$session['user']['acctid']}' AND messageid = '$replyTo'"
+    );
+    $row = db_fetch_assoc($sql);
+    if (empty($row)) {
+        output("`4`iNo such message was found.`i`0 `n");
+        require_once('lib/mail/case_default.php');
+        popup_footer();
+    }
+    else if (!$row['login']) {
+        output("`4`iYou cannot reply to a system message.`i`0 `n");
+        unset($row);
+        require_once('lib/mail/case_default.php');
+        popup_footer();
+    }
+}
+if ($to) {
+    $sql = db_query(
+        "SELECT login, name, superuser FROM $accounts
+        WHERE login = '$to'"
+    );
+    if (!($row = db_fetch_assoc($sql))){
+        output(
+            "`4`iCould not find a user named `^'%s'`4.`i`0 `n",
+            ucfirst($to)
+        );
+        require_once('lib/mail/case_default.php');
+        popup_footer();
+    }
+}
+if (is_array($row)) {
+    if ($row['subject'] != '') {
+        $subject = $row['subject'];
+        if (strncmp($subject, "RE: ", 4) !== 0 ) {
+            $subject = "RE: $subject";
+        }
+    }
+    if ($row['body'] > '') {
+        $original = sprintf_translate([
+            'Original Message from %s (%s)',
+            sanitize($row['name']),
+            date('Y-m-d H:i:s', strtotime($row['sent']))
+        ]);
+        $body = "\n\n---$original---\n{$row['body']}";
+    }
 }
 rawoutput("<form action='mail.php?op=send' method='post'>");
 if ($session['user']['superuser'] & SU_IS_GAMEMASTER) {
-	rawoutput("<input type='hidden' name='from' value='".htmlentities(stripslashes($from), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."'>");
+    output(
+        "<input type='hidden' name='from' value='%s'>",
+        htmlent(stripslashes($from)),
+        true
+    );
 }
-rawoutput("<input type='hidden' name='returnto' value=\"".htmlentities(stripslashes(httpget("replyto")), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\">");
-$superusers = array();
-if (($session['user']['superuser'] & SU_IS_GAMEMASTER) && $from > "") {
-	output("`2From: `^%s`n", $from);
+output(
+    "<input type='hidden' name='returnto' value='%s'>",
+    htmlent(stripslashes(httpget("replyto"))),
+    true
+);
+$superusers = [];
+if (($session['user']['superuser'] & SU_IS_GAMEMASTER) && $from > '') {
+    output("`@`bFrom:`b `^%s`0`n", $from);
 }
-if (isset($row['login']) && $row['login']!=""){
-	output_notl("<input type='hidden' name='to' id='to' value=\"".htmlentities($row['login'], ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\">",true);
-	output("`2To: `^%s`n",$row['name']);
-	if (($row['superuser'] & SU_GIVES_YOM_WARNING) && !($row['superuser'] & SU_OVERRIDE_YOM_WARNING)) {
-		array_push($superusers,$row['login']);
-	}
-}else{
-	output("`2To: ");
-	$to = httppost('to');
-	$sql = "SELECT login,name,superuser FROM accounts WHERE login = '".addslashes($to)."' AND locked = 0";
-	$result = db_query($sql);
-	$db_num_rows = db_num_rows($result);
-	if($db_num_rows != 1) {
-		$string="%";
-		$to_len = strlen($to);
-		for($x=0; $x < $to_len; ++$x) {
-			$string .= $to{$x}."%";
-		}
-		$sql = "SELECT login,name,superuser FROM " . db_prefix("accounts") . " WHERE name LIKE '".addslashes($string)."' AND locked=0 ORDER by login='$to' DESC, name='$to' DESC, login";
-		$result = db_query($sql);
-		$db_num_rows = db_num_rows($result);
-	}
-	if ($db_num_rows==1){
-		$row = db_fetch_assoc($result);
-		output_notl("<input type='hidden' id='to' name='to' value=\"".htmlentities($row['login'], ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\">",true);
-		output_notl("`^{$row['name']}`n");
-		if (($row['superuser'] & SU_GIVES_YOM_WARNING) && !($row['superuser'] & SU_OVERRIDE_YOM_WARNING)) {
-			array_push($superusers,$row['login']);
-		}
-	}elseif ($db_num_rows==0){
-		output("`\$No one was found who matches \"%s\".`n",stripslashes($to));
-		output("`@Please try again.`n");
-		httpset('prepop', $to, true);
-		rawoutput("</form>");
-		require("lib/mail/case_address.php");
-		popup_footer();
-	}else{
-		output_notl("<select name='to' id='to' onchange='check_su_warning();'>",true);
-		$superusers = array();
-		while($row = db_fetch_assoc($result)) {
-			output_notl("<option value=\"".htmlentities($row['login'], ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\">",true);
-			require_once("lib/sanitize.php");
-			output_notl("%s", full_sanitize($row['name']));
-			if (($row['superuser'] & SU_GIVES_YOM_WARNING) && !($row['superuser'] & SU_OVERRIDE_YOM_WARNING)) {
-				array_push($superusers,$row['login']);
-			}
-		}
-		output_notl("</select>`n",true);
-	}
+if (isset($row['login']) && $row['login']!="") {
+    output_notl(
+        "<input type='hidden' name='to' id='to' value='%s'>",
+        htmlent($row['login']),
+        true
+    );
+    output("`@`bTo:`b `^%s`0`n", $row['name']);
+    if (($row['superuser'] & SU_GIVES_YOM_WARNING) && !($row['superuser'] & SU_OVERRIDE_YOM_WARNING)) {
+        array_push($superusers, $row['login']);
+    }
+}
+else {
+    output("`@`bTo:`b `^");
+    $accounts = db_prefix('accounts');
+    $to = str_split(httppost('to'));
+    $to = implode('%', $to);
+    $to = "%$to%";
+    $sql = db_query(
+        "SELECT login, name, superuser FROM accounts
+        WHERE (login LIKE '$to' OR name LIKE '$to')
+        AND locked = 0
+        ORDER BY superuser+0 DESC, acctid"
+    );
+    $numRows = db_num_rows($sql);
+    if ($numRows < 1) {
+        $to = str_replace('%', '', $to);
+        output(
+            "%s `n`4Sorry, but we could not find a user with that name.`0",
+            $to
+        );
+        httpset('prepop', $to, true);
+        rawoutput("</form>");
+        require_once('lib/mail/case_address.php');
+        popup_footer();
+    }
+    else if ($numRows > 1) {
+        output_notl("<select name='to' id='to' onchange='check_su_warning();'>", true);
+    }
+    while ($row = db_fetch_assoc($sql)) {
+        if ($numRows == 1) {
+            rawoutput("<input type='hidden' name='to' id='to' value='{$row['login']}'>");
+            output_notl("{$row['name']}`0`n");
+        }
+        else {
+            $rowNum++;
+            $row['name'] = htmlent(full_sanitize($row['name']));
+            output_notl(
+                "<option value='%s' data-superuser='%s'>%s</option>",
+                $row['login'],
+                $row['superuser'],
+                $row['name'],
+                true
+            );
+            if ($numRows == $rowNum) {
+                output_notl("</select>`0`n",true);
+            }
+            if (($row['superuser'] & SU_GIVES_YOM_WARNING) && !($row['superuser'] & SU_OVERRIDE_YOM_WARNING)) {
+                array_push($superusers, $row['login']);
+                debug('su');
+            }
+        }
+    }
 }
 rawoutput("<script type='text/javascript'>var superusers = new Array();");
 foreach($superusers as $val) {
-	rawoutput("	superusers['".addslashes($val)."'] = true;");
+    rawoutput(" superusers['".addslashes($val)."'] = true;");
 }
 rawoutput("</script>");
-output("`2Subject:");
-rawoutput("<input name='subject' value=\"".htmlentities($subject).htmlentities(stripslashes(httpget('subject')), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\"><br>");
+output("`@`bSubject:`b`0");
+if ($replyTo == '') {
+    output(
+        "<input name='subject' value='%s' autofocus><br>",
+        htmlent($subject),
+        true
+    );
+}
+else {
+    output(
+        "<input name='subject' value='%s'><br>",
+        htmlent($subject),
+        true
+    );
+}
 rawoutput("<div id='warning' style='visibility: hidden; display: none;'>");
-output("`2Notice: `^$superusermessage`n");
+output("`@`bNotice:`b `^$superusermessage`0`n");
 rawoutput("</div>");
-output("`2Body:`n");
-require_once("lib/forms.php");
-previewfield("body", "`^", false, false, array("type"=>"textarea", "class"=>"input", "cols"=>"60", "rows"=>"9", "onKeyDown"=>"sizeCount(this);"), htmlentities($body, ENT_COMPAT, getsetting("charset", "ISO-8859-1")).htmlentities(stripslashes(httpget('body')), ENT_COMPAT, getsetting("charset", "ISO-8859-1")));
-//rawoutput("<textarea name='body' id='textarea' class='input' cols='60' rows='9' onKeyUp='sizeCount(this);'>".htmlentities($body, ENT_COMPAT, getsetting("charset", "ISO-8859-1")).htmlentities(stripslashes(httpget('body')), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."</textarea><br>");
-$send = translate_inline("Send");
-rawoutput("<table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><input type='submit' class='button' value='$send'></td><td align='right'><div id='sizemsg'></div></td></tr></table>");
+output("`@`bBody:`b`0`n");
+require_once('lib/forms.php');
+previewfield(
+    'body',
+    '`^',
+    false,
+    false,
+    [
+        'type' => 'textarea',
+        'class' => 'input',
+        'cols' => 60,
+        'rows' => 9,
+        'onKeyDown' => 'sizeCount(this);'
+    ],
+    htmlent($body).htmlent(stripslashes(httpget('body')))
+);
+$send = translate_inline('Send');
+rawoutput(
+    "<table border='0' cellpadding='0' cellspacing='0' width='100%'>
+        <tr>
+            <td>
+                <input type='submit' class='button' value='$send'>
+            </td>
+            <td align='right'>
+                <div id='sizemsg'></div>
+            </td>
+        </tr>
+    </table>"
+);
 rawoutput("</form>");
-$sizemsg = "`#Max message size is `@%s`#, you have `^XX`# characters left.";
-$sizemsg = translate_inline($sizemsg);
-$sizemsg = sprintf($sizemsg,getsetting("mailsizelimit",1024));
-$sizemsgover = "`\$Max message size is `@%s`\$, you are over by `^XX`\$ characters!";
-$sizemsgover = translate_inline($sizemsgover);
-$sizemsgover = sprintf($sizemsgover,getsetting("mailsizelimit",1024));
-$sizemsg = explode("XX",$sizemsg);
-$sizemsgover = explode("XX",$sizemsgover);
-$usize1 = addslashes("<span>".appoencode($sizemsg[0])."</span>");
-$usize2 = addslashes("<span>".appoencode($sizemsg[1])."</span>");
-$osize1 = addslashes("<span>".appoencode($sizemsgover[0])."</span>");
-$osize2 = addslashes("<span>".appoencode($sizemsgover[1])."</span>");
-rawoutput("
-<script type='text/javascript'>
-	var maxlen = ".getsetting("mailsizelimit",1024).";
-	function sizeCount(box){
-		if (box==null) return;
-		var len = box.value.length;
-		var msg = '';
-		if (len <= maxlen){
-			msg = '$usize1'+(maxlen-len)+'$usize2';
-		}else{
-			msg = '$osize1'+(len-maxlen)+'$osize2';
-		}
-		document.getElementById('sizemsg').innerHTML = msg;
-	}
-	sizeCount(document.getElementById('inputbody'));
-		function check_su_warning(){
-		var to = document.getElementById('to');
-		var warning = document.getElementById('warning');
-		if (superusers[to.value]){
-			warning.style.visibility = 'visible';
-			warning.style.display = 'inline';
-		}else{
-			warning.style.visibility = 'hidden';
-			warning.style.display = 'none';
-		}
-	}
-	check_su_warning();
-</script>");
-?>
+$sizeLimit = getsetting('mailsizelimit', 1024);
+$sizeMsg = sprintf_translate([
+    "`#Max message size is `@%s`#, you have `^XX`# characters left.",
+    $sizeLimit
+    ]);
+$sizeMsgOver = sprintf_translate([
+    "`\$Max message size is `@%s`\$, you are over by `^XX`\$ characters!",
+    $sizeLimit
+]);
+$sizeMsg = explode('XX', $sizeMsg);
+$sizeMsgOver = explode('XX', $sizeMsgOver);
+$uSize1 = addslashes("<span>" . appoencode($sizeMsg[0]) . "</span>");
+$uSize2 = addslashes("<span>" . appoencode($sizeMsg[1]) . "</span>");
+$oSize1 = addslashes("<span>" . appoencode($sizeMsgOver[0]) . "</span>");
+$oSize2 = addslashes("<span>" . appoencode($sizeMsgOver[1]) . "</span>");
+rawoutput(
+    "<script type='text/javascript'>
+        var maxlen = $sizeLimit;
+        function sizeCount(box)
+        {
+            if (box == null) {
+                return;
+            }
+            var len = box.value.length;
+            var msg = '';
+            if (len <= maxlen) {
+                msg = '$usize1' + (maxlen - len) + '$usize2';
+            }
+            else {
+                msg = '$osize1' + (len - maxlen) + '$osize2';
+            }
+            document.getElementById('sizemsg').innerHTML = msg;
+        }
+        sizeCount(document.getElementById('inputbody'));
+        function check_su_warning()
+        {
+            var to = document.getElementById('to');
+            var warning = document.getElementById('warning');
+            if (superusers[to.value]) {
+                warning.style.visibility = 'visible';
+                warning.style.display = 'inline';
+            }
+            else {
+                warning.style.visibility = 'hidden';
+                warning.style.display = 'none';
+            }
+        }
+        check_su_warning();
+    </script>"
+);
+
+
