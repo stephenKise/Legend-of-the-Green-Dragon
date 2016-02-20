@@ -16,7 +16,7 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
         while (list($key, $word) = each($search)) {
             do {
                 if ($word > '') {
-                    $times = preg_match_all($word, $output, $matches);
+                    $times = @preg_match_all($word, $output, $matches);
                 }
                 else {
                     $times = 0;
