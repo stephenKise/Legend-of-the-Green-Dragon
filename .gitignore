@@ -56,3 +56,4 @@ Vagrantfile
 .vagrant
 vendor/*
 composer.json
+modules
