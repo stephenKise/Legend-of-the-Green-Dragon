@@ -1,69 +1,75 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-
-// Written by Christian Rutsch
-
 require_once("common.php");
-require_once("lib/http.php");
-
+global $REQUEST_URI;
+$cleanURI = array_shift(explode('&c', $REQUEST_URI));
+$cleanURI = array_shift(explode('?c', $cleanURI));
+$offset = httpget('offset');
+$gamelog = db_prefix('gamelog');
+$accounts = db_prefix('accounts');
 check_su_access(SU_EDIT_CONFIG);
-
-tlschema("gamelog");
-
-page_header("Game Log");
-addnav("Navigation");
+tlschema('gamelog');
+page_header('Game Log');
 require_once("lib/superusernav.php");
 superusernav();
-
-$category = httpget('cat');
-if ($category > "") {
-	$cat = "&cat=$category";
-	$sqlcat = "WHERE ".db_prefix("gamelog").".category = '$category'";
-} else {
-	$cat='';
-	$sqlcat='';
+if ($offset == '' || $offset == 0) {
+    $start = '-1 week';
+    $end = 'now';
 }
-
-$sql = "SELECT count(logid) AS c FROM ".db_prefix("gamelog")." $sqlcat";
-$result = db_query($sql);
-$row = db_fetch_assoc($result);
-$max = $row['c'];
-
-$start = (int)httpget('start');
-$sql = "SELECT ".db_prefix("gamelog").".*, ".db_prefix("accounts").".name AS name FROM ".db_prefix("gamelog")." LEFT JOIN ".db_prefix("accounts")." ON ".db_prefix("gamelog").".who = ".db_prefix("accounts").".acctid $sqlcat LIMIT $start,500";
-$next = $start+500;
-$prev = $start-500;
+else if ($offset >= 1) {
+    $start = '-' . ($offset+1) . ' weeks';
+    $end = "-$offset weeks";
+}
+$sql = db_query(
+    "SELECT g.*, a.name
+    FROM $gamelog AS g LEFT JOIN $accounts AS a ON g.who = a.acctid 
+    WHERE date > '" . date('Y-m-d', strtotime($start)) . "'
+    AND date < '" . date('Y-m-d H:i:s', strtotime($end)) . "'
+    $extra
+    ORDER BY date+0 DESC"
+);
+$grouped = db_query(
+    "SELECT category, COUNT(*) AS count FROM $gamelog
+    WHERE date > '" . date('Y-m-d', strtotime($start)) . "'
+    AND date < '" . date('Y-m-d H:i:s', strtotime($end)) . "'
+    GROUP BY category"
+);
 addnav("Operations");
-addnav("Refresh", "gamelog.php?start=$start$cat");
+addnav("Refresh", $cleanURI);
+addnav("Previous week", "gamelog.php?offset=" . ($offset+1));
+if ($offset != '' && $offset != 0) {
+    addnav("Next week", "gamelog.php?offset=" . ($offset-1));
+}
 if ($category > "") addnav("View all", "gamelog.php");
-addnav("Game Log");
-if ($next < $max) {
-	addnav("Next page","gamelog.php?start=$next$cat");
+if (db_num_rows($grouped) > 0) {
+    addnav(
+        appoencode("Entries"),
+        true,
+        true
+    );
 }
-if ($start > 0) {
-	addnav("Previous page", "gamelog.php?start=$prev$cat");
+while ($row = db_fetch_assoc($grouped)) {
+    addnav(
+        [
+            appoencode("`n`<`i%s`i (%s)`<"),
+            ucfirst($row['category']),
+            $row['count']
+        ],
+        true,
+        true
+    );
 }
-$result = db_query($sql);
-$odate = "";
-$categories = array();
-
-$i=0;
-while ($row = db_fetch_assoc($result)) {
-	$dom = date("D, M d",strtotime($row['date']));
-	if ($odate != $dom){
-		output_notl("`n`b`@%s`0`b`n", $dom);
-		$odate = $dom;
-	}
-	$time = date("H:i:s", strtotime($row['date']))." (".reltime(strtotime($row['date'])).")";
-	output_notl("`7(%s) %s `7(`&%s`7)", $row['category'], $row['message'], $row['name']);
-	if (!isset($categories[$row['category']]) && $category == "") {
-		addnav("Operations");
-		addnav(array("View by `i%s`i", $row['category']), "gamelog.php?cat=".$row['category']);
-		$categories[$row['category']] = 1;
-	}
-	output_notl("`n");
+while ($row = db_fetch_assoc($sql)) {
+    $dom = date("D, M d",strtotime($row['date']));
+    if ($odate != $dom){
+        output_notl("`n`b`@%s`0`b`n", $dom);
+        $odate = $dom;
+    }
+    output_notl(
+        "`2[`)%s`2] `0`Q%s `@%s`n`0",
+        date('H:i:s', strtotime($row['date'])),
+        $row['name'],
+        $row['message']
+    );
 }
 
 page_footer();

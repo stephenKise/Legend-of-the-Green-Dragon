@@ -284,11 +284,12 @@ if ($op==""){
         rawoutput("<a href=\"mail.php?op=write&to=".rawurlencode($row['login'])."&body=".rawurlencode("\n\n----- $yourpeti -----\n$reppet")."&subject=RE:+$peti\" target=\"_blank\" onClick=\"".popup("mail.php?op=write&to=".rawurlencode($row['login'])."&body=".rawurlencode("\n\n----- $yourpeti -----\n$reppet")."&subject=RE:+$peti").";return false;\"><img src='images/newscroll.GIF' width='16' height='16' alt='$write' border='0'></a>");
     }
     output_notl("`^`b%s`b`n", $row['name']);
-    output("`@Date: `^`b%s`b (%s)`n", $row['date'], reltime(strtotime($row['date'])));
+    output("`@Date: `^`b%s`b (%s)`n", $row['date'], relativedate($row['date']));
     output("`@Status: %s`n", $statuses[$row['status']]);
-    if($row['closedate']) output("`@Last Update: `^%s`@ on `^%s (%s)`n", $row['closer'], $row['closedate'],  reltime(strtotime($row['closedate'])));
+    if ($row['closedate'] != '0000-00-00 00:00:00') {
+        output("`@Last Update: `^%s`@ on `^%s (%s)`n", $row['closer'], $row['closedate'], dhms(strtotime('now')-strtotime($row['closedate']), true));
+    }
     output("`@Body:`^`n");
-    output("`\$[ipaddress] `^= `#%s`^`n", $row['ip']);
     $body = htmlentities(stripslashes($row['body']), ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
     $body = preg_replace("'([[:alnum:]_.-]+[@][[:alnum:]_.-]{2,}([.][[:alnum:]_.-]{2,})+)'i","<a href='mailto:\\1?subject=RE: $peti&body=".str_replace("+"," ",URLEncode("\n\n----- $yourpeti -----\n".$row['body']))."'>\\1</a>",$body);
     $body = preg_replace("'([\\[][[:alnum:]_.-]+[\\]])'i","<span class='colLtRed'>\\1</span>",$body);
