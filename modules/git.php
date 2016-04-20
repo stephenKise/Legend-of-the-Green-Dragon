@@ -38,10 +38,12 @@ function git_dohook($hook, $args)
                 addnav('Git Pull', 'superuser.php?git=pull');
                 if (httpget('git') == 'pull') {
                     require_once('lib/gamelog.php');
-                    `git pull`;
+                    shell_exec('git pull');
                     $output = shell_exec('git log --format=%B -1');
                     $output = explode(PHP_EOL, $output);
-                    gamelog($output[2], get_module_setting('category', 'changelog'));
+                    unset($output[0]);
+                    $output = trim(implode(PHP_EOL, $output));
+                    gamelog($output, get_module_setting('category', 'changelog'));
                     debug('Successfully pulled from git!');
                 }
             }
