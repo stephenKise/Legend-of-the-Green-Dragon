@@ -82,6 +82,7 @@ require_once("lib/censor.php");
 require_once("lib/saveuser.php");
 require_once("lib/arrayutil.php");
 require_once("lib/addnews.php");
+require_once('lib/villagenav.php');
 require_once("lib/sql.php");
 require_once("lib/mounts.php");
 require_once("lib/debuglog.php");

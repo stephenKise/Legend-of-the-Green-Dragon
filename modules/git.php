@@ -4,7 +4,7 @@ function git_getmoduleinfo()
 {
     $info = [
         'name' => 'Git Management',
-        'author'=> 'Stephen Kise',
+        'author'=> '`&`bStephen Kise`b',
         'version' => '0.1b',
         'category' => 'Administrative',
         'description' =>
