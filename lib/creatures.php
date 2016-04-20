@@ -141,7 +141,7 @@ function creature_exp(int $level): int
             $exp = 0;
         break;
     }
-    return $exp;
+    return intval($exp);
 }
 
 function creature_gold(int $level): int
@@ -161,5 +161,5 @@ function creature_gold(int $level): int
             $gold = round(-0.1673326 * ($level ** 2) + 36.590909 * $level + 19.904594);
             break;
     }
-    return floor($gold);
+    return intval($gold);
 }
