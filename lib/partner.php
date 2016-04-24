@@ -1,37 +1,47 @@
 <?php
+declare(strict_types = 1);
 
-function get_partner($player = false)
+function get_partner(int $player = 0) :string
 {
     global $session;
-    if ($player === false) {
-    }
-    else {
-        if ($session['user']['marriedto'] == INT_MAX) {
-            if ($session['user']['sex'] == SEX_MALE) {
-                $partner = getsetting('bard', '`^Seth');
-            }
-            else {
-                $partner = getsetting('barmaid', '`%Violet');
-            }
+    $accounts = db_prefix('accounts');
+    if ($player <> 0) {
+        $sql = db_query(
+            "SELECT a.sex, b.name FROM $accounts AS a
+            LEFT JOIN $accounts AS b ON a.marriedto = b.acctid
+            WHERE a.acctid = '$player'"
+        );
+        $row  = db_fetch_assoc($sql);
+        if ($row['name'] <> '') {
+            $partner = $row['name'];
         }
         else {
-            $accounts = db_prefix('accounts');
-            $sql = db_query(
-                "SELECT name FROM $accounts
-                WHERE acctid = '{$session['user']['marriedto']}'"
+            db_query(
+                "UPDATE $accounts SET marriedto = '0'
+                WHERE acctid = '$player'"
             );
-            if ($row = db_fetch_assoc($sql)) {
-                $partner = $row['name'];
-            }
-            else {
-                $session['user']['marriedto'] = 0;
-                if ($session['user']['sex'] == SEX_MALE) {
-                    $partner = getsetting('bard', '`^Seth');
-                }
-                else {
-                    $partner = getsetting('barmaid', '`%Violet');
-                }
-            }
+            $partner = (
+                $row['sex'] ?
+                getsetting('bard', '`^Seth') :
+                getsetting('barmaid', '`%Violet')
+            );
+        }
+    }
+    else {
+        $sql = db_query(
+            "SELECT name FROM $accounts
+            WHERE acctid = '{$session['user']['marriedto']}'"
+        );
+        if ($row = db_fetch_assoc($sql)) {
+            $partner = $row['name'];
+        }
+        else {
+            $session['user']['marriedto'] = 0;
+            $partner = (
+                $session['user']['sex'] ?
+                getsetting('bard', '`^Seth') :
+                getsetting('barmaid', '`%Violet')
+            );
         }
     }
     return $partner;
