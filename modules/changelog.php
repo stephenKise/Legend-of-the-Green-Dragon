@@ -35,15 +35,29 @@ function changelog_dohook($hook, $args)
             $module = httppost('module') ?: httpget('module');
             $op = httpget('op');
             if ($module != '') {
-                if (in_array($op, ['activate', 'deactivate'])) {
+                if (substr($op, -1) == 'e') {
                     $op = substr($op, 0, -1);
                 }
+                else if ($op == 'mass') {
+                    $method = array_keys(httpallpost())[1];
+                    if (substr($method, -1) == 'e') {
+                        $method = substr($method, 0, -1);
+                    }
+                    $op = "mass $method";
+                    $plural = 's';
+                }
                 require_once('lib/gamelog.php');
+                if (is_array($module)) {
+                    $lastModule = array_pop($module);
+                    $module = implode(', ', $module);
+                    $module .= ",`@ and `^$lastModule";
+                }
                 gamelog(
                     sprintf_translate(
-                        '`Q%sed`@ the `^%s`@ module.',
+                        '`Q%sed`@ the `^%s`@ module%s.',
                         $op,
-                        $module
+                        $module,
+                        $plural
                     ),
                     get_module_setting('category')
                 );
