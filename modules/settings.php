@@ -237,6 +237,7 @@ function settings_run()
                 output("`@`iYour Settings have been saved!`i`n");
             }
             rawoutput("<form action='runmodule.php?module=settings&op=save' method = 'POST'>");
+            require_once('lib/showform.php');
             showform($prefsFormat[$category], $prefs);
             rawoutput(
                 sprintf(
