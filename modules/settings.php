@@ -223,7 +223,6 @@ function settings_run()
                     $prefs["{$row['modulename']}__{$row['setting']}"] = $row['value'];
                 }
             }
-            $prefsFormat = array_merge($prefsFormat, $prefsTemp);
             $prefsFormat = modulehook('prefs-format', $prefsFormat);
             require_once('lib/villagenav.php');
             villagenav();
