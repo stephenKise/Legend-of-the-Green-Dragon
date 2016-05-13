@@ -76,7 +76,7 @@ function settings_run()
 {
     global $session;
     $op = httpget('op');
-    $category = httpget('cat')?:'Account';
+    $category = stripslashes(rawurldecode(httpget('cat')))?:'Account';
     page_header("Settings - $category");
     switch ($op) {
         case 'save':
@@ -230,7 +230,7 @@ function settings_run()
             addnav('Refresh', 'runmodule.php?module=settings');
             addnav('Categories');
             foreach (array_keys($prefsFormat) as $int => $name) {
-                addnav($name, "runmodule.php?module=settings&cat=$name");
+                addnav($name, "runmodule.php?module=settings&cat=" . rawurlencode($name));
             }
             output("`c`b`i`Q$category Settings`b`i`c");
             if (httpget('save')) {
