@@ -7,7 +7,6 @@
  * their settings layout easily.
  * 
  * @author Stephen Kise
- * @todo Fix the appending of settings.
  * @todo Fix the template preference and cookie manipulation.
  */
 
@@ -46,6 +45,7 @@ function settings_install()
 {
     module_addhook('footer-news');
     module_addhook('village');
+    module_addhook('footer-modules');
     return true;
 }
 
@@ -67,6 +67,52 @@ function settings_dohook($hook, $args)
             }
             addnav('*?Settings*', 'runmodule.php?module=settings');
             blocknav('prefs.php');
+            break;
+        case 'footer-modules':
+            if ((httpget('cat') != '' && httpget('module') != '') || is_array(httppost('module'))) {
+                $userprefs = db_prefix('module_userprefs');
+                $modules = db_prefix('modules');
+                $sql = db_query(
+                    "SELECT DISTINCT m.modulename AS fallback,
+                    mu.modulename, mu.setting, m.formalname
+                    FROM $modules AS m
+                    LEFT JOIN $userprefs AS mu ON m.modulename = mu.modulename
+                    WHERE (setting LIKE 'user_%' OR m.infokeys LIKE '%|prefs|%')"
+                );
+                $fill = [];
+                $rewrite = json_decode(get_module_setting('rewrite'), true);
+                while ($row = db_fetch_assoc($sql)) {
+                    if ($row['setting'] != '' && strpos($row['setting'], 'user_') !== false) {
+                        $structuredKey = "{$row['modulename']}__{$row['setting']}";
+                        if ($rewrite[$structuredKey] != $row['formalname']) {
+                            $fill[$structuredKey] = $rewrite[$structuredKey];
+                        }
+                        else {
+                            $fill[$structuredKey] = $row['formalname'];
+                        }
+                    }
+                    else {
+                        $possibleKeys = get_module_info($row['fallback'])['prefs'];
+                        foreach ($possibleKeys as $key => $val) {
+                            if (strpos($key, 'user_') !== false) {
+                                $structuredKey = "{$row['fallback']}__$key";
+                                if ($rewrite[$structuredKey] != $row['formalname'] && $rewrite[$structuredKey] != '') {
+                                    $fill[$structuredKey] = $rewrite[$structuredKey];
+                                }
+                                else {
+                                    $fill[$structuredKey] = $row['formalname'];
+                                }
+                            }
+                        }
+                    }
+                }
+                if ($fill != $rewrite) {
+                    set_module_setting('rewrite', json_encode($fill));
+                    output(
+                        "`QUpdating the 'Settings' module rewrite conditions..."
+                    );
+                }
+            }
             break;
     }
     return $args;
@@ -97,13 +143,17 @@ function settings_run()
             }
             //Fix template changes.
             if (md5(md5($post['oldpass'])) == $session['user']['password'] && $post['newpass'] != '') {
-                $newPass = md5(md5($post['newpass']));
-                db_query("UPDATE $accounts SET password = '$newPass' WHERE acctid = '{$session['user']['acctid']}'");
                 require_once('lib/systemmail.php');
+                $newPass = md5(md5($post['newpass']));
+                db_query(
+                    "UPDATE $accounts
+                    SET password = '$newPass'
+                    WHERE acctid = '{$session['user']['acctid']}'"
+                );
                 systemmail(
                     $session['user']['acctid'],
-                    'Password Change',
-                    '`@Your password was changed by the following IP: ' . $session['user']['lastip']
+                    'Account Settings',
+                    "`@Your password was changed successfully!"
                 );
             }
             unset($post['newpass']);
@@ -117,7 +167,7 @@ function settings_run()
                     $_COOKIE['template'] = $val;
                 }
                 else if (!is_array($val) && $val != $post['oldvalues'][$key]) {
-                    if (strpos($key, '__')) {
+                    if (strpos($key, '__user') || strpos($key, '__check')) {
                         $moduleKey = explode('__', $key);
                         set_module_pref($moduleKey[1], $val, $moduleKey[0]);
                         unset($moduleKey);
@@ -188,7 +238,17 @@ function settings_run()
             while ($row = db_fetch_assoc($sql)) {
                 $formal = $row['formalname'];
                 $modulesFound[$row['modulename']] = true;
-                $prefsTemp[$formal] = get_module_info($row['modulename'])['prefs'];
+                if (module_status($row['modulename']) == MODULE_FILE_NOT_PRESENT) {
+                    foreach ($rewrite as $key => $moduleName) {
+                        if ($moduleName == $formal || strpos($key, $row['modulename']) !== false) {
+                            unset($rewrite[$key]);
+                        }
+                    }
+                    set_module_setting('rewrite', json_encode($rewrite));
+                }
+                else {
+                    $prefsTemp[$formal] = get_module_info($row['modulename'])['prefs'];
+                }
                 unset($prefsTemp[$formal][0]);
                 foreach ($prefsTemp[$formal] as $setting => $description) {
                     $description = explode('|', $description)[0];
@@ -230,19 +290,24 @@ function settings_run()
             addnav('Refresh', 'runmodule.php?module=settings');
             addnav('Categories');
             foreach (array_keys($prefsFormat) as $int => $name) {
-                addnav($name, "runmodule.php?module=settings&cat=" . rawurlencode($name));
+                addnav(
+                    $name,
+                    "runmodule.php?module=settings&cat=" . rawurlencode($name)
+                );
             }
             output("`c`b`i`Q$category Settings`b`i`c");
             if (httpget('save')) {
                 output("`@`iYour Settings have been saved!`i`n");
             }
-            rawoutput("<form action='runmodule.php?module=settings&op=save' method = 'POST'>");
+            rawoutput(
+                "<form action='runmodule.php?module=settings&op=save' method = 'POST'>"
+            );
             require_once('lib/showform.php');
             showform($prefsFormat[$category], $prefs);
             rawoutput(
                 sprintf(
                     "<input type='hidden' name='oldvalues' value='%s' />",
-                    json_encode($prefs, true)
+                    json_encode($prefs)
                 )
             );
             rawoutput("<input type='hidden' name='return' value='$category' />");
