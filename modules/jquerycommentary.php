@@ -46,7 +46,7 @@ function jquerycommentary_getmoduleinfo()
         'prefs' => [
             'jQuery Commentary Prefs,title',
 			'user_disable' => 'Do you want to disable the live chat?,bool|0',
-            'user_refresh' => 'How often should we refresh the commentary (in seconds)?,range,1,10|5',
+            'user_refresh' => 'How often should we refresh the commentary (in seconds)?,range,1,10|1',
             'user_sounds' => 'Enable sounds for the commentary?, bool| 0',
             'user_jumpto' => 'Do you want to automatically scroll to the commentary?, bool| 0',
             'user_ninja' => 'Should we hide you from the \'Who\'s Typing\'?, bool| 0',
