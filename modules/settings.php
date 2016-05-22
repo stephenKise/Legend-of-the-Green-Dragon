@@ -162,10 +162,6 @@ function settings_run()
                 if ($key == 'bio' && $val != $post['oldvalues']['bio']) {
                     $session['user']['bio'] = $val;
                 }
-                else if ($key == 'template' && $val != $_COOKIE['template']) {
-                    $session['user']['prefs']['template'] = $val;
-                    $_COOKIE['template'] = $val;
-                }
                 else if (!is_array($val) && $val != $post['oldvalues'][$key]) {
                     if (strpos($key, '__user') || strpos($key, '__check')) {
                         $moduleKey = explode('__', $key);
@@ -312,6 +308,16 @@ function settings_run()
             );
             rawoutput("<input type='hidden' name='return' value='$category' />");
             rawoutput("</form>");
+            rawoutput(
+                "<script type='text/javascript'>
+                document.getElementsByName('template')[0].onchange = function () {
+                    var index = this.selectedIndex;
+                    var selection = this.children[index].value;
+                    document.cookie = 'template=' + selection + ';expires=86400';
+                }
+
+                </script>"
+            );
             addnav('', 'runmodule.php?module=settings&op=save');
             break;
     }
