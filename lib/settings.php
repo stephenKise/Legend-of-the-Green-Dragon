@@ -19,7 +19,6 @@ function savesetting(string $settingname, $value)
     else {
         return false;
     }
-    db_query($sql);
     $settings[$settingname] = $value;
     invalidatedatacache('game-settings');
     if (db_affected_rows()>0) {
