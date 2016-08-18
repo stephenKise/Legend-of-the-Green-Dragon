@@ -16,7 +16,7 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
         while (list($key, $word) = each($search)) {
             do {
                 if ($word > '') {
-                    $times = preg_match_all($word, $output, $matches);
+                    $times = @preg_match_all($word, $output, $matches);
                 }
                 else {
                     $times = 0;
@@ -100,7 +100,12 @@ function good_word_list(): array
         'goodwordlist'
     );
     $row = db_fetch_assoc($sql);
-    return explode(' ', $row['words']);
+    if (!empty($row['words'])) { 
+        return explode(' ', $row['words']);
+    }
+    else {
+        return [];
+    }
 }
 
 function nasty_word_list(): array

@@ -32,7 +32,12 @@ $order = "acctid";
 if ($sort!="") $order = "$sort";
 $display = 0;
 $query = httppost('q');
-if ($query === false) $query = httpget('q');
+if ($query === false) {
+	$query = httpget('q');
+	if ($query === false) {
+		$query = $session['user']['login'];
+	}
+}
 
 if ($op=="search" || $op== ""){
 	require_once("lib/lookup_user.php");

@@ -55,3 +55,4 @@ puphpet/*
 Vagrantfile
 .vagrant
 vendor/*
+composer.json

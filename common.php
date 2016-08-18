@@ -82,6 +82,7 @@ require_once("lib/censor.php");
 require_once("lib/saveuser.php");
 require_once("lib/arrayutil.php");
 require_once("lib/addnews.php");
+require_once('lib/villagenav.php');
 require_once("lib/sql.php");
 require_once("lib/mounts.php");
 require_once("lib/debuglog.php");
@@ -98,6 +99,7 @@ $session =& $_SESSION['session'];
 ob_start();
 if (file_exists("dbconnect.php")){
 	require_once("dbconnect.php");
+	$link = db_connect($DB_HOST, $DB_USER, $DB_PASS);
 }else{
 	if (!defined("IS_INSTALLER")){
 	 	if (!defined("DB_NODB")) define("DB_NODB",true);
@@ -111,7 +113,6 @@ if (file_exists("dbconnect.php")){
 		page_footer();
 	}
 }
-
 // If you are running a server that has high overhead to *connect* to your
 // database (such as a high latency network connection to mysql),
 // reversing the commenting of the following two code lines may significantly
@@ -120,14 +121,13 @@ if (file_exists("dbconnect.php")){
 // http://php.net/manual/en/features.persistent-connections.php
 //
 //$link = db_pconnect($DB_HOST, $DB_USER, $DB_PASS);
-$link = db_connect($DB_HOST, $DB_USER, $DB_PASS);
+//$link = db_connect($DB_HOST, $DB_USER, $DB_PASS);
 
 $out = ob_get_contents();
 ob_end_clean();
 unset($DB_HOST);
 unset($DB_USER);
 unset($DB_PASS);
-
 if ($link===false){
  	if (!defined("IS_INSTALLER")){
 		echo $out;
@@ -148,7 +148,7 @@ if ($link===false){
 	define("DB_CONNECTED",true);
 }
 
-if (!DB_CONNECTED || !db_select_db ($DB_NAME)){
+if (!DB_CONNECTED || !$DB_NAME || !db_select_db($DB_NAME)){
 	if (!defined("IS_INSTALLER") && DB_CONNECTED){
 		// Ignore this bit.  It's only really for Eric's server
 		if (file_exists("lib/smsnotify.php")) {
@@ -164,9 +164,10 @@ if (!DB_CONNECTED || !db_select_db ($DB_NAME)){
 	}
 	define("DB_CHOSEN",false);
 }else{
-	define("LINK",$link);
+	define("LINK", $DB_NAME);
 	define("DB_CHOSEN",true);
 }
+
 if ($logd_version == getsetting("installer_version","-1")) {
 	define("IS_INSTALLER", false);
 }
@@ -187,16 +188,35 @@ $session['lasthit']=strtotime("now");
 
 $cp = $copyright;
 $l = $license;
-
 php_generic_environment();
 do_forced_nav(ALLOW_ANONYMOUS,OVERRIDE_FORCED_NAV);
 
 $script = substr($SCRIPT_NAME,0,strrpos($SCRIPT_NAME,"."));
-mass_module_prepare(array(
-	'template-header','template-footer','template-statstart','template-stathead','template-statrow','template-statbuff','template-statend',
-	'template-navhead','template-navitem','template-petitioncount','template-adwrapper','template-login','template-loginfull','everyhit',
-	"header-$script","footer-$script",'holiday','collapse{','collapse-nav{','}collapse-nav','}collapse','charstats'
-	));
+
+mass_module_prepare([
+	'template-header',
+	'template-footer',
+	'template-statstart',
+	'template-stathead',
+	'template-statrow',
+	'template-statbuff',
+	'template-statend',
+	'template-navhead',
+	'template-navitem',
+	'template-petitioncount',
+	'template-adwrapper',
+	'template-login',
+	'template-loginfull',
+	'everyhit',
+	"header-$script",
+	"footer-$script",
+	'holiday',
+	'collapse{',
+	'collapse-nav{',
+	'}collapse-nav',
+	'}collapse',
+	'charstats'
+]);
 
 // In the event of redirects, we want to have a version of their session we
 // can revert to:
@@ -239,7 +259,6 @@ if ($session['user']['hitpoints']>0){
 }else{
 	$session['user']['alive']=false;
 }
-
 if (isset($session['user']['bufflist']))
 	$session['bufflist']=unserialize($session['user']['bufflist']);
 else
@@ -375,5 +394,3 @@ modulehook("everyhit");
 if ($session['user']['loggedin']) {
 	modulehook("everyhit-loggedin");
 }
-
-?>

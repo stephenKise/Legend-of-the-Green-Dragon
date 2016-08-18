@@ -5,29 +5,16 @@
 require_once("lib/errorhandling.php");
 require_once("lib/datacache.php");
 
-/* * * *
- * Avaiable values for DBTYPE:
+/**
+ * Avaiable database drivers:
  *
- * - mysql:				The default value. Are you unsure take this.
- * - mysqli_oos:		The MySQLi extension of PHP5, object oriented style
- * - mysqli_proc:		The MySQLi extension of PHP5, procedural style
- *
+ * - mysqli_sqlite:     The SQLite3 extension.
+ * - mysqli_proc:       The MySQLi extension of PHP5.4+, procedural style.
+ * - mysqli_oos:        The MySQLi extension of PHP5.4+, object oriented style
+ * @todo Configure this in a commandline installer package instead of a weak
+ *  web interface.
  */
 define('DBTYPE', 'mysqli_proc');
+$dbinfo['queriesthishit'] = 0;
 
-$dbinfo = array();
-$dbinfo['queriesthishit']=0;
-
-switch(DBTYPE) {
-	case 'mysql':
-		require('lib/dbwrapper_mysql.php');
-		break;
-	case 'mysqli_oos':
-		require('lib/dbwrapper_mysqli_oos.php');
-		break;
-	case 'mysqli_proc':
-		require('lib/dbwrapper_mysqli_proc.php');
-		break;
-}
-
-?>
+require_once('lib/dbwrapper_' . DBTYPE . '.php');

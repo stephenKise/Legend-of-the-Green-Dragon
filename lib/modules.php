@@ -1357,6 +1357,7 @@ function install_module($module, $force=true){
 							$x = explode("|",$val);
 						}
 						if (isset($x[1])){
+                            $x[1] = trim($x[1]);
 							set_module_setting($key,$x[1]);
 							debug("Setting $key to default {$x[1]}");
 						}

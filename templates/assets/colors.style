@@ -1,0 +1,198 @@
+.colDkBlue {
+    color: #0000FF;
+}
+
+.colDkGreen {
+    color: #00B000;
+}
+
+.colDkCyan {
+    color: #00B0B0;
+}
+
+.colDkRed {
+    color: #BB0000;
+}
+
+.colDkMagenta {
+    color: #B000CC;
+}
+
+.colDkYellow {
+    color: #B0B000;
+}
+
+.colDkWhite {
+    color: #B0B0B0;
+}
+
+.colLtBlue {
+    color: #6262FF;
+}
+
+.colLtGreen {
+    color: #00FF00;
+}
+
+.colLtCyan {
+    color: #00FFFF;
+}
+
+.colLtRed {
+    color: #FF2222;
+}
+
+.colLtMagenta {
+    color: #FF00FF;
+}
+
+.colLtYellow {
+    color: #FFFF00;
+}
+
+.colLtWhite {
+    color: #ffffff;
+}
+
+.colLtBlack {
+    color: #777777;
+}
+
+.colDkOrange {
+    color: #995500;
+}
+
+.colLtOrange {
+    color: #FF9900;
+}
+
+.colBlue {
+    color: #0070FF;
+}
+
+.colLime {
+    color: #DDFFBB;
+}
+
+.colBlack {
+    color: #333333;
+}
+
+.colRose {
+    color: #EEBBEE;
+}
+
+.colBlueViolet {
+    color: #9A5BEE;
+}
+
+.coliceviolet {
+    color: #AABBEE;
+}
+
+.colLtBrown {
+    color: #F8DB83;
+}
+
+.colDkBrown {
+    color: #6b563f;
+}
+
+.colXLtGreen {
+    color: #aaff99;
+}
+
+.colBack {
+    background-color: #00FFFF;
+    color: #000000;
+}
+
+.colBlack {
+    color: #616161;
+}
+
+.colbeige {
+    color: #F5F5DC;
+}
+
+.colkhaki {
+    color: #F0E68C;
+}
+
+.coldarkkhaki {
+    color: #BDB76B;
+}
+
+.colaquamarine {
+    color: #7FFFD4;
+}
+
+.coldarkseagreen {
+    color: #8FBC8F;
+}
+
+.collightsalmon {
+    color: #FFA07A;
+}
+
+.colsalmon {
+    color: #FA8072;
+}
+
+.colwheat {
+    color: #F5DEB3;
+}
+
+.coltan {
+    color: #D2B48C;
+}
+
+.colLtLinkBlue {
+    color: #0099FF;
+}
+
+.colDkLinkBlue {
+    color: #006BB3;
+}
+
+.colDkRust {
+    color: #8D6060;
+}
+
+.colLtRust {
+    color: #B07878;
+}
+
+.colMdBlue {
+    color: #0000F0;
+}
+
+.colMdGrey {
+    color: #BDBDBD;
+}
+
+.colburlywood {
+    color: #DEB887;
+}
+
+.colglow {
+    text-shadow: 0 0 10px #ededed;
+    color: #1F1F1F;
+}
+
+.trhead {
+    background-color: #0a0a0a;
+    color: #FFFFFF;
+}
+
+.trlight {
+    background-color: #0a0a0a;
+}
+
+.trdark {
+    background-color: #0a0a0a;
+}
+
+.trhilight {
+    background-color: #0a0a0a;
+}

@@ -25,7 +25,7 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 		if (is_array($val)) {
 			$v = $val[0];
 			$info = explode(",", $v);
-			$val[0] = $info[0];
+			$val[0] = trim($info[0]);
 			$info[0] = $val;
 		} else {
 			$info = explode(",",$val);

@@ -85,7 +85,14 @@ if ($battle){
 		if ($defeat){
 			require_once("lib/taunt.php");
 			$taunt = select_taunt_array();
-			addnews("`)%s`) has been defeated in the graveyard by %s.`n%s",$session['user']['name'],$badguy['creaturename'],$taunt);
+			addnews(
+				sprintf_translate(
+					"`)%s`) has been defeated in the graveyard by %s.`n%s",
+					$session['user']['name'],
+					$badguy['creaturename'],
+					$taunt
+				)
+			);
 			output("`b`&You have been defeated by `%%s`&!!!`n", $badguy['creaturename']);
 			output("You may not torment any more souls today.");
 			$session['user']['gravefights']=0;

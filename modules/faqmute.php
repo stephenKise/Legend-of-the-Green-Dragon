@@ -34,7 +34,7 @@ function faqmute_dohook($hook, $args)
 {
     global $session;
     $seen = get_module_pref('seen_faq');
-    if (!$seen) {
+    if ($seen == 0) {
         switch ($hook) {
             case 'insertcomment':
                 $args['mute'] = 1;

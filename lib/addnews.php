@@ -19,7 +19,7 @@ function addnews(string $text = '', array $options = [])
             array_push($replacements, $val);
         }
     }
-    $text = vsprintf($text, $replacements);
+    $text = sprintf_translate($text, $replacements);
     $date = ($options['date']) ?? date('Y-m-d');
     $acctid = ($options['acctid']) ?? $session['user']['acctid'];
     if (!$options['hide']) {

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 function reltime(int $date, bool $short = true)
 {
@@ -192,15 +192,37 @@ function getmicrotime(): float
     return $usec + $sec;
 }
 
-function dhms(int $seconds, bool $dec = false): string
+
+function dhms(float $seconds, bool $ms = false): string
 {
-    if ($dec === false) {
-        $seconds = round($seconds, 0);
+    $times = [
+        604800 => 'w',
+        86400 => 'd',
+        3600 => 'h',
+        60 => 'm',
+        1 => 's',
+        '0.001' => 'ms',
+    ];
+    $return = '';
+    foreach ($times as $time => $unit) {
+        $divided = $seconds/$time;
+        if ($divided > 1) {
+            if ($unit != 'ms' && $unit != 's') {
+                $seconds = $seconds % $time;
+            }
+            else if ($unit == 's') {
+                $seconds = $seconds - floor($divided);
+            }
+            else if ($unit == 'ms') {
+                $seconds = 0;
+            }
+            $return .= round($divided, 0) . "$unit ";
+        }
     }
-    return (
-        ($seconds/86400) . translate_inline('d ', 'datetime') .
-        ($seconds / 3600 % 24) . translate_inline('h ', 'datetime') .
-        ($seconds / 60 % 60) . translate_inline('m ', 'datetime') .
-        ($seconds % 60) . ($dec ? substr($seconds - $seconds, 1) : '') . translate_inline('s ', 'datetime')
-    );
+    if ($ms == false) {
+        $explode = explode(' ', trim($return));
+        array_pop($explode);
+        $return = implode(' ', $explode);
+    }
+    return $return;
 }
