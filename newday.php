@@ -190,7 +190,7 @@ if ($dp < $dkills) {
     $resurrectionturns=$spirits;
     if ($resurrection=="true"){
         addnews(
-            sprinft_translate(
+            sprintf_translate(
                 "`&%s`& has been resurrected by %s`&.",
                 $session['user']['name'],
                 getsetting('deathoverlord','`$Ramius')
