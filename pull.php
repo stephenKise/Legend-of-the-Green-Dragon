@@ -1,4 +1,4 @@
 <?php
 
-$output = shell_exec('git pull origin dev');
+$output = shell_exec('git pull');
 echo "<pre>$output</pre>";
