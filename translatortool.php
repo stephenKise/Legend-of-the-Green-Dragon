@@ -37,7 +37,7 @@ if ($op==""){
 	$uri = httppost('uri');
 	$text = httppost('text');
 	$trans = httppost('trans');
-
+	modulehook('translation-save', httpallpost());
 	$page = $uri;
 	if (strpos($page,"?")!==false) $page = substr($page,0,strpos($page,"?"));
 
