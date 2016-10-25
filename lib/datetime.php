@@ -63,7 +63,7 @@ function reltime(int $date, bool $short = true)
 
 function relativedate(string $indate): string
 {
-    $lastOn = round((strtotime('now') - strtotime($indate)) / 86400, 0) . 'days';
+    $lastOn = intval((strtotime('now') - strtotime($indate)) / 86400, 0) . 'days';
     tlschema('datetime');
     if (substr($lastOn, 0, 2) == '1 ') {
         $lastOn = translate_inline('1 day');
@@ -132,7 +132,7 @@ function getgametime(): string
 function gametime(): int
 {
     $time = convertgametime(strtotime('now'));
-    return $time;
+    return intval($time);
 }
 
 function convertgametime(int $intime, bool $debug = false): int
@@ -153,7 +153,7 @@ function convertgametime(int $intime, bool $debug = false): int
             gmdate('Y-m-d H:i:s', $logdTimestamp)
         );
     }
-    return $logdTimestamp;
+    return intval($logdTimestamp);
 }
 
 function gametimedetails(): array
@@ -183,7 +183,7 @@ function secondstonextgameday($details = false): int
     if ($details === false) {
         $details = gametimedetails();
     }
-    return strtotime("{$details['now']} + {$details['realsecstotomorrow']} seconds");
+    return intval(strtotime("{$details['now']} + {$details['realsecstotomorrow']} seconds"));
 }
 
 function getmicrotime(): float
