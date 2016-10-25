@@ -1,0 +1,313 @@
+/* CSS Document for the LoGD amber skin, by Ben Wong */
+
+/*  --------------------------------------------------------------------
+**  General Tag Defaults
+*/
+
+/** tables **/
+table {
+}
+td {
+    font-family: "Lucida Console", "Terminal", monospace;
+    font-size: 12px;
+}
+
+/** links **/
+a {
+    color: #ff9900;
+    text-decoration: none;
+}
+a:hover { 
+    color: #ff6600;
+}
+
+/** input fields (e.g. village chats) **/
+input {
+    font-family: "Lucida Console", "Terminal", monospace;
+    font-size: 11px;
+    background-color: #000000;
+    border: 1px solid #cc6600;
+    color: #ff9900;
+}
+
+/** select boxes (e.g. user preference drop-downs) **/
+select {
+    background-color: #000000;
+    border: 1px solid #cc6600;
+    color: #ff9900;
+}
+
+/*  --------------------------------------------------------------------
+**  Global Classes
+*/
+
+/** the main page heading (e.g. "Degolburg, the Capital City", "LoGD News") **/
+.pagetitle {
+    font-family: "Lucida Console", "Terminal", monospace;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    color: #ff9933;
+}
+
+/** nav menu categories (e.g. City Gates, Store Street, Info) **/
+.navhead {
+    text-decoration: underline;
+    width: 175px;
+    border: thin none #cc6600;
+    height: auto;
+    padding: 1px;
+    line-height: 18px;
+    float: left;
+    clear: none;
+    background-color: #000000;
+    font-weight: bold;
+    color: #ff9933;
+    cursor: default;
+    text-align: left;
+}
+
+/** help for nav menu categories **/
+.navhelp {
+    text-decoration: none;
+    width: 175px;
+    height: auto;
+    padding: 1px;
+    float: left;
+    clear: none;
+    border: thin none #cc6600;
+    cursor: default;
+}
+
+/** nav hot keys (e.g. [F]orest, [T]ravel) **/
+.navhi {
+    background-color: #ff9900;
+    width: 10px;
+    color: #000000;
+    text-decoration: none;
+    padding: 1px;
+}
+
+/** input fields (e.g. the textarea in YOMs) **/
+.input {
+    background-color: #000000;
+    border: 1px solid #cc6600;
+    color: #ff9900;
+}
+
+/** input buttons (e.g. Submit, Search, Add) **/
+.button {
+    font-family: "Lucida Console", "Terminal", monospace;
+    font-size: 11px;  
+    color: #000000;  
+    background-color: #cc6600;  
+    border-top: 1px solid #ff9933;  
+    border-left: 1px solid #ff9933;  
+    border-right: 1px solid #663300;  
+    border-bottom: 1px solid #663300;
+}
+
+/** text colours **/
+.colDkBlue    { color: #000099; }
+.colDkGreen   { color: #009900; }
+.colDkCyan    { color: #009999; }
+.colDkRed     { color: #990000; }
+.colDkMagenta { color: #990099; }
+.colDkYellow  { color: #999900; }
+.colDkWhite   { color: #cccccc; }
+.colLtBlue    { color: #0000ee; }
+.colLtGreen   { color: #00ee00; }
+.colLtCyan    { color: #00eeee; }
+.colLtRed     { color: #ee0000; }
+.colLtMagenta { color: #ee00ee; }
+.colLtYellow  { color: #eeee00; }
+.colLtWhite   { color: #ffffff; }
+.colLtBlack   { color: #666666; }
+.colDkOrange  { color: #994400; }
+.colLtOrange  { color: #ff9900; }
+.colBlue  		{ color: #0070FF; }
+.colLime  		{ color: #DDFFBB; }
+.colBlack  		{ color: #000000; }
+.colRose 		{ color: #EEBBEE; }
+.colblueviolet 	{ color: #9A5BEE; }
+.coliceviolet	{ color: #AABBEE; }
+.colLtBrown 	{ color: #F8DB83; }
+.colDkBrown 	{ color: #6b563f; }
+.colXLtGreen	{ color: #aaff99; }
+.colAttention 	{ background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
+.colbeige  { color: #F5F5DC; }
+.colkhaki  { color: #F0E68C; }
+.coldarkkhaki  { color: #BDB76B; }
+.colaquamarine  { color: #7FFFD4; }
+.coldarkseagreen  { color: #8FBC8F; }
+.collightsalmon  { color: #FFA07A; }
+.colsalmon  { color: #FA8072; }
+.colwheat  { color: #F5DEB3; }
+.coltan  { color: #D2B48C; }.colBack  		{ background-color: #00FFFF; color: #000000; }
+.colLtLinkBlue { color: #0099FF; }
+.colDkLinkBlue { color: #006BB3; }
+.colDkRust { color: #8D6060; }
+.colLtRust { color: #B07878; }
+.colMdBlue { color: #0000F0; }
+.colMdGrey { color: #DDDDDD; }
+.colburlywood { color: #DEB887; }
+
+/** table rows (e.g. Game Setup Info, Hall o' Fame) **/
+.trhead  { background-color:#ff9900; color:#000000; }
+.trlight { background-color:#663300; color:#ff9933; }
+.trdark  { background-color:#330000; color:#ff9933; }
+.trhilight { background-color: #ff9900; color: #000000}
+
+/*  --------------------------------------------------------------------
+**  Specific Tags and Classes
+*/
+
+/** links - navigation **/
+a.nav { /* nav link (e.g. Forest, Quit, Travel) */
+    text-decoration: none;
+    width: auto;
+    height: auto;
+    padding: 1px 1px 1px 4px;
+    float: left; 
+    clear: none;
+}
+a:hover.nav { /* nav link on mouseover */
+    background-color: #000000;
+    color: #ff6600;
+}
+
+/** links - motd **/
+a.motd { /* for motd, yom, and petition */
+    text-decoration: none;
+    text-align: center;
+    color:#ff9933;
+    width: auto;
+    height: auto;
+    clear: none;
+    background-color: #000000;
+}
+a:hover.motd { /* mouseover for motd, yom, and petition */
+    height: auto;
+    width: auto;
+    background-color: #000000;
+    color: #ff6633;
+}
+a.hotmotd { /* when a new motd or yom is available */
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    color:#ff6633;
+    width: auto;
+    height: auto;
+    clear: none;
+    background-color: #000000;
+}
+
+/** links - translator tool **/
+a.t { 
+    width: 8px;
+    height: 10px;
+    border: 1px dotted #0000ee;
+    background-color: #000000;
+    color: #ff9933;
+    font-size: 11px;
+    text-decoration: none;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+a.thot { 
+    width: 8px;
+    height: 10px;
+    border: 1px solid #ee0000;
+    background-color: #000000;
+    color: #ff9933;
+    font-size: 11px;
+    text-decoration: none;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+/** tables - navigation **/
+table.nav {
+    background-color: #000000;
+    border: none;
+    border-right: thin solid #663300;
+    width: 175px;
+}
+td.nav a.thot {
+    position: absolute;
+    left: 0px;
+    height: auto;
+}
+td.nav a.t {
+    position: absolute;
+    left: 0px;
+    height: auto;
+}
+
+/** tables - character stats (i.e. "vital info") **/
+table.vitalinfo { /* the whole vital info 'wrapper' table */
+    background-color: #000000;
+    border: none;
+    border-left: thin solid #663300;
+    width: auto;
+}
+table.charinfo { /* the sub-table with the data */
+    background-color: #000000;
+    width: auto;
+}
+td.charhead { /* vital info category heading */
+    padding-left: 2px;
+    background-color: #000000;
+    border-top: none;
+    cursor: default;
+    color: #ff9933;
+    text-decoration: underline;
+}
+td.charinfo { /* vital info data */
+    padding-left: 8px;
+    border-top: none;
+    border-bottom: none;
+    cursor: default;
+    color: #cc9966;
+}
+
+/** tables - main page **/
+td.pageheader { /* heading for the main page */
+    background-image: url(amber/ambtitle.gif);
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-color: #000000;
+    border-bottom: thin solid #663300;
+}
+
+/** tables - popups **/
+td.popupheader { /* heading in a popup (e.g. motd, yom)*/
+    background-color: #000000;
+    border-bottom: thin solid #663300;
+    height: 50px;
+}
+
+/** tables - footers **/
+table.noborder { /* table in the footer */
+    border: none;
+}
+td.footer { /* data for a footer */
+    border-top: thin solid #663300;
+    background-position: top;
+}
+td.noborder { /* borderless data in the footer */
+    border: none;
+}
+
+/** debugging **/
+div.debug {
+    background-color: #333333;
+    color: #ff9900;
+    border: 1px dotted #cc6600;
+    width: auto;
+    height: auto;
+    font-size: 10px;
+}
+

@@ -1,0 +1,171 @@
+<!--!popuphead-->
+<html>
+<head>
+  <title>{title} - LoGD</title>
+  <link href="templates/aware2.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+<body bgcolor="#000000" text="#CCCCCC" link="#FF6600" vlink="#FF6600" alink="#CCCCCC">
+<table width="100%" border="0" cellpadding="0" cellspacing="4">
+  <tr>
+	<td>
+
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+		<tr>
+		  <td width="120" valign="top" nowrap>
+					{title}
+		  </td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+  <tr>
+	<td>
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+		<tr>
+		  <td valign="top">
+
+<!--!popupfoot-->
+		  </td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+  <tr>
+	<td>
+			<table width="100%">
+				<tr>
+					<td align="right" class="footer">
+						{copyright}<a href="http://www.aware-entertainment.com" target="_blank">Layout by Duplex of Aware Entertainment, Inc.</a>
+					</td>
+				</tr>
+			</table>
+		</td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!header-->
+<html>
+<head>
+  <title>{title} - LoGD</title>
+  <link href="templates/aware2.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+<body bgcolor="#000000" text="#CCCCCC" link="#FF6600" vlink="#FF6600" alink="#CCCCCC">
+<table width="100%" border="0" cellpadding="0" cellspacing="4">
+  <tr>
+	<td>
+
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+		<tr>
+		  <td width="120" valign="top">
+					{title}
+		  </td>
+		  <td valign="top"><font size="+4">Legend of the <font color="#009900">Green</font> Dragon</font><br>{headerad}</td>
+		  <td width="208" valign="top">
+			<table width="100%" border="0" cellpadding="4" cellspacing="0" class="stats">
+			  <tr>
+
+				<td align="right" valign="top" class="sessioninfo">{motd}<br>{mail}<br>{petition}<br>{petitiondisplay}</td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+	  </table>
+	</td>
+
+  </tr>
+  <tr>
+	<td>
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+		<tr>
+		  <td width="150" valign="top">
+			<table width="100%" border="0" cellspacing="0" cellpadding="4">
+			  <tr>
+				<td align="left" valign="top" class="stats">{navad}{nav}</td>
+
+			  </tr>
+			</table>
+		  </td>
+		  <td valign="top"><div style="float: right">{verticalad}</div>{bodyad}
+<!--!footer-->
+		  </td>
+		  <td width="150" valign="top">
+			<table width="100%" border="0" cellspacing="0" cellpadding="4">
+			  <tr>
+				<td align="right" valign="top" class="stats">{stats}<br>{paypal}<br>{source}</td>
+
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+  <tr>
+	<td>
+			<table width="100%">
+				<tr>
+					<td align="left" class="footer" valign="top">{version}<br/>{pagegen}</td>
+					<td align="right" class="footer">
+						{copyright}<a href="http://www.aware-entertainment.com" target="_blank">Layout by Duplex of Aware Entertainment, Inc.</a>
+					</td>
+				</tr>
+			</table>
+		</td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!statstart--><table cellpadding=2 cellspacing=0 class='charinfo' width='150'>
+<!--!stathead--><tr><td class='charhead' colspan='2'><b>{title}</b></td></tr>
+<!--!statrow--><tr><td class='charinfo'><b>{title}</b></td><td class='charinfo'>{value}</td></tr>
+<!--!statbuff--><tr><td class='charhead' colspan='2'><b>{title}</b></td></tr><tr><td class='charinfo' colspan='2'>{value}</td></tr>
+<!--!statend--></table>
+<!--!navhead--><span class="navhead">&#151;{title}&#151;<br></span>
+<!--!navhelp--><span class="navhelp">{text}<br></span>
+<!--!navitem--><a href="{link}"{accesskey}class='nav' {popup}>{text}<br></a>
+<!--!petitioncount--><table border='0' cellpadding='5' cellspacing='0' align='right'><tr><td>{petitioncount}</td></tr></table>
+<!--!adwrapper-->
+<table cellpadding=2 cellspacing=0 class='stats'>
+	<tr><td>{content}</td></tr>
+</table>
+<!--!login-->
+<table border='0' cellpadding='0' cellspacing='0'>
+  <tr>
+	<td><img src='images/logindragon.gif' class='noborder'></td>
+  </tr>
+  <tr>
+	<td valign='center' align='center' class='noborder'>
+	  <table border='0'>
+		<tr>
+		  <td align='center'>{username}:</td>
+		  <td align='center'>{password}:</td>
+		</tr>
+		<tr>
+		  <td><input name='name' id="name" accesskey='u' size='10'></td>
+		  <td><input name='password' id="password" accesskey='p' type='password' size='10'></td>
+		</tr>
+		<tr>
+		  <td colspan='2' align='center'><input type='submit' value='{button}' class='button'><br></td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+</table>
+<!--!loginfull-->
+<table border='0' cellpadding='0' cellspacing='0'>
+  <tr>
+	<td><img src='images/logindragon.gif' class='noborder'></td>
+  </tr>
+  <tr>
+	<td valign='center' align='center' class='noborder'>
+	  <table border='0'>
+		<tr>
+		  <td align='center'><font color='#ff0000'>Server Full!</font></td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+</table>

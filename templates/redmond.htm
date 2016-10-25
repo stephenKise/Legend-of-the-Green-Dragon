@@ -1,0 +1,157 @@
+<!--!popuphead-->
+<html>
+<head>
+<title>{title}</title>
+<link href="templates/redmond.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr bgcolor="#1478EB">
+	<td colspan="2" valign="top">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+				<tr>
+					<td><img src="templates/redmond/title.gif" width="260" height="60"></td>
+					<td align="right" valign="top">
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><img src="templates/redmond/curvey.GIF" width="16" height="20" alt=''></td>
+								<td nowrap bgcolor="#000000" style="color:#FFFFFF;">&nbsp;{title}&nbsp;</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+  </tr>
+
+  <tr>
+	<td valign="top" bgcolor="#F1F1F1" width='30'>&nbsp;</td>
+	<td valign='top'>
+<!--!popupfoot-->
+	</td>
+  </tr>
+  <tr>
+	<td align="left" width='30'>&nbsp;</td>
+	<td align="right" nowrap>{copyright}</td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!header-->
+<html>
+<head>
+<title>{title}</title>
+<link href="templates/redmond.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr bgcolor="#1478EB">
+	<td colspan="2" valign="top">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+				<tr>
+					<td valign='bottom' width='260'><img src="templates/redmond/title.gif" width="260" height="60"></td>
+					<td align="center" width='100%'>{headerad}</td>
+					<td align="right" valign="top">
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><img src="templates/redmond/curvey.GIF" width="16" height="20" alt=''></td>
+								<td nowrap bgcolor="#000000" style="color:#FFFFFF;">&nbsp;{motd}&nbsp;|&nbsp;</td>
+								<td nowrap bgcolor="#000000" style="color:#FFFFFF;">&nbsp;{mail}&nbsp;|&nbsp;</td>
+
+								<td nowrap bgcolor="#000000" style="color:#FFFFFF;">&nbsp;{petition}&nbsp;</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+  </tr>
+
+  <tr>
+	<td valign="top" bgcolor="#F1F1F1"><img src="images/trans.gif" width="150" height="1">	  <table border="0" cellspacing="7" cellpadding="0">
+	  <tr>
+		<td class="nav"><div align='center'>{navad}</div><p>{nav}</p><p>{stats}</p><p>{source}</p><p>{petitiondisplay}</p></td>
+	  </tr>
+	</table>	  
+	</td>
+
+	<td width="100%" valign='top'>
+<table border="0" cellspacing="7" cellpadding="0" width="100%">
+  <tr>
+	<td><table align='right' border='0'><tr><td>{paypal}{verticalad}</td></tr></table>{bodyad}
+<!--!footer-->
+	</td>
+  </tr>
+</table>
+</td>
+  </tr>
+  <tr>
+
+	<td align="left">{version}</td>
+	<td align="right" nowrap>{copyright} ({pagegen})</td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!statstart--><table cellpadding=2 cellspacing=0 class='charinfo' width='150'>
+<!--!stathead--><tr><td class='charhead' colspan='2'><b>{title}</b></td></tr>
+<!--!statrow--><tr><td class='charinfo'><b>{title}</b></td><td class='charinfo'>{value}</td></tr>
+<!--!statbuff--><tr><td class='charhead' colspan='2'><b>{title}</b></td></tr>
+<tr><td class='charinfo' colspan='2'>{value}</td></tr>
+<!--!statend--></table>
+<!--!navhead--><span class="navhead">&#151;{title}&#151;<br></span>
+<!--!navhelp--><span class="navhelp">{text}<br></span>
+<!--!navitem--><a href="{link}"{accesskey}class='nav' {popup}>{text}<br></a>
+<!--!petitioncount--><table border='0' cellpadding='0' cellspacing='0'><tr><td>{petitioncount}</td></tr></table>
+<!--!adwrapper-->
+<table cellpadding=3 cellspacing=0>
+	<tr><td>{content}</td></tr>
+</table>
+<!--!login-->
+<table border='0' width="50%" cellpadding='0' cellspacing='0' bgcolor="#3366CC">
+	<tr>
+		<td><img src="templates/redmond/ul.gif" width="9" height="9" alt=""></td>
+		<td><img src="images/trans.gif" width="1" height="1" alt=""></td>
+		<td align="right"><img src="templates/redmond/ur.gif" width="9" height="9" alt=""></td>
+	</tr>
+	<tr>
+		<td valign='bottom' align='center' class='noborder' colspan="3">
+			<font color="#FFFFFF">{username}:</font><br><input name='name' id="name" accesskey='u' size='10'><br>
+
+			<font color="#FFFFFF">{password}:</font><br><input name='password' id="password" accesskey='p' type='password' size='10'><br>
+			<input type='submit' value='{button}' class='button'><br>
+		</td>
+	</tr>
+	<tr>
+		<td><img src="templates/redmond/ll.gif" width="9" height="9" alt=""></td>
+		<td><img src="images/trans.gif" width="1" height="1" alt=""></td>
+		<td align="right"><img src="templates/redmond/lr.gif" width="9" height="9" alt=""></td>
+
+	</tr>
+</table>
+<!--!loginfull-->
+<table border='0' width="50%" cellpadding='0' cellspacing='0' bgcolor="#3366CC">
+	<tr>
+		<td><img src="templates/redmond/ul.gif" width="9" height="9" alt=""></td>
+		<td><img src="images/trans.gif" width="1" height="1" alt=""></td>
+		<td align="right"><img src="templates/redmond/ur.gif" width="9" height="9" alt=""></td>
+	</tr>
+	<tr>
+		<td valign='bottom' align='center' class='noborder' colspan="3">
+		  <font color="#FFFFFF"><B>
+		  <br>Server<br><br>full!<br>
+		</td>
+	</tr>
+	<tr>
+		<td><img src="templates/redmond/ll.gif" width="9" height="9" alt=""></td>
+		<td><img src="images/trans.gif" width="1" height="1" alt=""></td>
+		<td align="right"><img src="templates/redmond/lr.gif" width="9" height="9" alt=""></td>
+
+	</tr>
+</table>

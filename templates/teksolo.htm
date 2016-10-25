@@ -1,0 +1,129 @@
+<!--!popuphead-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href="templates/teksolo.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+<body bgcolor="#000000" background="templates/teksolo/bkg.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"><table width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+	<td colspan="2"><img src="templates/teksolo/corner.jpg" width="302" height="145" align="left">
+	  <font color="#87AE75" size="+2">{title}</font>
+	</td>
+  </tr>
+  <tr>
+	<td colspan="2" background="templates/teksolo/bar.gif"><img src="templates/teksolo/bar.gif" width="64" height="13"></td>
+  </tr>
+  <tr>
+	<td valign="top" bgcolor="#87926A" width='30'>&nbsp;</td>
+	<td valign="top" bgcolor="#6C7555">
+<!--!popupfoot-->
+	</td>
+  </tr>
+  <tr>
+	<td valign="top" width='30'>&nbsp;</td>
+	<td valign="top"><font color="#87AE75">{copyright}</font></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!header-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>{title}</title>
+<link href="templates/teksolo.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+<body bgcolor="#000000" background="templates/teksolo/bkg.gif" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"><table width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+	<td colspan="2"><img src="templates/teksolo/corner.jpg" width="302" height="145" align="left"><div style='position: absolute; top: 50px; left: 25px;'>{headerad}</div>
+	  <table width="200" align="right" cellpadding="0" cellspacing="10">
+		<tr>
+		  <td><font color="#999966">&#8226; {motd} <br>&#149; {mail} <br>&#149; {petition} <br>
+		  </font><font color="#87AE75">{paypal}</font>
+			{petitiondisplay}
+		  </td>
+		</tr>
+	</table>	  <font color="#87AE75" size="+2">{title}</font></td>
+  </tr>
+  <tr>
+	<td colspan="2" background="templates/teksolo/bar.gif"><img src="templates/teksolo/bar.gif" width="64" height="13"></td>
+  </tr>
+  <tr>
+	<td valign="top" bgcolor="#87926A"><table cellspacing="3" cellpadding="4">
+	  <tr>
+		<td bgcolor="#79835F"><div align='center'>{navad}</div>{nav}</td>
+	  </tr>
+	  <tr>
+		<td bgcolor="#79835F">{stats}</td>
+	  </tr>
+	</table></td>
+	<td width="100%" valign="top" bgcolor="#87926A"><table width="100%" cellspacing="3" cellpadding="4">
+	  <tr>
+		<td bgcolor="#6C7555"><div style='float: right'>{verticalad}</div>{bodyad}
+<!--!footer--></td>
+	  </tr>
+	</table></td>
+  </tr>
+  <tr>
+	<td valign="top"><font color="#87AE75">{version}<br>
+	  {source}
+	</font></td>
+	<td valign="top"><font color="#87AE75">{copyright} ({pagegen})</font></td>
+  </tr>
+</table>
+</body>
+</html>
+<!--!statstart--><table cellpadding=2 cellspacing=0 class='charinfo' width='150'>
+<!--!stathead--><tr><td class='charhead' colspan='2'><b>{title}</b></td></tr>
+<!--!statrow--><tr><td class='charinfo'><b>{title}</b></td><td class='charinfo'>{value}</td></tr>
+<!--!statbuff--><tr><td class='charhead' colspan='2'><b>{title}</b></td></tr><tr><td class='charinfo' colspan='2'>{value}</td></tr>
+<!--!statend--></table>
+<!--!navhead--><span class="navhead">&#151;{title}&#151;<br></span>
+<!--!navhelp--><span class="navhelp">{text}<br></span>
+<!--!navitem--><a href="{link}"{accesskey}class='nav' {popup}>{text}<br></a>
+<!--!petitioncount--><table border='0' cellpadding='5' cellspacing='0'><tr><td><font color='#87AE75'>{petitioncount}</font></td></tr></table>
+<!--!adwrapper-->
+<table cellpadding=3 cellspacing=0>
+	<tr><td>{content}</td></tr>
+</table>
+<!--!login-->
+<table border='0' cellpadding='0' cellspacing='0'>
+  <tr>
+	<td><img src='images/logindragon.gif' class='noborder'></td>
+  </tr>
+  <tr>
+	<td valign='center' align='center' class='noborder'>
+	  <table border='0'>
+		<tr>
+		  <td align='center'>{username}:</td>
+		  <td align='center'>{password}:</td>
+		</tr>
+		<tr>
+		  <td><input name='name' id="name" accesskey='u' size='10'></td>
+		  <td><input name='password' id="password" accesskey='p' type='password' size='10'></td>
+		</tr>
+		<tr>
+		  <td colspan='2' align='center'><input type='submit' value='{button}' class='button'><br></td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+</table>
+<!--!loginfull-->
+<table border='0' cellpadding='0' cellspacing='0'>
+  <tr>
+	<td><img src='images/logindragon.gif' class='noborder'></td>
+  </tr>
+  <tr>
+	<td valign='center' align='center' class='noborder'>
+	  <table border='0'>
+		<tr>
+		  <td align='center'><font color='#ff0000'>Server Full!</font></td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+</table>

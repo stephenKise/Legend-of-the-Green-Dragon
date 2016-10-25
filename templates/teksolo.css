@@ -1,0 +1,202 @@
+/* CSS Document */
+caption {
+	white-space: nowrap;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+table.nav {
+	background-color: #79835F;
+	border: 1px solid #87AE75;
+	height: auto;
+	width: 135px;
+}
+
+.navhead {
+	text-decoration: none;
+	height: auto;
+	line-height: 18px;
+	font-weight: bold;
+	color: #000000;
+	cursor: default;
+	text-align: center;
+}
+a {
+	color: #173A07;
+	text-decoration: none;
+}
+a.nav {
+	text-decoration: none;
+}
+
+.navhelp {
+	text-decoration: none;
+}
+a:hover.nav {
+	color: #8CD769;
+}
+a.navhilite {
+	color: #000000;
+}
+
+table {
+}
+td.charinfo {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #87AE75;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	cursor: default;
+}
+td.charhead {
+	background-color: #87AE75;
+	border: none;
+	cursor: default;
+	color: #476738;
+}
+table.charinfo {
+	border: none;
+	width: 140px;
+}
+td.pageheader {
+}
+td.popupheader {
+}
+td.noborder {
+	border: none;
+}
+table.noborder {
+	border: none;
+}
+input {
+	background-color: #79835F;
+	border: 1px solid #87AE75;
+	color: #000000;
+}
+.button {
+	font-family: verdana,arial,helvetica,sans-serif;  
+	font-size: 12px;  
+	color: #83DB83;  
+	background-color: #79835F;  
+	border-top: 1px solid #87AE75;  
+	border-left: 1px solid #87AE75;  
+	border-right: 1px solid #476738;  
+	border-bottom: 1px solid #476738;
+}
+.input {
+	background-color: #79835F;
+	border: 1px solid #87AE75;
+	color: #000000;
+}
+select {
+	background-color: #79835F;
+	border: 1px solid #87AE75;
+	color: #000000;
+}
+table.vitalinfo {
+	background-color: #79835F;
+	border: 1px solid #476738;
+	width: 182px;
+}
+a.motd {
+	text-decoration: none;
+	color:#99FF00;
+}
+a:hover.motd {
+	font-weight: bold;
+}
+
+a.hotmotd {
+	font-weight: bold;
+}
+.navhi {
+	color: #000000;
+	text-decoration: underline;
+}
+
+a.t {
+	width: 7px;
+	height: 7px;
+	border: 1px dotted #0000FF;
+	background-color: #9999FF;
+	color: #FFFFFF;
+	font-size: 7px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+a.thot {
+	width: 7px;
+	height: 7px;
+	border: 1px dotted #FF0000;
+	background-color: #FF9999;
+	color: #FFFFFF;
+	font-size: 7px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+div.debug {
+	background-color: #FFFFFF;
+	color: #000000;
+	border: 1px dotted #000000;
+	width: auto;
+	height: auto;
+	font-size: 10px;
+}
+.colDkBlue	{ color: #898A9C; }
+.colDkGreen   { color: #89A185; }
+.colDkCyan	{ color: #89A19C; }
+.colDkRed	 { color: #A08A85; }
+.colDkMagenta { color: #A08A9C; }
+.colDkYellow  { color: #A0A185; }
+.colDkWhite   { color: #A8A9A4; }
+.colLtBlue	{ color: #8585B3; }
+.colLtGreen   { color: #85B385; }
+.colLtCyan	{ color: #85B3B3; }
+.colLtRed	 { color: #B38585; }
+.colLtMagenta { color: #B385B3; }
+.colLtYellow  { color: #B3B385; }
+.colLtWhite   { color: #C3C3C3; }
+.colLtBlack   { color: #999999; }
+.colDkOrange  { color: #994400; }
+.colLtOrange  { color: #FF9900; }
+.colBlue  		{ color: #0070FF; }
+.colLime  		{ color: #DDFFBB; }
+.colBlack  		{ color: #000000; }
+.colRose 		{ color: #EEBBEE; }
+.colblueviolet 	{ color: #9A5BEE; }
+.coliceviolet	{ color: #AABBEE; }
+.colLtBrown 	{ color: #F8DB83; }
+.colDkBrown 	{ color: #6b563f; }
+.colXLtGreen	{ color: #aaff99; }
+.colAttention 	{ background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
+.colBack  		{ background-color: #00FFFF; color: #000000; }
+.colbeige  { color: #F5F5DC; }
+.colkhaki  { color: #F0E68C; }
+.coldarkkhaki  { color: #BDB76B; }
+.colaquamarine  { color: #7FFFD4; }
+.coldarkseagreen  { color: #8FBC8F; }
+.collightsalmon  { color: #FFA07A; }
+.colsalmon  { color: #FA8072; }
+.colwheat  { color: #F5DEB3; }
+.coltan  { color: #D2B48C; }.colLtLinkBlue { color: #0099FF; }
+.colDkLinkBlue { color: #006BB3; }
+.colDkRust { color: #8D6060; }
+.colLtRust { color: #B07878; }
+.colMdBlue { color: #0000F0; }
+.colMdGrey { color: #DDDDDD; }
+.colburlywood { color: #DEB887; }
+.trhead  { background-color:#476738; color:#79835F; }
+.trlight { background-color:#79835F; }
+.trhilight { background-color:#99A37F; }
+.trdark  { background-color:#6C7555; }

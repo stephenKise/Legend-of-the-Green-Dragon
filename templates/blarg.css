@@ -1,0 +1,312 @@
+/* CSS Document for the LoGD blarg skin, by Ben Wong */
+
+/*  --------------------------------------------------------------------
+**  General Tag Defaults
+*/
+
+/** tables **/
+table {
+	/*border: medium ridge #dddddd;*/
+}
+td {
+	font-family: "Courier New", "Lucida Console", monospace;
+	font-size: 11px;
+}
+
+/** links **/
+a {
+	color: #000066;
+	text-decoration: none;
+}
+
+/** input fields (e.g. village chats) **/
+input {
+	font-family: "Courier New", "Lucida Console", monospace;
+	font-size: 10px;
+	background-color: #dddddd;
+	border: 1px solid #666666;
+	color: #333333;
+}
+
+/** select boxes (e.g. user preference drop-downs) **/
+select {
+	background-color: #dddddd;
+	border: 1px solid #666666;
+	color: #333333;
+}
+
+/*  --------------------------------------------------------------------
+**  Global Classes
+*/
+
+/** the main page heading (e.g. "Degolburg, the Capital City", "LoGD News") **/
+.pagetitle {
+	font-family: "Helvetica", "Arial", sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	font-style: italic;
+	color: #000000;
+}
+
+/** nav menu categories (e.g. City Gates, Store Street, Info) **/
+.navhead {
+	text-decoration: none;
+	width: 200px;
+	border: thin #cccccc;
+	height: auto;
+	padding: 1px;
+	line-height: 18px;
+	float: left;
+	clear: none;
+	background-color: #f5f5f5;
+	font-weight: bold;
+	color: #000000;
+	cursor: default;
+	text-align: left;
+}
+
+/** help for nav menu categories **/
+.navhelp {
+	text-decoration: none;
+	width: 200px;
+	height: auto;
+	padding: 1px;
+	float: left;
+	clear: none;
+	border: thin none #003366;
+	cursor: default;
+}
+
+/** nav hot keys (e.g. [F]orest, [T]ravel) **/
+.navhi {
+	color: #0000cc;
+	text-decoration: underline;
+}
+
+/** input fields (e.g. the textarea in YOMs) **/
+.input {
+	background-color: #eeeeee;
+	border: 1px solid #666666;
+	color: #333333;
+}
+
+/** input buttons (e.g. Submit, Search, Add) **/
+.button {
+	font-family: "Courier New", "Lucida Console", monospace;
+	font-size: 11px;  
+	color: #f5f5f5;  
+	background-color: #999999;  
+	border-top: 1px solid #cccccc;  
+	border-left: 1px solid #cccccc;  
+	border-right: 1px solid #333333;  
+	border-bottom: 1px solid #333333;
+}
+
+/** text colours **/
+.colDkBlue	{ color: #000066; }
+.colDkGreen   { color: #006600; }
+.colDkCyan	{ color: #006666; }
+.colDkRed	 { color: #660000; }
+.colDkMagenta { color: #660066; }
+.colDkYellow  { color: #666600; }
+.colDkWhite   { color: #666666; }
+.colLtBlue	{ color: #0000aa; }
+.colLtGreen   { color: #00aa00; }
+.colLtCyan	{ color: #00aaaa; }
+.colLtRed	 { color: #aa0000; }
+.colLtMagenta { color: #aa00aa; }
+.colLtYellow  { color: #aaaa00; }
+.colLtWhite   { color: #333333; }
+.colLtBlack   { color: #999999; }
+.colDkOrange  { color: #994400; }
+.colLtOrange  { color: #ff9900; }
+.colBlue  		{ color: #0070FF; }
+.colLime  		{ color: #DDFFBB; }
+.colBlack  		{ color: #000000; }
+.colRose 		{ color: #EEBBEE; }
+.colblueviolet 	{ color: #9A5BEE; }
+.coliceviolet	{ color: #AABBEE; }
+.colLtBrown 	{ color: #F8DB83; }
+.colDkBrown 	{ color: #6b563f; }
+.colXLtGreen	{ color: #aaff99; }
+.colAttention 	{ background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
+.colBack  		{ background-color: #00FFFF; color: #000000; }
+.colbeige  { color: #F5F5DC; }
+.colkhaki  { color: #F0E68C; }
+.coldarkkhaki  { color: #BDB76B; }
+.colaquamarine  { color: #7FFFD4; }
+.coldarkseagreen  { color: #8FBC8F; }
+.collightsalmon  { color: #FFA07A; }
+.colsalmon  { color: #FA8072; }
+.colwheat  { color: #F5DEB3; }
+.coltan  { color: #D2B48C; }.colLtLinkBlue { color: #0099FF; }
+.colDkLinkBlue { color: #006BB3; }
+.colDkRust { color: #8D6060; }
+.colLtRust { color: #B07878; }
+.colMdBlue { color: #0000F0; }
+.colMdGrey { color: #DDDDDD; }
+.colburlywood { color: #DEB887; }
+
+/** table rows (e.g. Game Setup Info, Hall o' Fame) **/
+.trhead  { background-color:#666666; color:#f5f5f5; }
+.trlight { background-color:#f5f5f5; color:#333333; }
+.trdark  { background-color:#dddddd; color:#333333; }
+.trhilight { background-color: #c8c8c8; color: #333333}
+
+/*  --------------------------------------------------------------------
+**  Specific Tags and Classes
+*/
+
+/** links - navigation **/
+a.nav { /* nav link (e.g. Forest, Quit, Travel) */
+	text-decoration: none;
+	width: 182px;
+	height: auto;
+	padding: 1px 1px 1px 20px;
+	float: left; 
+	clear: none;
+}
+a:hover.nav { /* nav link on mouseover */
+	background-color: #eeeeee;
+}
+
+/** links - motd **/
+a.motd { /* for motd, yom, and petition */
+	text-decoration: none;
+	text-align: center;
+	color:#000000;
+	width: 100px;
+	height: 14px;
+	clear: none;
+	background-color: #c8c8c8;
+}
+a:hover.motd { /* mouseover for motd, yom, and petition */
+	height: 14px;
+	width: 100px;
+	background-color: #c8c8c8;
+	color: #aa0000;
+}
+a.hotmotd { /* when a new motd or yom is available */
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	color:#aa0000;
+	width: 100px;
+	height: auto;
+	clear: none;
+	background-color: #c8c8c8;
+}
+
+/** links - translator tool **/
+a.t { 
+	width: 10px;
+	height: 10px;
+	border: 1px dotted #0000ff;
+	background-color: #f5f5f5;
+	color: #000000;
+	font-size: 10px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+a.thot { 
+	width: 10px;
+	height: 10px;
+	border: 1px solid #ff0000;
+	background-color: #f5f5f5;
+	color: #000000;
+	font-size: 10px;
+	text-decoration: none;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+/** tables - login **/
+table.login { 
+	height: 200px;
+	width: 232px;
+	background-image: url(blarg/login.gif);
+	background-repeat: no-repeat;
+}
+
+/** tables - navigation **/
+table.nav {
+	background-color: #f5f5f5;
+	border: medium ridge #eeeeee;
+	width: 200px;
+}
+td.nav a.thot {
+	position: absolute;
+	left: 0px;
+	height: auto;
+}
+td.nav a.t {
+	position: absolute;
+	left: 0px;
+	height: auto;
+}
+
+/** tables - character stats (i.e. "vital info") **/
+table.vitalinfo { /* the whole vital info 'wrapper' table */
+	background-color: #f5f5f5;
+	border: medium ridge #eeeeee;
+	width: 200px;
+}
+table.charinfo { /* the sub-table with the data */
+	background-color: #f5f5f5;
+	width: 200px;
+}
+td.charhead { /* vital info category heading */
+	background-color: #c8c8c8;
+	border: none;
+	cursor: default;
+	color: #333333;
+}
+td.charinfo { /* vital info data */
+	padding-left: 20px;
+	border-top: thin solid #c8c8c8;
+	border-right-style: none;
+	border-bottom-style: none; 
+	border-left-style: none;
+	cursor: default;
+	color: #333333;
+}
+
+/** tables - main page **/
+td.pageheader { /* heading for the main page */
+	background-color: #c8c8c8;
+	background-image: url(blarg/mainhdr.gif);
+	background-repeat: no-repeat;
+	height: 90px;
+}
+
+/** tables - popups **/
+td.popupheader { /* heading in a popup (e.g. motd, yom)*/
+	background-color: #c8c8c8;
+	height: 50px;
+}
+
+/** tables - footers **/
+table.noborder { /* table in the footer */
+	border: none;
+}
+td.footer { /* data for a footer */
+	background-image: url(../images/rule.gif);
+	background-repeat: repeat-x;
+	background-position: top;
+}
+td.noborder { /* borderless data in the footer */
+	border: none;
+}
+
+/** debugging **/
+div.debug {
+	background-color: #333333;
+	color: #f5f5f5;
+	border: 1px dotted #f5f5f5;
+	width: auto;
+	height: auto;
+	font-size: 11px;
+}
+
