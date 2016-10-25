@@ -58,3 +58,4 @@ vendor/*
 composer.json
 modules
 .gitmodules
+templates
