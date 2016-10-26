@@ -8,16 +8,16 @@
             </title>
             <link href='templates/responsive.css' rel='stylesheet' type='text/css' />
             <link href='templates/assets/colors.css' rel='stylesheet' type='text/css' />
-            <script type='text/javascript' src='templates/assets/jquery_min.js' />
+            <script src='templates/assets/jquery_min.js' /></script>
             <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-            </script>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <script src='templates/assets/app.js'></script> 
             {headscript}
             {script}
             {javascript}
-            <script src='https://www.google.com/recaptcha/api.js'>
             </script>
         </head>
-        <body style='height: 100%;color: #CCC;'>
+        <body style='height: 100%;color: #CCC;' ng-app='LOTGD'>
             <table border='0px' cellpadding=5 cellspacing=0 width='100%'>
                 <tr>
                     <td colspan=2 class='pageheader'>
@@ -56,8 +56,10 @@
             <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' />
             <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css' />
             <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css' />
-            <script type='text/javascript' src='templates/assets/jquery_min.js'>
-            </script>
+            <script src='templates/assets/jquery_min.js'></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <script src='templates/assets/app.js'></script> 
             <script type='text/javascript'>
                 function newMail()
                 {
@@ -127,7 +129,7 @@
             {script}
             {javascript}
         </head>
-        <body>
+        <body ng-app='LOTGD'>
             <header>
                 <div class='title'>
                     <span class='banner'></span>
