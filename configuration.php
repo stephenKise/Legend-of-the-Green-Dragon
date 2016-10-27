@@ -303,7 +303,7 @@ if ($op == "") {
 		"officermoderate"=>"Can clan officers who are also moderators moderate their own clan even if they cannot moderate all clans?,bool",
 
 		"New Days,title",
-		"daysperday"=>"Game days per calendar day,range,1,6,1",
+		"daysperday"=>"Game days per calendar day,range,1,24,1",
 		"specialtybonus"=>"Extra daily uses in specialty area,range,0,5,1",
 		"newdaycron"=>"Let the newday-runonce run via a cronjob,bool",
 		"The directory is necessary! Do not forget to set the correct one in cron.php in your main game folder!!! ONLY experienced admins should use cron jobbing here,note",
