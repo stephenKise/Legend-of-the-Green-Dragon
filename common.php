@@ -42,6 +42,7 @@ $logd_version = "1.1.2 Dragonprime Edition";
 //ob_start('ob_gzhandler');
 
 // Include some commonly needed and useful routines
+require_once('vendor/autoload.php');
 require_once("lib/local_config.php");
 require_once("lib/dbwrapper.php");
 require_once("lib/holiday_texts.php");
