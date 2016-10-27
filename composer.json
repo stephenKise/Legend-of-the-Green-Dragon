@@ -1,0 +1,15 @@
+{
+    "name": "stephenkise/lotgd",
+    "description": "Legend of the Green Dragon, a BBS Door game!",
+    "type": "project",
+    "license": "MIT License",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "LOTGD\\": "lib/"
+        }
+    },
+    "require": {
+        "phpunit/phpunit": "^5.6"
+    }
+}
