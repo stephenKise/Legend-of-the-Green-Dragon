@@ -67,7 +67,7 @@ function output_notl($indata){
 		$out = call_user_func_array("sprintf",$args);
 	}
 	//holiday text
-	if ($priv==false) $out = holidayize($out,'output');
+	//if ($priv==false) $out = holidayize($out,'output');
 	//`1`2 etc color & formatting
 	$out = appoencode($out,$priv);
 	//apply to the page.
@@ -725,10 +725,10 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 	$extra="";
 	$ignoreuntil="";
 	if ($link===false){
-		$text = holidayize($text,'nav');
+		//$text = holidayize($text,'nav');
 		$thisnav.=tlbutton_pop().templatereplace("navhead",array("title"=>appoencode($text,$priv)));
 	}elseif ($link === "") {
-		$text = holidayize($text,'nav');
+		//$text = holidayize($text,'nav');
 		$thisnav.=tlbutton_pop().templatereplace("navhelp",array("text"=>appoencode($text,$priv)));
 	} elseif ($link == "!!!addraw!!!") {
 		$thisnav .= $text;
@@ -749,12 +749,12 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 				$hchar = strtolower($text[0]);
 				if ($hchar==' ' || array_key_exists($hchar,$accesskeys) && $accesskeys[$hchar]==1){
 					$text = substr($text,2);
-					$text = holidayize($text,'nav');
+					//$text = holidayize($text,'nav');
 					if ($hchar == ' ') $key = " ";
 				}else{
 					$key = $text[0];
 					$text = substr($text,2);
-					$text = holidayize($text,'nav');
+					//$text = holidayize($text,'nav');
 					$found=false;
 					$text_len = strlen($text);
 					for ($i=0;$i<$text_len; ++$i){
@@ -786,7 +786,7 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 					}
 				}
 			} else {
-				$text = holidayize($text,'nav');
+				//$text = holidayize($text,'nav');
 			}
 
 			if ($key==""){
