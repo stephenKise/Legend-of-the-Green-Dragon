@@ -17,8 +17,23 @@ mysql -u {user} -p{password} -e 'CREATE DATABASE LOTGD;'
 cd /var/www
 git clone git@github.com:stephenKise/Legend-of-the-Green-Dragon.git
 
-# Update the composer dependencies
-composer update
-
 # Navigate to /installer.php in your browser.
+```
+
+# Modules
+This forked core, just like it's original source, supports modules. The reason they are not present here is because of the desire to decouple core modules from the core source. Modules should be hosted separate of the game, so that this repository doesn't override any functionality used on multiple servers. You can simply create a module directory yourself, or make a GitHub hosted repository!
+
+```bash
+cd /var/www/Legend-of-the-Green-Dragon
+mkdir modules
+# You can stop here and just upload your modules, or create a new repository:
+cd modules
+echo "# Modules" >> README.md
+git init
+git add README.md
+git commit -m ":dragon: Initial commit for modules!"
+# Be sure to replace {username} with your username.
+git remote add origin git@github.com:{username}/lotgd-modules.git
+git push -u origin master
+# You can now push modules into the repository and add them into your sever with 'git pull'!
 ```
