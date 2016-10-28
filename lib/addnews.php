@@ -13,16 +13,14 @@ function addnews(string $text = '', array $options = [])
     global $translation_namespace, $session;
     $options = modulehook('addnews', $options);
     $news = db_prefix('news');
-    $replacements = [];
-    foreach ($options as $key => $val) {
-        if (is_numeric($key)) {
-            array_push($replacements, $val);
-        }
-    }
-    $text = sprintf_translate($text, $replacements);
     $date = ($options['date']) ?? date('Y-m-d');
+    unset($options['date']);
     $acctid = ($options['acctid']) ?? $session['user']['acctid'];
-    if (!$options['hide']) {
+    unset($options['acctid']);
+    $hide = isset($options['hide']);
+    unset($options['hide']);
+    $text = vsprintf($text, $options);
+    if (!$hide) {
         $sql = db_query(
             "INSERT INTO $news (newstext, newsdate, accountid, tlschema)
             VALUES ('$text', '$date', '$acctid', '$translation_namespace')"
