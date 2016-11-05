@@ -45,11 +45,12 @@ function previewfield($name, $startdiv=false, $talkline="says", $showcharsleft=t
 						if (max.maxlength!=200-$tll) max.maxlength=200-$tll;
 						l=200-$tll; */ // Don't know why needed
 		rawoutput("	if (x!=0) {
-						if (max.maxLength!=200) max.maxLength=200;
+						//if (max.maxLength!=200) max.maxLength=200;
 						l=200;
-					} else {
-						max.maxLength=l;
 					}
+					//else {
+						//max.maxLength=l;
+					//}
 					if (l-t.length<0) charsleft +='<span class=\\'colLtRed\\'>';
 					charsleft += '".$youhave."'+(l-t.length)+'".$charsleft."<br>';
 					if (l-t.length<0) charsleft +='</span>';
