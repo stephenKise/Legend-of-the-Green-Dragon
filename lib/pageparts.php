@@ -134,7 +134,6 @@ function page_footer($saveuser = true){
             ($row['motddate']>$session['user']['lastmotd']) &&
             (!isset($nopopup[$SCRIPT_NAME]) || $nopopups[$SCRIPT_NAME]!=1) &&
             $session['user']['loggedin']){
-        $headscript.=popup("motd.php");
         $session['needtoviewmotd']=true;
     }else{
         $session['needtoviewmotd']=false;
