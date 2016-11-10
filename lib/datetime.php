@@ -5,13 +5,13 @@ function reltime(int $date, bool $short = true)
 {
     $now = strtotime('now');
     $x = abs($now - $date);
-    $d = ($x/86400);
+    $d = floor($x/86400);
     $x = $x % 86400;
-    $h = ($x/3600);
+    $h = floor($x/3600);
     $x = $x % 3600;
-    $m = ($x/60);
+    $m = floor($x/60);
     $x = $x % 60;
-    $s = ($x);
+    $s = $x;
     if ($short) {
         $array = [
             'day' => 'd',
@@ -19,18 +19,8 @@ function reltime(int $date, bool $short = true)
             'minute' => 'm',
             'second' => 's',
         ];
-        $array = translate_inline($array, 'datetime');
-        if ($d > 0) {
-            $o = $d . $array['d'] . ($h > 0 ? $h . $array['h'] : '');
-        }
-        else if ($h > 0) {
-            $o = $h . $array['h'] . ($m > 0 ? $m . $array['m'] : '');
-        }
-        else if ($m > 0) {
-            $o = $m . $array['m'] . ($s > 0 ? $s . $array['s'] : '');
-        }
-        else {
-            $o = $s . $array['s'];
+        foreach ($array as $long => $short) {
+            $o .= $$short.$short;
         }
     }
     else {
