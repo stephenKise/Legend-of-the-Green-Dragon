@@ -207,7 +207,6 @@ addnav("M?".$texts['stablename']."`0","stables.php");
 tlschema();
 
 addnav("G?The Gardens", "gardens.php");
-addnav("R?Curious Looking Rock", "rock.php");
 if (getsetting("allowclans",1)) addnav("C?Clan Halls","clan.php");
 
 tlschema($schemas['infonav']);
