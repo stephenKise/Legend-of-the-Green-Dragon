@@ -14,7 +14,6 @@ function reltime(int $date, bool $short = true)
     $s = $x;
     if ($short) {
         $array = [
-            'day' => 'd',
             'hour' => 'h',
             'minute' => 'm',
             'second' => 's',
