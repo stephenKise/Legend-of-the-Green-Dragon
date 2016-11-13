@@ -59,6 +59,7 @@ require_once("lib/tempstat.php");
 require_once("lib/su_access.php");
 require_once("lib/datetime.php");
 require_once("lib/translator.php");
+require_once("lib/gamelog.php");
 
 if(!function_exists("file_get_contents")) {
      function file_get_contents($file) {
@@ -310,7 +311,6 @@ if (
 			if (e_rand(1,100)==2){
 				$timestamp = date("Y-m-d H:i:s",strtotime("-1 month"));
 				db_query("DELETE FROM ".db_prefix("referers")." WHERE last < '$timestamp' LIMIT 300");
-				require_once("lib/gamelog.php");
 				gamelog("Deleted ".db_affected_rows()." records from ".db_prefix("referers")." older than $timestamp.","maintenance");
 			}
 		}
