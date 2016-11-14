@@ -3,7 +3,6 @@
 // addnews ready
 // mail ready
 
-require_once("lib/arraytourl.php");
 
 $injected_modules = array(1=>array(),0=>array());
 
