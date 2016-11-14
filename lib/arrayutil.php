@@ -1,14 +1,12 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 /**
  * Misc array functions
  * 
  * Contains functions that perform
  * various functions on arrays.
  * 
- * @copyright Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
+ * @copyright Copyright © 2002-2005, Eric Stevens & JT Traub
+ * @copyright Copyright © 2006-2009, Dragonprime Development Team
  * @version Lotgd 1.1.2 DragonPrime Edition
  * @package Core
  * @subpackage Library
@@ -27,13 +25,10 @@
  * @param mixed $array
  * @return string The parameter converted to a string
  */
-function createstring($array){
-	if (is_array($array) || is_object($array)){
-		$out = serialize($array);
-	} else {
-		$out = (string)$array;
-	}
-	return $out;
+function createstring($array): string
+{
+    if (is_array($array) || is_object($array)) {
+        return serialize($array);
+    }
+    return $array;
 }
-
-?>
