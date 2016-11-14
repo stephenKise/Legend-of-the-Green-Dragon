@@ -58,4 +58,5 @@ vendor/*
 composer.json
 modules
 .gitmodules
+tests
 templates
