@@ -12,42 +12,18 @@ function reltime(int $date, bool $short = true)
     $m = floor($x/60);
     $x = $x % 60;
     $s = $x;
-    if ($short) {
-        $array = [
-            'hour' => 'h',
-            'minute' => 'm',
-            'second' => 's',
-        ];
-        foreach ($array as $long => $short) {
-            $o .= $$short.$short;
-        }
+    $array = [
+        'hour' => 'h',
+        'minute' => 'm',
+        'second' => 's',
+    ];
+    if (!$short) {
+        array_unshift($array, 'd');
     }
-    else {
-        $array = [
-            'day' => 'day',
-            'days' => 'days',
-            'hour' => 'hour',
-            'hours' => 'hours',
-            'minute' => 'minutes',
-            'minutes' => 'minutes',
-            'second' => 'second',
-            'seconds' => 'seconds',
-        ];
-        $array = translate_inline($array, 'datetime');
-        if ($d > 0) {
-            $o = "$d ".($d>1?$array['days']:$array['day']).($h>0?", $h ".($h>1?$array['hours']:$array['hour']):"");
-        }
-        else if ($h > 0) {
-            $o = "$h " . ($h > 1 ? $array['hours'] : $array['hour']) . ($m > 0 ? ", $m " . ($m > 1 ? $array['minutes'] : $array['minute']) : '');
-        }
-        else if ($m > 0) {
-            $o = "$m " . ($m > 1 ? $array['minutes'] : $array['minute']) . ($s > 0 ? ", $s " . ($s > 1 ? $array['seconds'] : $array['second']) : '');
-        }
-        else {
-            $o = "$s " . ($s > 0 ? $array['seconds'] : $array['second']);
-        }
+    foreach ($array as $long => $short) {
+        $o .= $$short . $short . " ";
     }
-    return $o;
+    return trim($o);
 }
 
 function relativedate(string $indate): string
