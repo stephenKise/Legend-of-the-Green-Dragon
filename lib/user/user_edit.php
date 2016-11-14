@@ -58,11 +58,6 @@ if (httpget("subop")==""){
     $info = showform($showformargs['userinfo'],$showformargs['user']);
     rawoutput("<input type='hidden' value=\"".htmlentities(serialize($info), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\" name='oldvalues'>");
     rawoutput("</form>");
-        output("`n`nLast Page Viewed:`n");
-    rawoutput("<iframe src='user.php?op=lasthit&userid=$userid' width='100%' height='400'>");
-    output("You need iframes to view the user's last hit here.");
-    output("Use the link in the nav instead.");
-    rawoutput("</iframe>");
 }elseif(httpget("subop")=="module"){
     //Show a user's prefs for a given module.
     addnav("Operations");
