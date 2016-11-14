@@ -207,6 +207,8 @@ if ($op == "") {
 	rawoutput(tlbutton_clear());
 	$setup = array(
 		"Game Setup,title",
+		'servername' => 'What should we call your server?, text',
+		'serverdescription' => 'How should we introduce your server?, textarea',
 		"loginbanner"=>"Login Banner (under login prompt: 255 chars)",
 		"maxonline"=>"Max # of players online (0 for unlimited), int",
 		"allowcreation"=>"Allow creation of new characters,bool",
@@ -217,6 +219,7 @@ if ($op == "") {
 		"defaultlanguage"=>"Default Language,enum,".getsetting("serverlanguages","en,English,fr,Français,dk,Danish,de,Deutsch,es,Español,it,Italian"),
 		"edittitles"=>"Should DK titles be editable in user editor,bool",
 		"motditems"=>"How many items should be shown on the motdlist,int",
+		"impressum"=>"Tell the world something about this server. (This will show up in the 'About LoGD' page),textarea",
 
 		"Main Page Display,title",
 		"homeskinselect"=>"Should the skin selection widget be shown?,bool",
@@ -224,7 +227,6 @@ if ($op == "") {
 		"homenewdaytime"=>"Should the time till newday be shown?,bool",
 		"homenewestplayer"=>"Should the newest player be shown?,bool",
 		"defaultskin"=>"What skin should be the default?,theme",
-		"impressum"=>"Tell the world something about the person running this server. (e.g. name and address),textarea",
 
 		"Beta Setup,title",
 		"beta"=>"Enable beta features for all players?,bool",

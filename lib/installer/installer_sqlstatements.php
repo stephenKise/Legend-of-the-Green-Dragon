@@ -1,4 +1,5 @@
 <?php
+$settings = db_prefix('settings');
 $creaturefields = "(creatureid,creaturename,creaturelevel,creatureweapon,creaturelose,creaturewin,creaturegold,creatureexp,creaturehealth,creatureattack,creaturedefense,creatureaiscript,createdby,forest,graveyard,oldcreatureexp)";
 $creaturefields111 = "(creatureid,creaturename,creaturelevel,creatureweapon,creaturelose,creaturewin,creaturegold,creatureexp,creaturehealth,creatureattack,creaturedefense,creatureaiscript,createdby,forest,graveyard)";
 $sql_upgrade_statements = array(
@@ -871,7 +872,17 @@ $sql_upgrade_statements = array(
 "INSERT INTO " . db_prefix("companions") . " (`companionid`, `name`, `category`, `description`, `attack`, `attackperlevel`, `defense`, `defenseperlevel`, `maxhitpoints`, `maxhitpointsperlevel`, `abilities`, `cannotdie`, `cannotbehealed`, `companionlocation`, `companionactive`, `companioncostdks`, `companioncostgems`, `companioncostgold`, `jointext`, `dyingtext`, `allowinshades`, `allowinpvp`, `allowintrain`) VALUES (1, 'Mortimer teh javelin man', 'Knight', 'A rough and ready warrior.  Beneath his hardened exterior, one can detect a man of strong honour.', 5, 2, 1, 2, 20, 20, 'a:4:{s:5:\"fight\";s:1:\"1\";s:4:\"heal\";s:1:\"0\";s:5:\"magic\";s:1:\"0\";s:6:\"defend\";b:0;}', 0, 0, '".getsetting("villagename", LOCATION_FIELDS)."', 1, 0, 4, 573, '`^Greetings unto thee, my friend.  Let us go forth and conquer the evils of this world together!', '`4Argggggh!  I am slain!  Shuffling off my mortal coil.  Fare thee well, my friends.', 1, 0, 0)",
 "INSERT INTO " . db_prefix("companions") . " (`companionid`, `name`, `category`, `description`, `attack`, `attackperlevel`, `defense`, `defenseperlevel`, `maxhitpoints`, `maxhitpointsperlevel`, `abilities`, `cannotdie`, `cannotbehealed`, `companionlocation`, `companionactive`, `companioncostdks`, `companioncostgems`, `companioncostgold`, `jointext`, `dyingtext`, `allowinshades`, `allowinpvp`, `allowintrain`) VALUES (2, 'Florenz', 'Healer', 'With a slight build, Florenz is better suited as a healer than a fighter.', 1, 1, 5, 5, 15, 10, 'a:4:{s:4:\"heal\";s:1:\"2\";s:5:\"magic\";s:1:\"0\";s:5:\"fight\";b:0;s:6:\"defend\";b:0;}', 0, 0, '".getsetting("villagename", LOCATION_FIELDS)."', 1, 0, 3, 1000, 'Thank ye for thy faith in my skills.  I shall endeavour to keep ye away from Ramius'' claws.', 'O Discordia!', 1, 0, 0)",
 ),
-"1.1.2 Dragonprime Edition"=>array(
-),
+"1.1.2 Dragonprime Edition" => [
+    "INSERT INTO $settings VALUES ('servername', 'Legend of the Green Dragon')",
+    "INSERT INTO $settings
+    VALUES (
+        'serverdescription',
+        'Welcome to Legend of the Green Dragon, a browser-based roleplay game, inspired by Seth Able\'s Legend of the Red Dragon.'
+    )",
+    "INSERT INTO $settings VALUES (
+        'impressum',
+        'This server currently is running a publicly hosted version of the game at github.com/stephenKise/Legend-of-the-Green-Dragon!'
+    )"
+],
 );
 ?>

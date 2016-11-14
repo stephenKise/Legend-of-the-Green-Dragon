@@ -49,9 +49,12 @@ function page_header()
         modulehook('header-' . $script);
     }
 
-    $arguments = func_get_args() ?: ['Legend of the Green Dragon'];
+    $arguments = func_get_args() ?: [getsetting(
+        'servername',
+        'Legend of the Green Dragon'
+    )];
     $title = call_user_func_array('sprintf_translate', $arguments);
-    $title = sanitize(holidayize($title, 'title'));
+    $title = sanitize($title, 'title');
     calculate_buff_fields();
 
     $header = str_replace("{title}", $title, $template['header']);
