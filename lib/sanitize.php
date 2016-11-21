@@ -168,7 +168,7 @@ function sanitize_colorname(bool $spaceallowed, string $input, bool $admin
 
 function sanitizeNameColor(string $input): string
 {
-    return preg_replace("([^[:alpha:]`!@#$%^&\\)12345670 _-])", "", $input);
+    return preg_replace("([^[:alpha:]`!@#$%^&\\)12345670~ _-])", "", $input);
 }
 
 
