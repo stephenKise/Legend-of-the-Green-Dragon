@@ -31,7 +31,10 @@ if ($op=="" || $op=="sql"){
 				output("`&%s rows affected.`n`n",db_affected_rows());
 			}
 			rawoutput("<table cellspacing='1' cellpadding='2' border='0' bgcolor='#999999'>");
-			$number = db_num_rows($r);
+			$number = 0;
+			if (gettype($r) == 'object') {
+				$number = db_num_rows($r);
+			}
 			for ($i = 0; $i < $number; $i++) {
 				$row = db_fetch_assoc($r);
 				if ($i == 0) {
