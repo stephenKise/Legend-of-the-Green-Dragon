@@ -1,130 +1,189 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
-function sanitize($in){
-    $out = preg_replace("/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/", "", $in);
-    return $out;
+function sanitize(string $input): string
+{
+    return preg_replace(
+        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/",
+        "",
+        $in
+    );
 }
 
-function newline_sanitize($in){
-    $out = preg_replace("/`n/", "", $in);
-    return $out;
+function newline_sanitize(string $input): string
+{
+    return sanitizeNewline($input);
 }
 
-function color_sanitize($in){
-    $out = preg_replace("/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/", "", $in);
-    return $out;
+function sanitizeNewline(string $input): string
+{
+    return preg_replace("/`n/", "", $input);
 }
 
-function comment_sanitize($in) {
-    // to keep the regexp from boinging this, we need to make sure
-    // that we're not replacing in with the ` mark.
-    $out=preg_replace("/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/", chr(1).chr(1), $in);
-    $out = str_replace(chr(1),"`",$out);
-    return $out;
+function color_sanitize(string $input): string
+{
+    return sanitizeColor($input);
 }
 
-function logdnet_sanitize($in)
+function sanitizeColor(string $input): string
+{
+    return preg_replace(
+        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/",
+        "",
+        $input
+    );
+}
+
+function comment_sanitize(string $input): string
+{
+    return sanitizeComment($input);
+}
+
+function sanitizeComment(string $input): string
 {
     // to keep the regexp from boinging this, we need to make sure
     // that we're not replacing in with the ` mark.
-    $out=preg_replace("/[`](?=[^1234567890!@#\$%^&)Qqbi])/", chr(1).chr(1), $in);
+    $out=preg_replace("/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/", chr(1).chr(1), $input);
     $out = str_replace(chr(1),"`",$out);
     return $out;
 }
 
-function full_sanitize($in) {
-    $out = preg_replace("/[`]./", "", $in);
+function logdnet_sanitize(string $input): string
+{
+    return sanitizeLogdNet($input);
+}
+
+function sanitizeLogdNet(string $input): string
+{
+    // to keep the regexp from boinging this, we need to make sure
+    // that we're not replacing in with the ` mark.
+    $out=preg_replace("/[`](?=[^1234567890!@#\$%^&)Qqbi])/", chr(1).chr(1), $input);
+    $out = str_replace(chr(1),"`",$out);
     return $out;
 }
 
-function cmd_sanitize($in) {
-    $out = preg_replace("'[&?]c=[[:digit:]-]+'", "", $in);
-    return $out;
+function full_sanitize(string $input): string
+{
+    return sanitizeFull($input);
 }
 
-function comscroll_sanitize($in) {
-    $out = preg_replace("'&c(omscroll)?=([[:digit:]]|-)*'", "", $in);
+function sanitizeFull(string $input): string
+{
+    return preg_replace("/[`]./", "", $input);
+}
+
+function cmd_sanitize(string $input): string
+{
+    return sanitizeCounter($input);
+}
+
+function sanitizeCounter(string $input): string
+{
+    return preg_replace("'[&?]c=[[:digit:]-]+'", "", $input);
+}
+
+function comscroll_sanitize(string $input): string
+{
+    return sanitizeComscroll($input);
+}
+
+function sanitizeComscroll(string $input): string
+{
+    $out = preg_replace("'&c(omscroll)?=([[:digit:]]|-)*'", "", $input);
     $out = preg_replace("'\\?c(omscroll)?=([[:digit:]]|-)*'", "?", $out);
     $out = preg_replace("'&(refresh|comment)=1'", "", $out);
     $out = preg_replace("'\\?(refresh|comment)=1'", "?", $out);
     return $out;
 }
 
-function prevent_colors($in) {
-    $out = str_replace("`", "&#0096;", $in);
-    return $out;
+function prevent_colors(string $input): string
+{
+    return sanitizeBackticks($input);
 }
 
-function translator_uri($in){
-    $uri = comscroll_sanitize($in);
+function sanitizeBackticks(string $input): string
+{
+    return str_replace("`", "&#0096;", $input);
+}
+
+function translator_uri(string $input): string
+{
+    $uri = comscroll_sanitize($input);
     $uri = cmd_sanitize($uri);
     if (substr($uri,-1)=="?") $uri = substr($uri,0,-1);
     return $uri;
 }
 
-function translator_page($in){
-    $page = $in;
-    if (strpos($page,"?")!==false) $page=substr($page,0,strpos($page,"?"));
+function translator_page(string $input): string
+{
+    if (strpos($input,"?")!==false) {
+        $input = substr($input, 0, strpos($input, '?'));
+    }
     //if ($page=="runmodule.php" && 0){
     //  //we should handle this in runmodule.php now that we have tlschema.
     //  $matches = array();
     //  preg_match("/[&?](module=[^&]*)/i",$in,$matches);
     //  if (isset($matches[1])) $page.="?".$matches[1];
     //}
-    return $page;
+    return $input;
 }
 
-function modulename_sanitize($in){
-    return preg_replace("'[^0-9A-Za-z_]'","",$in);
-}
-
-// the following function borrowed from mike-php at emerge2 dot com's post
-// to php.net documentation.
-//Original post is available here: http://us3.php.net/stripslashes
-function stripslashes_array( $given ) {
-   return is_array( $given ) ?
-       array_map( 'stripslashes_array', $given ) : stripslashes( $given );
-}
-
-// Handle spaces in character names
-function sanitize_name($spaceallowed, $inname)
+function modulename_sanitize(string $input): string
 {
-    if ($spaceallowed)
-        $expr = "([^[:alpha:] _-])";
-    else
-        $expr = "([^[:alpha:]])";
-    return preg_replace($expr, "", $inname);
+    return sanitizeModuleName($input);
 }
 
-// Handle spaces and color in character names
-function sanitize_colorname($spaceallowed, $inname, $admin = false)
+function sanitizeModuleName(string $input): string
 {
-    if ($admin && getsetting("allowoddadminrenames", 0)) return $inname;
-    if ($spaceallowed)
-        $expr = "([^[:alpha:]`!@#$%^&\\)12345670 _-])";
-    else
-        $expr = "([^[:alpha:]`!@#$%^&\\)12345670])";
-    return preg_replace($expr, "", $inname);
+    return preg_replace("'[^0-9A-Za-z_]'","",$input);
 }
 
-// Strip out <script>...</script> blocks and other HTML tags to try and
-// detect if we have any actual output.  Used by the collapse code to try
-// and make sure we don't add spurious collapse boxes.
-// Also used by the rename code to remove HTML that some admins try to
-// insert.. Bah
-function sanitize_html($str)
+function stripslashes_array(array $array): array
 {
-    //take out script blocks
-    $str = preg_replace("/<script[^>]*>.+<\\/script[^>]*>/", "", $str);
-    //take out css blocks
-    $str = preg_replace("/<style[^>]*>.+<\\/style[^>]*>/", "", $str);
-    //take out comments
-    $str = preg_replace("/<!--.*-->/", "", $str);
-    $str = strip_tags($str);
-    return $str;
+    return stripslashesArray($array);
+}
+
+function stripslashesArray(array $array): array
+{
+    foreach ($array as $key => $value) {
+        $array[stripslashes($key)] = stripslashes($value);
+    }
+   return $array;
+}
+
+function sanitize_name(bool $spaceallowed = true, string $input): string
+{
+    return sanitizeName($input);
+}
+
+function sanitizeName(string $input): string
+{
+    return preg_replace("([^[:alpha:] _-])", "", $input);
+}
+
+function sanitize_colorname(bool $spaceallowed, string $input, bool $admin
+): string
+{
+    return sanitizeNameColor($input);
+}
+
+function sanitizeNameColor(string $input): string
+{
+    return preg_replace("([^[:alpha:]`!@#$%^&\\)12345670 _-])", "", $input);
+}
+
+
+function sanitize_html(string $input): string
+{
+    return sanitizeHTML($input);
+}
+
+function sanitizeHTML(string $input): string
+{
+    $input = preg_replace("/<script[^>]*>.+<\\/script[^>]*>/", "", $input);
+    $input = preg_replace("/<style[^>]*>.+<\\/style[^>]*>/", "", $input);
+    $input = preg_replace("/<!--.*-->/", "", $input);
+    $input = strip_tags($input);
+    return $input;
 }
 
 
@@ -137,6 +196,9 @@ function sanitize_html($str)
  */
 function htmlent(string $string): string
 {
-    $string = htmlentities($string, ENT_COMPAT, getsetting('charset', 'ISO-8859-1'));
-    return $string;
+    return htmlentities(
+        $string,
+        ENT_COMPAT,
+        getsetting('charset', 'ISO-8859-1')
+    );
 }
