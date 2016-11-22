@@ -86,7 +86,10 @@ function page_footer($saveuser = true){
     global $output,$nestedtags,$header,$nav,$session,$REMOTE_ADDR,
         $REQUEST_URI,$pagestarttime,$quickkeys,$template,$y2,$z2,
         $logd_version,$copyright,$SCRIPT_NAME,$nopopups, $footer,
-        $dbinfo;
+        $dbinfo, $queriesFromCache;
+    if (!isset($queriesFromCache)) {
+        $queriesFromCache = 0;
+    }
     $z = $y2^$z2;
     $footer = $template['footer'];
     //page footer module hooks
@@ -367,7 +370,7 @@ function page_footer($saveuser = true){
     $gentime = getmicrotime()-$pagestarttime;
     $session['user']['gentime']+=$gentime;
     $session['user']['gentimecount']++;
-    $footer=str_replace("{pagegen}","Page gen: ".round($gentime,3)."s / ".$dbinfo['queriesthishit']." queries (".round($dbinfo['querytime'],3)."s), Ave: ".round($session['user']['gentime']/$session['user']['gentimecount'],3)."s - ".round($session['user']['gentime'],3)."/".round($session['user']['gentimecount'],3)."",$footer);
+    $footer=str_replace("{pagegen}","Page gen: ".round($gentime,3)."s / ".$dbinfo['queriesthishit']." queries ($queriesFromCache cached, ".round($dbinfo['querytime'],3)."s), Ave: ".round($session['user']['gentime']/$session['user']['gentimecount'],3)."s - ".round($session['user']['gentime'],3)."/".round($session['user']['gentimecount'],3)."",$footer);
 
     tlschema();
 
@@ -714,7 +717,7 @@ function charstats(){
         return $charstat;
     }else{
         $ret = "";
-        if ($ret = datacache("charlisthomepage")){
+        if ($ret = datacache("charlisthomepage", 3600)){
 
         }else{
             $onlinecount=0;

@@ -81,6 +81,8 @@ function injectmodule($modulename,$force=false){
 					//recorded in the database, time to update the database
 					//and upgrade the module.
 					debug("The module $modulename was found to have updated, upgrading the module now.");
+					datacacheWipeContaining('module-settings');
+					datacacheWipeContaining('module-userprefs');
 					if (!is_array($info)){
 						//we might have gotten this info above, if not,
 						//we need it now.
@@ -360,7 +362,7 @@ function mass_module_prepare($hooknames){
 			$Pmodule_settings
 		WHERE
 			modulename IN ($modulelist)";
-	$result = db_query($sql);
+	$result = db_query_cached($sql, 'module-settings-' . md5($modulelist), 3600);
 	while ($row = db_fetch_assoc($result)){
 		$module_settings[$row['modulename']][$row['setting']] = $row['value'];
 	}
@@ -377,7 +379,11 @@ function mass_module_prepare($hooknames){
 		WHERE
 			modulename IN ($modulelist)
 		AND	userid = ".(int)$session['user']['acctid'];
-	$result = db_query($sql);
+	$result = db_query_cached(
+		$sql,
+		"module-userprefs-{$session['user']['acctid']}-" . md5($modulelist),
+		3600
+	);
 	while ($row = db_fetch_assoc($result)){
 		$module_prefs[$row['userid']][$row['modulename']][$row['setting']] = $row['value'];
 	}

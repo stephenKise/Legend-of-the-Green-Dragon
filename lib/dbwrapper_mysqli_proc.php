@@ -54,18 +54,17 @@ function &db_query_cached($sql,$name,$duration=900){
 	$data = datacache($name,$duration);
 	if (is_array($data)){
 		reset($data);
-		$dbinfo['affected_rows']=-1;
-		return $data;
-	}else{
-		$result = db_query($sql);
-		$data = array();
-		while ($row = db_fetch_assoc($result)) {
-			$data[] = $row;
-		}
-		updatedatacache($name,$data);
-		reset($data);
+		unset($dbinfo['affected_rows']);
 		return $data;
 	}
+	$result = db_query($sql);
+	$data = array();
+	while ($row = db_fetch_assoc($result)) {
+		$data[] = $row;
+	}
+	updatedatacache($name, $data);
+	reset($data);
+	return $data;
 }
 
 if (file_exists("lib/dbremote.php")) {
