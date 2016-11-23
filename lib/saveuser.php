@@ -12,7 +12,7 @@ function saveuser(){
 		// are undone.
 		restore_buff_fields();
 
-		$session['user']['allowednavs']=serialize($session['allowednavs']);
+		$session['user']['allowednavs']=json_encode($session['allowednavs']);
 		$session['user']['bufflist']=serialize($session['bufflist']);
 		if (isset($companions) && is_array($companions)) $session['user']['companions']=serialize($companions);
 		$sql="";

@@ -18,8 +18,8 @@ function do_forced_nav($anonymous,$overrideforced){
 			$session['user']['dragonpoints']=unserialize($session['user']['dragonpoints']);
 			$session['user']['prefs']=unserialize($session['user']['prefs']);
 			if (!is_array($session['user']['dragonpoints'])) $session['user']['dragonpoints']=array();
-			if (is_array(unserialize($session['user']['allowednavs']))){
-				$session['allowednavs']=unserialize($session['user']['allowednavs']);
+			if (is_array(json_decode($session['user']['allowednavs'], true))){
+				$session['allowednavs']=json_decode($session['user']['allowednavs'], true);
 			}else{
 				$session['allowednavs']=array($session['user']['allowednavs']);
 			}
