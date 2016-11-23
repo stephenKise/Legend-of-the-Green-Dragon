@@ -792,7 +792,7 @@ function maillink()
     $row = db_fetch_assoc($result);
     db_free_result($result);
     $pop = popup('mail.php');
-    $mail = sprintf_translate("Ye Olde Mail: %s new, %s old", $row['notseen'], $row['seencount']);
+    $mail = sprintf_translate("Ye Olde Mail: %s new, %s old", $row['notseen']?:0, $row['seencount']?:0);
     $class = ($row['notseen']) ? 'hot' : '';
     return "<a href='mail.php' target='_blank' onClick=\"$mail;return false;\" class='{$class}motd'>$mail</a>";
 }
