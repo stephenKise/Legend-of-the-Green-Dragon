@@ -774,6 +774,7 @@ function set_module_pref($name,$value,$module=false,$user=false){
 	else $uid = $user;
 	load_module_prefs($module, $uid);
 
+	datacacheWipeContaining('module-userprefs-' . $uid);
 	//don't write to the DB if the user isn't logged in.
 	if (!$session['user']['loggedin'] && !$user) {
 		// We do need to save to the loaded copy here however
@@ -799,6 +800,7 @@ function increment_module_pref($name,$value=1,$module=false,$user=false){
 	else $uid = $user;
 	load_module_prefs($module, $uid);
 
+	datacacheWipeContaining('module-userprefs-' . $uid);
 	//don't write to the DB if the user isn't logged in.
 	if (!$session['user']['loggedin'] && !$user) {
 		// We do need to save to the loaded copy here however
@@ -824,6 +826,7 @@ function clear_module_pref($name,$module=false,$user=false){
 	else $uid = $user;
 	load_module_prefs($module, $uid);
 
+	datacacheWipeContaining('module-userprefs-' . $uid);
 	//don't write to the DB if the user isn't logged in.
 	if (!$session['user']['loggedin'] && !$user) {
 		// We do need to trash the loaded copy here however
