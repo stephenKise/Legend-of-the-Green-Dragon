@@ -10,7 +10,6 @@ function injectmodule($modulename,$force=false){
 	global $mostrecentmodule,$injected_modules;
 	//try to circumvent the array_key_exists() problem we've been having.
 	if ($force) $force = 1; else $force = 0;
-
 	//early escape if we already called injectmodule this hit with the
 	//same args.
 	if (isset($injected_modules[$force][$modulename])) {
@@ -109,8 +108,20 @@ function injectmodule($modulename,$force=false){
 					// Remove any old hooks (install will reset them)
 					module_wipehooks();
 					$fname = $modulename."_install";
-					if ($fname() === false) {
-						return false;
+
+					foreach ($info['install'] as $hook => $args) {
+						debug("Found $hook, running adhook!");
+						module_addhook_priority(
+							$hook,
+							$args['priority'] ?: 50,
+							$args['function'] ?: "{$modulename}_dohook",
+							$args['condition'] ?: ''
+						);
+					}
+					if (function_exists($fname)) {
+						if ($fname() === false) {
+							return false;
+						}
 					}
 					invalidatedatacache("inject-$modulename");
 
@@ -1292,7 +1303,9 @@ function uninstall_module($module){
 		$fname = $module."_uninstall";
 		output("Running module uninstall script`n");
 		tlschema("module-{$module}");
-		$fname();
+		if (function_exists($fname)) {
+			$fname();
+		}
 		tlschema();
 
 		output("Deleting module entry`n");
@@ -1330,7 +1343,7 @@ function install_module($module, $force=true){
  	global $mostrecentmodule, $session;
 	$name = $session['user']['name'];
 	if (!$name) $name = '`@System`0';
-
+	debug($module);
 	require_once("lib/sanitize.php");
 	if (modulename_sanitize($module)!=$module){
 		output("Error, module file names can only contain alpha numeric characters and underscores before the trailing .php`n`nGood module names include 'testmodule.php', 'joesmodule2.php', while bad module names include, 'test.module.php' or 'joes module.php'`n");
@@ -1371,8 +1384,10 @@ function install_module($module, $force=true){
 						}
 					}
 				}
-				if ($fname() === false) {
-					return false;
+				if (function_exists($fname)) {
+					if ($fname() === false) {
+						return false;
+					}
 				}
 				output("`^Module installed.  It is not yet active.`n");
 				invalidatedatacache("inject-$mostrecentmodule");
