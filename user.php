@@ -11,6 +11,7 @@ require_once("lib/names.php");
 tlschema("user");
 check_su_access(SU_EDIT_USERS);
 
+debug(httpallpost());
 $op = httpget('op');
 $userid=httpget("userid");
 
@@ -31,13 +32,7 @@ $gentimecount = 0;
 $order = "acctid";
 if ($sort!="") $order = "$sort";
 $display = 0;
-$query = httppost('q') == '' ? '%' : httppost('q');
-if ($query === false) {
-	$query = httpget('q');
-	if ($query === false) {
-		$query = $session['user']['login'];
-	}
-}
+$query = httppost('q') == '' ? $session['user']['login'] : httppost('q');
 
 if ($op=="search" || $op== ""){
 	require_once("lib/lookup_user.php");
