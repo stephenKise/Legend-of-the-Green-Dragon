@@ -11,7 +11,6 @@ require_once("lib/names.php");
 tlschema("user");
 check_su_access(SU_EDIT_USERS);
 
-debug(httpallpost());
 $op = httpget('op');
 $userid=httpget("userid");
 
