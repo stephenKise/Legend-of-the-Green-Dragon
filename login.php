@@ -71,7 +71,7 @@ if ($name!=""){
 				modulehook("player-login");
 
 				if ($session['user']['loggedin']){
-					$session['allowednavs']=unserialize($session['user']['allowednavs']);
+					$session['allowednavs'] = json_decode($session['user']['allowednavs'], true);
 					$link = "<a href='" . $session['user']['restorepage'] . "'>" . $session['user']['restorepage'] . "</a>";
 
 					$str = sprintf_translate("Sending you to %s, have a safe journey", $link);
