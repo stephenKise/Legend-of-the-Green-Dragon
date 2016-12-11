@@ -240,7 +240,7 @@ function tlschema($schema=false){
 	if ($schema===false){
 		$translation_namespace = array_pop($translation_namespace_stack);
 		if ($translation_namespace=="")
-			$translation_namespace = translator_uri($REQUEST_URI);
+			$translation_namespace = translator_uri($REQUEST_URI ?: 'home');
 	}else{
 		array_push($translation_namespace_stack,$translation_namespace);
 		$translation_namespace = $schema;
