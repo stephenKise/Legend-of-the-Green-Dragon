@@ -159,6 +159,11 @@ return array(
 		'restorepage'=>array(
 			'name'=>'restorepage', 'type'=>'varchar(128)', 'null'=>'1'
 			),
+		'lastpage' => [
+			'name' =>'lastpage',
+			'type' => 'varchar(128)',
+			'null' => '1'
+		],
 		'hashorse'=>array(
 			'name'=>'hashorse', 'type'=>'tinyint(4) unsigned', 'default'=>'0'
 			),
