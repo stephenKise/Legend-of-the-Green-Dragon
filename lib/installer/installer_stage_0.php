@@ -6,6 +6,7 @@ output("`n`&This game is a small project into which we have invested a tremendou
 output("Please understand that if you modify our copyright, or otherwise violate the license, you are not only breaking international copyright law (which includes penalties which are defined in whichever country you live), but you're also defeating the spirit of open source, and ruining any good faith which we have demonstrated by providing our blood, sweat, and tears to you free of charge.  You should also know that by breaking the license even one time, it is within our rights to require you to permanently cease running LoGD forever.`n");
 output("`nPlease note that in order to use the installer, you must have cookies enabled in your browser.`n");
 if (DB_CHOSEN){
+	global $msyqli_resource;
 	$sql = "SELECT count(*) AS c FROM accounts WHERE superuser & ".SU_MEGAUSER;
 	$result = db_query($sql);
 	$row = db_fetch_assoc($result);
@@ -17,8 +18,8 @@ if (DB_CHOSEN){
 		$version = getsetting("installer_version","-1");
 		if ($version == "-1") {
 			// Passwords weren't encrypted in these versions
-			$sql = "SELECT * FROM ".db_prefix("accounts")." WHERE login='".mysql_real_escape_string(httppost("username"))."' AND password='".mysql_real_escape_string(httppost("password"))."' AND superuser & ".SU_MEGAUSER;
-		}else $sql = "SELECT * FROM ".db_prefix("accounts")." WHERE login='".mysql_real_escape_string(httppost("username"))."' AND password='".md5(md5(stripslashes(httppost("password"))))."' AND superuser & ".SU_MEGAUSER;
+			$sql = "SELECT * FROM ".db_prefix("accounts")." WHERE login='".mysqli_real_escape_string($mysqli_resource, httppost("username"))."' AND password='".mysqli_real_escape_string($mysqli_resource, httppost("password"))."' AND superuser & ".SU_MEGAUSER;
+		}else $sql = "SELECT * FROM ".db_prefix("accounts")." WHERE login='".mysqli_real_escape_string($mysqli_resource, httppost("username"))."' AND password='".md5(md5(stripslashes(httppost("password"))))."' AND superuser & ".SU_MEGAUSER;
 		$result = db_query($sql);
 		if (db_num_rows($result) > 0){
 			$row = db_fetch_assoc($result);
