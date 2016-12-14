@@ -132,7 +132,7 @@ function page_footer($saveuser = true){
     restore_buff_fields();
 
     $sql = "SELECT motddate FROM " . db_prefix("motd") . " ORDER BY motditem DESC LIMIT 1";
-    $result = db_query($sql);
+    $result = db_query_cached($sql, "motddate", 86400);
     $row = db_fetch_assoc($result);
     db_free_result($result);
     $headscript = "";
