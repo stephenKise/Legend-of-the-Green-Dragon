@@ -162,7 +162,7 @@ function db_get_server_version() {
 
 function db_select_db($dbname){
     global $mysqli_resource;
-    $r = $mysqli_resource->select_db($dbname);
+    $r = @$mysqli_resource->select_db($dbname);
     return $r;
 }
 
@@ -185,26 +185,8 @@ function db_table_exists($tablename){
     return false;
 }
 
-function db_prefix($tablename, $force=false) {
-    global $DB_PREFIX;
-
-    if ($force === false) {
-        $special_prefixes = array();
-
-        // The following file should be used to override or modify the
-        // special_prefixes array to be correct for your site.  Do NOT
-        // do this unles you know EXACTLY what this means to you, your
-        // game, your county, your state, your nation, your planet and
-        // your universe!
-        if (file_exists("prefixes.php")) require_once("prefixes.php");
-
-        $prefix = $DB_PREFIX;
-        if (isset($special_prefixes[$tablename])) {
-            $prefix = $special_prefixes[$tablename];
-        }
-    } else {
-        $prefix = $force;
-    }
-    return $prefix . $tablename;
+function db_prefix(string $tablename): string
+{
+    global $DB_PREFIX, $session;
+    return ($DB_PREFIX ?: $session['dbinfo']['DB_PREFIX']) . $tablename;
 }
-?>
