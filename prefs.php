@@ -96,7 +96,6 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
             if (isset($oldvalues[$key]) &&
                     stripslashes($val) == $oldvalues[$key]) continue;
             // If this is a module userpref handle and skip
-            debug("Setting $key to $val");
             if (strstr($key, "___")) {
                 $val = httppost($key);
                 $x = explode("___", $key);
@@ -221,6 +220,12 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
         $tempsettings = array();
         $tempdata = array();
         $found = 0;
+        if (substr(array_values($info['prefs'])[0], -5) != 'title') {
+            array_unshift(
+                $info['prefs'],
+                "{$info['name']} Preferences, title"
+            );
+        }
         while (list($key, $val) = each($info['prefs'])) {
             $isuser = preg_match("/^user_/", $key);
             $ischeck = preg_match("/^check_/", $key);
