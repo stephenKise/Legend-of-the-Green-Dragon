@@ -13,9 +13,9 @@ $missing=0;
 $conflict = array();
 
 $link = mysqli_connect($session['dbinfo']['DB_HOST'],$session['dbinfo']['DB_USER'],$session['dbinfo']['DB_PASS']);
-mysqli_select_db($session['dbinfo']['DB_NAME']);
+mysqli_select_db($link, $session['dbinfo']['DB_NAME']);
 $sql = "SHOW TABLES";
-$result = mysqli_query($sql);
+$result = mysqli_query($link, $sql);
 while ($row = mysqli_fetch_assoc($result)){
 	list($key,$val)=each($row);
 	if (isset($descriptors[$val])){
