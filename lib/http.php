@@ -33,6 +33,26 @@ function httppost($var){
 	return $res;
 }
 
+/**
+ * Clean a variable from $_POST, but leave $_POST untouched.
+ *
+ * @var string $variable Key from $_POST to clean.
+ */
+
+function httpPostClean(string $variable): string
+{
+	global $sqlite_resource, $mysqli_resource;
+	if ($sqlite_resource) {
+		return sqlite_real_escape_string(
+			soap($_POST[$variable], true, true)
+		) ?: '';
+	}
+	return mysqli_real_escape_string(
+		$mysqli_resource,
+		soap($_POST[$variable], true, true)
+	) ?: '';
+}
+
 function httppostisset($var) {
 	global $HTTP_POST_VARS;
 
@@ -58,6 +78,21 @@ function httppostset($var, $val, $sub=false){
 
 function httpallpost(){
 	return $_POST;
+}
+
+/**
+ * Clean all variables from $_POST, but leave $_POST itself untouched.
+ * 
+ * @return array Array of cleaned $_POST variables.
+ */
+function httpAllPostClean(): array
+{
+	global $sqlite_resource, $mysqli_resource;
+	$post = [];
+	foreach ($_POST as $key => $value) {
+		$post[$key] = httpPostClean($key);
+	}
+	return $post;
 }
 
 function postparse($verify=false, $subval=false){
