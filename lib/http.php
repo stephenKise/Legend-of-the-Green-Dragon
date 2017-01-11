@@ -44,13 +44,13 @@ function httpPostClean(string $variable): string
 	global $sqlite_resource, $mysqli_resource;
 	if ($sqlite_resource) {
 		return sqlite_real_escape_string(
-			soap($_POST[$variable], true, true)
-		) ?: '';
+			soap($_POST[$variable] ?: '', true, true)
+		);
 	}
 	return mysqli_real_escape_string(
 		$mysqli_resource,
-		soap($_POST[$variable], true, true)
-	) ?: '';
+		soap($_POST[$variable] ?: '', true, true)
+	);
 }
 
 function httppostisset($var) {
