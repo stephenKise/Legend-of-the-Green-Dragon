@@ -34,7 +34,7 @@ function loadsettings()
     global $settings;
     if (!is_array($settings)) {
         $settings = datacache('game-settings', 86400);
-        if (!is_array($settings)) {
+        if (empty($settings)) {
             $settings = [];
             $sql = db_query(
                 "SELECT * FROM " . db_prefix('settings')
