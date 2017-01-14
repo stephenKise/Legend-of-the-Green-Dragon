@@ -1,6 +1,5 @@
 <?php
 output("`@`c`bSuperuser Accounts`b`c");
-debug($logd_version, true);
 $sql = "SELECT login, password FROM ".db_prefix("accounts")." WHERE superuser & ".SU_MEGAUSER;
 $result = db_query($sql);
 if (db_num_rows($result)==0){

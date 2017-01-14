@@ -38,7 +38,6 @@ $recommended_modules = array(
 	"breakin",
 	"calendar",
 	"cedrikspotions",
-//	"cities", //I don't think this is good for most people.
 	"collapse",
 	"crazyaudrey",
 	"crying",
