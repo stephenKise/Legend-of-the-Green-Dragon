@@ -310,18 +310,18 @@ app.controller('list', function ($scope, $http, $sce) {
 
 window.onload = function ()
 {
-    document.getElementById('DB_USEPREFIX')
-    .addEventListener('change', function() {
+    /*document.getElementById('DB_USEPREFIX').addEventListener('change', function() {
         var style = this.value == 1 ? 'block' : 'none';
         var type = this.value == 1 ? 'text' : 'hidden';
         document.getElementById('DB_PREFIX_SELECTED').style.display = style;
         document.getElementById('DB_PREFIX').type = type;
-    });
-    document.getElementById('DB_USEDATACACHE')
-    .addEventListener('change', function() {
-        var style = this.value == 1 ? 'block' : 'none';
-        var type = this.value == 1 ? 'text' : 'hidden';
-        document.getElementById('DB_DATACACHE_SELECTED').style.display = style;
-        document.getElementById('DB_DATACACHEPATH').type = type;
-    });
+    });*/
+    var datacacheSelector = document.getElementById('DB_USEDATACACHE');
+    if (datacacheSelector) {
+        datacacheSelector.addEventListener('change', function() {
+            console.log(this);
+            var style = this.value == 1 ? 'inline' : 'none';
+            document.getElementById('DB_DATACACHE').style.display = style;
+        });
+    }
 }
