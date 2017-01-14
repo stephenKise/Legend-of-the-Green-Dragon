@@ -882,7 +882,8 @@ $sql_upgrade_statements = array(
     "INSERT INTO " . db_prefix('settings') . " VALUES (
         'impressum',
         'This server currently is running a publicly hosted version of the game at github.com/stephenKise/Legend-of-the-Green-Dragon!'
-    )"
+    )",
+    "ALTER TABLE " . db_prefix('accounts') . " ADD lastpage VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL AFTER restorepage"
 ],
 );
 ?>
