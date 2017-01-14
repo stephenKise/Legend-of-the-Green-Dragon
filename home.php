@@ -38,11 +38,13 @@ if (getsetting("homecurtime", 1)) {
     output("`@The current time in %s is `%%s`@.`0`n", getsetting("villagename", LOCATION_FIELDS), getgametime());
 }
 
+$timeDetails = gametimedetails();
 if (getsetting("homenewdaytime", 1)) {
     $secstonewday = secondstonextgameday();
-    output("`@Next new game day in: `\$%s (real time)`0`n`n",
-            date("G\\".translate_inline("h","datetime").", i\\".translate_inline("m","datetime").", s\\".translate_inline("s","datetime"),
-                $secstonewday));
+    output(
+        "`@Next new game day in: `\$%s (real time)`0`n`n",
+        reltime(secondstonextgameday())
+    );
 }
 
 if (getsetting("homenewestplayer", 1)) {
