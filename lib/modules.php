@@ -108,15 +108,16 @@ function injectmodule($modulename,$force=false){
                     // Remove any old hooks (install will reset them)
                     module_wipehooks();
                     $fname = $modulename."_install";
-
-                    foreach ($info['install'] as $hook => $args) {
-                        debug("Found $hook, running adhook!");
-                        module_addhook_priority(
-                            $hook,
-                            $args['priority'] ?: 50,
-                            $args['function'] ?: "{$modulename}_dohook",
-                            $args['condition'] ?: ''
-                        );
+                    if (!empty($info['install'])) {
+                        foreach ($info['install'] as $hook => $args) {
+                            debug("Found $hook, running adhook!");
+                            module_addhook_priority(
+                                $hook,
+                                $args['priority'] ?: 50,
+                                $args['function'] ?: "{$modulename}_dohook",
+                                $args['condition'] ?: ''
+                            );
+                        }
                     }
                     if (function_exists($fname)) {
                         if ($fname() === false) {
