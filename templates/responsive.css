@@ -1,10 +1,44 @@
 @font-face {
+  font-family: Whitney;
+  font-style: light;
+  font-weight: 300;
+  src: url(assets/whitney-light.woff) format('woff');
+}
+
+@font-face {
+  font-family: Whitney;
+  font-style: normal;
+  font-weight: 500;
+  src: url(assets/whitney-book.woff) format('woff');
+}
+
+@font-face {
+  font-family: Whitney;
+  font-style: medium;
+  font-weight: 600;
+  src: url(assets/whitney-medium.woff) format('woff');
+}
+
+@font-face {
+  font-family: Whitney;
+  font-style: bold;
+  font-weight: 700;
+  src: url(assets/whitney-bold.woff) format('woff');
+}
+
+@font-face {
     font-family: Merced;
     src: url(assets/Merced.woff) format("woff");
 }
+
 @font-face {
     font-family: Droid;
     src: url(assets/DroidSans.woff) format("woff");
+}
+
+* {
+    font-family: Whitney, Droid, Helvetica;
+    font-weight: 300;
 }
 
 body {
@@ -14,10 +48,10 @@ body {
     margin: 0px;
     height: 100%;
     color: #CCCCCC;
-    font-family: Droid;
     scrollbar-face-color: #EAB523;
     scrollbar-track-color: transparent;
 }
+
 ::-webkit-scrollbar {
   width:  1em;
   height: 1em;
@@ -97,14 +131,14 @@ main {
     width: calc(100% - 420px);
     min-width: 360px;
     margin: 3px;
-    font-size: .9em;
+    font-size: 16px;
     display: inline-block;
     padding-bottom: 100px;
 }
 .debug {
     border: 1px dashed #EAB523;
     font-family: "Courier New", Courier, monospace;
-    font-size: .9em;
+    font-size: 14px;
     padding: .25em;
     margin-top: 3px;
 }
@@ -251,6 +285,9 @@ a {
 input {
     border: 2px solid transparent;
     outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -294,8 +331,10 @@ input:focus {
     background-color: #101010;
 }
 textarea {
-    width: 100%;
     background-color: #222;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
     -webkit-transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
     -moz-transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
@@ -323,7 +362,6 @@ header {
     top: 0px;
     height: 90px;
     font-weight: bold;
-    font-family: Arial;
     padding-bottom: 1em;
 }
 .banner {
@@ -393,7 +431,6 @@ li.nav {
     width: -webkit-calc(100%-5px);
     width: -moz-calc(100%-5px);
     width: calc(100%-5px);
-    font-family: Droid;
     padding-left: 5px;
     border-right: 0px solid #EAB523;
     color: #F2E2A9;
@@ -412,7 +449,6 @@ li.nav:hover {
     font-size: 1em;
 }
 main {
-    font-family: Droid;
     cursor: default;
 }
 select {
