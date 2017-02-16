@@ -35,8 +35,8 @@ if ($op==""){
 	popup_footer();
 }elseif ($_GET['op']=='save'){
 	$uri = httppost('uri');
-	$text = httppost('text');
-	$trans = httppost('trans');
+	$text = httpPostClean('text');
+	$trans = httpPostClean('trans');
 	modulehook('translation-save', httpallpost());
 	$page = $uri;
 	if (strpos($page,"?")!==false) $page = substr($page,0,strpos($page,"?"));
