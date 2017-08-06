@@ -29,7 +29,7 @@ return array(
 			'name'=>'sex', 'type'=>'tinyint(4) unsigned', 'default'=>'0'
 			),
 		'specialty'=>array(
-			'name'=>'specialty', 'type'=>'varchar(20)',
+			'name'=>'specialty', 'type'=>'varchar(20)', 'null' => '1'
 			),
 		'experience'=>array(
 			'name'=>'experience', 'type'=>'int(11) unsigned', 'default'=>'0'
@@ -92,19 +92,19 @@ return array(
 			'name'=>'turns', 'type'=>'int(11) unsigned', 'default'=>'10'
 			),
 		'title'=>array(
-			'name'=>'title', 'type'=>'varchar(25)'
+			'name'=>'title', 'type'=>'varchar(25)', 'null' => '1'
 			),
 		'password'=>array(
 			'name'=>'password', 'type'=>'varchar(32)'
 			),
 		'badguy'=>array(
-			'name'=>'badguy', 'type'=>'text'
+			'name'=>'badguy', 'type'=>'text', 'null' => '1'
 			),
 		'companions'=>array(
-			'name'=>'companions', 'type'=>'text'
+			'name'=>'companions', 'type'=>'text', 'null' => '1'
 			),
 		'allowednavs'=>array(
-			'name'=>'allowednavs', 'type'=>'mediumtext'
+			'name'=>'allowednavs', 'type'=>'mediumtext', 'null' => '1'
 			),
 		'loggedin'=>array(
 			'name'=>'loggedin', 'type'=>'tinyint(4) unsigned', 'default'=>'0'
@@ -128,10 +128,10 @@ return array(
 			'name'=>'charm', 'type'=>'int(11) unsigned', 'default'=>'0'
 			),
 		'specialinc'=>array(
-			'name'=>'specialinc', 'type'=>'varchar(50)'
+			'name'=>'specialinc', 'type'=>'varchar(50)', 'null' => '1',
 			),
 		'specialmisc'=>array(
-			'name'=>'specialmisc', 'type'=>'text'
+			'name'=>'specialmisc', 'type'=>'text', 'null' => '1',
 			),
 		'login'=>array(
 			'name'=>'login', 'type'=>'varchar(50)'
@@ -168,7 +168,7 @@ return array(
 			'name'=>'hashorse', 'type'=>'tinyint(4) unsigned', 'default'=>'0'
 			),
 		'bufflist'=>array(
-			'name'=>'bufflist', 'type'=>'text'
+			'name'=>'bufflist', 'type'=>'text', 'null' => '1'
 			),
 		'gentime'=>array(
 			'name'=>'gentime', 'type'=>'double unsigned', 'default'=>'0'
@@ -177,28 +177,28 @@ return array(
 			'name'=>'gentimecount', 'type'=>'int(11) unsigned', 'default'=>'0'
 			),
 		'lastip'=>array(
-			'name'=>'lastip', 'type'=>'varchar(40)'
+			'name'=>'lastip', 'type'=>'varchar(40)', 'default' => '0.0.0.0'
 			),
 		'uniqueid'=>array(
 			'name'=>'uniqueid', 'type'=>'varchar(32)', 'null'=>'1'
 			),
 		'dragonpoints'=>array(
-			'name'=>'dragonpoints', 'type'=>'text'
+			'name'=>'dragonpoints', 'type'=>'text', 'null' => '1'
 			),
 		'boughtroomtoday'=>array(
 			'name'=>'boughtroomtoday', 'type'=>'tinyint(4)', 'default'=>'0'
 			),
 		'emailaddress'=>array(
-			'name'=>'emailaddress', 'type'=>'varchar(128)'
+			'name'=>'emailaddress', 'type'=>'varchar(128)', 'default' => 'admin@localhost'
 			),
 		'emailvalidation'=>array(
-			'name'=>'emailvalidation', 'type'=>'varchar(32)'
+			'name'=>'emailvalidation', 'type'=>'varchar(32)', 'null' => '1'
 			),
 		'sentnotice'=>array(
 			'name'=>'sentnotice', 'type'=>'int(11)', 'default'=>'0'
 			),
 		'prefs'=>array(
-			'name'=>'prefs', 'type'=>'text'
+			'name'=>'prefs', 'type'=>'text', 'null' => '1'
 			),
 		'pvpflag'=>array(
 			'name'=>'pvpflag', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
@@ -213,7 +213,7 @@ return array(
 			'name'=>'gravefights', 'type'=>'int(11) unsigned', 'default'=>'0'
 			),
 		'hauntedby'=>array(
-			'name'=>'hauntedby', 'type'=>'varchar(50)'
+			'name'=>'hauntedby', 'type'=>'varchar(50)', 'null' => '1'
 			),
 		'deathpower'=>array(
 			'name'=>'deathpower', 'type'=>'int(11) unsigned', 'default'=>'0'
@@ -233,7 +233,7 @@ return array(
 			'name'=>'donationspent', 'type'=>'int(11) unsigned', 'default'=>'0'
 			),
 		'donationconfig'=>array(
-			'name'=>'donationconfig', 'type'=>'text'
+			'name'=>'donationconfig', 'type'=>'text', 'null' => '1'
 			),
 		'referer'=>array(
 			'name'=>'referer', 'type'=>'int(11) unsigned', 'default'=>'0'
@@ -242,7 +242,7 @@ return array(
 			'name'=>'refererawarded', 'type'=>'tinyint(1)', 'default'=>'0'
 			),
 		'bio'=>array(
-			'name'=>'bio', 'type'=>'varchar(255)'
+			'name'=>'bio', 'type'=>'varchar(255)', 'default' => ' '
 			),
 		'race'=>array(
 			'name'=>'race', 'type'=>'varchar(25)', 'default'=>'0'
