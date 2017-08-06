@@ -3,11 +3,12 @@
 // addnews ready
 // mail ready
 function fightnav($allowspecial=true, $allowflee=true,$script=false){
-	global $PHP_SELF,$session,$newenemies,$companions;
+	global $session,$newenemies,$companions,$SCRIPT_NAME;
 	tlschema("fightnav");
-	if ($script===false){
-		$script = substr($PHP_SELF,strrpos($PHP_SELF,"/")+1)."?";
-	}else{
+	if ($script===false) {
+		$script = "$SCRIPT_NAME?";
+	}
+	else {
 		if (!strpos($script,"?")) {
 			$script.="?";
 //		}elseif (substr($script,strlen($script)-1)!="&" && !substr($script,strlen($script)-1)=="?"){
