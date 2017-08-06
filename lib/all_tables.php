@@ -242,7 +242,7 @@ return array(
 			'name'=>'refererawarded', 'type'=>'tinyint(1)', 'default'=>'0'
 			),
 		'bio'=>array(
-			'name'=>'bio', 'type'=>'varchar(255)', 'default' => ' '
+			'name'=>'bio', 'type'=>'varchar(255)', 'null' => '1'
 			),
 		'race'=>array(
 			'name'=>'race', 'type'=>'varchar(25)', 'default'=>'0'
