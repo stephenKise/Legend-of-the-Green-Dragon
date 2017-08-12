@@ -36,7 +36,7 @@ $license = "\n<!-- Creative Commons License -->\n<a rel='license' href='http://c
 // work.  This license text may not be removed nor altered in any way.
 // Please see the file LICENSE for a full textual description of the license.
 
-$logd_version = "1.1.2 Dragonprime Edition";
+$logd_version = "1.1.3 GitHub Edition";
 
 //start the gzip compression
 //ob_start('ob_gzhandler');

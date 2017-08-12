@@ -3,9 +3,7 @@ $settings = db_prefix('settings');
 $creaturefields = "(creatureid,creaturename,creaturelevel,creatureweapon,creaturelose,creaturewin,creaturegold,creatureexp,creaturehealth,creatureattack,creaturedefense,creatureaiscript,createdby,forest,graveyard,oldcreatureexp)";
 $creaturefields111 = "(creatureid,creaturename,creaturelevel,creatureweapon,creaturelose,creaturewin,creaturegold,creatureexp,creaturehealth,creatureattack,creaturedefense,creatureaiscript,createdby,forest,graveyard)";
 $sql_upgrade_statements = array(
-"-1"=>array(), //needed just as a placeholder for new installs.
-"0.9"=>array(
-
+"0.9" => [
 "INSERT INTO " . db_prefix("creatures") . " $creaturefields VALUES (1, 'Thieving Kender', 1, 'Whirling Hoopak', 'You only wish you could pickpocket your money back from the thief.', NULL, 36, 14, 10, 1, 1, NULL, 'Appleshiner', 1, 0, NULL)",
 "INSERT INTO " . db_prefix("creatures") . " $creaturefields VALUES (2, 'Rude Student', 1, 'Worn Textbook', 'You have sent this student to permanent detention.', '', 36, 14, 10, 1, 1, '', 'Appleshiner', 1, 0, NULL)",
 "INSERT INTO " . db_prefix("creatures") . " $creaturefields VALUES (3, 'Baby Unicorn', 1, 'Blunt Horn', 'You feel like a real jerk killing something so pretty.', '', 36, 14, 10, 1, 1, '', 'Appleshiner', 1, 0, NULL)",
@@ -209,8 +207,8 @@ $sql_upgrade_statements = array(
 "INSERT INTO " . db_prefix("masters") . " VALUES (14,'Yoresh',14,'Death Touch','Well, you evaded my touch.  I salute you!','Watch out for my touch next time!',NULL,NULL,154,28,28)",
 
 "INSERT INTO " . db_prefix("news") . " VALUES (1,'`^A strange awakening takes place in the world.`0',now(), 0, '', '')",
-),
-"0.9.1"=>array(
+],
+"0.9.1" => [
 "INSERT INTO " . db_prefix("taunts") . " VALUES (0,'`5\"`6Just wait for my revenge, `4%W`6. It will be swift!`5\" %w declares.','Bluspring')",
 "INSERT INTO " . db_prefix("taunts") . " VALUES (0,'`5\"`6I\\'m really going to enjoy this new `4%x`6 that %w`6 had,`5\" exclaimed %W.','joe')",
 "INSERT INTO " . db_prefix("taunts") . " VALUES (0,'`5\"`6Aah, so `bthat\\'s`b what `4%X`6 is for!`5\" exclaimed %W','joe')",
@@ -653,15 +651,8 @@ $sql_upgrade_statements = array(
 "INSERT INTO " . db_prefix("armor") . " VALUES (0,'Dragon Scale Chestplate',8010,13,12)",
 "INSERT INTO " . db_prefix("armor") . " VALUES (0,'Dragon Scale Cloak',9000,14,12)",
 "INSERT INTO " . db_prefix("armor") . " VALUES (0,'Dragon Talon Shield',10350,15,12)",
-),
-"0.9.2"=>array(
-),
-"0.9.3"=>array(),
-"0.9.4"=>array(),
-"0.9.5"=>array(),
-"0.9.6"=>array(
-),
-"0.9.7"=>array(
+],
+"0.9.7" => [
 "INSERT INTO " . db_prefix("creatures") . " $creaturefields VALUES (220, 'Frenzied vampire bats', 15, 'Numerous attacks', 'Why are there so many darn bats in this forest?', NULL, 531, 189, 155, 29, 21, NULL, 'Appleshiner', 1, 1, NULL)",
 "INSERT INTO " . db_prefix("creatures") . " $creaturefields VALUES (221, 'Vampirus,the Bat God', 16, 'Godly Power', 'You are even more god-like then he!', '', 563, 207, 166, 31, 22, '', 'Appleshiner', 1, 1, NULL)",
 "INSERT INTO " . db_prefix("creatures") . " $creaturefields VALUES (222, 'Old Man Winter', 9, 'Bitter Cold', 'You shake your fist over his dead, pathetic corpse.', NULL, 336, 101, 94, 17, 13, NULL, NULL, 1, 0, NULL)",
@@ -766,8 +757,8 @@ $sql_upgrade_statements = array(
 "INSERT INTO " . db_prefix("mounts") . " VALUES (1, 'Pony', 'This docile beast is young yet.', 'Horses', 'a:5:{s:4:\"name\";s:13:\"`&Pony Attack\";s:8:\"roundmsg\";s:26:\"Your pony fights with you!\";s:6:\"rounds\";s:2:\"20\";s:6:\"atkmod\";s:3:\"1.2\";s:8:\"activate\";s:7:\"offense\";}', 6, 0, 1, 1, 'You strap your {weapon} to your pony\\'s saddle bags, and head out for some adventure!', '`&Remembering that is has been quite some time since you last fed your pony, you decide this is a perfect time to relax and allow it to graze the field a bit. You doze off enjoying this peaceful serenity.`0', '`&You dismount in the field to allow your pony to graze for a moment even though it has recently been fully fed.  As you lean back in the grass to watch the clouds, your pony whickers softly and trots off into the underbrush.  You search for a while before returning to the fields hoping that it\\'ll return.  A short time later, your pony trots back into the clearing holding its head high, looking much more energized and with a very equine grin on its face.`0', 20, 'all', 0)",
 "INSERT INTO " . db_prefix("mounts") . " VALUES (2, 'Gelding', 'This powerful beast is fiercely loyal.', 'Horses', 'a:5:{s:4:\"name\";s:16:\"`&Gelding Attack\";s:8:\"roundmsg\";s:29:\"Your gelding fights with you!\";s:6:\"rounds\";s:2:\"40\";s:6:\"atkmod\";s:3:\"1.2\";s:8:\"activate\";s:7:\"offense\";}', 10, 0, 1, 2, 'You strap your {weapon} to your gelding\\'s saddle bags, and head out for some adventure!', '`&Remembering that is has been quite some time since you last fed your gelding, you decide this is a perfect time to relax and allow it to graze the field a bit. You doze off enjoying this peaceful serenity.`0', '`&You dismount in the field to allow your gelding to graze for a moment even though it has recently been fully fed.  As you lean back in the grass to watch the clouds, your gelding whickers softly and trots off into the underbrush.  You search for a while before returning to the fields hoping that it\\'ll return.  A short time later, your gelding trots back into the clearing holding its head high, looking much more energized and with a very equine grin on its face.`n`nAnd here you thought geldings weren\\'t equipped that way any longer!`0', 25, 'all', 0)",
 "INSERT INTO " . db_prefix("mounts") . " VALUES (3, 'Stallion', 'This noble beast is huge and powerful!', 'Horses', 'a:5:{s:4:\"name\";s:17:\"`&Stallion Attack\";s:8:\"roundmsg\";s:30:\"Your stallion fights with you!\";s:6:\"rounds\";s:2:\"60\";s:6:\"atkmod\";s:3:\"1.2\";s:8:\"activate\";s:7:\"offense\";}', 16, 0, 1, 3, 'You strap your {weapon} to your stallion\\'s saddle bags, and head out for some adventure!', '`&Remembering that is has been quite some time since you last fed your stallion, you decide this is a perfect time to relax and allow it to graze the field a bit. You doze off enjoying this peaceful serenity.`0', '`&You dismount in the field to allow your stallion to graze for a moment even though it has recently been fully fed.  As you lean back in the grass to watch the clouds, your stallion whickers softly and trots off into the underbrush.  You search for a while before returning to the fields hoping that it\\'ll return.  A short time later, your stallion trots back into the clearing holding its head high, looking much more energized and with a very equine grin on its face.`0', 30, 'all', 0)",
-),
-"0.9.8-prerelease.1"=>array(
+],
+"0.9.8-prerelease.1" => [
 "UPDATE " . db_prefix("petitions") . " SET closedate = date WHERE status=2",
 "UPDATE " . db_prefix("masters") . " SET creaturewin='Learn to adapt your style, and you shall prevail.' WHERE creaturename='Sensei Noetha'",
 "UPDATE " . db_prefix("logdnet") . " SET lastping=lastupdate",
@@ -781,33 +772,22 @@ $sql_upgrade_statements = array(
 "UPDATE " . db_prefix("accounts") . " SET password=md5(password) WHERE length(password) < 32",
 "UPDATE " . db_prefix("accounts") . " SET password=md5(password)",
 "UPDATE " . db_prefix("nastywords") . " SET type='nasty'",
-),
-"0.9.8-prerelease.2"=>array(),
-"0.9.8-prerelease.3"=>array(),
-"0.9.8-prerelease.4"=>array(),
-"0.9.8-prerelease.5"=>array(),
-"0.9.8-prerelease.6"=>array(
+],
+"0.9.8-prerelease.6" => [
 "REPLACE INTO " . db_prefix("masters") . " VALUES (1,'Mireraband',1,'Small Dagger','Well done %w`&, I should have guessed you\\'d grown some.','As I thought, %w`^, your skills are no match for my own!',NULL,NULL,12,2,2)",
 "REPLACE INTO " . db_prefix("masters") . " VALUES (2,'Fie',2,'Short Sword','Well done %w`&, you really know how to use your %x.','You should have known you were no match for my %X',NULL,NULL,22,4,4)",
 "REPLACE INTO " . db_prefix("masters") . " VALUES (4,'Guth',4,'Spiked Club','Ha!  Hahaha, excellent fight %w`&!  Haven\\'t had a battle like that since I was in the RAF!','Back in the RAF, we\\'d have eaten the likes of you alive!  Go work on your skills some old boy!',NULL,NULL,44,8,8)",
 "REPLACE INTO " . db_prefix("masters") . " VALUES (6,'Adwares',6,'Dwarven Battle Axe','Ach!  Y\\' do hold yer %x with skeel!','Har!  Y\\' do be needin moore praktise y\\' wee cub!',NULL,NULL,66,12,12)",
 "REPLACE INTO " . db_prefix("masters") . " VALUES (8,'Ceiloth',8,'Orkos Broadsword','Well done %w`&, I can see that great things lie in the future for you!','You are becoming powerful, but not yet that powerful.',NULL,NULL,88,16,16)",
 "REPLACE INTO " . db_prefix("masters") . " VALUES (9,'Dwiredan',9,'Twin Swords','Perhaps I should have considered your %x...','Perhaps you\\'ll reconsider my twin swords before you try that again?',NULL,NULL,99,18,18)",
-),
-"0.9.8-prerelease.7"=>array(),
-"0.9.8-prerelease.8"=>array(),
-"0.9.8-prerelease.9"=>array(),
-"0.9.8-prerelease.10"=>array(),
-"0.9.8-prerelease.11"=>array(
+],
+"0.9.8-prerelease.11" => [
 "UPDATE " . db_prefix("accounts") . " SET specialty='' WHERE specialty='0'",
-),
-"0.9.8-prerelease.12"=>array(
-"1|UPDATE " . db_prefix("creatures") . " SET forest=1",
-"1|UPDATE " . db_prefix("creatures") . " SET graveyard=1 where location=1",
-),
-"0.9.8-prerelease.13"=>array(),
-"0.9.8-prerelease.14"=>array(),
-"0.9.8-prerelease.14a"=>array(
+],
+"0.9.8-prerelease.12" => [
+"UPDATE " . db_prefix("creatures") . " SET forest = 1, graveyard = 1 where 1 = 1"
+],
+"0.9.8-prerelease.14a" => [
 "INSERT INTO " . db_prefix("titles") . " VALUES (1, 0, '', 'Farmboy', 'Farmgirl')",
 "INSERT INTO " . db_prefix("titles") . " VALUES (2, 1, '', 'Page', 'Page')",
 "INSERT INTO " . db_prefix("titles") . " VALUES (3, 2, '', 'Squire', 'Squire')",
@@ -840,21 +820,14 @@ $sql_upgrade_statements = array(
 "INSERT INTO " . db_prefix("titles") . " VALUES (30, 29, '', 'Archtitan', 'Archtitaness')",
 "INSERT INTO " . db_prefix("titles") . " VALUES (31, 30, '', 'Undergod', 'Undergoddess')",
 "INSERT INTO " . db_prefix("titles") . " VALUES (32, 31, '', 'God', 'Goddess')",
-),
-"1.0.0"=>array(),
-"1.0.1"=>array(),
-"1.0.2"=>array(),
-"1.0.3"=>array(),
-"1.0.4"=>array(),
-"1.0.5"=>array(),
-"1.0.6"=>array(),
-"1.1.0 Dragonprime Edition"=>array(
+],
+"1.1.0 Dragonprime Edition" => [
 "UPDATE " . db_prefix("accounts") . " SET clanrank = clanrank * 10",
 "INSERT INTO " . db_prefix("settings") . " VALUES ('newdaycron', '0')",
 "INSERT INTO " . db_prefix("settings") . " VALUES ('charset', 'ISO-8859-1')",
 "INSERT INTO " . db_prefix("settings") . " VALUES ('allowspecialswitch', '1')",
-),
-"1.1.1 Dragonprime Edition"=>array(
+],
+"1.1.1 Dragonprime Edition" => [
 "INSERT INTO " . db_prefix("settings") . " VALUES ('allowclans','1')",
 "INSERT INTO " . db_prefix("settings") . " VALUES ('resurrectionturns','-6')",
 
@@ -871,7 +844,7 @@ $sql_upgrade_statements = array(
 
 "INSERT INTO " . db_prefix("companions") . " (`companionid`, `name`, `category`, `description`, `attack`, `attackperlevel`, `defense`, `defenseperlevel`, `maxhitpoints`, `maxhitpointsperlevel`, `abilities`, `cannotdie`, `cannotbehealed`, `companionlocation`, `companionactive`, `companioncostdks`, `companioncostgems`, `companioncostgold`, `jointext`, `dyingtext`, `allowinshades`, `allowinpvp`, `allowintrain`) VALUES (1, 'Mortimer teh javelin man', 'Knight', 'A rough and ready warrior.  Beneath his hardened exterior, one can detect a man of strong honour.', 5, 2, 1, 2, 20, 20, 'a:4:{s:5:\"fight\";s:1:\"1\";s:4:\"heal\";s:1:\"0\";s:5:\"magic\";s:1:\"0\";s:6:\"defend\";b:0;}', 0, 0, '".getsetting("villagename", LOCATION_FIELDS)."', 1, 0, 4, 573, '`^Greetings unto thee, my friend.  Let us go forth and conquer the evils of this world together!', '`4Argggggh!  I am slain!  Shuffling off my mortal coil.  Fare thee well, my friends.', 1, 0, 0)",
 "INSERT INTO " . db_prefix("companions") . " (`companionid`, `name`, `category`, `description`, `attack`, `attackperlevel`, `defense`, `defenseperlevel`, `maxhitpoints`, `maxhitpointsperlevel`, `abilities`, `cannotdie`, `cannotbehealed`, `companionlocation`, `companionactive`, `companioncostdks`, `companioncostgems`, `companioncostgold`, `jointext`, `dyingtext`, `allowinshades`, `allowinpvp`, `allowintrain`) VALUES (2, 'Florenz', 'Healer', 'With a slight build, Florenz is better suited as a healer than a fighter.', 1, 1, 5, 5, 15, 10, 'a:4:{s:4:\"heal\";s:1:\"2\";s:5:\"magic\";s:1:\"0\";s:5:\"fight\";b:0;s:6:\"defend\";b:0;}', 0, 0, '".getsetting("villagename", LOCATION_FIELDS)."', 1, 0, 3, 1000, 'Thank ye for thy faith in my skills.  I shall endeavour to keep ye away from Ramius'' claws.', 'O Discordia!', 1, 0, 0)",
-),
+],
 "1.1.2 Dragonprime Edition" => [
     "INSERT INTO " . db_prefix('settings') . " VALUES ('servername', 'Legend of the Green Dragon')",
     "INSERT INTO " . db_prefix('settings') . "

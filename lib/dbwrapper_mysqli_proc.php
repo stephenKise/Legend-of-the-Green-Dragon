@@ -75,7 +75,7 @@ function db_error(){
     global $mysqli_resource;
 
     $r = mysqli_error($mysqli_resource);
-    if ($r=="" && defined("DB_NODB") && !defined("DB_INSTALLER_STAGE4")) return "The database connection was never established";
+    if ($r=="" && defined("DB_NODB") && !defined("DB_INSTALLER_STAGE2")) return "The database connection was never established";
     return $r;
 }
 

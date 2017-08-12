@@ -318,6 +318,9 @@ window.onload = function ()
     });*/
     var datacacheSelector = document.getElementById('DB_USEDATACACHE');
     if (datacacheSelector) {
+        if (datacacheSelector.value == 1) {
+            document.getElementById('DB_DATACACHE').style.display = 'inline';
+        }
         datacacheSelector.addEventListener('change', function() {
             console.log(this);
             var style = this.value == 1 ? 'inline' : 'none';
