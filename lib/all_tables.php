@@ -272,7 +272,7 @@ return array(
 			'name'=>'bestdragonage', 'type'=>'int(11) unsigned', 'default'=>'0'
 			),
 		'ctitle'=>array(
-			'name'=>'ctitle', 'type'=>'varchar(25)'
+			'name'=>'ctitle', 'type'=>'varchar(25)', 'null' => '1'
 			),
 		'beta'=>array(
 			'name'=>'beta', 'type'=>'tinyint(3) unsigned', 'default'=>'0'
