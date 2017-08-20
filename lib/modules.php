@@ -1434,7 +1434,7 @@ function get_module_install_status(){
     }
 
     $uninstmodules = array();
-    if ($handle = opendir("modules")){
+    if ($handle = opendir("modules/src")){
         $ucount=0;
         while (false !== ($file = readdir($handle))){
             if ($file[0] == ".") continue;
