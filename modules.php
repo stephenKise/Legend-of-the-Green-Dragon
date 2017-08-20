@@ -225,7 +225,7 @@ if ($op==""){
 			foreach($uninstmodules as $key=>$shortname) {
 				//test if the file is a valid module or a lib file/whatever that got in, maybe even malcode that does not have module form
 				$shortnamelower = strtolower($shortname);
-				$file = strtolower(file_get_contents("modules/$shortname.php"));
+				$file = strtolower(file_get_contents("modules/src/$shortname.php"));
 				if (strpos($file,$shortnamelower."_getmoduleinfo")===false ||
 					//strpos($file,$shortname."_dohook")===false ||
 					//do_hook is not a necessity

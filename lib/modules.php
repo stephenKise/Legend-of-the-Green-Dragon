@@ -18,7 +18,7 @@ function injectmodule($modulename,$force=false){
     }
 
     $modulename = modulename_sanitize($modulename);
-    $modulefilename = "modules/{$modulename}.php";
+    $modulefilename = "modules/src/{$modulename}.php";
     if (file_exists($modulefilename)){
         tlschema("module-{$modulename}");
         $sql = "SELECT active,filemoddate,infokeys,version FROM " . db_prefix("modules") . " WHERE modulename='$modulename'";
@@ -153,7 +153,7 @@ function module_status($modulename, $version=false) {
     global $injected_modules;
 
     $modulename = modulename_sanitize($modulename);
-    $modulefilename = "modules/$modulename.php";
+    $modulefilename = "modules/src/$modulename.php";
     $status = MODULE_NO_INFO;
     if (file_exists($modulefilename)) {
         $sql = "SELECT active,filemoddate,infokeys,version FROM " . db_prefix("modules") . " WHERE modulename='$modulename'";
