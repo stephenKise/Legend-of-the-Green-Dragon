@@ -61,7 +61,7 @@
             <script src='https://www.google.com/recaptcha/api.js'></script>
             <script src='templates/assets/app.js'></script> 
             <script type='text/javascript'>
-                var stage = localStorage['tutorialStage'];
+                var stage = localStorage.getItem('tutorialStage');
                 if (!stage) {
                     stage = 0;
                 }
@@ -80,7 +80,6 @@
                     }, 250).html('');
                 }
                 function tutorial() {
-                    console.log(stage);
                     switch (stage) {
                         case "0":
                             $('.tutorial').show(250);
