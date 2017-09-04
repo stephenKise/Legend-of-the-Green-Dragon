@@ -61,10 +61,6 @@
             <script src='https://www.google.com/recaptcha/api.js'></script>
             <script src='templates/assets/app.js'></script> 
             <script type='text/javascript'>
-                var stage = localStorage.getItem('tutorialStage');
-                if (!stage) {
-                    stage = 0;
-                }
                 function newMail()
                 {
                     $('a[name=maillink]').html('Mailbox').removeClass('motd').addClass('unreadmotd');
@@ -80,8 +76,12 @@
                     }, 250).html('');
                 }
                 function tutorial() {
+                    var stage = localStorage.getItem('tutorialStage');
+                    if (stage > 2) {
+                        return;
+                    }
                     switch (stage) {
-                        case "0":
+                        default:
                             $('.tutorial').show(250);
                             $('.tutorial-stage-1').show();
                             localStorage.setItem('tutorialStage', 1);
@@ -96,9 +96,6 @@
                         case 2:
                             $('.tutorial').hide();
                             localStorage.setItem('tutorialStage', 3);
-                            break;
-                        default:
-                            console.log('failed');
                             break;
                     }
                 }
