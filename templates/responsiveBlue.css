@@ -509,10 +509,11 @@ select:focus, select:hover {
         font-size: 1.5em;
     }
     main {
+        position: relative;
         width: -webkit-calc(100% - 10px);
         width: -moz-calc(100% - 10px);
         width: calc(100% - 10px);
-        padding-left: 3px;
+        padding: 5px;
         padding-bottom: 50px;
         /*border-bottom: 1px solid #FFF4E8;*/
         margin-left: auto;
@@ -544,8 +545,22 @@ select:focus, select:hover {
         font-size: 1em;
     }
     input {
-        width: calc(100% - 2em);
+        max-width: calc(100% - 1.5em);
         height: 2em;
+    }
+    input[type='text'], input[name='insertcommentary'] {
+        width: calc(100% - 1.5em);
+    }
+    input.button {
+        height: 1.5em;
+        max-width: 250px;
+    }
+    input[name="search"] {
+        background: url("assets/search.svg") no-repeat;
+        background-size: 2em;
+        background-color: #202C39;
+        padding-left: 2em;
+        display: inline-block;
     }
     input[name="name"] {
         background: url("assets/user.svg") no-repeat;
