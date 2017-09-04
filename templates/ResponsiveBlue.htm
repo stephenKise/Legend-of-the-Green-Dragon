@@ -75,7 +75,7 @@
                         height: '0em'
                     }, 250).html('');
                 }
-                function tutorial() {
+                function tutoriax() {
                     var stage = localStorage.getItem('tutorialStage');
                     if (stage > 2) {
                         return;
@@ -84,18 +84,18 @@
                         default:
                             $('.tutorial').show(250);
                             $('.tutorial-stage-1').show();
-                            localStorage.setItem('tutorialStage', 1);
+                            localStorage.setItem('tutorialStage', '1');
                             stage = 1;
                             break;
-                        case 1:
+                        case "1":
                             $('.tutorial-stage-1').hide();
                             $('.tutorial-stage-2').show(250);
-                            localStorage.setItem('tutorialStage', 2);
+                            localStorage.setItem('tutorialStage', '2');
                             stage = 2;
                             break;
-                        case 2:
+                        case "2":
                             $('.tutorial').hide();
-                            localStorage.setItem('tutorialStage', 3);
+                            localStorage.setItem('tutorialStage', '3');
                             break;
                     }
                 }
