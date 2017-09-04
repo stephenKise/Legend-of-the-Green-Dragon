@@ -1,0 +1,305 @@
+<!--!popuphead-->
+<!DOCTYPE html>
+    <html>
+        <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' /><!--320-->
+        <head>
+            <title>
+                {title}
+            </title>
+            <link href='templates/responsiveBlue.css' rel='stylesheet' type='text/css' />
+            <link href='templates/assets/colors.css' rel='stylesheet' type='text/css' />
+            <script src='templates/assets/jquery_min.js' /></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <script src='templates/assets/app.js'></script> 
+            {headscript}
+            {script}
+            {javascript}
+            </script>
+        </head>
+        <body style='height: 100%;color: #CCC;' ng-app='LOTGD'>
+            <table border='0px' cellpadding=5 cellspacing=0 width='100%'>
+                <tr>
+                    <td colspan=2 class='pageheader'>
+                        <table border=0 cellpadding=0 cellspacing=0 width='100%' class='noborder'>
+                            <tr>
+                                <td width='100%' class='noborder'>
+                                    {title}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign='top' width='100%'>
+                        <!--!popupfoot-->
+                        <div class='copyright'>
+                            {copyright}
+                            {source}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </body>
+    </html>
+<!--!header-->
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>
+                {title}
+            </title>
+            <link href='templates/responsiveBlue.css' rel='stylesheet' type='text/css' />
+            <link href='templates/assets/colors.css' rel='stylesheet' type='text/css' />
+            <meta charset='utf8' />
+            <meta name='description' content='Xythen is a Roleplaying Door Game, filled with time travel, mechanical beings, and aether!' />
+            <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' />
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css' />
+            <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css' />
+            <script src='templates/assets/jquery_min.js'></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+            <script src='templates/assets/app.js'></script> 
+            <script type='text/javascript'>
+                var stage = localStorage['tutorialStage'];
+                if (!stage) {
+                    stage = 0;
+                }
+                function newMail()
+                {
+                    $('a[name=maillink]').html('Mailbox').removeClass('motd').addClass('unreadmotd');
+                    $('.alerts').html('You have a new mail!').animate({
+                        height: '1.25em'
+                    }, 250);
+                }
+                function clearMail()
+                {
+                    $('a[name=maillink]').html('Mailbox').removeClass('unreadmotd').addClass('motd');
+                    $('.alerts').animate({
+                        height: '0em'
+                    }, 250).html('');
+                }
+                function tutorial() {
+                    console.log(stage);
+                    switch (stage) {
+                        case "0":
+                            $('.tutorial').show(250);
+                            $('.tutorial-stage-1').show();
+                            localStorage.setItem('tutorialStage', 1);
+                            stage = 1;
+                            break;
+                        case 1:
+                            $('.tutorial-stage-1').hide();
+                            $('.tutorial-stage-2').show(250);
+                            localStorage.setItem('tutorialStage', 2);
+                            stage = 2;
+                            break;
+                        case 2:
+                            $('.tutorial').hide();
+                            localStorage.setItem('tutorialStage', 3);
+                            break;
+                        default:
+                            console.log('failed');
+                            break;
+                    }
+                }
+                var startX = 0,
+                    maxDistance = 100,
+                    touch = "ontouchend" in document,
+                    startEvent = 'touchstart',
+                    moveEvent = 'touchmove',
+                    endEvent = 'touchend';
+                $(document).on(startEvent, function(e) {
+                    startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+                }).on(endEvent, function(e) {
+                    startX = 0;
+                }).on(moveEvent, function(e) {
+                    var currentX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX,
+                        currentDistance = (startX === 0) ? 0 : Math.abs(currentX - startX);
+                    if (currentDistance > maxDistance && currentX > startX){
+                        $('main').hide();
+                        startX = 0;
+                        currentDistance = 0;
+                        localStorage.setItem('hideMain', 1);
+                        tutorial();
+                    }
+                    else if (currentDistance > maxDistance && currentX < startX) {
+                        $('main').show();
+                        startX = 0;
+                        currentDistance = 0;
+                        localStorage.setItem('hideMain', 0);
+                        tutorial();
+                    }
+                });
+                $(document).on('keyup', function(event){
+                    var isHidden = localStorage['hideTranslate'];
+                    if (isHidden != 1 && event.keyCode == 27) {
+                        localStorage.setItem('hideTranslate', 1);
+                        $('.thot').css('display', 'none');
+                    }
+                    if (isHidden == 1 && event.keyCode == 27) {
+                        localStorage.setItem('hideTranslate', 0);
+                        $('.thot').css('display', 'inline-block');
+                        $('.navigation .thot').css('display', 'block');
+                    }
+                });
+                $(document).ready(function() {
+                    if (window.matchMedia("(max-width: 650px)").matches) {
+                        tutorial();
+                    }
+                    $('.alerts').on('touch click', function(){
+                        $('.alerts').animate({
+                            height: '0em'
+                        }, 250).html('');
+                    });
+                    $('.hotmotd').on('click', function() {
+                        clearMail();
+                    });
+                    if ($('[href="mail.php"]').attr('class') == 'hotmotd') {
+                        newMail();
+                    }
+                    if (localStorage['hideMain'] == 1) {
+                        $('main').hide();
+                    }
+                    if (localStorage['hideTranslate'] == 1) {
+                        $('.thot').css('display', 'none');
+                    }
+                    else {
+                        $('.thot').css('display', 'inline-block');
+                        $('.navigation .thot').css('display', 'block');
+                    }
+                });
+            </script>
+            {headscript}
+            {script}
+            {javascript}
+        </head>
+        <body ng-app='LOTGD'>
+            <header>
+                <div class='title'>
+                    <span class='banner'></span>
+                    {title}
+                </div>
+                <div class='contact'>
+                    {ticket}
+                    {pagegen}
+                    {mail}
+                    {petition}
+                    {motd}
+                </div>
+            </header>
+            <div class='tutorial'>
+                    <h3>Tutorial: How to Navigate</h2>
+                <div class='tutorial-stage-1'>
+                    <p>Swipe right to show only the navigation.</p>
+                    <div class='swipe-right'></div>
+                </div>
+                <div class='tutorial-stage-2'>
+                    <p>Swipe left to login and access the content!</p>
+                    <div class='swipe-left'></div>
+                </div>
+            </div>
+            <main class='content'>
+                <!--!footer-->
+            </main>
+            <nav class='navigation'>
+                {navad}
+                <ul>
+                    {nav}
+                </ul>
+            </nav>
+            <div class='rightPanel'>
+                {petitiondisplay}
+                {stats}
+                {paypal}
+            </div>
+            <footer>
+                <div class='alerts'>
+                </div>
+                <div class='copyright'>
+                    {copyright}
+                    {source}
+                    {version}
+                </div>
+            </footer>
+        </body>
+    </html>
+<!--!statstart-->
+<section class='charinfo'>
+<!--!stathead-->
+<div class='charhead'>
+    {title}
+</div>
+<!--!statrow-->
+<div class='charrow'>
+    <div class='charstat'>
+        {title}
+    </div>
+    <div class='chardata'>
+        {value}
+    </div>
+</div>
+<!--!statbuff-->
+<div class='charbuffhead'>
+    {title}
+</div>
+<div class='charbuffstat'>
+    {value}
+</div>
+<!--!statend-->
+</section>
+<!--!petitioncount-->
+<div class='petitioncount'>
+    {petitioncount}
+</div>
+
+<!--!navhead-->
+<li class='navhead'>
+    {title}
+</li>
+<!--!navhelp-->
+<li class='navhelp'>
+    {text}
+</li>
+<!--!navitem-->
+<a href='{link}' {accesskey} {popup}>
+    <li class='nav'>
+        {text}
+    </li>
+</a>
+<!--!adwrapper-->
+<table cellpadding=2 cellspacing=0>
+    <tr>
+        <td>
+            {content}
+        </td>
+    </tr>
+</table>
+<!--!login-->
+<!--imageforlogin-->
+<input name='name' id='name' accesskey='u' size='10' placeholder='{username}'>
+<input name='password' id='password' accesskey='p' type='password' size='10' placeholder='{password}'><br />
+<input type='submit' value='{button}' class='button'>
+<!--!loginfull-->
+<table border='0' cellpadding='0' cellspacing='0' class='noborder'>
+    <tr>
+        <td class='noborder'>
+<!--imageforlogin-->
+        </td>
+    </tr>
+    <tr>
+        <td valign='center' align='center' class='noborder'>
+            <table border='0'>
+                <tr>
+                    <td align='center'>
+                        <font color='#ff0000'>
+                            Server Full!
+                        </font>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!--!collapse-->
+style:classic
