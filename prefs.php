@@ -112,7 +112,7 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
         }
         $bio = stripslashes(httppost('bio'));
         $bio = comment_sanitize($bio);
-        if ($bio!=comment_sanitize($session['user']['bio'])){
+        if ($bio!=comment_sanitize($session['user']['bio']?:'')){
             if ($session['user']['biotime']>"9000-01-01") {
                 output("`\$You cannot modify your bio.");
                 output("It has been blocked by the administrators!`0`n");
