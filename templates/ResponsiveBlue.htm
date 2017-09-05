@@ -114,6 +114,8 @@
                         currentDistance = (startX === 0) ? 0 : Math.abs(currentX - startX);
                     if (currentDistance > maxDistance && currentX > startX){
                         $('main').hide();
+                        $('nav').show();
+                        $('.rightPanel').show();
                         startX = 0;
                         currentDistance = 0;
                         localStorage.setItem('hideMain', 1);
@@ -121,6 +123,8 @@
                     }
                     else if (currentDistance > maxDistance && currentX < startX) {
                         $('main').show();
+                        $('nav').hide();
+                        $('.rightPanel').hide();
                         startX = 0;
                         currentDistance = 0;
                         localStorage.setItem('hideMain', 0);
@@ -140,7 +144,7 @@
                     }
                 });
                 $(document).ready(function() {
-                    if (window.matchMedia("(max-width: 650px)").matches) {
+                    if (window.matchMedia("(max-width: 700px)").matches) {
                         tutorial();
                     }
                     $('.alerts').on('touch click', function(){

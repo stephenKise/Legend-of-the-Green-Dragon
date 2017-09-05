@@ -33,6 +33,11 @@
     background-color: #FFF4E8;
     color: #0C1F2D;
 }
+
+* {
+    font-size: 1em;
+}
+
 body {
     font-family: Whitney, Droid, Helvetica;
     -webkit-overflow-scrolling: touch;
@@ -64,7 +69,7 @@ main {
     width: calc(100% - 420px);
     min-width: 360px;
     margin: 3px;
-    font-size: 16px;
+    font-size: 1em;
     display: inline-block;
     padding-bottom: 100px;
 }
@@ -341,7 +346,7 @@ li.nav {
     padding-left: 5px;
     border-right: 0px solid #FFF4E8;
     color: #9FAAAC;
-    font-size: .9em;
+    /* font-size: .9em; */
 }
 li.nav:hover {
     border-right: 5px solid #FFF4E8;
@@ -496,7 +501,7 @@ select:focus, select:hover {
 .characterCreation>legend {
     font-weight: bold;
 }
-@media only screen and (min-device-width: 1px) and (max-device-width: 650px) {
+@media only screen and (min-device-width: 1px) and (max-device-width: 700px) {
     ::-webkit-scrollbar {
       width:  .5em;
       height: .5em;
@@ -530,6 +535,7 @@ select:focus, select:hover {
         margin-right: auto;
     }
     nav, .rightPanel {
+        display: none;
         width: -webkit-calc(50% - 15px);
         width: -moz-calc(50% - 15px);
         width: calc(50% - 15px);
