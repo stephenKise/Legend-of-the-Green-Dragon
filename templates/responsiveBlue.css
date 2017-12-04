@@ -6,13 +6,6 @@
 }
 
 @font-face {
-  font-family: WhitneyMedium;
-  font-style: medium;
-  font-weight: 600;
-  src: url(assets/whitney-medium.woff) format('woff');
-}
-
-@font-face {
   font-family: WhitneyBold;
   font-style: bold;
   font-weight: 700;
