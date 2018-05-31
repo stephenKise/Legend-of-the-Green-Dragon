@@ -1,0 +1,13 @@
+These are things I hope to accomplish before I bump the version number and merge with the master branch.
+- [ ] Reorganize the caching system.
+- [ ] Make the logs super userful?
+- [ ] Ensure that the source code complies with GDPR.
+- [ ] Provide more hooks to modify transactions.
+- [ ] Move some functionality to an API.
+- [ ] Restructure the session variable.
+- - [ ] Decrease the clutter. Eliminate duplicates.
+- - [ ] Include past history, such as previous viewed pages.
+- - [ ] Make everything JSON compliant.
+- - [ ] Increment dragon kill points, rather than appending the choice.
+- [ ] Eliminate the shades/death aspect. Introduce some aspect of gameplay.
+- [ ] Expose the battle system to an API.
