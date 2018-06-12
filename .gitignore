@@ -60,3 +60,4 @@ modules
 .gitmodules
 tests
 templates
+/nbproject/private/
