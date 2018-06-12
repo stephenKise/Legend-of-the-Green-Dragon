@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 $bell_curve=0;
 function bell_rand($min=false,$max=false){
     global $bell_curve;
@@ -626,5 +624,3 @@ function bell_rand($min=false,$max=false){
     }
     echo "\n<br>Unable to locate random value, \$r was $r<br>\n";
 }
-
-?>

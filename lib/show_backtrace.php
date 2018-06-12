@@ -1,4 +1,5 @@
 <?php
+
 function show_no_backtrace() {
 	return "";
 }
@@ -90,4 +91,3 @@ function backtrace_getType($in){
 	}
 	return $return;
 }
-?>

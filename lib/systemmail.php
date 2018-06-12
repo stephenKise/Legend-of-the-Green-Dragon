@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 require_once("lib/is_email.php");
 require_once("lib/safeescape.php");
 require_once("lib/sanitize.php");
@@ -104,5 +101,3 @@ function systemmail($to,$subject,$body,$from=0,$noemail=false){
 	}
 	invalidatedatacache("mail-$to");
 }
-
-?>

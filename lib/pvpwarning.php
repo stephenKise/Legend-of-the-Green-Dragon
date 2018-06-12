@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 function pvpwarning($dokill=false) {
 	global $session;
 	$days = getsetting("pvpimmunity", 5);
@@ -19,5 +17,3 @@ function pvpwarning($dokill=false) {
 	}
 	modulehook("pvpwarning", array("dokill"=>$dokill));
 }
-
-?>

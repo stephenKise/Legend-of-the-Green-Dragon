@@ -1,7 +1,4 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
 
 function db_query($sql, $die=true){
     if (defined("DB_NODB") && !defined("LINK")) return array();

@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 require_once("lib/taunt.php");
 require_once("lib/e_rand.php");
 require_once("lib/pageparts.php");
@@ -213,4 +211,3 @@ function buffbadguy($badguy){
     debug("DEBUG: +".($hpflux/5)."*5 to hitpoints.");
     return modulehook("buffbadguy",$badguy);
 }
-?>

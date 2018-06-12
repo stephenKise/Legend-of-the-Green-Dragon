@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function getmountname()
 {
 	global $playermount;
@@ -19,4 +17,3 @@ function getmountname()
 	}
 	return array($name, $lcname);
 }
-?>

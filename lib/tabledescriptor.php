@@ -1,8 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-//
+
 //functions to pay attention to in this script:
 // synctable() ensures that a table in the database matches the
 // descriptor it's passed.
@@ -259,4 +256,3 @@ function descriptor_sanitize_type($type){
 	else
 		return $type;
 }
-?>

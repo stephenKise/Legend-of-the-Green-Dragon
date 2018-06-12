@@ -1,7 +1,4 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
 
 $buffreplacements = array();
 $debuggedbuffs = array();
@@ -208,5 +205,3 @@ function has_buff($name){
     if (isset($session['bufflist'][$name])) return true;
     return false;
 }
-
-?>

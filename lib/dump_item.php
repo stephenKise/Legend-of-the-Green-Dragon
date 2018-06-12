@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 function dump_item($item){
     $out = "";
     if (is_array($item)) $temp = $item;
@@ -39,5 +37,3 @@ function dump_item_ascode($item,$indent="\t"){
     }
     return $out;
 }
-
-?>

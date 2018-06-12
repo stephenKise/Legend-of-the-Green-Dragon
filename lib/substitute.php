@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function substitute($string, $extra=false, $extrarep=false) {
 	global $badguy, $session;
 
@@ -113,4 +111,3 @@ function substitute_array($string, $extra=false, $extrarep=false){
 	}
 	return $replacement_array;
 }
-?>

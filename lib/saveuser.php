@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 function saveuser(){
 	global $session,$dbqueriesthishit,$baseaccount,$companions;
@@ -45,5 +42,3 @@ function saveuser(){
 		);
 	}
 }
-
-?>

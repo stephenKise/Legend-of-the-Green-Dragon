@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function httpget($var){
 	global $HTTP_GET_VARS;
 
@@ -115,4 +113,3 @@ function postparse($verify=false, $subval=false){
 	}
 	return array($sql, $keys, $vals);
 }
-?>

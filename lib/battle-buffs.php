@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 /**
  *
  * 
@@ -344,5 +341,3 @@ function expire_buffs() {
     }
     tlschema();
 }
-
-?>

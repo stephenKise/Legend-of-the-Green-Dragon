@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function output_array($array,$prefix=""){
 	$out="";
 	while (list($key,$val)=@each($array)){
@@ -31,4 +29,3 @@ function code_array($array){
 	$output.=")\n";
 	return $output;
 }
-?>

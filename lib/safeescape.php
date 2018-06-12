@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 function safeescape($input){
 	$prevchar="";
 	$out="";
@@ -15,4 +13,3 @@ function safeescape($input){
 	}
 	return $out;
 }
-?>

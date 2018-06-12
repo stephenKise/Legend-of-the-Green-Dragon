@@ -1,4 +1,5 @@
 <?php
+
 function stripslashes_deep($input){
 	if (!is_array($input)) return stripslashes($input);
 	reset($input);
@@ -7,4 +8,3 @@ function stripslashes_deep($input){
 	}
 	return $input;
 }
-?>

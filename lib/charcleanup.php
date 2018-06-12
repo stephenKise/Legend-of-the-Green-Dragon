@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 function char_cleanup(int $id, int $type): bool
@@ -62,4 +63,3 @@ function char_cleanup(int $id, int $type): bool
     }
     return true;
 }
-

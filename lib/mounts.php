@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function getmount($horse=0) {
 	$sql = "SELECT * FROM " . db_prefix("mounts") . " WHERE mountid='$horse'";
 	$result = db_query_cached($sql, "mountdata-$horse", 3600);
@@ -11,4 +9,3 @@ function getmount($horse=0) {
 		return array();
 	}
 }
-?>

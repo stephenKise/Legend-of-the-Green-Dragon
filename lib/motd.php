@@ -1,7 +1,4 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
 
 function motd_admin($id, $poll=false) {
 	global $session;
@@ -236,5 +233,3 @@ function motd_del($id) {
 	header("Location: motd.php");
 	exit();
 }
-
-?>

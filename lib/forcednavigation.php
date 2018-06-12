@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 $baseaccount = array();
 function do_forced_nav($anonymous,$overrideforced){
@@ -47,4 +44,3 @@ function do_forced_nav($anonymous,$overrideforced){
 		}
 	}
 }
-?>

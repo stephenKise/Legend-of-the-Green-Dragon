@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 require_once("lib/constants.php");
 
@@ -69,4 +66,4 @@ if ($lastexpire < $needtoexpire){
 		db_query($sql);
 	}
 }
-?>
+

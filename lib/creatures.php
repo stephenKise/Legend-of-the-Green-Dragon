@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 function creature_stats(int $level): array

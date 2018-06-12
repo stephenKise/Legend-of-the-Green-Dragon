@@ -1,4 +1,5 @@
 <?php
+
 // This needs to be a function so we can recerse through dirs
 function return_legal_dirs($dirs, &$legal_dirs, $path="./") {
 	global $select_dir;
@@ -40,4 +41,3 @@ function return_legal_dirs($dirs, &$legal_dirs, $path="./") {
 		}
 	}
 }
-?>

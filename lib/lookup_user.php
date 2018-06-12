@@ -40,4 +40,3 @@ function lookup_user($query=false, $order=false, $fields=false, $where=false){
 	}
 	return array($searchresult, $err);
 }
-?>

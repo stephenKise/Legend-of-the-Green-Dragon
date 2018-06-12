@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 require_once("lib/pvplist.php");
 require_once("lib/pvpwarning.php");
@@ -203,5 +200,3 @@ function pvpdefeat($badguy, $killedloc, $taunt, $options)
 	output("You may begin fighting again tomorrow.");
 	return $args['handled'];
 }
-
-?>

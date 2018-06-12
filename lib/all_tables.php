@@ -1,7 +1,4 @@
 <?php
-//translator ready
-//addnews ready
-//mail ready
 /**
  * Contains information for all the tables
  * 
@@ -1493,5 +1490,3 @@ return array(
 		),
 );
 }
-?>
-

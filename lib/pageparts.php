@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Library (supporting) functions for page output
  *      addnews ready
@@ -810,4 +811,3 @@ function motdlink()
     $class = ($session['needtoviewmotd']) ? 'hot' : '';
     return "<a href='motd.php' target='_blank' onClick=\"$pop;return false;\" class='{$class}motd'>$motd</a>";
 }
-?>

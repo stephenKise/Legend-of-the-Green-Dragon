@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function debuglog($message,$target=false,$user=false,$field=false,$value=false,$consolidate=true){
     if ($target===false) $target=0;
     static $needsdebuglogdelete = true;
@@ -40,5 +38,3 @@ function debuglog($message,$target=false,$user=false,$field=false,$value=false,$
     }
     db_query($sql);
 }
-
-?>

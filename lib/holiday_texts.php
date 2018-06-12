@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 require_once("lib/modules.php");
 
 function holidayize($text,$type='unknown'){
@@ -18,5 +16,3 @@ function holidayize($text,$type='unknown'){
 
 	return $text;
 }
-
-?>

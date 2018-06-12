@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 require_once("lib/dbwrapper.php");
 require_once("lib/e_rand.php");
 require_once("lib/substitute.php");
@@ -42,4 +40,3 @@ function select_taunt_array(){
 	array_unshift($taunt, true, "taunts");
 	return $taunt;
 }
-?>

@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 require_once("lib/dump_item.php");
 
 function showform($layout,$row,$nosave=false,$keypref=false){
@@ -440,4 +438,3 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 	else rawoutput("<input type='submit' class='button' value='$save'>");
 	return $returnvalues;
 }
-?>

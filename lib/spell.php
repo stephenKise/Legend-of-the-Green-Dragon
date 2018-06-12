@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 $spell_dictionary = array();
 function spell($input,$words=false,$prefix="<span style='border: 1px dotted #FF0000;'>",$postfix="</span>"){
 	global $spell_dictionary;
@@ -105,4 +103,3 @@ function spell($input,$words=false,$prefix="<span style='border: 1px dotted #FF0
 	}
 	return $output;
 }
-?>

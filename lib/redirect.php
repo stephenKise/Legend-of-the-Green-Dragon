@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function redirect($location,$reason=false){
 	global $session,$REQUEST_URI;
 	// This function is deliberately not localized.  It is meant as error
@@ -24,4 +22,3 @@ function redirect($location,$reason=false){
 	//echo $session['debug'];
 	exit();
 }
-?>

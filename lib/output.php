@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Library Functions for page output.
  *      translator ready
@@ -899,5 +900,3 @@ function clearoutput(){
     $header="";
     $nav="";
 }
-
-?>

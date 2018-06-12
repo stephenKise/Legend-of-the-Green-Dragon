@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function superusernav()
 {
 	global $SCRIPT_NAME, $session;
@@ -21,4 +19,3 @@ function superusernav()
 		addnav("M?Return to the Mundane", "village.php");
 	tlschema();
 }
-?>

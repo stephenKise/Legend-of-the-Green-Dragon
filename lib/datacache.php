@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 //This is a data caching library intended to lighten the load on lotgd.net
 //use of this library is not recommended for most installations as it raises
 //the issue of some race conditions which are mitigated on high volume
@@ -141,5 +138,3 @@ function makecachetempname($name){
     }
     return $fullname;
 }
-
-?>

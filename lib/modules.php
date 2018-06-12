@@ -1,8 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-
 
 $injected_modules = array(1=>array(),0=>array());
 
@@ -1457,5 +1453,3 @@ function get_racename($thisuser=true) {
         return translate_inline($thisuser,"race");
     }
 }
-
-?>

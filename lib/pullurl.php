@@ -1,7 +1,4 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
 
 function _curl($url)
 {
@@ -82,4 +79,3 @@ function pullurl($url)
 	//if (function_exists("fsockopen")) return _sock($url);
 	return @file($url);
 }
-?>

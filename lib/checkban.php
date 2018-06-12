@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 function checkban(string $login, bool $connect = false): bool

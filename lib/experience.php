@@ -1,8 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-// phpDocumentor ready
 
 /**
  * Returns the experience needed to advance to the next level.
@@ -26,5 +22,3 @@ function exp_for_next_level($curlevel, $curdk)
 	$exprequired = $exparray[$curlevel];
 	return $exprequired;
 }
-
-?>

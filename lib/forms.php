@@ -1,4 +1,5 @@
 <?php
+
 function previewfield($name, $startdiv=false, $talkline="says", $showcharsleft=true, $info=false, $default=false) {
 	global $schema,$session;
 	$talkline = translate_inline($talkline, $schema);
@@ -206,4 +207,3 @@ function previewfield($name, $startdiv=false, $talkline="says", $showcharsleft=t
 	}
 	rawoutput("<div id='previewtext$name'></div>");
 }
-?>

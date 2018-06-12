@@ -1,8 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-
 
 $temp_user_stats = array('is_suspended' => false);
 
@@ -82,5 +78,3 @@ function restore_temp_stats(){
 		return false;
 	}
 }
-
-?>

@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 function increment_specialty($colorcode, $spec=false){
 	global $session;
@@ -21,4 +18,3 @@ function increment_specialty($colorcode, $spec=false){
 		$session['user']['specialty'] = $revertspec;
 	}
 }
-?>

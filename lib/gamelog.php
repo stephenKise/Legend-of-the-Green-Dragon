@@ -1,4 +1,5 @@
 <?php
+
 function gamelog($message,$category="general",$filed=false){
 	global $session;
 	$sql = "INSERT INTO ".db_prefix("gamelog")." (message,category,filed,date,who) VALUES (
@@ -10,4 +11,3 @@ function gamelog($message,$category="general",$filed=false){
 	)";
 	db_query($sql);
 }
-?>

@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 function templatereplace($itemname,$vals=false){
 	global $template;
@@ -90,4 +87,3 @@ function prepare_template($force=false){
 	}
 
 }
-?>

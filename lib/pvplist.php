@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 //put these outside the function since they're used by scripts outside of
 //this function.
@@ -129,4 +126,3 @@ function pvplist($location=false,$link=false,$extra=false,$sql=false){
 	}
 	tlschema();
 }
-?>

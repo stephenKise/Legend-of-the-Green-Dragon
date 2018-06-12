@@ -1,7 +1,4 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
 
 /**
  * Execute a SQLite query.
@@ -267,4 +264,3 @@ function db_prefix(string $tableName): string
     global $DB_PREFIX;
     return $DB_PREFIX . $tableName;
 }
-?>

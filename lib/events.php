@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 require_once("lib/constants.php");
 require_once("lib/http.php");
 
@@ -65,4 +63,3 @@ function handle_event($location, $baseLink=false, $needHeader=false)
 	tlschema();
 	return $skipdesc;
 }
-?>

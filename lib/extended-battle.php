@@ -1,8 +1,4 @@
 <?php
-// addnews ready
-// mail ready
-// translation ready
-//
 
 /**
  * Outputs a list of all enemies and the player.
@@ -557,5 +553,3 @@ function load_ai_script($scriptid) {
 		return $row['script'];
 	}
 }
-
-?>

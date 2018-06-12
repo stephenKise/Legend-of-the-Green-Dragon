@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function fightnav($allowspecial=true, $allowflee=true,$script=false){
 	global $session,$newenemies,$companions,$SCRIPT_NAME;
 	tlschema("fightnav");
@@ -62,4 +60,3 @@ function fightnav($allowspecial=true, $allowflee=true,$script=false){
 	}
 	tlschema();
 }
-?>

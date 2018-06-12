@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 function villagenav($extra=false)
 {
 	global $session;
@@ -18,4 +16,3 @@ function villagenav($extra=false)
 	}
 	tlschema();
 }
-?>

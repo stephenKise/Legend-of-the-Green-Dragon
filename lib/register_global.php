@@ -1,7 +1,4 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
 
 // This function takes an array and makes sure each of the keys in the array
 // is set as a global variable.  It's specifally set up to make sure we can
@@ -16,4 +13,3 @@ function register_global(&$var){
 	}
 	@reset($var);
 }
-?>

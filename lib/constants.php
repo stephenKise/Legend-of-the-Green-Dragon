@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 function myDefine(string $name, $value): bool

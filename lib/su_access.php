@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 $thispage_superuser_level=0;
 function check_su_access($level){
     global $session,$thispage_superuser_level;
@@ -76,4 +74,3 @@ function check_su_access($level){
         page_footer();
     }
 }
-?>

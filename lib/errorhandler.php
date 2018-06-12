@@ -130,4 +130,3 @@ $html_text
 	debug($data);
 }
 set_error_handler("logd_error_handler");
-?>

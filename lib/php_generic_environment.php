@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 function sanitize_uri(){
 	global $PATH_INFO,$SCRIPT_NAME,$REQUEST_URI;
 	if (isset($PATH_INFO) && $PATH_INFO!="") {
@@ -37,4 +35,3 @@ function php_generic_environment(){
 	register_global($_SERVER);
 	sanitize_uri();
 }
-?>

@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 require_once("lib/datetime.php");
 require_once("lib/sanitize.php");
 require_once("lib/http.php");
@@ -626,4 +624,3 @@ function talkform($section,$talkline,$limit=10,$schema=false){
     rawoutput("<div id='previewtext'></div></form>");
     tlschema();
 }
-?>

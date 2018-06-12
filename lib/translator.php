@@ -1,7 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
 function translator_setup(){
 	//Determine what language to use
@@ -259,5 +256,3 @@ function translator_check_collect_texts()
 		savesetting("collecttexts", 0);
 	}
 }
-
-?>
