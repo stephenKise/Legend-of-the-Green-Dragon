@@ -605,7 +605,7 @@ select:focus, select:hover {
     border-radius: 50%;
     will-change: transform;
     transition: transform 3000ms infinite;
-    /* Animation */.
+    /* Animation */
     animation: fadeRight cubic-bezier(0, 0, 0.2, 1) 1s infinite;
     animation-iteration-count: infinite;
     transform-origin: 0% 0%;
@@ -714,7 +714,7 @@ select:focus, select:hover {
     border-radius: 50%;
     will-change: transform;
     transition: transform 3000ms infinite;
-    /* Animation */.
+    /* Animation */
     animation: fadeLeft cubic-bezier(0, 0, 0.2, 1) 1s infinite;
     animation-iteration-count: infinite;
     transform-origin: 0% 0%;
@@ -810,3 +810,4 @@ select:focus, select:hover {
         -ms-transform: translateX(250px);
     }
 }
+
