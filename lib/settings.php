@@ -6,25 +6,22 @@ function savesetting(string $settingname, $value)
     $table = db_prefix('settings');
     loadsettings();
     if (!isset($settings[$settingname])) {
-            $sql = db_query(
+        $sql = db_query(
                 "INSERT INTO $table (setting, value)
                 VALUES ('" . addslashes($settingname) . "', '" . addslashes($value) . "')"
-            );
-    }
-    else if (isset($settings[$settingname])) {
-            $sql = db_query(
+        );
+    } else if (isset($settings[$settingname])) {
+        $sql = db_query(
                 "UPDATE $table SET value = '" . addslashes($value) . "' WHERE setting = '" . addslashes($settingname) . "'"
-            );
-    }
-    else {
+        );
+    } else {
         return false;
     }
     $settings[$settingname] = $value;
     invalidatedatacache('game-settings');
-    if (db_affected_rows()>0) {
+    if (db_affected_rows() > 0) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -37,7 +34,7 @@ function loadsettings()
         if (empty($settings)) {
             $settings = [];
             $sql = db_query(
-                "SELECT * FROM " . db_prefix('settings')
+                    "SELECT * FROM " . db_prefix('settings')
             );
             while ($row = db_fetch_assoc($sql)) {
                 $settings[$row['setting']] = $row['value'];
@@ -59,21 +56,18 @@ function getsetting(string $settingname, $default)
     global $settings, $DB_USEDATACACHE, $DB_DATACACHEPATH;
     if ($settingname == 'usedatacache') {
         return $DB_USEDATACACHE;
-    }
-    else if ($settingname == 'datacachepath') {
+    } else if ($settingname == 'datacachepath') {
         return $DB_DATACACHEPATH;
     }
     if (!isset($settings[$settingname])) {
         loadsettings();
-    }
-    else {
+    } else {
         return $settings[$settingname];
     }
     if (!isset($settings[$settingname])) {
         savesetting($settingname, $default);
         return $default;
-    }
-    else {
+    } else {
         return $settings[$settingname];
     }
 }

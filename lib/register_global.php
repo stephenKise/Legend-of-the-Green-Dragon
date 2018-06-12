@@ -5,11 +5,12 @@
 // get around sites that don't automatically register some globals we want to
 // deal with.  Yes, we could find all references to this stuff and get rid
 // of the dependancy, but it's not really worth it.
-function register_global(&$var){
-	@reset($var);
-	while (list($key,$val)=@each($var)){
-		global $$key;
-		$$key = $val;
-	}
-	@reset($var);
+function register_global(&$var)
+{
+    @reset($var);
+    while (list($key, $val) = @each($var)) {
+        global $$key;
+        $$key = $val;
+    }
+    @reset($var);
 }

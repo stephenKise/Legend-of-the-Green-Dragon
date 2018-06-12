@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 function creature_stats(int $level): array
 {
@@ -57,7 +57,7 @@ function creature_health(int $level): int
 function creature_attack(int $level): int
 {
     $attack = 1;
-    for($i = 1; $i < $level; $i++) {
+    for ($i = 1; $i < $level; $i++) {
         $attack += 2;
     }
     return $attack;
@@ -109,45 +109,45 @@ function creature_defense(int $level): int
 
 function creature_exp(int $level): int
 {
-    switch($level) {
+    switch ($level) {
         case 1:
         case 2:
         case 3:
             $exp = $level * 10 + 4;
-        break;
+            break;
         case 4:
         case 5:
             $exp = $level * 10 + 5;
-        break;
+            break;
         case 6:
         case 7:
             $exp = $level * 11;
-        break;
+            break;
         case 8:
         case 9:
             $exp = $level * 12 - 7;
-        break;
+            break;
         case 10:
         case 11:
         case 12:
             $exp = round(13.5 * $level - 21.17);
-        break;
+            break;
         case 13:
         case 14:
         case 15:
         case 16:
             $exp = round(0.5 * ($level ** 2) + 2.5 * $level + 39);
-        break;
+            break;
         default:
             $exp = 0;
-        break;
+            break;
     }
     return intval($exp);
 }
 
 function creature_gold(int $level): int
 {
-    switch($level) {
+    switch ($level) {
         case 1:
         case 2:
         case 3:

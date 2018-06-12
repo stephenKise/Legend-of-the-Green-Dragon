@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 function soap(string $input, bool $debug = false, bool $skiphook = false): string
 {
@@ -18,16 +18,14 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
             do {
                 if ($word > '') {
                     $times = @preg_match_all($word, $output, $matches);
-                }
-                else {
+                } else {
                     $times = 0;
                 }
                 for ($x = 0; $x < $times; $x++) {
                     if (strlen($matches[0][$x]) < strlen($matches[1][$x])) {
                         $shortword = $matches[0][$x];
                         $longword = $matches[1][$x];
-                    }
-                    else {
+                    } else {
                         $shortword = $matches[1][$x];
                         $longword = $matches[0][$x];
                     }
@@ -36,18 +34,13 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
                         $times--;
                         if ($debug) {
                             output(
-                                "This word is ok because it was caught by an exception: `b`^%s`7`b`n",
-                                $longword
+                                    "This word is ok because it was caught by an exception: `b`^%s`7`b`n", $longword
                             );
                         }
-                    }
-                    else {
+                    } else {
                         if ($debug) {
                             output(
-                                "`7This word is not ok: \"`%%s`7\"; it blocks on the pattern `i%s`i at \"`\$%s`7\".`n",
-                                $longword,
-                                $word,
-                                $shortword
+                                    "`7This word is not ok: \"`%%s`7\"; it blocks on the pattern `i%s`i at \"`\$%s`7\".`n", $longword, $word, $shortword
                             );
                         }
                         $len = strlen($shortword);
@@ -62,33 +55,29 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
         }
         $y = 0;
         $pad = '#@%$!';
-        for ($x=0; $x<strlen($mix_mask); $x++) {
+        for ($x = 0; $x < strlen($mix_mask); $x++) {
             while (substr($final_output, $y, 1) == '`') {
-                $y+=2;
+                $y += 2;
             }
             if (substr($mix_mask, $x, 1) == '_') {
                 $final_output = substr($final_output, 0, $y) .
-                    substr($pad, $x % strlen($pad), 1) .
-                    substr($final_output, $y + 1 );
+                        substr($pad, $x % strlen($pad), 1) .
+                        substr($final_output, $y + 1);
             }
             $y++;
         }
         if ($session['user']['superuser'] & SU_EDIT_COMMENTS && $changed_content) {
             output(
-                "`0The filter would have tripped on \"`#%s`0\" but since you're a moderator, I'm going to be lenient on you.  The text would have read, \"`#%s`0\"`n`n",
-                $input,
-                $final_output
+                    "`0The filter would have tripped on \"`#%s`0\" but since you're a moderator, I'm going to be lenient on you.  The text would have read, \"`#%s`0\"`n`n", $input, $final_output
             );
             return $input;
-        }
-        else {
+        } else {
             if ($changed_content && !$skiphook) {
                 modulehook('censor', ['input' => $input]);
             }
             return $final_output;
         }
-    }
-    else {
+    } else {
         return $final_output;
     }
 }
@@ -97,21 +86,19 @@ function good_word_list(): array
 {
     $nastyWords = db_prefix('nastywords');
     $sql = db_query_cached(
-        "SELECT * FROM $nastyWords WHERE type = 'good'",
-        'goodwordlist'
+            "SELECT * FROM $nastyWords WHERE type = 'good'", 'goodwordlist'
     );
     $row = db_fetch_assoc($sql);
-    if (!empty($row['words'])) { 
+    if (!empty($row['words'])) {
         return explode(' ', $row['words']);
-    }
-    else {
+    } else {
         return [];
     }
 }
 
 function nasty_word_list(): array
 {
-    $search  = datacache('nastywordlist', 86400);
+    $search = datacache('nastywordlist', 86400);
     if ($search !== false && is_array($search)) {
         return $search;
     }

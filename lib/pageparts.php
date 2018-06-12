@@ -10,9 +10,9 @@
  * @package defaultPackage
  *
  */
-
 $nopopups = [];
 $runheaders = [];
+
 /**
  * Starts page output.  Inits the template and translator modules.
  *
@@ -51,8 +51,7 @@ function page_header()
     }
 
     $arguments = func_get_args() ?: [getsetting(
-        'servername',
-        'Legend of the Green Dragon'
+                'servername', 'Legend of the Green Dragon'
     )];
     $title = call_user_func_array('sprintf_translate', $arguments);
     $title = sanitize($title, 'title');
@@ -83,32 +82,33 @@ function popup($page, $size = '800x600')
  *  everyfooter
  *
  */
-function page_footer($saveuser = true){
-    global $output,$nestedtags,$header,$nav,$session,$REMOTE_ADDR,
-        $REQUEST_URI,$pagestarttime,$quickkeys,$template,$y2,$z2,
-        $logd_version,$copyright,$SCRIPT_NAME,$nopopups, $footer,
-        $dbinfo, $queriesFromCache;
+function page_footer($saveuser = true)
+{
+    global $output, $nestedtags, $header, $nav, $session, $REMOTE_ADDR,
+    $REQUEST_URI, $pagestarttime, $quickkeys, $template, $y2, $z2,
+    $logd_version, $copyright, $SCRIPT_NAME, $nopopups, $footer,
+    $dbinfo, $queriesFromCache;
     if (!isset($queriesFromCache)) {
         $queriesFromCache = 0;
     }
-    $z = $y2^$z2;
+    $z = $y2 ^ $z2;
     $footer = $template['footer'];
     //page footer module hooks
-    $script = substr($SCRIPT_NAME,0,strpos($SCRIPT_NAME,"."));
+    $script = substr($SCRIPT_NAME, 0, strpos($SCRIPT_NAME, "."));
     $replacementbits = array();
-    $replacementbits = modulehook("footer-$script",$replacementbits);
+    $replacementbits = modulehook("footer-$script", $replacementbits);
     if ($script == "runmodule" && (($module = httpget('module'))) > "") {
         // This modulehook allows you to hook directly into any module without
         // the need to hook into footer-runmodule and then checking for the
         // required module.
-        modulehook("footer-$module",$replacementbits);
+        modulehook("footer-$module", $replacementbits);
     }
     // Pass the script file down into the footer so we can do something if
     // we need to on certain pages (much like we do on the header.
     // Problem is 'script' is a valid replacement token, so.. use an
     // invalid one which we can then blow away.
     $replacementbits['__scriptfile__'] = $script;
-    $replacementbits = modulehook("everyfooter",$replacementbits);
+    $replacementbits = modulehook("everyfooter", $replacementbits);
     if ($session['user']['loggedin']) {
         $replacementbits = modulehook("everyfooter-loggedin", $replacementbits);
     }
@@ -116,9 +116,9 @@ function page_footer($saveuser = true){
     //output any template part replacements that above hooks need (eg,
     //advertising)
     reset($replacementbits);
-    while (list($key,$val)=each($replacementbits)){
-        $header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
-        $footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+    while (list($key, $val) = each($replacementbits)) {
+        $header = str_replace("{" . $key . "}", "{" . $key . "}" . join($val, ""), $header);
+        $footer = str_replace("{" . $key . "}", "{" . $key . "}" . join($val, ""), $footer);
     }
 
     $builtnavs = buildnavs();
@@ -138,33 +138,36 @@ function page_footer($saveuser = true){
     db_free_result($result);
     $headscript = "";
     if (isset($session['user']['lastmotd']) &&
-            ($row['motddate']>$session['user']['lastmotd']) &&
-            (!isset($nopopup[$SCRIPT_NAME]) || $nopopups[$SCRIPT_NAME]!=1) &&
-            $session['user']['loggedin']){
-        $session['needtoviewmotd']=true;
-    }else{
-        $session['needtoviewmotd']=false;
+            ($row['motddate'] > $session['user']['lastmotd']) &&
+            (!isset($nopopup[$SCRIPT_NAME]) || $nopopups[$SCRIPT_NAME] != 1) &&
+            $session['user']['loggedin']) {
+        $session['needtoviewmotd'] = true;
+    } else {
+        $session['needtoviewmotd'] = false;
     }
     $pre_headscript = "<LINK REL=\"shortcut icon\" HREF=\"favicon.ico\" TYPE=\"image/x-icon\"/>";
-    if ($headscript>""){
-        $header=str_replace("{headscript}",$pre_headscript."<script language='JavaScript'>".$headscript."</script>",$header);
-    }else{
-        $header = str_replace("{headscript}",$pre_headscript,$header);
+    if ($headscript > "") {
+        $header = str_replace("{headscript}", $pre_headscript . "<script language='JavaScript'>" . $headscript . "</script>", $header);
+    } else {
+        $header = str_replace("{headscript}", $pre_headscript, $header);
     }
 
     $script = "";
 
-    if (!isset($session['user']['name'])) $session['user']['name']="";
-    if (!isset($session['user']['login'])) $session['user']['login']="";
+    if (!isset($session['user']['name']))
+        $session['user']['name'] = "";
+    if (!isset($session['user']['login']))
+        $session['user']['login'] = "";
 
     //clean up unclosed output tags.
-    while (list($key,$val)=each($nestedtags)){
-        if ($nestedtags[$key] === true) $output.="</$key>";
+    while (list($key, $val) = each($nestedtags)) {
+        if ($nestedtags[$key] === true)
+            $output .= "</$key>";
 
         unset($nestedtags[$key]);
     }
     //output keypress script
-    $script.="<script language='JavaScript'>
+    $script .= "<script language='JavaScript'>
     <!--
     document.onkeypress=keyevent;
     function keyevent(e){
@@ -188,17 +191,21 @@ function page_footer($saveuser = true){
         if (target.nodeName.toUpperCase()=='INPUT' || target.nodeName.toUpperCase()=='TEXTAREA' || altKey || ctrlKey){
         }else{";
     reset($quickkeys);
-    while (list($key,$val)=each($quickkeys)){
-        $script.="\n            if (c == '".strtoupper($key)."') { $val; return false; }";
+    while (list($key, $val) = each($quickkeys)) {
+        $script .= "\n            if (c == '" . strtoupper($key) . "') { $val; return false; }";
     }
-    $script.="
+    $script .= "
         }
     }
     //-->
     </script>";
 
     //handle paypal
-    if (strpos($footer,"{paypal}") || strpos($header,"{paypal}")){ $palreplace="{paypal}"; }else{ $palreplace="{stats}"; }
+    if (strpos($footer, "{paypal}") || strpos($header, "{paypal}")) {
+        $palreplace = "{paypal}";
+    } else {
+        $palreplace = "{stats}";
+    }
 
     //NOTICE |
     //NOTICE | Although under the license, you're not required to keep this
@@ -208,28 +215,28 @@ function page_footer($saveuser = true){
     $paypalstr = '<table align="center"><tr><td>';
     $currency = getsetting("paypalcurrency", "USD");
 
-    if (!isset($_SESSION['logdnet']) || !isset($_SESSION['logdnet']['']) || $_SESSION['logdnet']['']=="" || !isset($session['user']['laston']) || date("Y-m-d H:i:s",strtotime("-1 hour"))>$session['user']['laston']){
+    if (!isset($_SESSION['logdnet']) || !isset($_SESSION['logdnet']['']) || $_SESSION['logdnet'][''] == "" || !isset($session['user']['laston']) || date("Y-m-d H:i:s", strtotime("-1 hour")) > $session['user']['laston']) {
         $already_registered_logdnet = false;
-    }else{
+    } else {
         $already_registered_logdnet = true;
     }
 
-    if (getsetting("logdnet",0) && $session['user']['loggedin'] && !$already_registered_logdnet){
+    if (getsetting("logdnet", 0) && $session['user']['loggedin'] && !$already_registered_logdnet) {
         //account counting, just for my own records, I don't use this in the calculation for server order.
         $sql = "SELECT count(*) AS c FROM " . db_prefix("accounts");
-        $result = db_query_cached($sql,"acctcount",600);
+        $result = db_query_cached($sql, "acctcount", 600);
         $row = db_fetch_assoc($result);
         $c = $row['c'];
-        $a = getsetting("serverurl","http://".$_SERVER['SERVER_NAME'].($_SERVER['SERVER_PORT'] == 80?"":":".$_SERVER['SERVER_PORT']).dirname($_SERVER['REQUEST_URI']));
+        $a = getsetting("serverurl", "http://" . $_SERVER['SERVER_NAME'] . ($_SERVER['SERVER_PORT'] == 80 ? "" : ":" . $_SERVER['SERVER_PORT']) . dirname($_SERVER['REQUEST_URI']));
         if (!preg_match("/\\/$/", $a)) {
             $a = $a . "/";
             savesetting("serverurl", $a);
         }
 
-        $l = getsetting("defaultlanguage","en");
-        $d = getsetting("serverdesc","Another LoGD Server");
+        $l = getsetting("defaultlanguage", "en");
+        $d = getsetting("serverdesc", "Another LoGD Server");
         $e = getsetting("gameadminemail", "postmaster@localhost.com");
-        $u = getsetting("logdnetserver","http://logdnet.logd.com/");
+        $u = getsetting("logdnetserver", "http://logdnet.logd.com/");
         if (!preg_match("/\\/$/", $u)) {
             $u = $u . "/";
             savesetting("logdnetserver", $u);
@@ -246,12 +253,12 @@ function page_footer($saveuser = true){
         $v = rawurlencode($v);
         $u = rawurlencode($u);
         $paypalstr .= "<script language='JavaScript' src='images/logdnet.php?op=register&c=$c&l=$l&v=$v&a=$a&d=$d&e=$e&u=$u'></script>";
-    }else{
+    } else {
         $paypalstr .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="logd@mightye.org">
-<input type="hidden" name="item_name" value="Legend of the Green Dragon Author Donation from '.full_sanitize($session['user']['name']).'">
-<input type="hidden" name="item_number" value="'.htmlentities($session['user']['login'].":".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")).'">
+<input type="hidden" name="item_name" value="Legend of the Green Dragon Author Donation from ' . full_sanitize($session['user']['name']) . '">
+<input type="hidden" name="item_number" value="' . htmlentities($session['user']['login'] . ":" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . '">
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="notify_url" value="http://lotgd.net/payment.php">
 <input type="hidden" name="cn" value="Your Character Name">
@@ -266,8 +273,8 @@ function page_footer($saveuser = true){
     $paypalstr .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="derbugmeister@shaw.ca">
-<input type="hidden" name="item_name" value="Legend of the Green Dragon DP Donation from '.full_sanitize($session['user']['name']).'">
-<input type="hidden" name="item_number" value="'.htmlentities($session['user']['login'].":".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")).'">
+<input type="hidden" name="item_name" value="Legend of the Green Dragon DP Donation from ' . full_sanitize($session['user']['name']) . '">
+<input type="hidden" name="item_number" value="' . htmlentities($session['user']['login'] . ":" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . '">
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="notify_url" value="http://dragonprimelogd.net/payment.php">
 <input type="hidden" name="cn" value="Your Character Name">
@@ -281,62 +288,61 @@ function page_footer($saveuser = true){
         $paypalstr .= '</td></tr><tr><td colspan=\'2\' align=\'center\'>';
         $paypalstr .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 <input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="'.$paysite.'">
-<input type="hidden" name="item_name" value="'.getsetting("paypaltext","Legend of the Green Dragon Site Donation from").' '.full_sanitize($session['user']['name']).'">
-<input type="hidden" name="item_number" value="'.htmlentities($session['user']['login'].":".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")).'">
+<input type="hidden" name="business" value="' . $paysite . '">
+<input type="hidden" name="item_name" value="' . getsetting("paypaltext", "Legend of the Green Dragon Site Donation from") . ' ' . full_sanitize($session['user']['name']) . '">
+<input type="hidden" name="item_number" value="' . htmlentities($session['user']['login'] . ":" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . '">
 <input type="hidden" name="no_shipping" value="1">';
         if (file_exists("payment.php")) {
-            $paypalstr .= '<input type="hidden" name="notify_url" value="http://'.$_SERVER["HTTP_HOST"].dirname($_SERVER['REQUEST_URI']).'/payment.php">';
+            $paypalstr .= '<input type="hidden" name="notify_url" value="http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER['REQUEST_URI']) . '/payment.php">';
         }
         $paypalstr .= '<input type="hidden" name="cn" value="Your Character Name">
 <input type="hidden" name="cs" value="1">
-<input type="hidden" name="currency_code" value="'.$currency.'">
-<input type="hidden" name="lc" value="'.getsetting("paypalcountry-code","US").'">
+<input type="hidden" name="currency_code" value="' . $currency . '">
+<input type="hidden" name="lc" value="' . getsetting("paypalcountry-code", "US") . '">
 <input type="hidden" name="bn" value="PP-DonationsBF">
 <input type="hidden" name="tax" value="0">
 <input type="image" src="images/paypal2.gif" border="0" name="submit" alt="Donate!">
 </form>';
     }
     $paypalstr .= '</td></tr></table>';
-    $footer=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$footer);
-    $header=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$header);
+    $footer = str_replace($palreplace, (strpos($palreplace, "paypal") ? "" : "{stats}") . $paypalstr, $footer);
+    $header = str_replace($palreplace, (strpos($palreplace, "paypal") ? "" : "{stats}") . $paypalstr, $header);
     //NOTICE |
     //NOTICE | Although I will not deny you the ability to remove the above
     //NOTICE | paypal link, I do request, as the author of this software
     //NOTICE | which I made available for free to you that you leave it in.
     //NOTICE |
-
     //output the nav
-    $footer = str_replace("{".($z)."}",$$z,$footer);
-    $header=str_replace("{nav}",$builtnavs,$header);
-    $footer=str_replace("{nav}",$builtnavs,$footer);
+    $footer = str_replace("{" . ($z) . "}", $$z, $footer);
+    $header = str_replace("{nav}", $builtnavs, $header);
+    $footer = str_replace("{nav}", $builtnavs, $footer);
     //output the motd
 
     $header = str_replace("{motd}", motdlink(), $header);
     $footer = str_replace("{motd}", motdlink(), $footer);
     //output the mail link
-    if (isset($session['user']['acctid']) && $session['user']['acctid']>0 && $session['user']['loggedin']) {
-        $header=str_replace("{mail}",maillink(),$header);
-        $footer=str_replace("{mail}",maillink(),$footer);
-    }else{
-        $header=str_replace("{mail}","",$header);
-        $footer=str_replace("{mail}","",$footer);
+    if (isset($session['user']['acctid']) && $session['user']['acctid'] > 0 && $session['user']['loggedin']) {
+        $header = str_replace("{mail}", maillink(), $header);
+        $footer = str_replace("{mail}", maillink(), $footer);
+    } else {
+        $header = str_replace("{mail}", "", $header);
+        $footer = str_replace("{mail}", "", $footer);
     }
     //output petition count
 
-    $header=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$header);
-    $footer=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$footer);
-    if ($session['user']['superuser'] & SU_EDIT_PETITIONS){
+    $header = str_replace("{petition}", "<a href='petition.php' onClick=\"" . popup("petition.php") . ";return false;\" target='_blank' align='right' class='motd'>" . translate_inline("Petition for Help") . "</a>", $header);
+    $footer = str_replace("{petition}", "<a href='petition.php' onClick=\"" . popup("petition.php") . ";return false;\" target='_blank' align='right' class='motd'>" . translate_inline("Petition for Help") . "</a>", $footer);
+    if ($session['user']['superuser'] & SU_EDIT_PETITIONS) {
         $sql = "SELECT count(petitionid) AS c,status FROM " . db_prefix("petitions") . " GROUP BY status";
-        $result = db_query_cached($sql,"petition_counts");
-        $petitions=array(0=>0,1=>0,2=>0,3=>0,4=>0,5=>0,6=>0,7=>0);
+        $result = db_query_cached($sql, "petition_counts");
+        $petitions = array(0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0);
         while ($row = db_fetch_assoc($result)) {
-            $petitions[(int)$row['status']] = $row['c'];
+            $petitions[(int) $row['status']] = $row['c'];
         }
         $pet = translate_inline("`0`bPetitions:`b");
         $ued = translate_inline("`0`bUser Editor`b");
         db_free_result($result);
-        if ($session['user']['superuser'] & SU_EDIT_USERS){
+        if ($session['user']['superuser'] & SU_EDIT_USERS) {
             $p = "<a href='user.php'>$ued</a>|<a href='viewpetition.php'>$pet</a>";
             addnav("", "user.php");
             addnav("", "viewpetition.php");
@@ -345,7 +351,7 @@ function page_footer($saveuser = true){
             addnav("", "viewpetition.php");
         }
         $p .= " `\${$petitions[5]}`0|`^{$petitions[4]}`0|`b{$petitions[0]}`b|{$petitions[1]}|`!{$petitions[3]}`0|`#{$petitions[7]}`0|`%{$petitions[6]}`0|`i{$petitions[2]}`i";
-        $pcount = templatereplace("petitioncount", array("petitioncount"=>appoencode($p, true)));
+        $pcount = templatereplace("petitioncount", array("petitioncount" => appoencode($p, true)));
         $footer = str_replace("{petitiondisplay}", $pcount, $footer);
         $header = str_replace("{petitiondisplay}", $pcount, $header);
     } else {
@@ -353,36 +359,36 @@ function page_footer($saveuser = true){
         $header = str_replace("{petitiondisplay}", "", $header);
     }
     //output character stats
-    $footer=str_replace("{stats}",$charstats,$footer);
-    $header=str_replace("{stats}",$charstats,$header);
+    $footer = str_replace("{stats}", $charstats, $footer);
+    $header = str_replace("{stats}", $charstats, $header);
     // Replace core JavaScript functions.
-    $header=str_replace("{script}",$script,$header);
+    $header = str_replace("{script}", $script, $header);
     $javaScript = modulehook("javascript");
     if (!empty($javaScript)) {
         $header = str_replace("{javascript}", $javaScript, $header);
     }
     //output view PHP source link
-    $sourcelink = "source.php?url=".preg_replace("/[?].*/","",($_SERVER['REQUEST_URI']));
-    $footer=str_replace("{source}","<a href='$sourcelink' onclick=\"".popup($sourcelink).";return false;\" target='_blank'>".translate_inline("View PHP Source")."</a>",$footer);
-    $header=str_replace("{source}","<a href='$sourcelink' onclick=\"".popup($sourcelink).";return false;\" target='_blank'>".translate_inline("View PHP Source")."</a>",$header);
+    $sourcelink = "source.php?url=" . preg_replace("/[?].*/", "", ($_SERVER['REQUEST_URI']));
+    $footer = str_replace("{source}", "<a href='$sourcelink' onclick=\"" . popup($sourcelink) . ";return false;\" target='_blank'>" . translate_inline("View PHP Source") . "</a>", $footer);
+    $header = str_replace("{source}", "<a href='$sourcelink' onclick=\"" . popup($sourcelink) . ";return false;\" target='_blank'>" . translate_inline("View PHP Source") . "</a>", $header);
     //output version
-    $footer=str_replace("{version}", "Version: $logd_version", $footer);
+    $footer = str_replace("{version}", "Version: $logd_version", $footer);
     //output page generation time
-    $gentime = getmicrotime()-$pagestarttime;
-    $session['user']['gentime']+=$gentime;
-    $session['user']['gentimecount']++;
-    $footer=str_replace("{pagegen}","Page gen: ".round($gentime,3)."s / ".$dbinfo['queriesthishit']." queries ($queriesFromCache cached, ".round($dbinfo['querytime'],3)."s), Ave: ".round($session['user']['gentime']/$session['user']['gentimecount'],3)."s - ".round($session['user']['gentime'],3)."/".round($session['user']['gentimecount'],3)."",$footer);
+    $gentime = getmicrotime() - $pagestarttime;
+    $session['user']['gentime'] += $gentime;
+    $session['user']['gentimecount'] ++;
+    $footer = str_replace("{pagegen}", "Page gen: " . round($gentime, 3) . "s / " . $dbinfo['queriesthishit'] . " queries ($queriesFromCache cached, " . round($dbinfo['querytime'], 3) . "s), Ave: " . round($session['user']['gentime'] / $session['user']['gentimecount'], 3) . "s - " . round($session['user']['gentime'], 3) . "/" . round($session['user']['gentimecount'], 3) . "", $footer);
 
     tlschema();
 
     //clean up spare {fields}s from header and footer (in case they're not used)
-    $footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
-    $header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
+    $footer = preg_replace("/{[^} \t\n\r]*}/i", "", $footer);
+    $header = preg_replace("/{[^} \t\n\r]*}/i", "", $header);
 
     //finalize output
-    $output=$header.$output.$footer;
-    $session['user']['gensize']+=strlen($output);
-    $session['output']=$output;
+    $output = $header . $output . $footer;
+    $session['user']['gensize'] += strlen($output);
+    $session['output'] = $output;
     if ($saveuser === true) {
         saveuser();
     }
@@ -398,7 +404,8 @@ function page_footer($saveuser = true){
  *
  * @param string $title The title of the popup window
  */
-function popup_header($title="Legend of the Green Dragon"){
+function popup_header($title = "Legend of the Green Dragon")
+{
     global $header, $template;
 
     translator_setup();
@@ -411,7 +418,7 @@ function popup_header($title="Legend of the Green Dragon"){
         $arguments = array("Legend of the Green Dragon");
     }
     $title = call_user_func_array("sprintf_translate", $arguments);
-    $title = holidayize($title,'title');
+    $title = holidayize($title, 'title');
 
     $header = $template['popuphead'];
     $header = str_replace("{title}", $title, $header);
@@ -421,11 +428,13 @@ function popup_header($title="Legend of the Green Dragon"){
  * Ends page generation for popup windows.  Saves the user account info - doesn't update page generation stats
  *
  */
-function popup_footer(){
-    global $output,$nestedtags,$header,$session,$y2,$z2,$copyright, $template;
+function popup_footer()
+{
+    global $output, $nestedtags, $header, $session, $y2, $z2, $copyright, $template;
 
-    while (list($key,$val)=each($nestedtags)){
-        if ($nestedtags[$key] === true) $output.="</$key>";
+    while (list($key, $val) = each($nestedtags)) {
+        if ($nestedtags[$key] === true)
+            $output .= "</$key>";
         unset($nestedtags[$key]);
     }
 
@@ -435,22 +444,22 @@ function popup_footer(){
     // we need to on certain pages (much like we do on the header.
     // Problem is 'script' is a valid replacement token, so.. use an
     // invalid one which we can then blow away.
-    $replacementbits = modulehook("footer-popup",array());
+    $replacementbits = modulehook("footer-popup", array());
     //output any template part replacements that above hooks need
     reset($replacementbits);
-    while (list($key,$val)=each($replacementbits)){
-        $header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
-        $footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+    while (list($key, $val) = each($replacementbits)) {
+        $header = str_replace("{" . $key . "}", "{" . $key . "}" . join($val, ""), $header);
+        $footer = str_replace("{" . $key . "}", "{" . $key . "}" . join($val, ""), $footer);
     }
 
-    $z = $y2^$z2;
-    $footer = str_replace("{".($z)."}",$$z, $footer);
+    $z = $y2 ^ $z2;
+    $footer = str_replace("{" . ($z) . "}", $$z, $footer);
 
     //clean up spare {fields}s from header and footer (in case they're not used)
-    $footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
-    $header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
+    $footer = preg_replace("/{[^} \t\n\r]*}/i", "", $footer);
+    $header = preg_replace("/{[^} \t\n\r]*}/i", "", $header);
 
-    $output=$header.$output.$footer;
+    $output = $header . $output . $footer;
     saveuser();
     session_write_close();
     echo $output;
@@ -458,6 +467,7 @@ function popup_footer(){
 }
 
 $charstat_info = [];
+
 /**
  * Resets the character stats array
  *
@@ -481,8 +491,7 @@ function addcharstat($label, $value = false)
     if ($value === false) {
         $charstat_info[$label] = $charstat_info[$label] ?: [];
         $last_charstat_label = $label;
-    }
-    else {
+    } else {
         $charstat_info[$last_charstat_label][$label] = $value;
     }
 }
@@ -529,21 +538,18 @@ function getcharstats($buffs)
     foreach ($charstat_info as $label => $section) {
         if (count($section)) {
             $sectionhead = templatereplace(
-                'stathead',
-                ['title' => translate_inline($label)]
+                    'stathead', ['title' => translate_inline($label)]
             );
             reset($section);
             foreach ($section as $name => $val) {
-                if ($name == $label){
+                if ($name == $label) {
                     // Use 'statbuff' when both are equal.
                     $charstat_str .= templatereplace(
-                        'statbuff',
-                        ['title' => $name, 'value' => $val]
+                            'statbuff', ['title' => $name, 'value' => $val]
                     );
-                }else{
-                    $charstat_str .= $sectionhead.templatereplace(
-                        'statrow',
-                        ['title' => $name,'value' => $val]
+                } else {
+                    $charstat_str .= $sectionhead . templatereplace(
+                                    'statrow', ['title' => $name, 'value' => $val]
                     );
                     unset($sectionhead);
                 }
@@ -551,8 +557,7 @@ function getcharstats($buffs)
         }
     }
     $charstat_str .= templatereplace(
-        'statbuff',
-        ['title' => translate_inline('Buffs'), 'value' => $buffs]
+            'statbuff', ['title' => translate_inline('Buffs'), 'value' => $buffs]
     );
     $charstat_str .= templatereplace('statend');
     return appoencode($charstat_str, true);
@@ -578,27 +583,33 @@ function getcharstat_value($section, $title)
  *
  * @return array The current stats for this character or the list of online players
  */
-function charstats(){
+function charstats()
+{
     global $session, $playermount, $companions;
 
     wipe_charstats();
 
-    $u =& $session['user'];
+    $u = & $session['user'];
 
-    if ($session['loggedin']){
-        $u['hitpoints']=round($u['hitpoints'],0);
-        $u['experience']=round($u['experience'],0);
-        $u['maxhitpoints']=round($u['maxhitpoints'],0);
-        $spirits=array(-6=>"Resurrected",-2=>"Very Low",-1=>"Low","0"=>"Normal",1=>"High",2=>"Very High");
-        if ($u['alive']){ }else{ $spirits[(int)$u['spirits']] = "DEAD"; }
+    if ($session['loggedin']) {
+        $u['hitpoints'] = round($u['hitpoints'], 0);
+        $u['experience'] = round($u['experience'], 0);
+        $u['maxhitpoints'] = round($u['maxhitpoints'], 0);
+        $spirits = array(-6 => "Resurrected", -2 => "Very Low", -1 => "Low", "0" => "Normal", 1 => "High", 2 => "Very High");
+        if ($u['alive']) {
+            
+        } else {
+            $spirits[(int) $u['spirits']] = "DEAD";
+        }
         //calculate_buff_fields();
         reset($session['bufflist']);
-        $atk=$u['attack'];
-        $def=$u['defense'];
+        $atk = $u['attack'];
+        $def = $u['defense'];
         $buffcount = 0;
         $buffs = "";
-        while (list($key,$val)=each($session['bufflist'])){
-            if (isset($val['suspended']) && $val['suspended']) continue;
+        while (list($key, $val) = each($session['bufflist'])) {
+            if (isset($val['suspended']) && $val['suspended'])
+                continue;
             if (isset($val['atkmod'])) {
                 $atk *= $val['atkmod'];
             }
@@ -606,48 +617,48 @@ function charstats(){
                 $def *= $val['defmod'];
             }
             // Short circuit if the name is blank
-            if ($val['name'] > "" || $session['user']['superuser'] & SU_DEBUG_OUTPUT){
+            if ($val['name'] > "" || $session['user']['superuser'] & SU_DEBUG_OUTPUT) {
                 tlschema($val['schema']);
-                if ($val['name']=="")
+                if ($val['name'] == "")
                     $val['name'] = "DEBUG: {$key}";
                 if (is_array($val['name'])) {
-                    $val['name'][0] = str_replace("`%","`%%",$val['name'][0]);
-                    $val['name']=call_user_func_array("sprintf_translate", $val['name']);
+                    $val['name'][0] = str_replace("`%", "`%%", $val['name'][0]);
+                    $val['name'] = call_user_func_array("sprintf_translate", $val['name']);
                 } else { //in case it's a string
-                    $val['name']=translate_inline($val['name']);
+                    $val['name'] = translate_inline($val['name']);
                 }
-                if ($val['rounds']>=0){
+                if ($val['rounds'] >= 0) {
                     // We're about to sprintf, so, let's makes sure that
                     // `% is handled.
                     //$n = translate_inline(str_replace("`%","`%%",$val['name']));
-                    $b = translate_inline("`#%s `7(%s rounds left)`n","buffs");
+                    $b = translate_inline("`#%s `7(%s rounds left)`n", "buffs");
                     $b = sprintf($b, $val['name'], $val['rounds']);
-                    $buffs.=appoencode($b, true);
-                }else{
-                    $buffs.= appoencode("`#{$val['name']}`n",true);
+                    $buffs .= appoencode($b, true);
+                } else {
+                    $buffs .= appoencode("`#{$val['name']}`n", true);
                 }
                 tlschema();
                 $buffcount++;
             }
         }
-        if ($buffcount==0){
-            $buffs.=appoencode(translate_inline("`^None`0"),true);
+        if ($buffcount == 0) {
+            $buffs .= appoencode(translate_inline("`^None`0"), true);
         }
 
         $atk = round($atk, 2);
         $def = round($def, 2);
-        if ($atk < $u['attack']){
-            $atk = round($u['attack'],1)."`\$".round($atk-$u['attack'],1);
-        }else if($atk > $u['attack']){
-            $atk = round($u['attack'],1)."`@+".round($atk-$u['attack'],1);
+        if ($atk < $u['attack']) {
+            $atk = round($u['attack'], 1) . "`\$" . round($atk - $u['attack'], 1);
+        } else if ($atk > $u['attack']) {
+            $atk = round($u['attack'], 1) . "`@+" . round($atk - $u['attack'], 1);
         } else {
             // They are equal, display in the 1 signifigant digit format.
-            $atk = round($atk,1);
+            $atk = round($atk, 1);
         }
-        if ($def < $u['defense']){
-            $def = round($u['defense'],1)."`\$".round($def-$u['defense'],1);
-        }else if($def > $u['defense']){
-            $def = round($u['defense'],1)."`@+".round($def-$u['defense'],1);
+        if ($def < $u['defense']) {
+            $def = round($u['defense'], 1) . "`\$" . round($def - $u['defense'], 1);
+        } else if ($def > $u['defense']) {
+            $def = round($u['defense'], 1) . "`@+" . round($def - $u['defense'], 1);
         } else {
             // They are equal, display in the 1 signifigant digit format.
             $def = round($def, 1);
@@ -655,36 +666,36 @@ function charstats(){
 
         addcharstat("Vital Info");
         addcharstat("Name", $u['name']);
-        addcharstat("Level", "`b".$u['level'].check_temp_stat("level",1)."`b");
+        addcharstat("Level", "`b" . $u['level'] . check_temp_stat("level", 1) . "`b");
         if ($u['alive']) {
-            addcharstat("Hitpoints", $u['hitpoints'].check_temp_stat("hitpoints",1).
-                                    "`0/".$u['maxhitpoints'].check_temp_stat("maxhitpoints",1));
-            addcharstat("Turns", $u['turns'].check_temp_stat("turns",1));
-            addcharstat("Attack", $atk.check_temp_stat("attack",1));
-            addcharstat("Defense", $def.check_temp_stat("defense",1));
+            addcharstat("Hitpoints", $u['hitpoints'] . check_temp_stat("hitpoints", 1) .
+                    "`0/" . $u['maxhitpoints'] . check_temp_stat("maxhitpoints", 1));
+            addcharstat("Turns", $u['turns'] . check_temp_stat("turns", 1));
+            addcharstat("Attack", $atk . check_temp_stat("attack", 1));
+            addcharstat("Defense", $def . check_temp_stat("defense", 1));
         } else {
             $maxsoul = $u['level'] * 5 + 50;
-            addcharstat("Soulpoints", $u['soulpoints'].check_temp_stat("soulpoints",1)."`0/".$maxsoul);
-            addcharstat("Torments", $u['gravefights'].check_temp_stat("gravefights",1));
-            addcharstat("Psyche", 10+round(($u['level']-1)*1.5));
-            addcharstat("Spirit", 10+round(($u['level']-1)*1.5));
+            addcharstat("Soulpoints", $u['soulpoints'] . check_temp_stat("soulpoints", 1) . "`0/" . $maxsoul);
+            addcharstat("Torments", $u['gravefights'] . check_temp_stat("gravefights", 1));
+            addcharstat("Psyche", 10 + round(($u['level'] - 1) * 1.5));
+            addcharstat("Spirit", 10 + round(($u['level'] - 1) * 1.5));
         }
-        addcharstat("Spirits", translate_inline("`b".$spirits[(int)$u['spirits']]."`b"));
+        addcharstat("Spirits", translate_inline("`b" . $spirits[(int) $u['spirits']] . "`b"));
         if ($u['race'] != RACE_UNKNOWN) {
-            addcharstat("Race", translate_inline($u['race'],"race"));
-        }else {
-            addcharstat("Race", translate_inline(RACE_UNKNOWN,"race"));
+            addcharstat("Race", translate_inline($u['race'], "race"));
+        } else {
+            addcharstat("Race", translate_inline(RACE_UNKNOWN, "race"));
         }
-        if (count($companions)>0) {
+        if (count($companions) > 0) {
             addcharstat("Companions");
-            foreach ($companions as $name=>$companion) {
-                if ($companion['hitpoints'] > 0 ||(isset($companion['cannotdie']) && $companion['cannotdie'] == true)) {
-                    if ($companion['hitpoints']<0) {
+            foreach ($companions as $name => $companion) {
+                if ($companion['hitpoints'] > 0 || (isset($companion['cannotdie']) && $companion['cannotdie'] == true)) {
+                    if ($companion['hitpoints'] < 0) {
                         $companion['hitpoints'] = 0;
                     }
-                    if($companion['hitpoints']<$companion['maxhitpoints']) {
+                    if ($companion['hitpoints'] < $companion['maxhitpoints']) {
                         $color = "`\$";
-                    }else{
+                    } else {
                         $color = "`@";
                     }
                     if (isset($companion['suspended']) && $companion['suspended'] == true) {
@@ -692,18 +703,18 @@ function charstats(){
                     } else {
                         $suspcode = "";
                     }
-                    addcharstat($companion['name'], $color.($companion['hitpoints'])."`7/`&".($companion['maxhitpoints'])."$suspcode`0");
+                    addcharstat($companion['name'], $color . ($companion['hitpoints']) . "`7/`&" . ($companion['maxhitpoints']) . "$suspcode`0");
                 }
             }
         }
         addcharstat("Personal Info");
         if ($u['alive']) {
-            addcharstat("Gold", $u['gold'].check_temp_stat("gold",1));
+            addcharstat("Gold", $u['gold'] . check_temp_stat("gold", 1));
         } else {
-            addcharstat("Favor", $u['deathpower'].check_temp_stat("deathpower",1));
+            addcharstat("Favor", $u['deathpower'] . check_temp_stat("deathpower", 1));
         }
-        addcharstat("Gems", $u['gems'].check_temp_stat("gems",1));
-        addcharstat("Experience", $u['experience'].check_temp_stat("experience",1));
+        addcharstat("Gems", $u['gems'] . check_temp_stat("gems", 1));
+        addcharstat("Experience", $u['experience'] . check_temp_stat("experience", 1));
         addcharstat("Equipment Info");
         addcharstat("Weapon", $u['weapon']);
         addcharstat("Armor", $u['armor']);
@@ -714,14 +725,15 @@ function charstats(){
 
         $charstat = getcharstats($buffs);
 
-        if (!is_array($session['bufflist'])) $session['bufflist']=array();
+        if (!is_array($session['bufflist']))
+            $session['bufflist'] = array();
         return $charstat;
-    }else{
+    }else {
         $ret = "";
-        if ($ret = datacache("charlisthomepage", 3600)){
-
-        }else{
-            $onlinecount=0;
+        if ($ret = datacache("charlisthomepage", 3600)) {
+            
+        } else {
+            $onlinecount = 0;
             // If a module wants to do it's own display of the online chars,
             // let it.
             $list = modulehook("onlinecharlist", array());
@@ -729,20 +741,20 @@ function charstats(){
                 $onlinecount = $list['count'];
                 $ret = $list['list'];
             } else {
-                $sql="SELECT name,alive,location,sex,level,laston,loggedin,lastip,uniqueid FROM " . db_prefix("accounts") . " WHERE locked=0 AND loggedin=1 AND laston>'".date("Y-m-d H:i:s",strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds"))."' ORDER BY level DESC";
+                $sql = "SELECT name,alive,location,sex,level,laston,loggedin,lastip,uniqueid FROM " . db_prefix("accounts") . " WHERE locked=0 AND loggedin=1 AND laston>'" . date("Y-m-d H:i:s", strtotime("-" . getsetting("LOGINTIMEOUT", 900) . " seconds")) . "' ORDER BY level DESC";
                 $result = db_query($sql);
-                $ret.=appoencode(sprintf(translate_inline("`bOnline Characters (%s players):`b`n"),db_num_rows($result)));
+                $ret .= appoencode(sprintf(translate_inline("`bOnline Characters (%s players):`b`n"), db_num_rows($result)));
                 while ($row = db_fetch_assoc($result)) {
-                    $ret.=appoencode("`^{$row['name']}`n");
+                    $ret .= appoencode("`^{$row['name']}`n");
                     $onlinecount++;
                 }
                 db_free_result($result);
-                if ($onlinecount==0)
-                    $ret.=appoencode(translate_inline("`iNone`i"));
+                if ($onlinecount == 0)
+                    $ret .= appoencode(translate_inline("`iNone`i"));
             }
-            savesetting("OnlineCount",$onlinecount);
-            savesetting("OnlineCountLast",strtotime("now"));
-            updatedatacache("charlisthomepage",$ret);
+            savesetting("OnlineCount", $onlinecount);
+            savesetting("OnlineCountLast", strtotime("now"));
+            updatedatacache("charlisthomepage", $ret);
         }
         return $ret;
     }
@@ -760,18 +772,17 @@ function charstats(){
  */
 function loadtemplate($templateName)
 {
-    if ($templateName=="" || !file_exists("templates/$templateName") || substr($templateName, -4) != '.htm') {
-        $templateName=getsetting("defaultskin", "jade.htm");
+    if ($templateName == "" || !file_exists("templates/$templateName") || substr($templateName, -4) != '.htm') {
+        $templateName = getsetting("defaultskin", "jade.htm");
     }
     $fullTemplate = file_get_contents("templates/$templateName");
     $fullTemplate = explode('<!--!', $fullTemplate);
     while (list($key, $val) = each($fullTemplate)) {
         $fieldName = substr($val, 0, strpos($val, '-->'));
-        if ($fieldName != ''){
+        if ($fieldName != '') {
             $template[$fieldName] = substr($val, strpos($val, '-->') + 3);
             modulehook(
-                'template-' . $fieldName,
-                ['content' => $template[$fieldName]]
+                    'template-' . $fieldName, ['content' => $template[$fieldName]]
             );
         }
     }
@@ -793,7 +804,7 @@ function maillink()
     $row = db_fetch_assoc($result);
     db_free_result($result);
     $pop = popup('mail.php');
-    $mail = sprintf_translate("Ye Olde Mail: %s new, %s old", $row['notseen']?:0, $row['seencount']?:0);
+    $mail = sprintf_translate("Ye Olde Mail: %s new, %s old", $row['notseen'] ?: 0, $row['seencount'] ?: 0);
     $class = ($row['notseen']) ? 'hot' : '';
     return "<a href='mail.php' target='_blank' onClick=\"$mail;return false;\" class='{$class}motd'>$mail</a>";
 }

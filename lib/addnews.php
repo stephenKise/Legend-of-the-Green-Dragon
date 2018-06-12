@@ -1,5 +1,6 @@
 <?php
-declare(strict_types=1);
+
+declare(strict_types = 1);
 
 /**
  * Adds a news item for the current user
@@ -22,13 +23,12 @@ function addnews(string $text = '', array $options = [])
     $text = vsprintf($text, $options);
     if (!$hide) {
         $sql = db_query(
-            "INSERT INTO $news (newstext, newsdate, accountid, tlschema)
+                "INSERT INTO $news (newstext, newsdate, accountid, tlschema)
             VALUES ('$text', '$date', '$acctid', '$translation_namespace')"
         );
-    }
-    else {
+    } else {
         $sql = db_query(
-            "INSERT INTO $news (newstext, newsdate, tlschema)
+                "INSERT INTO $news (newstext, newsdate, tlschema)
             VALUES ('$text', '$date', '$translation_namespace')"
         );
     }

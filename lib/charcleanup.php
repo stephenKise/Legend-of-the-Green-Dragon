@@ -1,16 +1,15 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 function char_cleanup(int $id, int $type): bool
 {
     $return = modulehook(
-        'delete_character',
-        [
-            'acctid' => $id,
-            'deltype' => $type,
-            'dodel' => true 
-        ]
+            'delete_character', [
+        'acctid' => $id,
+        'deltype' => $type,
+        'dodel' => true
+            ]
     );
     if (!$return['dodel']) {
         return false;
@@ -33,7 +32,7 @@ function char_cleanup(int $id, int $type): bool
     if ($row['clanid'] != 0 && $row['clanrank'] == $leader) {
         $cid = $row['clanid'];
         $sql = db_query(
-            "SELECT acctid, clanrank
+                "SELECT acctid, clanrank
             FROM $accounts
             WHERE clanid = '{$row['clanid']}'
             AND clanrank > '$applicant'
@@ -45,11 +44,10 @@ function char_cleanup(int $id, int $type): bool
             if ($row['clanrank'] != $leader) {
                 db_query("UPDATE $accounts SET clanrank = '$leader' WHERE acctid = {$row['acctid']}");
             }
-        }
-        else {
+        } else {
             db_query("DELETE FROM $clans WHERE clanid = '{$row['clanid']}'");
             db_query(
-                "UPDATE $accounts
+                    "UPDATE $accounts
                 SET clanid = '0',
                 clanrank = '0',
                 clanjoindate = '0000-00-00 00:00:00'

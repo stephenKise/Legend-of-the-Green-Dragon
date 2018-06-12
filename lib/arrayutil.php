@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Misc array functions
  * 
@@ -12,6 +13,7 @@
  * @subpackage Library
  * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
+
 /**
  * Turns the given parameter into a string
  *

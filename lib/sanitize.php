@@ -9,9 +9,7 @@
 function sanitize(string $input): string
 {
     return preg_replace(
-        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/",
-        "",
-        $input
+            "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/", "", $input
     );
 }
 
@@ -57,9 +55,7 @@ function color_sanitize(string $input): string
 function sanitizeColor(string $input): string
 {
     return preg_replace(
-        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/",
-        "",
-        $input
+            "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/", "", $input
     );
 }
 
@@ -83,9 +79,7 @@ function comment_sanitize(string $input): string
 function sanitizeComment(string $input): string
 {
     return preg_replace(
-        "/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/",
-        "`0",
-        $input
+            "/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/", "`0", $input
     );
 }
 
@@ -110,9 +104,7 @@ function logdnet_sanitize(string $input): string
 function sanitizeLogdNet(string $input): string
 {
     $output = preg_replace(
-        "/[`](?=[^1234567890!@#\$%^&)Qqbi])/",
-        chr(1).chr(1),
-        $input
+            "/[`](?=[^1234567890!@#\$%^&)Qqbi])/", chr(1) . chr(1), $input
     );
     return str_replace(chr(1), "`", $output);
 }
@@ -208,7 +200,8 @@ function translator_uri(string $input): string
 {
     $uri = comscroll_sanitize($input);
     $uri = cmd_sanitize($uri);
-    if (substr($uri,-1)=="?") $uri = substr($uri,0,-1);
+    if (substr($uri, -1) == "?")
+        $uri = substr($uri, 0, -1);
     return $uri;
 }
 
@@ -220,7 +213,7 @@ function translator_uri(string $input): string
  */
 function translator_page(string $input): string
 {
-    if (strpos($input,"?")!==false) {
+    if (strpos($input, "?") !== false) {
         $input = substr($input, 0, strpos($input, '?'));
     }
     //if ($page=="runmodule.php" && 0){
@@ -251,7 +244,7 @@ function modulename_sanitize(string $input): string
  */
 function sanitizeModuleName(string $input): string
 {
-    return preg_replace("'[^0-9A-Za-z_]'","",$input);
+    return preg_replace("'[^0-9A-Za-z_]'", "", $input);
 }
 
 /**
@@ -276,7 +269,7 @@ function stripslashesArray(array $array): array
     foreach ($array as $key => $value) {
         $array[stripslashes($key)] = stripslashes($value);
     }
-   return $array;
+    return $array;
 }
 
 /**
@@ -354,7 +347,6 @@ function sanitizeHTML(string $input): string
     return $input;
 }
 
-
 /**
  *  Replace all html entities, based on your server's charset setting.
  *  This was made to replace all of those needlessly long strings in the core.
@@ -365,8 +357,6 @@ function sanitizeHTML(string $input): string
 function htmlent(string $string): string
 {
     return htmlentities(
-        $string,
-        ENT_COMPAT,
-        getsetting('charset', 'ISO-8859-1')
+            $string, ENT_COMPAT, getsetting('charset', 'ISO-8859-1')
     );
 }

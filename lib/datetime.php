@@ -6,11 +6,11 @@ function reltime(int $date, bool $short = true)
 {
     $now = strtotime('now');
     $x = abs($now - $date);
-    $d = floor($x/86400);
+    $d = floor($x / 86400);
     $x = $x % 86400;
-    $h = floor($x/3600);
+    $h = floor($x / 3600);
     $x = $x % 3600;
-    $m = floor($x/60);
+    $m = floor($x / 60);
     $x = $x % 60;
     $s = $x;
     $array = [
@@ -43,8 +43,7 @@ function relativedate(string $inDate): string
         return 'Today';
     }
     return sprintf(
-        '%s days',
-        round((strtotime('now') - strtotime($inDate)) / 86400, 0)
+            '%s days', round((strtotime('now') - strtotime($inDate)) / 86400, 0)
     );
 }
 
@@ -56,7 +55,7 @@ function checkday(bool $force = true): bool
     $lastOn = strtotime($session['user']['laston'] ?: 'now');
     if ($session['user']['loggedin']) {
         if (getsetting('nextDay', 0) <= $lastOn &&
-            $session['user']['loggedin']) {
+                $session['user']['loggedin']) {
             savesetting('nextDay', $timeDetails['nextdaytime']);
             //debug($timeDetails);
             resetLastHits();
@@ -71,8 +70,7 @@ function checkday(bool $force = true): bool
             redirect('newday.php');
         }
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -105,7 +103,7 @@ function gametime(): int
 
 function convertgametime(int $inTime): int
 {
-    $inTime -= getsetting('gameoffsetseconds',0);
+    $inTime -= getsetting('gameoffsetseconds', 0);
     return strtotime(date('Y-m-d H:i:s O', $inTime));
 }
 
@@ -151,7 +149,6 @@ function getmicrotime(): float
     return $usec + $sec;
 }
 
-
 function dhms(float $seconds, bool $ms = false): string
 {
     $times = [
@@ -164,15 +161,13 @@ function dhms(float $seconds, bool $ms = false): string
     ];
     $return = '';
     foreach ($times as $time => $unit) {
-        $divided = $seconds/$time;
+        $divided = $seconds / $time;
         if ($divided > 1) {
             if ($unit != 'ms' && $unit != 's') {
                 $seconds = $seconds % $time;
-            }
-            else if ($unit == 's') {
+            } else if ($unit == 's') {
                 $seconds = $seconds - floor($divided);
-            }
-            else if ($unit == 'ms') {
+            } else if ($unit == 'ms') {
                 $seconds = 0;
             }
             $return .= round($divided, 0) . "$unit ";
