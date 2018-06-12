@@ -1,4 +1,5 @@
 <?php
+
 tlschema("faq");
 popup_header("General Questions with Spoilers");
 $c = translate_inline("Return to Contents");
@@ -27,7 +28,7 @@ output("`^5. What's a buff?`n");
 output("`@It's what we use to shine our shoes.`n");
 output("Did you think it was some sort of temporary or permanent effect which affects your stats in a positive or negative manner? Hah!`n`n");
 output("`^6. Why does that old man keep hitting me with an ugly/pretty stick in the forest?`n");
-output("`@You look like a pi&ntilde;ata!`n",true);
+output("`@You look like a pi&ntilde;ata!`n", true);
 output("It's a special event that can add or remove charm.`n`n");
 output("`^7. Well, what's the point of charm?`n");
 output("`@To get chicks (or guys).`n");

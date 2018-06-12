@@ -1,4 +1,5 @@
 <?php
+
 tlschema("faq");
 popup_header("Frequently Asked Questions (FAQ)");
 output("`^Welcome to Legend of the Green Dragon.`n`n");

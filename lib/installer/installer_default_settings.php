@@ -1,4 +1,5 @@
 <?php
+
 $defaultSettings = [
     'installer_version' => '1.1.3 GitHub Edition',
     "transferperlevel" => 25,
@@ -54,8 +55,8 @@ $defaultSettings = [
     "OnlineCount" => 0,
     "maxonline" => 0,
     "loginbanner" =>
-        "This is a fresh installation of LotGD! Please be patient as we " .
-        "finish setting up the server!",
+    "This is a fresh installation of LotGD! Please be patient as we " .
+    "finish setting up the server!",
     "homeskinselect" => 1,
     "defaultskin" => "jade.htm",
     "innname" => LOCATION_INN,
@@ -66,7 +67,7 @@ $defaultSettings = [
     "clanregistrar" => "`%Karissa",
     "maxcolors" => 10,
     "postinglimit" => 1,
-    "game_epoch" => gmdate("Y-m-d 00:00:00 O",strtotime("-30 days")),
+    "game_epoch" => gmdate("Y-m-d 00:00:00 O", strtotime("-30 days")),
     "usedatacache" => 0,
     "show_notices" => 0,
     "notify_on_warn" => 0,
@@ -127,8 +128,8 @@ $defaultSettings = [
     "maxlistsize" => 100,
     "refereraward" => 25,
     "referminlevel" => 4,
-    "superuseryommessage" => "Asking an admin for gems, gold, weapons, armor, ".
-        "or anything else which you have not earned will not be honored!",
+    "superuseryommessage" => "Asking an admin for gems, gold, weapons, armor, " .
+    "or anything else which you have not earned will not be honored!",
     "officermoderate" => 0,
     "motditems" => 5,
     "turns" => 10,

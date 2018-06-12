@@ -1,4 +1,5 @@
 <?php
+
 tlschema("faq");
 popup_header("Specific and Technical Questions");
 $c = translate_inline("Return to Contents");

@@ -1,23 +1,25 @@
 <?php
+
 // translator ready
 // addnews ready
 // mail ready
 
-if (isset($_POST['template'])){
+if (isset($_POST['template'])) {
     $skin = $_POST['template'];
     if ($skin > "") {
-        setcookie("template",$skin ,strtotime("+45 days"));
-        $_COOKIE['template']=$skin;
+        setcookie("template", $skin, strtotime("+45 days"));
+        $_COOKIE['template'] = $skin;
     }
 }
 
-define("ALLOW_ANONYMOUS",true);
+define("ALLOW_ANONYMOUS", true);
 require_once("common.php");
 require_once("lib/http.php");
 
 
-if (!isset($session['loggedin'])) $session['loggedin']=false;
-if ($session['loggedin']){
+if (!isset($session['loggedin']))
+    $session['loggedin'] = false;
+if ($session['loggedin']) {
     redirect("badnav.php");
 }
 
@@ -28,10 +30,9 @@ $op = httpget('op');
 page_header();
 output('`c');
 output(
-    getsetting(
-        'serverdescription',
-        'Welcome to Legend of the Green Dragon, a browser-based roleplay game!'
-    )
+        getsetting(
+                'serverdescription', 'Welcome to Legend of the Green Dragon, a browser-based roleplay game!'
+        )
 );
 output('`n');
 if (getsetting("homecurtime", 1)) {
@@ -42,8 +43,7 @@ $timeDetails = gametimedetails();
 if (getsetting("homenewdaytime", 1)) {
     $secstonewday = secondstonextgameday();
     output(
-        "`@Next new game day in: `\$%s (real time)`0`n`n",
-        reltime(secondstonextgameday())
+            "`@Next new game day in: `\$%s (real time)`0`n`n", reltime(secondstonextgameday())
     );
 }
 
@@ -65,39 +65,39 @@ if (getsetting("homenewestplayer", 1)) {
 
 clearnav();
 addnav("New to LoGD?");
-addnav("Create a character","create.php");
+addnav("Create a character", "create.php");
 addnav("Game Functions");
-addnav("Forgotten Password","create.php?op=forgot");
-addnav("List Warriors","list.php");
+addnav("Forgotten Password", "create.php?op=forgot");
+addnav("List Warriors", "list.php");
 addnav("Daily News", "news.php");
 addnav("Other Info");
-addnav("About LoGD","about.php");
+addnav("About LoGD", "about.php");
 addnav("Game Setup Info", "about.php?op=setup");
-addnav("LoGD Net","logdnet.php?op=list");
+addnav("LoGD Net", "logdnet.php?op=list");
 
 modulehook("index", array());
 
-if (abs(getsetting("OnlineCountLast",0) - strtotime("now")) > 60){
-    $sql="SELECT count(acctid) as onlinecount FROM " . db_prefix("accounts") . " WHERE locked=0 AND loggedin=1 AND laston>'".date("Y-m-d H:i:s",strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds"))."'";
+if (abs(getsetting("OnlineCountLast", 0) - strtotime("now")) > 60) {
+    $sql = "SELECT count(acctid) as onlinecount FROM " . db_prefix("accounts") . " WHERE locked=0 AND loggedin=1 AND laston>'" . date("Y-m-d H:i:s", strtotime("-" . getsetting("LOGINTIMEOUT", 900) . " seconds")) . "'";
     $result = db_query($sql);
     $onlinecount = db_fetch_assoc($result);
     $onlinecount = $onlinecount ['onlinecount'];
-    savesetting("OnlineCount",$onlinecount);
-    savesetting("OnlineCountLast",strtotime("now"));
-}else{
-    $onlinecount = getsetting("OnlineCount",0);
+    savesetting("OnlineCount", $onlinecount);
+    savesetting("OnlineCountLast", strtotime("now"));
+} else {
+    $onlinecount = getsetting("OnlineCount", 0);
 }
-if ($onlinecount<getsetting("maxonline",0) || getsetting("maxonline",0)==0){
+if ($onlinecount < getsetting("maxonline", 0) || getsetting("maxonline", 0) == 0) {
     output("Enter your name and password to enter the realm.`n");
-    if ($op=="timeout"){
-        $session['message'].= translate_inline(" Your session has timed out, you must log in again.`n");
+    if ($op == "timeout") {
+        $session['message'] .= translate_inline(" Your session has timed out, you must log in again.`n");
     }
-    if (!isset($_COOKIE['lgi'])){
-        $session['message'].=translate_inline("It appears that you may be blocking cookies from this site.  At least session cookies must be enabled in order to use this site.`n");
-        $session['message'].=translate_inline("`b`#If you are not sure what cookies are, please <a href='http://en.wikipedia.org/wiki/WWW_browser_cookie'>read this article</a> about them, and how to enable them.`b`n");
+    if (!isset($_COOKIE['lgi'])) {
+        $session['message'] .= translate_inline("It appears that you may be blocking cookies from this site.  At least session cookies must be enabled in order to use this site.`n");
+        $session['message'] .= translate_inline("`b`#If you are not sure what cookies are, please <a href='http://en.wikipedia.org/wiki/WWW_browser_cookie'>read this article</a> about them, and how to enable them.`b`n");
     }
-    if (isset($session['message']) && $session['message']>"")
-        output_notl("`b`\$%s`b`n", $session['message'],true);
+    if (isset($session['message']) && $session['message'] > "")
+        output_notl("`b`\$%s`b`n", $session['message'], true);
     rawoutput("<script language='JavaScript' src='lib/md5.js'></script>");
     rawoutput("<script language='JavaScript'>
     <!--
@@ -113,32 +113,33 @@ if ($onlinecount<getsetting("maxonline",0) || getsetting("maxonline",0)==0){
     $uname = translate_inline("<u>U</u>sername");
     $pass = translate_inline("<u>P</u>assword");
     $butt = translate_inline("Log in");
-    rawoutput("<form action='login.php' method='POST' onSubmit=\"md5pass();\">".templatereplace("login",array("username"=>$uname,"password"=>$pass,"button"=>$butt))."</form>");
+    rawoutput("<form action='login.php' method='POST' onSubmit=\"md5pass();\">" . templatereplace("login", array("username" => $uname, "password" => $pass, "button" => $butt)) . "</form>");
     output_notl("`c");
-    addnav("","login.php");
+    addnav("", "login.php");
 } else {
     output("`\$`bServer full!`b`n`^Please wait until some users have logged out.`n`n`0");
-    if ($op=="timeout"){
-        $session['message'].= translate_inline(" Your session has timed out, you must log in again.`n");
+    if ($op == "timeout") {
+        $session['message'] .= translate_inline(" Your session has timed out, you must log in again.`n");
     }
-    if (!isset($_COOKIE['lgi'])){
-        $session['message'].=translate_inline("It appears that you may be blocking cookies from this site. At least session cookies must be enabled in order to use this site.`n");
-        $session['message'].=translate_inline("`b`#If you are not sure what cookies are, please <a href='http://en.wikipedia.org/wiki/WWW_browser_cookie'>read this article</a> about them, and how to enable them.`b`n");
+    if (!isset($_COOKIE['lgi'])) {
+        $session['message'] .= translate_inline("It appears that you may be blocking cookies from this site. At least session cookies must be enabled in order to use this site.`n");
+        $session['message'] .= translate_inline("`b`#If you are not sure what cookies are, please <a href='http://en.wikipedia.org/wiki/WWW_browser_cookie'>read this article</a> about them, and how to enable them.`b`n");
     }
-    if ($session['message']>"") output("`b`\$%s`b`n", $session['message'],true);
-    rawoutput(templatereplace("loginfull",array()));
+    if ($session['message'] > "")
+        output("`b`\$%s`b`n", $session['message'], true);
+    rawoutput(templatereplace("loginfull", array()));
     output_notl("`c");
 }
 
-$msg = getsetting("loginbanner","*BETA* This is a BETA of this website, things are likely to change now and again, as it is under active development *BETA*");
+$msg = getsetting("loginbanner", "*BETA* This is a BETA of this website, things are likely to change now and again, as it is under active development *BETA*");
 output_notl("`n`c`b`&%s`0`b`c`n", $msg);
-$session['message']="";
+$session['message'] = "";
 output("`c`2Game server running version: `@%s`0`c", $logd_version);
 
 if (getsetting("homeskinselect", 1)) {
     rawoutput("<form action='home.php' method='POST'>");
     rawoutput("<table align='center'><tr><td>");
-    $form = array("template"=>"Choose a different display skin:,theme");
+    $form = array("template" => "Choose a different display skin:,theme");
     $prefs['template'] = $_COOKIE['template'];
     if ($prefs['template'] == "")
         $prefs['template'] = getsetting("defaultskin", "jade.htm");

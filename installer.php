@@ -1,12 +1,11 @@
 <?php
 
-define('ALLOW_ANONYMOUS',true);
-define('OVERRIDE_FORCED_NAV',true);
-define('IS_INSTALLER',true);
-if (!file_exists('dbconnect.php')){
-    define('DB_NODB',true);
-}
-else {
+define('ALLOW_ANONYMOUS', true);
+define('OVERRIDE_FORCED_NAV', true);
+define('IS_INSTALLER', true);
+if (!file_exists('dbconnect.php')) {
+    define('DB_NODB', true);
+} else {
     require_once('dbconnect.php');
 }
 require_once('common.php');
@@ -23,8 +22,8 @@ $stages = [
 ];
 
 $stage = 0;
-if ((int)httpget('stage') > 0) {
-    $stage = (int)httpget('stage');
+if ((int) httpget('stage') > 0) {
+    $stage = (int) httpget('stage');
 }
 if (!isset($session['stagecompleted'])) {
     $session['stagecompleted'] = -1;
@@ -42,7 +41,7 @@ if (!isset($session['dbinfo'])) {
 }
 
 page_header("LotGD Installer &#151; %s", $stages[$stage]);
-switch($stage) {
+switch ($stage) {
     case 0:
     case 1:
     case 2:
@@ -51,10 +50,9 @@ switch($stage) {
         if ($stage == 2) {
             if (!$endNavigation) {
                 output("`n`n`QAll complete! Continue onto the next stage!");
-            }
-            else {
+            } else {
                 output(
-                    "`n`n`4Please remove anything created by the installer and
+                        "`n`n`4Please remove anything created by the installer and
                     try again after following any suggestions provided."
                 );
             }
@@ -73,8 +71,7 @@ if (!$authenticate) {
     addnav('Install Stages');
     if ($endNavigation) {
         $maxStage = $session['stagecompleted'];
-    }
-    else {
+    } else {
         $maxStage = $session['stagecompleted'] + 1;
     }
     debug($maxStage, true);

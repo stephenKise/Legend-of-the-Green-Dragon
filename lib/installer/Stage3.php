@@ -2,7 +2,7 @@
 
 global $mysqli_resource;
 $superUser = SU_MEGAUSER | SU_EDIT_USERS | SU_EDIT_PETITIONS |
-    SU_MANAGE_MODULES;
+        SU_MANAGE_MODULES;
 $accounts = db_prefix('accounts');
 $name = mysqli_real_escape_string($mysqli_resource, httppost('name'));
 $pass = md5(md5(stripslashes(httppost('pass'))));
@@ -10,11 +10,11 @@ if ($name > '' && $pass > '') {
     $sql = db_query("SELECT count(*) AS total FROM $accounts");
     $row = db_fetch_assoc($sql);
     if ($row['count'] > 0) {
-        redirect('home.php'); 
+        redirect('home.php');
         return;
     }
     $sql = db_query(
-        "INSERT INTO $accounts
+            "INSERT INTO $accounts
         (login, password, superuser, name, ctitle, regdate)
         VALUES
         ('$name', '$pass', $superUser, '`@Dev`0 $name', '`@Dev`0',
@@ -22,7 +22,7 @@ if ($name > '' && $pass > '') {
     );
     if (!db_error()) {
         output(
-            "`@Your superuser account has been created!Enjoy your 
+                "`@Your superuser account has been created!Enjoy your 
             server, $name`@!"
         );
         blocknav('installer.php', true);
@@ -38,7 +38,7 @@ output("`^Name: ");
 rawoutput("<input name='name' value='$name'>");
 output("`n`^Password: ");
 rawoutput(
-    "<input name='pass' type='password'>
+        "<input name='pass' type='password'>
     <br><input type='submit' value='$submit' class='button'>
     </form>"
 );
