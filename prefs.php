@@ -17,7 +17,6 @@ require_once("common.php");
 
 tlschema("prefs");
 
-require_once("lib/is_email.php");
 require_once("lib/showform.php");
 require_once("lib/sanitize.php");
 
@@ -125,7 +124,7 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
         }
         $email = httppost('email');
         if ($email != $session['user']['emailaddress']) {
-            if (is_email($email)) {
+            if (isValidEmail($email)) {
                 if (getsetting("requirevalidemail", 0) == 1) {
                     output("`#Your email cannot be changed, system settings prohibit it.");
                     output("(Emails may only be changed if the server allows more than one account per email.)");
