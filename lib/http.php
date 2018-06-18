@@ -55,6 +55,16 @@ function httpPostClean(string $variable): string
     );
 }
 
+function isHttpPostSet(string $post): bool
+{
+    return !empty((string) filter_input(INPUT_POST, $post));
+}
+
+function isHttpGetSet(string $get): bool
+{
+    return !empty((string) filter_input(INPUT_GET, $get));
+}
+
 function httppostisset($var)
 {
     global $HTTP_POST_VARS;

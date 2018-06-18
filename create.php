@@ -5,7 +5,6 @@
 // mail ready
 define("ALLOW_ANONYMOUS", true);
 require_once("common.php");
-require_once("lib/is_email.php");
 require_once("lib/checkban.php");
 require_once("lib/http.php");
 
@@ -146,7 +145,7 @@ if (getsetting("allowcreation", 1) == 0) {
                 $msg .= translate_inline("Your character's name cannot exceed 25 characters.`n");
                 $blockaccount = true;
             }
-            if (getsetting("requireemail", 0) == 1 && is_email($email) || getsetting("requireemail", 0) == 0) {
+            if (getsetting("requireemail", 0) == 1 && isValidEmail($email) || getsetting("requireemail", 0) == 0) {
                 
             } else {
                 $msg .= translate_inline("You must enter a valid email address.`n");

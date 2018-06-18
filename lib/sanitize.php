@@ -360,3 +360,9 @@ function htmlent(string $string): string
             $string, ENT_COMPAT, getsetting('charset', 'ISO-8859-1')
     );
 }
+
+function isValidEmail(string $string): bool
+{
+    $match = "/[[:alnum:]_.-]+[@][[:alnum:]_.-]{2,}\\.[[:alnum:]_.-]{2,}/";
+    return preg_match($match, $string);
+}
