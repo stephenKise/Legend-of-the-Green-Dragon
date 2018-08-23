@@ -4,35 +4,43 @@ require_once("lib/datetime.php");
 require_once("lib/sanitize.php");
 require_once("lib/http.php");
 
-$commentSections = array();
-
-function commentarylocs()
+/**
+ * Alias of listCommentSections()
+ *
+ * @return array listCommentSections()
+ */
+function commentarylocs(): array
 {
-    global $commentSections, $session;
-    if (is_array($commentSections) && count($commentSections))
-        return $commentSections;
+    return listCommentSections();
+}
 
-    $vname = getsetting("villagename", LOCATION_FIELDS);
-    $iname = getsetting("innname", LOCATION_INN);
+/**
+ * Grabs a list of all defined commentary sections.
+ *
+ * @return array List of defined commentary locations.
+ */
+function listCommentSections(): array
+{
+    global $commentSections;
+    if (is_array($commentSections) && count($commentSections)) {
+        return $commentSections;
+    }
+
     tlschema("commentary");
-    $commentSections['village'] = sprintf_translate("%s Square", $vname);
-    if ($session['user']['superuser'] & ~SU_DOESNT_GIVE_GROTTO) {
-        $commentSections['superuser'] = translate_inline("Grotto");
-    }
-    $commentSections['shade'] = translate_inline("Land of the Shades");
-    $commentSections['grassyfield'] = translate_inline("Grassy Field");
-    $commentSections['inn'] = "$iname";
-    $commentSections['motd'] = translate_inline("MotD");
-    $commentSections['veterans'] = translate_inline("Veterans Club");
-    $commentSections['hunterlodge'] = translate_inline("Hunter's Lodge");
-    $commentSections['gardens'] = translate_inline("Gardens");
-    $commentSections['waiting'] = translate_inline("Clan Hall Waiting Area");
-    if (getsetting("betaperplayer", 1) == 1 && @file_exists("pavilion.php")) {
-        $commentSections['beta'] = translate_inline("Pavilion");
-    }
+    $commentSections = [
+        'village' => sprintf_translate("%s Square", getsetting('villagename', LOCATION_FIELDS)),
+        'superuser' => translate_inline('Grotto'),
+        'shade' => translate_inline('Land of the Shades'),
+        'grassyfield' => translate_inline('Grassy Field'),
+        'inn' => getsetting('innname', LOCATION_INN),
+        'motd' => translate_inline('MotD'),
+        'veterans' => translate_inline('Veteran\'s Club'),
+        'hunterlodge' => translate_inline('Hunter\'s Lodge'),
+        'gardens' => translate_inline('Gardens'),
+        'waiting' => translate_inline('Clan Hall Waiting Area'),
+    ];
+    $commentSections = modulehook('moderate', $commentSections);
     tlschema();
-    // All of the ones after this will be translated in the modules.
-    $commentSections = modulehook("moderate", $commentSections);
     rawoutput(tlbutton_clear());
     return $commentSections;
 }
