@@ -4,37 +4,37 @@ require_once("lib/datetime.php");
 require_once("lib/sanitize.php");
 require_once("lib/http.php");
 
-$comsecs = array();
+$commentSections = array();
 
 function commentarylocs()
 {
-    global $comsecs, $session;
-    if (is_array($comsecs) && count($comsecs))
-        return $comsecs;
+    global $commentSections, $session;
+    if (is_array($commentSections) && count($commentSections))
+        return $commentSections;
 
     $vname = getsetting("villagename", LOCATION_FIELDS);
     $iname = getsetting("innname", LOCATION_INN);
     tlschema("commentary");
-    $comsecs['village'] = sprintf_translate("%s Square", $vname);
+    $commentSections['village'] = sprintf_translate("%s Square", $vname);
     if ($session['user']['superuser'] & ~SU_DOESNT_GIVE_GROTTO) {
-        $comsecs['superuser'] = translate_inline("Grotto");
+        $commentSections['superuser'] = translate_inline("Grotto");
     }
-    $comsecs['shade'] = translate_inline("Land of the Shades");
-    $comsecs['grassyfield'] = translate_inline("Grassy Field");
-    $comsecs['inn'] = "$iname";
-    $comsecs['motd'] = translate_inline("MotD");
-    $comsecs['veterans'] = translate_inline("Veterans Club");
-    $comsecs['hunterlodge'] = translate_inline("Hunter's Lodge");
-    $comsecs['gardens'] = translate_inline("Gardens");
-    $comsecs['waiting'] = translate_inline("Clan Hall Waiting Area");
+    $commentSections['shade'] = translate_inline("Land of the Shades");
+    $commentSections['grassyfield'] = translate_inline("Grassy Field");
+    $commentSections['inn'] = "$iname";
+    $commentSections['motd'] = translate_inline("MotD");
+    $commentSections['veterans'] = translate_inline("Veterans Club");
+    $commentSections['hunterlodge'] = translate_inline("Hunter's Lodge");
+    $commentSections['gardens'] = translate_inline("Gardens");
+    $commentSections['waiting'] = translate_inline("Clan Hall Waiting Area");
     if (getsetting("betaperplayer", 1) == 1 && @file_exists("pavilion.php")) {
-        $comsecs['beta'] = translate_inline("Pavilion");
+        $commentSections['beta'] = translate_inline("Pavilion");
     }
     tlschema();
     // All of the ones after this will be translated in the modules.
-    $comsecs = modulehook("moderate", $comsecs);
+    $commentSections = modulehook("moderate", $commentSections);
     rawoutput(tlbutton_clear());
-    return $comsecs;
+    return $commentSections;
 }
 
 function addcommentary()
