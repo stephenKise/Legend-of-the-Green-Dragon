@@ -96,9 +96,27 @@ function addcommentary()
     }
 }
 
-function injectsystemcomment($section, $comment)
+/**
+ * Alias of addSystemComment().
+ *
+ * @param string $section Commentary section to add game message.
+ * @param string $comment Content of game message to add.
+ * @return void
+ */
+function injectsystemcomment(string $section, string $comment): void
 {
-    //function lets gamemasters put in comments without a user association...be careful, it is not trackable who posted it
+    addSystemComment($section, $comment);
+}
+
+/**
+ * Allows superusers with game master flags to post comments without user association.
+ *
+ * @param string $section Commentary section to add game message.
+ * @param string $comment Content of game message to add.
+ * @return void
+ */
+function addSystemComment(string $section, string $comment): void
+{
     if (strncmp($comment, "/game", 5) !== 0) {
         $comment = "/game" . $comment;
     }
