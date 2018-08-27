@@ -9,7 +9,7 @@ declare(strict_types = 1);
  * @param array $options List of options, including replacements, to modify the acctid, date, or hide from biographies.
  * @todo Change the date format from Y-m-d to Y-m-d H:i:s.
  */
-function addnews(string $text = '', array $options = [])
+function addnews(string $text = '', array $options = []): void
 {
     global $translation_namespace, $session;
     $options = modulehook('addnews', $options);
