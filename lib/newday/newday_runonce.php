@@ -11,7 +11,7 @@ modulehook("newday-runonce", array());
 if (getsetting("usedatacache", 0)) {
     $handle = opendir($datacachefilepath);
     while (($file = readdir($handle)) !== false) {
-        if (substr($file, 0, strlen(DATACACHE_FILENAME_PREFIX)) == DATACACHE_FILENAME_PREFIX) {
+        if (substr($file, 0, strlen($DB_DATACACHEPATH)) == $DB_DATACACHEPATH) {
             $fn = $datacachefilepath . "/" . $file;
             $fn = preg_replace("'//'", "/", $fn);
             $fn = preg_replace("'\\\\'", "\\", $fn);
