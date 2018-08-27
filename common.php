@@ -45,7 +45,6 @@ $logd_version = "1.1.3 GitHub Edition";
 //require_once('vendor/autoload.php');
 require_once("lib/local_config.php");
 require_once("lib/dbwrapper.php");
-require_once("lib/holiday_texts.php");
 require_once("lib/sanitize.php");
 require_once("lib/constants.php");
 require_once("lib/datacache.php");

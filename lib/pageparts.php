@@ -418,7 +418,6 @@ function popup_header($title = "Legend of the Green Dragon")
         $arguments = array("Legend of the Green Dragon");
     }
     $title = call_user_func_array("sprintf_translate", $arguments);
-    $title = holidayize($title, 'title');
 
     $header = $template['popuphead'];
     $header = str_replace("{title}", $title, $header);

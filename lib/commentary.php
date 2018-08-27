@@ -347,8 +347,6 @@ function viewcommentary($section, $message = "Interject your own commentary?", $
         elseif (substr($ft, 0, 3) == "/me")
             $ft = substr($ft, 0, 3);
 
-        $row['comment'] = holidayize($row['comment'], 'comment');
-        $row['name'] = holidayize($row['name'], 'comment');
         if ($row['clanrank']) {
             $row['name'] = ($row['clanshort'] > "" ? "{$clanrankcolors[ceil($row['clanrank'] / 10)]}&lt;`2{$row['clanshort']}{$clanrankcolors[ceil($row['clanrank'] / 10)]}&gt; `&" : "") . $row['name'];
         }
