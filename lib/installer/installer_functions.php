@@ -63,4 +63,19 @@ function return_bytes($val)
     return $val;
 }
 
-?>
+/**
+ * Gets all MySQL data from lib/installer/all_tables.json and prefixes the tables.
+ *
+ * @param string $prefix Prefix to append to each table.
+ * @return array The array of MySQL tables, and their default data.
+ */
+function getAllTables(string $prefix): array
+{
+    $file = file_get_contents('lib/installer/all_tables.json');
+    $file = json_decode($file, true);
+    foreach ($file as $key => $val) {
+        $file[$prefix . $key] = $file[$key];
+        unset($file[$key]);
+    }
+    return $file;
+}

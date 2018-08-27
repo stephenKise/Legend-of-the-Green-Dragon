@@ -7,7 +7,7 @@ if (httppostisset("DB_PREFIX") > "") {
 if ($session['dbinfo']['DB_PREFIX'] > "" && substr($session['dbinfo']['DB_PREFIX'], -1) != "_")
     $session['dbinfo']['DB_PREFIX'] .= "_";
 
-$descriptors = descriptors($session['dbinfo']['DB_PREFIX']);
+$descriptors = getAllTables($session['dbinfo']['DB_PREFIX'] ?: '');
 $unique = 0;
 $game = 0;
 $missing = 0;
