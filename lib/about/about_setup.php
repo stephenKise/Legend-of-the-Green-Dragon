@@ -15,9 +15,9 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
 addnav("About LoGD");
-addnav("About LoGD", "about.php");
-addnav("Module Info", "about.php?op=listmodules");
-addnav("License Info", "about.php?op=license");
+addnav("About LoGD", "about");
+addnav("Module Info", "about?op=listmodules");
+addnav("License Info", "about?op=license");
 $setup = array(
     "Game Setup,title",
     "pvp" => "Enable Slay Other Players,viewonly",

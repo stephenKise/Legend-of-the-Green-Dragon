@@ -94,8 +94,8 @@ while (list($key, $val) = each($order)) {
     }
 }
 addnav("About LoGD");
-addnav("Game Setup Info", "about.php?op=setup");
-addnav("Module Info", "about.php?op=listmodules");
-addnav("License Info", "about.php?op=license");
+addnav("Game Setup Info", "about?op=setup");
+addnav("Module Info", "about?op=listmodules");
+addnav("License Info", "about?op=license");
 modulehook("about");
 ?>

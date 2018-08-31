@@ -16,9 +16,9 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
 addnav("About LoGD");
-addnav("About LoGD", "about.php");
-addnav("Game Setup Info", "about.php?op=setup");
-addnav("License Info", "about.php?op=license");
+addnav("About LoGD", "about");
+addnav("Game Setup Info", "about?op=setup");
+addnav("License Info", "about?op=license");
 $sql = "SELECT * from " . db_prefix("modules") . " WHERE active=1 ORDER BY category,formalname";
 $result = db_query($sql);
 $mname = translate_inline("Module Name");
