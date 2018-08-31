@@ -25,9 +25,9 @@ switch ($op) {
         break;
 }
 if ($session['user']['loggedin']) {
-    addnav("Return to the news", "news.php");
+    addnav("Return to the news", "news");
 } else {
-    addnav("Login Page", "index.php");
+    addnav("Login Page", "home");
 }
 page_footer();
 ?>
