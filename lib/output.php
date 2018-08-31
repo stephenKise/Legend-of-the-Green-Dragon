@@ -401,12 +401,14 @@ function unblocknavcat($cat)
     $blockednavs["blockcat"][$cat] = false;
 }
 
+//TODO: Remove this function and refactor uses.
 function appendcount($link)
 {
     global $session;
     return appendlink($link, "c=" . $session['counter'] . "-" . date("His"));
 }
 
+//TODO: Remove this function and refactor uses.
 function appendlink($link, $new)
 {
     if (strpos($link, "?") !== false) {
