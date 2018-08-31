@@ -7,7 +7,7 @@ Legend of the Green Dragon (LotGD) is a text-based RPG originally developed by E
 - Composer
 
 # Installation
-Before you install, it is best to have an understanding of what a linux server is, how to work with PHP and MySQL, as well as touch up on modern practices such as composer. For this example, we are using Ubuntu Trusty (14.04) and assuming you have all of the required programs installed.
+Before you install, it is best to have an understanding of what a linux server is, how to work with PHP and MySQL, as well as touch up on modern practices such as composer. For this example, we are using Ubuntu Trusty (14.04) and assuming you have all of the required programs installed. You must set up extensionless PHP rewrites for your NGINX or Apache server as well (examples will be included later).
 
 ```bash
 # Install database, using your {user} and {password}.
@@ -17,7 +17,7 @@ mysql -u {user} -p{password} -e 'CREATE DATABASE LOTGD;'
 cd /var/www
 git clone git@github.com:stephenKise/Legend-of-the-Green-Dragon.git
 
-# Navigate to /installer.php in your browser.
+# Navigate to /installer in your browser.
 ```
 
 # Modules
