@@ -5,6 +5,7 @@ $baseaccount = array();
 function do_forced_nav($anonymous, $overrideforced)
 {
     global $baseaccount, $session, $REQUEST_URI;
+    $cleanRequest = str_replace('.php', '', $REQUEST_URI);
     rawoutput("<!--\nAllowAnonymous: " . ($anonymous ? "True" : "False") . "\nOverride Forced Nav: " . ($overrideforced ? "True" : "False") . "\n-->");
     if (isset($session['loggedin']) && $session['loggedin']) {
         $sql = "SELECT *  FROM " . db_prefix("accounts") . " WHERE acctid = '" . $session['user']['acctid'] . "'";
@@ -34,7 +35,8 @@ function do_forced_nav($anonymous, $overrideforced)
             redirect("index.php", "Account Disappeared!");
         }
         db_free_result($result);
-        if (isset($session['allowednavs'][$REQUEST_URI]) && $session['allowednavs'][$REQUEST_URI] && $overrideforced !== true) {
+        if ((isset($session['allowednavs'][$cleanRequest]) || isset($session['allowednavs'][$REQUEST_URI]))
+            && $overrideforced !== true) {
             $session['allowednavs'] = array();
         } else {
             if ($overrideforced !== true) {
