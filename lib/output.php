@@ -767,7 +767,6 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
             $text = translate($text); //leave the hack in here for now, use addnav_notl please
     }
 
-    $extra = "";
     $ignoreuntil = "";
     if ($link === false) {
         $thisnav .= tlbutton_pop() . templatereplace("navhead", array("title" => appoencode($text, $priv)));
@@ -777,14 +776,6 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
         $thisnav .= $text;
     } else {
         if ($text != "") {
-            $extra = "";
-            if (strpos($link, "?")) {
-                $extra = "&c={$session['counter']}";
-            } else {
-                $extra = "?c={$session['counter']}";
-            }
-
-            $extra .= "-" . date("His");
             //hotkey for the link.
             $key = "";
             if ($text[1] == "?") {
@@ -881,24 +872,24 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
                         $quickkeys[$key] = popup($link, $popsize);
                     }
                 } else {
-                    $quickkeys[$key] = "window.location='$link$extra'";
+                    $quickkeys[$key] = "window.location='$link'";
                 }
             }
             $n = templatereplace("navitem", array(
                 "text" => appoencode($text, $priv),
-                "link" => HTMLEntities($link . ($pop != true ? $extra : ""), ENT_COMPAT, getsetting("charset", "ISO-8859-1")),
+                "link" => HTMLEntities($link, ENT_COMPAT, getsetting("charset", "ISO-8859-1")),
                 "accesskey" => $keyrep,
                 "popup" => ($pop == true ? "target='_blank'" . ($popsize > "" ? " onClick=\"" . popup($link, $popsize) . "; return false;\"" : "") : "")
             ));
             $n = str_replace("<a ", tlbutton_pop() . "<a ", $n);
             $thisnav .= $n;
         }
-        $session['allowednavs'][$link . $extra] = true;
-        $session['allowednavs'][str_replace(" ", "%20", $link) . $extra] = true;
-        $session['allowednavs'][str_replace(" ", "+", $link) . $extra] = true;
+        $session['allowednavs'][$link] = true;
+        $session['allowednavs'][str_replace(" ", "%20", $link)] = true;
+        $session['allowednavs'][str_replace(" ", "+", $link)] = true;
         if (($pos = strpos($link, "#")) !== false) {
             $sublink = substr($link, 0, $pos);
-            $session['allowednavs'][$sublink . $extra] = true;
+            $session['allowednavs'][$sublink] = true;
         }
     }
     if ($unschema)
