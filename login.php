@@ -158,7 +158,7 @@ if ($name != "") {
                     }//end if($c>=10)
                 }//end while
             }//end if (db_num_rows)
-            redirect("index.php");
+            redirect("home");
         }
     }
 }else if ($op == "logout") {
@@ -184,10 +184,10 @@ if ($name != "") {
         saveuser();
     }
     $session = array();
-    redirect("index.php");
+    redirect("home");
 }
 // If you enter an empty username, don't just say oops.. do something useful.
 $session = array();
 $session['message'] = translate_inline("`4Error, your login was incorrect`0");
-redirect("index.php");
+redirect("home");
 ?>
