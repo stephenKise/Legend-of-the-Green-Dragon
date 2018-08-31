@@ -20,7 +20,7 @@ require_once("lib/http.php");
 if (!isset($session['loggedin']))
     $session['loggedin'] = false;
 if ($session['loggedin']) {
-    redirect("badnav.php");
+    redirect("badnav");
 }
 
 tlschema("home");
@@ -65,15 +65,15 @@ if (getsetting("homenewestplayer", 1)) {
 
 clearnav();
 addnav("New to LoGD?");
-addnav("Create a character", "create.php");
+addnav("Create a character", "create");
 addnav("Game Functions");
-addnav("Forgotten Password", "create.php?op=forgot");
-addnav("List Warriors", "list.php");
-addnav("Daily News", "news.php");
+addnav("Forgotten Password", "create?op=forgot");
+addnav("List Warriors", "list");
+addnav("Daily News", "news");
 addnav("Other Info");
-addnav("About LoGD", "about.php");
-addnav("Game Setup Info", "about.php?op=setup");
-addnav("LoGD Net", "logdnet.php?op=list");
+addnav("About LoGD", "about");
+addnav("Game Setup Info", "about?op=setup");
+addnav("LoGD Net", "logdnet?op=list");
 
 modulehook("index", array());
 
@@ -113,9 +113,9 @@ if ($onlinecount < getsetting("maxonline", 0) || getsetting("maxonline", 0) == 0
     $uname = translate_inline("<u>U</u>sername");
     $pass = translate_inline("<u>P</u>assword");
     $butt = translate_inline("Log in");
-    rawoutput("<form action='login.php' method='POST' onSubmit=\"md5pass();\">" . templatereplace("login", array("username" => $uname, "password" => $pass, "button" => $butt)) . "</form>");
+    rawoutput("<form action='login' method='POST' onSubmit=\"md5pass();\">" . templatereplace("login", array("username" => $uname, "password" => $pass, "button" => $butt)) . "</form>");
     output_notl("`c");
-    addnav("", "login.php");
+    addnav("", "login");
 } else {
     output("`\$`bServer full!`b`n`^Please wait until some users have logged out.`n`n`0");
     if ($op == "timeout") {
@@ -137,7 +137,7 @@ $session['message'] = "";
 output("`c`2Game server running version: `@%s`0`c", $logd_version);
 
 if (getsetting("homeskinselect", 1)) {
-    rawoutput("<form action='home.php' method='POST'>");
+    rawoutput("<form action='home' method='POST'>");
     rawoutput("<table align='center'><tr><td>");
     $form = array("template" => "Choose a different display skin:,theme");
     $prefs['template'] = $_COOKIE['template'];
