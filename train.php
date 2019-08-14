@@ -237,7 +237,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
                 if (getsetting('displaymasternews', 1)) {
                     addnews(
                             sprintf_translate(
-                                    "`%% %s`3 has defeated %s master, `%% %s`3 to advance to level `^%s`3 after `^1`3 day!!", $session['user']['name'], ($session['user']['sex'] ? "her" : "his"), $badguy['creaturename'], $session['user']['level']
+                                    "`% %s`3 has defeated %s master, `% %s`3 to advance to level `^%s`3 after `^1`3 day!!", $session['user']['name'], ($session['user']['sex'] ? "her" : "his"), $badguy['creaturename'], $session['user']['level']
                             )
                     );
                 }
@@ -245,7 +245,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
                 if (getsetting('displaymasternews', 1)) {
                     addnews(
                             sprintf_translate(
-                                    "`%% %s`3 has defeated %s master, `%% %s`3 to advance to level `^%s`3 after `^%s`3 days!!", $session['user']['name'], ($session['user']['sex'] ? "her" : "his"), $badguy['creaturename'], $session['user']['level'], $session['user']['age']
+                                    "`% %s`3 has defeated %s master, `% %s`3 to advance to level `^%s`3 after `^%s`3 days!!", $session['user']['name'], ($session['user']['sex'] ? "her" : "his"), $badguy['creaturename'], $session['user']['level'], $session['user']['age']
                             )
                     );
                 }
@@ -259,7 +259,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
             if (getsetting('displaymasternews', 1)) {
                 addnews(
                         sprintf_translate(
-                                "`%% %s`5 has challenged their master, %s and lost!`n%s", $session['user']['name'], $badguy['creaturename'], $taunt
+                                "`% %s`5 has challenged their master, %s and lost!`n%s", $session['user']['name'], $badguy['creaturename'], $taunt
                         )
                 );
             }
