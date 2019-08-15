@@ -20,6 +20,7 @@ function addnews(string $text = '', array $options = []): void
     unset($options['acctid']);
     $hide = isset($options['hide']);
     unset($options['hide']);
+    $text = str_replace("`%", "`%%", $text);
     $text = vsprintf($text, $options);
     if (!$hide) {
         $sql = db_query(
