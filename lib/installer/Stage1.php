@@ -13,7 +13,7 @@ $useCacheSelected = (
         'selected=\"selected\"' : ''
         );
 $modulesRepo = htmlent(
-        $session['dbinfo']['MODULES_REPOSITORY'] ?:
+    $session['dbinfo']['MODULES_REPOSITORY'] ?:
         'https://github.com/stephenKise/xythen-modules.git'
 );
 $no = translate_inline('no');
@@ -23,20 +23,22 @@ rawoutput("<form action='installer.php?stage=2' method='POST'>");
 output("`@`c`bDatabase Connection Information`b`c`n`0");
 if (file_exists('dbconnect.php')) {
     output(
-            "`n`\$You already have a database connection saved! Modifying this form
+        "`n`\$You already have a database connection saved! Modifying this form
         will update your database connection info! Do not submit anything
         if you do not intend to update your connection credentials!`n"
     );
 }
 output(
-        "`n`2In order to run Legend of the Green Dragon, we need to set up a few
+    "`n`2In order to run Legend of the Green Dragon, we need to set up a few
     server credentials. We will create your database and attempt to write a
     `0dbconnect.php `2 file to your system. If your permissions system denies
     the file to be made, you will have to create this file yourself. This stage
     of installation assumes you have MariaDB or a similar MySQL server
     installed as well as the proper php7.0-mysql or newer extension. If you
     need assistance with installation, you can read more or open an issue in the
-    <a target='_blank' href='%s'>GitHub Repository</a>`2.`n", 'http://github.com/stephenKise/Legend-of-the-Green-Dragon', true
+    <a target='_blank' href='%s'>GitHub Repository</a>`2.`n",
+    'http://github.com/stephenKise/Legend-of-the-Green-Dragon',
+    true
 );
 
 output("`n`@What is the `^address`@ of your MySQL server?`n");

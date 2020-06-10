@@ -54,4 +54,3 @@ $session['user']['clanjoindate'] = "0000-00-00 00:00:00";
 output("`&You have withdrawn from your clan.");
 addnav("Clan Options");
 addnav("Return to the Lobby", "clan.php");
-?>

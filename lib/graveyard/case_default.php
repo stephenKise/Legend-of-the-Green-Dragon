@@ -19,4 +19,3 @@ addnav("W?List Warriors", "list.php");
 addnav("S?Return to the Shades", "shades.php");
 addnav("M?Enter the Mausoleum", "graveyard.php?op=enter");
 module_display_events("graveyard", "graveyard.php");
-?>

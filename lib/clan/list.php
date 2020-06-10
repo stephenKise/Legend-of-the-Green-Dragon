@@ -37,4 +37,3 @@ if (db_num_rows($result) > 0) {
 }
 
 page_footer();
-?>

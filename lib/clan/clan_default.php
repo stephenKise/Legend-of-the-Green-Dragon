@@ -40,8 +40,9 @@ output("`n`n`bMembership Details:`b`n");
 $leaders = 0;
 while ($row = db_fetch_assoc($result)) {
     output_notl($ranks[$row['clanrank']] . ": `0" . $row['c'] . "`n");
-    if ($row['clanrank'] > CLAN_OFFICER)
+    if ($row['clanrank'] > CLAN_OFFICER) {
         $leaders += $row['c'];
+    }
 }
 output("`n");
 $noleader = translate_inline("`^There is currently no leader!  Promoting %s`^ to leader as they are the highest ranking member (or oldest member in the event of a tie).`n`n");
@@ -75,4 +76,3 @@ addnav("M?View Membership", "clan.php?op=membership");
 addnav("Online Members", "list.php?op=clan");
 addnav("Your Clan's Waiting Area", "clan.php?op=waiting");
 addnav("Withdraw From Your Clan", "clan.php?op=withdrawconfirm");
-?>

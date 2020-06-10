@@ -4,9 +4,9 @@
 // addnews ready
 // mail ready
 
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/http.php";
 
 tlschema("petition");
 
@@ -49,7 +49,7 @@ if (trim(httppost('insertcommentary')) != "") {
 //  $op="";
 //}
 page_header("Petition Viewer");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 if ($op == "") {
     $sql = "DELETE FROM " . db_prefix("petitions") . " WHERE status=2 AND closedate<'" . date("Y-m-d H:i:s", strtotime("-7 days")) . "'";
@@ -90,10 +90,12 @@ if ($op == "") {
             $page = 1;
         }
     }
-    if ($page < 1)
+    if ($page < 1) {
         $page = 1;
-    if ($page > $totalpages)
+    }
+    if ($page > $totalpages) {
         $page = $totalpages;
+    }
     $session['petitionPage'] = $page;
 
     // No need to show the pages if there is only one.
@@ -211,8 +213,9 @@ if ($op == "") {
         output_notl("`^%s`0", $row['closer']);
         rawoutput("</td>");
         rawoutput("<td>");
-        if ($row['closedate'] != 0)
+        if ($row['closedate'] != 0) {
             output_notl("`7%s`0", dhms(strtotime('now') - strtotime($row['closedate']), true));
+        }
         rawoutput("</td>");
         rawoutput("</tr>");
     }
@@ -238,7 +241,7 @@ if ($op == "") {
     output("`iClosed`i petitions are for you have dealt with an issue, these will auto delete when they have been closed for 7 days.");
     modulehook("petitions-descriptions", array());
     rawoutput("</li></ul>");
-}elseif ($op == "view") {
+} elseif ($op == "view") {
     $viewpageinfo = (int) httpget("viewpageinfo");
     if ($viewpageinfo == 1) {
         addnav("Hide Details", "viewpetition.php?op=view&id=$id}");
@@ -261,8 +264,11 @@ if ($op == "") {
     $row = db_fetch_assoc($result);
     addnav("User Ops");
     if (isset($row['login'])) {
-        addnav("View User Biography", "bio.php?char=" . $row['acctid']
-                . "&ret=%2Fviewpetition.php%3Fop%3Dview%26id=" . $id);
+        addnav(
+            "View User Biography",
+            "bio.php?char=" . $row['acctid']
+            . "&ret=%2Fviewpetition.php%3Fop%3Dview%26id=" . $id
+        );
     }
     if ($row['acctid'] > 0 && $session['user']['superuser'] & SU_EDIT_USERS) {
         addnav("User Ops");
@@ -332,4 +338,3 @@ if ($id && $op != "") {
     }
 }
 page_footer();
-?>

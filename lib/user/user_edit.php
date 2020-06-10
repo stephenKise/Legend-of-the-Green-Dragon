@@ -7,8 +7,9 @@ if (!$userid) {
 $result = db_query("SELECT * FROM " . db_prefix("accounts") . " WHERE acctid='$userid'");
 $row = db_fetch_assoc($result);
 $petition = httpget("returnpetition");
-if ($petition != "")
+if ($petition != "") {
     $returnpetition = "&returnpetition=$petition";
+}
 if ($petition != "") {
     addnav("Navigation");
     addnav("Return to the petition", "viewpetition.php?op=view&id=$petition");
@@ -80,8 +81,9 @@ if (httpget("subop") == "") {
             }
             $msettings[$key] = $x[0];
             // Set up the defaults as well.
-            if (isset($x[1]))
+            if (isset($x[1])) {
                 $data[$key] = $x[1];
+            }
         }
         $sql = "SELECT * FROM " . db_prefix("module_userprefs") . " WHERE modulename='$module' AND userid='$userid'";
         $result = db_query($sql);
@@ -100,4 +102,3 @@ if (httpget("subop") == "") {
 }
 module_editor_navs('prefs', "user.php?op=edit&subop=module&userid=$userid$returnpetition&module=");
 addnav("", "user.php?op=lasthit&userid=$userid");
-?>

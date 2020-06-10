@@ -6,13 +6,13 @@ define('IS_INSTALLER', true);
 if (!file_exists('dbconnect.php')) {
     define('DB_NODB', true);
 } else {
-    require_once('dbconnect.php');
+    include_once 'dbconnect.php';
 }
-require_once('common.php');
-require_once('lib/all_tables.php');
-require_once('lib/tabledescriptor.php');
-require_once('lib/installer/installer_sqlstatements.php');
-require_once('lib/installer/installer_default_settings.php');
+require_once 'common.php';
+require_once 'lib/all_tables.php';
+require_once 'lib/tabledescriptor.php';
+require_once 'lib/installer/installer_sqlstatements.php';
+require_once 'lib/installer/installer_default_settings.php';
 $stages = [
     '1. Introduction',
     '2. Server Credentials',
@@ -46,20 +46,20 @@ switch ($stage) {
     case 1:
     case 2:
     case 3:
-        require_once("lib/installer/Stage$stage.php");
+        include_once "lib/installer/Stage$stage.php";
         if ($stage == 2) {
             if (!$endNavigation) {
                 output("`n`n`QAll complete! Continue onto the next stage!");
             } else {
                 output(
-                        "`n`n`4Please remove anything created by the installer and
+                    "`n`n`4Please remove anything created by the installer and
                     try again after following any suggestions provided."
                 );
             }
         }
         break;
     default:
-        require_once('lib/installer/Stage0.php');
+        include_once 'lib/installer/Stage0.php';
         break;
 }
 

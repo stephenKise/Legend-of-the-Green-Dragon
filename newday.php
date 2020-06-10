@@ -3,10 +3,10 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/sanitize.php");
-require_once("lib/buffs.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/sanitize.php";
+require_once "lib/buffs.php";
 
 tlschema("newday");
 //mass_module_prepare(array("newday-intercept", "newday"));
@@ -25,8 +25,8 @@ $resline = (httpget('resurrection') == "true") ? "&resurrection=true" : "";
  * * End Settings **
  * **************** */
 $dk = httpget('dk');
-if ((count($session['user']['dragonpoints']) <
-        $session['user']['dragonkills']) && $dk != "") {
+if ((count($session['user']['dragonpoints']) <    $session['user']['dragonkills']) && $dk != ""
+) {
     array_push($session['user']['dragonpoints'], $dk);
     switch ($dk) {
         case "hp":
@@ -76,8 +76,9 @@ if ($pdk == 1) {
     modulehook("pdkpointrecalc");
     foreach ($labels as $type => $label) {
         $pdktotal += (int) $pdks[$type];
-        if ((int) $pdks[$type] < 0)
+        if ((int) $pdks[$type] < 0) {
             $pdkneg = true;
+        }
     }
     if ($pdktotal == $dkills - $dp && !$pdkneg) {
         $dp += $pdktotal;
@@ -87,8 +88,9 @@ if ($pdk == 1) {
         reset($labels);
         foreach ($labels as $type => $label) {
             $count = 0;
-            if (isset($pdks[$type]))
+            if (isset($pdks[$type])) {
                 $count = (int) $pdks[$type];
+            }
             while ($count) {
                 $count--;
                 array_push($session['user']['dragonpoints'], $type);
@@ -100,11 +102,11 @@ if ($pdk == 1) {
 }
 
 if ($dp < $dkills) {
-    require_once("lib/newday/dragonpointspend.php");
+    include_once "lib/newday/dragonpointspend.php";
 } elseif (!$session['user']['race'] || $session['user']['race'] == RACE_UNKNOWN) {
-    require_once("lib/newday/setrace.php");
+    include_once "lib/newday/setrace.php";
 } elseif ($session['user']['specialty'] == "") {
-    require_once("lib/newday/setspecialty.php");
+    include_once "lib/newday/setspecialty.php";
 } else {
     page_header("It is a new day!");
     rawoutput("<font size='+1'>");
@@ -150,19 +152,23 @@ if ($dp < $dkills) {
     strip_all_buffs();
     tlschema("buffs");
     while (list($key, $val) = @each($tempbuf)) {
-        if (array_key_exists('survivenewday', $val) &&
-                $val['survivenewday'] == 1) {
+        if (array_key_exists('survivenewday', $val)
+            && $val['survivenewday'] == 1
+        ) {
             //$session['bufflist'][$key]=$val;
-            if (array_key_exists('schema', $val) && $val['schema'])
+            if (array_key_exists('schema', $val) && $val['schema']) {
                 tlschema($val['schema']);
+            }
             apply_buff($key, $val);
-            if (array_key_exists('newdaymessage', $val) &&
-                    $val['newdaymessage']) {
+            if (array_key_exists('newdaymessage', $val)
+                && $val['newdaymessage']
+            ) {
                 output($val['newdaymessage']);
                 output_notl("`n");
             }
-            if (array_key_exists('schema', $val) && $val['schema'])
+            if (array_key_exists('schema', $val) && $val['schema']) {
                 tlschema();
+            }
         }
     }
     tlschema();
@@ -178,8 +184,9 @@ if ($dp < $dkills) {
     }
     if ($session['user']['hashorse']) {
         $buff = unserialize($playermount['mountbuff']);
-        if (!isset($buff['schema']) || $buff['schema'] == "")
+        if (!isset($buff['schema']) || $buff['schema'] == "") {
             $buff['schema'] = "mounts";
+        }
         apply_buff('mount', $buff);
     }
     if ($dkff > 0) {
@@ -191,21 +198,25 @@ if ($dp < $dkills) {
     $resurrectionturns = $spirits;
     if ($resurrection == "true") {
         addnews(
-                sprintf_translate(
-                        "`&%s`& has been resurrected by %s`&.", $session['user']['name'], getsetting('deathoverlord', '`$Ramius')
-                )
+            sprintf_translate(
+                "`&%s`& has been resurrected by %s`&.",
+                $session['user']['name'],
+                getsetting('deathoverlord', '`$Ramius')
+            )
         );
         $spirits = -6;
         $resurrectionturns = getsetting('resurrectionturns', -6);
         if (strstr($resurrectionturns, '%')) {
             $resurrectionturns = strtok($resurrectionturns, '%');
             $resurrectionturns = (int) $resurrectionturns;
-            if ($resurrectionturns < -100)
+            if ($resurrectionturns < -100) {
                 $resurrectionturns = -100;
+            }
             $resurrectionturns = round(($turnsperday + $dkff) * ($resurrectionturns / 100), 0);
         } else {
-            if ($resurrectionturns < -($turnsperday + $dkff))
+            if ($resurrectionturns < -($turnsperday + $dkff)) {
                 $resurrectionturns = -($turnsperday + $dkff);
+            }
         }
         $session['user']['deathpower'] -= 100;
         $session['user']['restorepage'] = "village.php?c=1";
@@ -226,8 +237,9 @@ if ($dp < $dkills) {
     }
     $rp = $session['user']['restorepage'];
     $x = max(strrpos("&", $rp), strrpos("?", $rp));
-    if ($x > 0)
+    if ($x > 0) {
         $rp = substr($rp, 0, $x);
+    }
     if (substr($rp, 0, 10) == "badnav.php") {
         addnav("Continue", "news.php");
     } else {
@@ -246,8 +258,9 @@ if ($dp < $dkills) {
     $session['user']['turns'] = $turnsperday + $resurrectionturns + $dkff;
     $session['user']['hitpoints'] = $session['user']['maxhitpoints'];
     $session['user']['spirits'] = $spirits;
-    if ($resurrection != "true")
+    if ($resurrection != "true") {
         $session['user']['playerfights'] = $dailypvpfights;
+    }
     $session['user']['transferredtoday'] = 0;
     $session['user']['amountouttoday'] = 0;
     $session['user']['seendragon'] = 0;
@@ -262,10 +275,10 @@ if ($dp < $dkills) {
     $session['user']['lasthit'] = gmdate("Y-m-d H:i:s");
     if ($session['user']['hashorse']) {
         $msg = $playermount['newday'];
-        require_once("lib/substitute.php");
+        include_once "lib/substitute.php";
         $msg = substitute_array("`n`&" . $msg . "`0`n");
         output($msg);
-        require_once("lib/mountname.php");
+        include_once "lib/mountname.php";
         list($name, $lcname) = getmountname();
 
         $mff = (int) $playermount['mountforestfights'];
@@ -292,7 +305,7 @@ if ($dp < $dkills) {
         $turnstoday .= ", Haunted: -1";
     }
 
-    require_once("lib/extended-battle.php");
+    include_once "lib/extended-battle.php";
     unsuspend_companions("allowinshades");
 
     if (!getsetting("newdaycron", 0)) {
@@ -312,7 +325,7 @@ if ($dp < $dkills) {
                 savesetting("newdaySemaphore", gmdate("Y-m-d H:i:s"));
                 $sql = "UNLOCK TABLES";
                 db_query($sql);
-                require("lib/newday/newday_runonce.php");
+                include "lib/newday/newday_runonce.php";
             } else {
                 //someone else beat us to it, unlock.
                 $sql = "UNLOCK TABLES";
@@ -325,4 +338,3 @@ if ($dp < $dkills) {
     debuglog("New Day Turns: $turnstoday");
 }
 page_footer();
-?>

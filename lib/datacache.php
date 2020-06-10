@@ -26,8 +26,9 @@ function datacache(string $name, int $duration)
     } else {
         //we haven't loaded this data cache this page hit.
         $fullname = makecachetempname($name);
-        if (file_exists($fullname) &&
-                filemtime($fullname) > strtotime("-$duration seconds")) {
+        if (file_exists($fullname)
+            && filemtime($fullname) > strtotime("-$duration seconds")
+        ) {
             //the cache file *does* exist, and is not overly old.
             $fullfile = @file_get_contents($fullname);
             if ($fullfile > "") {
@@ -54,13 +55,10 @@ function updatedatacache($name, $data)
         $fp = fopen($fullname, "w");
         if ($fp) {
             if (!fwrite($fp, json_encode($data))) {
-                
             } else {
-                
             }
             fclose($fp);
         } else {
-            
         }
         return true;
     }
@@ -74,12 +72,14 @@ function invalidatedatacache($name, $full = false)
 {
     global $datacache;
     if (getsetting("usedatacache", 0)) {
-        if (!$full)
+        if (!$full) {
             $fullname = makecachetempname($name);
-        else
+        } else {
             $fullname = $name;
-        if (file_exists($fullname))
+        }
+        if (file_exists($fullname)) {
             @unlink($fullname);
+        }
         unset($datacache[$name]);
     }
 }
@@ -112,8 +112,9 @@ function makecachetempname($name)
 {
     //one place to sanitize names for data caches.
     global $datacache, $datacachefilepath, $checkedforolddatacaches;
-    if ($datacachefilepath == "")
+    if ($datacachefilepath == "") {
         $datacachefilepath = getsetting("datacachepath", "/tmp");
+    }
     //let's make sure that someone can't trick us in to
     $name = preg_replace("'[^A-Za-z0-9.-]'", "", $name);
     $fullname = $datacachefilepath . "/" . $name . ".json";
@@ -127,22 +128,22 @@ function makecachetempname($name)
         // we want this to be 1 in 100 chance per page hit, not per data
         // cache call.
         // Once a hundred page hits, we want to clean out old caches.
-//      if (mt_rand(1,100)<2){
-//          $handle = opendir($datacachefilepath);
-//          while (($file = readdir($handle)) !== false) {
-//              if (substr($file,0,strlen(DATACACHE_FILENAME_PREFIX)) ==
-//                      DATACACHE_FILENAME_PREFIX){
-//                  $fn = $datacachefilepath."/".$file;
-//                  $fn = preg_replace("'//'","/",$fn);
-//                  $fn = preg_replace("'\\\\'","\\",$fn);
-//                  if (is_file($fn) &&
-//                          filemtime($fn) < strtotime("-24 hours")){
-//                      unlink($fn);
-//                  }else{
-//                  }
-//              }
-//          }
-//      }
+        //      if (mt_rand(1,100)<2){
+        //          $handle = opendir($datacachefilepath);
+        //          while (($file = readdir($handle)) !== false) {
+        //              if (substr($file,0,strlen(DATACACHE_FILENAME_PREFIX)) ==
+        //                      DATACACHE_FILENAME_PREFIX){
+        //                  $fn = $datacachefilepath."/".$file;
+        //                  $fn = preg_replace("'//'","/",$fn);
+        //                  $fn = preg_replace("'\\\\'","\\",$fn);
+        //                  if (is_file($fn) &&
+        //                          filemtime($fn) < strtotime("-24 hours")){
+        //                      unlink($fn);
+        //                  }else{
+        //                  }
+        //              }
+        //          }
+        //      }
     }
     return $fullname;
 }

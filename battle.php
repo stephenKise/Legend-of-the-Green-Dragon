@@ -3,13 +3,13 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("lib/bell_rand.php");
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/battle-buffs.php");
-require_once("lib/battle-skills.php");
-require_once("lib/buffs.php");
-require_once("lib/extended-battle.php");
+require_once "lib/bell_rand.php";
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/battle-buffs.php";
+require_once "lib/battle-skills.php";
+require_once "lib/buffs.php";
+require_once "lib/extended-battle.php";
 
 //just in case we're called from within a function.Yuck is this ugly.
 global $badguy, $enemies, $newenemies, $session, $creatureattack, $creatureatkmod, $beta;
@@ -20,10 +20,12 @@ tlschema("battle");
 
 $newcompanions = array();
 $attackstack = @unserialize($session['user']['badguy']);
-if (isset($attackstack['enemies']))
+if (isset($attackstack['enemies'])) {
     $enemies = $attackstack['enemies'];
-if (isset($attackstack['options']))
+}
+if (isset($attackstack['options'])) {
     $options = $attackstack['options'];
+}
 
 // Make the new battle script compatible with old, single enemy fights.
 if (isset($attackstack['creaturename']) && $attackstack['creaturename'] > "") {
@@ -35,8 +37,9 @@ if (isset($attackstack['creaturename']) && $attackstack['creaturename'] > "") {
     $enemies = $attackstack;
 }
 if (!isset($options)) {
-    if (isset($enemies[0]['type']))
+    if (isset($enemies[0]['type'])) {
         $options['type'] = $enemies[0]['type'];
+    }
 }
 
 $options = prepare_fight($options);
@@ -48,9 +51,9 @@ $count = 1;
 $auto = httpget('auto');
 if ($auto == 'full') {
     $count = -1;
-} else if ($auto == 'five') {
+} elseif ($auto == 'five') {
     $count = 5;
-} else if ($auto == 'ten') {
+} elseif ($auto == 'ten') {
     $count = 10;
 }
 
@@ -61,13 +64,14 @@ $op = httpget("op");
 $skill = httpget("skill");
 $l = httpget("l");
 $newtarget = httpget('newtarget');
-if ($newtarget != "")
+if ($newtarget != "") {
     $op = "newtarget";
+}
 //if (!$targetted) $op = "newtarget";
 
 if ($op == "fight") {
     apply_skill($skill, $l);
-} else if ($op == "newtarget") {
+} elseif ($op == "newtarget") {
     foreach ($enemies as $index => $badguy) {
         if ($index == (int) $newtarget) {
             if (!isset($badguy['cannotbetarget']) || $badguy['cannotbetarget'] === false) {
@@ -133,10 +137,12 @@ if ($op != "run" && $op != "fight" && $op != "newtarget") {
             if ($type == 'slum' || $type == 'thrill') {
                 $num = e_rand(0, 2);
                 $surprised = true;
-                if ($type == 'slum' && $num != 2)
+                if ($type == 'slum' && $num != 2) {
                     $surprised = false;
-                if (($type == 'thrill' || $type == 'suicide') && $num == 2)
+                }
+                if (($type == 'thrill' || $type == 'suicide') && $num == 2) {
                     $surprised = false;
+                }
             }
             if (!$surprised) {
                 output("`b`\$Your skill allows you to get the first attack!`0`b`n`n");
@@ -165,7 +171,6 @@ if ($op != "newtarget") {
         foreach ($enemies as $index => $badguy) {
             if ($badguy['dead'] == false && $badguy['creaturehealth'] > 0) {
                 if (isset($badguy['alwaysattacks']) && $badguy['alwaysattacks'] == true) {
-                    
                 } else {
                     $roundcounter++;
                 }
@@ -262,7 +267,7 @@ if ($op != "newtarget") {
                                         $newenemies[$index] = $badguy;
                                         $newcompanions = $companions;
                                         // No break here. It would break the foreach statement.
-                                    } else if ($badguy['istarget'] == true) {
+                                    } elseif ($badguy['istarget'] == true) {
                                         do {
                                             if ($badguy['creaturehealth'] <= 0 || $session['user']['hitpoints'] <= 0) {
                                                 $creaturedmg = 0;
@@ -286,16 +291,16 @@ if ($op != "newtarget") {
                                             $newcompanions = $companions;
                                         }
                                     } else {
-                                        
                                     }
                                 }
-                            } else if ($op == "run" && !$surprised) {
+                            } elseif ($op == "run" && !$surprised) {
                                 output("`4You are too busy trying to run away like a cowardly dog to try to fight `^%s`4.`n", $badguy['creaturename']);
                             }
 
                             //Need to insert this here because of auto-fighting!
-                            if ($op != "newtarget")
+                            if ($op != "newtarget") {
                                 $op = "fight";
+                            }
 
                             // We need to check both user health and creature health. Otherwise
                             // the user can win a battle by a RIPOSTE after he has gone <= 0 HP.
@@ -306,8 +311,9 @@ if ($op != "newtarget") {
                                     $defended = false;
                                     $needtostopfighting = battle_badguy_attacks();
                                     $r = mt_rand(0, 100);
-                                    if (!isset($bgchancetodouble))
+                                    if (!isset($bgchancetodouble)) {
                                         $bgchancetodouble = 0;
+                                    }
                                     if ($r < $bgchancetodouble && $badguy['creaturehealth'] > 0 && $session['user']['hitpoints'] > 0 && !$needtostopfighting) {
                                         $additionalattack = true;
                                         $bgchancetodouble -= ($r + 5);
@@ -394,8 +400,9 @@ if ($op != "newtarget") {
                     // experience for graveyard fights.
                     if (getsetting("instantexp", false) == true && $session['user']['alive'] && $options['type'] != "pvp" && $options['type'] != "train") {
                         if (!isset($badguy['expgained']) || $badguy['expgained'] == false) {
-                            if (!isset($badguy['creatureexp']))
+                            if (!isset($badguy['creatureexp'])) {
                                 $badguy['creatureexp'] = 0;
+                            }
                             $session['user']['experience'] += round($badguy['creatureexp'] / count($newenemies));
                             output("`#You receive `^%s`# experience!`n`0", round($badguy['creatureexp'] / count($newenemies)));
                             $options['experience'][$index] = $badguy['creatureexp'];
@@ -407,13 +414,14 @@ if ($op != "newtarget") {
                     }
                 } else {
                     $alive++;
-                    if (isset($badguy['fleesifalone']) && $badguy['fleesifalone'] == true)
+                    if (isset($badguy['fleesifalone']) && $badguy['fleesifalone'] == true) {
                         $fleeable++;
+                    }
                     if ($session['user']['hitpoints'] <= 0) {
                         $defeat = true;
                         $victory = false;
                         break;
-                    } else if (!$leaderisdead) {
+                    } elseif (!$leaderisdead) {
                         $defeat = false;
                         $victory = false;
                     }
@@ -436,10 +444,12 @@ if ($op != "newtarget") {
             $victory = true;
             $needtostopfighting = true;
         }
-        if ($count != -1)
+        if ($count != -1) {
             $count--;
-        if ($needtostopfighting)
+        }
+        if ($needtostopfighting) {
             $count = 0;
+        }
         if ($enemiesflown) {
             foreach ($newenemies as $index => $badguy) {
                 if (isset($badguy['fleesifalone']) && $badguy['fleesifalone'] == true) {
@@ -460,7 +470,7 @@ if ($op != "newtarget") {
                     $newenemies[$index] = $badguy;
                 }
             }
-        } else if ($leaderisdead) {
+        } elseif ($leaderisdead) {
             if (is_array($badguy['essentialleader'])) {
                 $msg = sprintf_translate($badguy['essentialleader']);
                 $msg = substitute($msg);
@@ -492,8 +502,9 @@ if ($session['user']['hitpoints'] > 0 && count($newenemies) > 0 && ($op == "figh
     show_enemies($newenemies);
 }
 
-if ($session['user']['hitpoints'] < 0)
+if ($session['user']['hitpoints'] < 0) {
     $session['user']['hitpoints'] = 0;
+}
 
 if ($victory || $defeat) {
     // expire any buffs which cannot persist across fights and
@@ -516,10 +527,12 @@ if ($victory || $defeat) {
             // $options array instead of the $args array for their code.
             $badguy['type'] = $options['type'];
 
-            if ($victory)
+            if ($victory) {
                 $badguy = modulehook("battle-victory", $badguy);
-            if ($defeat)
+            }
+            if ($defeat) {
                 $badguy = modulehook("battle-defeat", $badguy);
+            }
             unset($badguy['fightoutput']);
         }
     }
@@ -544,7 +557,7 @@ function battle_player_attacks()
         output("`4You try to hit `^%s`4 but `\$MISS!`n", $badguy['creaturename']);
         process_dmgshield($buffset['dmgshield'], 0);
         process_lifetaps($buffset['lifetap'], 0);
-    } else if ($creaturedmg < 0) {
+    } elseif ($creaturedmg < 0) {
         output("`4You try to hit `^%s`4 but are `\$RIPOSTED `4for `\$%s`4 points of damage!`n", $badguy['creaturename'], (0 - $creaturedmg));
         $badguy['diddamage'] = 1;
         $session['user']['hitpoints'] += $creaturedmg;
@@ -619,7 +632,7 @@ function battle_badguy_attacks()
                 output("`^%s`4 tries to hit you but `^MISSES!`n", $badguy['creaturename']);
                 process_dmgshield($buffset['dmgshield'], 0);
                 process_lifetaps($buffset['lifetap'], 0);
-            } else if ($selfdmg < 0) {
+            } elseif ($selfdmg < 0) {
                 output("`^%s`4 tries to hit you but you `^RIPOSTE`4 for `^%s`4 points of damage!`n", $badguy['creaturename'], (0 - $selfdmg));
                 $badguy['creaturehealth'] += $selfdmg;
                 process_lifetaps($buffset['lifetap'], -$selfdmg);
@@ -645,5 +658,3 @@ function battle_badguy_attacks()
     }
     return $break;
 }
-
-?>

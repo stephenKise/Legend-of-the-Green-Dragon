@@ -9,8 +9,9 @@ function pvplist($location = false, $link = false, $extra = false, $sql = false)
 {
     global $session, $pvptime, $pvptimeout;
 
-    if ($location === false)
+    if ($location === false) {
         $location = $session['user']['location'];
+    }
     if ($link === false) {
         $link = basename($_SERVER['SCRIPT_NAME']);
     }
@@ -68,13 +69,16 @@ function pvplist($location = false, $link = false, $extra = false, $sql = false)
     for ($i = 0; $i < $num; $i++) {
         $row = $pvp[$i];
 
-        if (isset($row['invalid']) && $row['invalid'])
+        if (isset($row['invalid']) && $row['invalid']) {
             continue;
-        if (!isset($loc_counts[$row['location']]))
+        }
+        if (!isset($loc_counts[$row['location']])) {
             $loc_counts[$row['location']] = 0;
+        }
         $loc_counts[$row['location']] ++;
-        if ($row['location'] != $location)
+        if ($row['location'] != $location) {
             continue;
+        }
         $j++;
         $biolink = "bio.php?char=" . $row['acctid'] . "&ret=" . urlencode($_SERVER['REQUEST_URI']);
         addnav("", $biolink);
@@ -110,15 +114,18 @@ function pvplist($location = false, $link = false, $extra = false, $sql = false)
     }
     rawoutput("</table>", true);
 
-    if ($num != 0 && (!isset($loc_counts[$location]) ||
-            $loc_counts[$location] != $num)) {
+    if ($num != 0 && (!isset($loc_counts[$location])
+        || $loc_counts[$location] != $num)
+    ) {
         output("`n`n`&As you listen to different people around you talking, you glean the following additional information:`n");
         foreach ($loc_counts as $loc => $count) {
-            if ($loc == $location)
+            if ($loc == $location) {
                 continue;
+            }
             $args = modulehook("pvpcount", array('count' => $count, 'loc' => $loc));
-            if (isset($args['handled']) && $args['handled'])
+            if (isset($args['handled']) && $args['handled']) {
                 continue;
+            }
             if ($count == 1) {
                 output("`&There is `^%s`& person sleeping in %s whom you might find interesting.`0`n", $count, $loc);
             } else {

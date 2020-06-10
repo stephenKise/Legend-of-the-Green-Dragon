@@ -3,9 +3,9 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("mercenarycamp");
 
@@ -151,25 +151,25 @@ if ($op == "") {
             } else {
                 addnav(array("%s`n`^%s Gold, `%%%s Gems`0", $row['name'], $row['companioncostgold'], $row['companioncostgems']), "");
             }
-        } else if ($row['companioncostgold']) {
+        } elseif ($row['companioncostgold']) {
             if ($session['user']['gold'] >= $row['companioncostgold'] && !isset($companions[$row['name']])) {
                 addnav(array("%s`n`^%s Gold`0", $row['name'], $row['companioncostgold']), "mercenarycamp.php?op=buy&id={$row['companionid']}");
             } else {
                 addnav(array("%s`n`^%s Gold`0", $row['name'], $row['companioncostgold']), "");
             }
-        } else if ($row['companioncostgems']) {
+        } elseif ($row['companioncostgems']) {
             if ($session['user']['gems'] >= $row['companioncostgems'] && !isset($companions[$row['name']])) {
                 addnav(array("%s`n`%%%s Gems`0", $row['name'], $row['companioncostgems']), "mercenarycamp.php?op=buy&id={$row['companionid']}");
             } else {
                 addnav(array("%s`n`%%%s Gems`0", $row['name'], $row['companioncostgems']), "");
             }
-        } else if (!isset($companions[$row['name']])) {
+        } elseif (!isset($companions[$row['name']])) {
             addnav(array("%s", $row['name']), "mercenarycamp.php?op=buy&id={$row['companionid']}");
         }
         output("`#%s`n`7%s`n`n", $row['name'], $row['description']);
     }
     healnav($companions, $texts, $schemas);
-} else if ($op == "heal") {
+} elseif ($op == "heal") {
     $cost = httpget('cost');
     if ($cost == 'notenough') {
         tlschema($schemas['healpaid']);
@@ -198,7 +198,7 @@ if ($op == "") {
     healnav($companions, $texts, $schemas);
     addnav("Navigation");
     addnav("Return to the camp", "mercenarycamp.php?skip=1");
-} else if ($op == "buy") {
+} elseif ($op == "buy") {
     $id = httpget('id');
     $sql = "SELECT * FROM " . db_prefix("companions") . " WHERE companionid = $id";
     $result = db_query($sql);
@@ -209,7 +209,7 @@ if ($op == "") {
         $row['hitpoints'] = $row['maxhitpoints'];
         $row = modulehook("alter-companion", $row);
         $row['abilities'] = @unserialize($row['abilities']);
-        require_once("lib/buffs.php");
+        include_once "lib/buffs.php";
         if (apply_companion($row['name'], $row)) {
             output("`QYou hand over `^%s gold`Q and `%%s %s`Q.`n`n", (int) $row['companioncostgold'], (int) $row['companioncostgems'], translate_inline($row['companioncostgems'] == 1 ? "gem" : "gems"));
             if (isset($row['jointext']) && $row['jointext'] > "") {
@@ -247,7 +247,6 @@ function healnav($companions, $texts, $schemas)
     $healable = false;
     foreach ($companions as $name => $companion) {
         if (isset($companion['cannotbehealed']) && $companion['cannotbehealed'] == true) {
-            
         } else {
             $pointstoheal = $companion['maxhitpoints'] - $companion['hitpoints'];
             if ($pointstoheal > 0) {
@@ -273,5 +272,3 @@ function healnav($companions, $texts, $schemas)
         tlschema();
     }
 }
-
-?>

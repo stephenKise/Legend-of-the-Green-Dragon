@@ -74,4 +74,3 @@ output("`@You should now have a pretty good idea of how the basics of the game w
 output("There's a whole lot more to the world, so explore it!");
 output("Don't be afraid of dying, particularly when you're young, as even when you're dead, there's yet more stuff to do!");
 rawoutput("<hr><a href='petition.php?op=faq'>$c</a>");
-?>

@@ -4,18 +4,21 @@ function lookup_user($query = false, $order = false, $fields = false, $where = f
 {
     $err = "";
     $searchresult = false;
-    if ($order !== false)
+    if ($order !== false) {
         $order = "ORDER BY $order";
-    if ($fields === false)
+    }
+    if ($fields === false) {
         $fields = "acctid,login,name,level,laston,loggedin,gentimecount,gentime,lastip,uniqueid,emailaddress";
+    }
     $sql = "SELECT $fields FROM " . db_prefix("accounts");
 
     if ($query != "") {
         // First try for an exact match on username or login
-        if ($where === false)
+        if ($where === false) {
             $sql_where = "WHERE login LIKE '$query' OR name LIKE '$query' OR acctid = 'query' OR emailaddress LIKE '$query' OR lastip LIKE '$query' OR uniqueid LIKE '$query'";
-        else
+        } else {
             $sql_where = "WHERE $where";
+        }
         $searchresult = db_query($sql . " $sql_where $order LIMIT 2");
     }
 
@@ -26,10 +29,11 @@ function lookup_user($query = false, $order = false, $fields = false, $where = f
             for ($x = 0; $x < strlen($query); $x++) {
                 $name_query .= substr($query, $x, 1) . "%";
             }
-            if ($where === false)
+            if ($where === false) {
                 $sql_where = "WHERE login LIKE '%$query%' OR acctid LIKE '%$query%' OR name LIKE '%$name_query%' OR emailaddress LIKE '%$query%' OR lastip LIKE '%$query%' OR uniqueid LIKE '%$query%' OR gentimecount LIKE '%$query%' OR level LIKE '%$query%'";
-            else
+            } else {
                 $sql_where = "WHERE $where";
+            }
 
             $searchresult = db_query($sql . " $sql_where $order LIMIT 101");
         }

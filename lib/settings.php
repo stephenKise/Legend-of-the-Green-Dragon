@@ -7,12 +7,12 @@ function savesetting(string $settingname, $value)
     loadsettings();
     if (!isset($settings[$settingname])) {
         $sql = db_query(
-                "INSERT INTO $table (setting, value)
+            "INSERT INTO $table (setting, value)
                 VALUES ('" . addslashes($settingname) . "', '" . addslashes($value) . "')"
         );
-    } else if (isset($settings[$settingname])) {
+    } elseif (isset($settings[$settingname])) {
         $sql = db_query(
-                "UPDATE $table SET value = '" . addslashes($value) . "' WHERE setting = '" . addslashes($settingname) . "'"
+            "UPDATE $table SET value = '" . addslashes($value) . "' WHERE setting = '" . addslashes($settingname) . "'"
         );
     } else {
         return false;
@@ -34,7 +34,7 @@ function loadsettings()
         if (empty($settings)) {
             $settings = [];
             $sql = db_query(
-                    "SELECT * FROM " . db_prefix('settings')
+                "SELECT * FROM " . db_prefix('settings')
             );
             while ($row = db_fetch_assoc($sql)) {
                 $settings[$row['setting']] = $row['value'];
@@ -56,7 +56,7 @@ function getsetting(string $settingname, $default)
     global $settings, $DB_USEDATACACHE, $DB_DATACACHEPATH;
     if ($settingname == 'usedatacache') {
         return $DB_USEDATACACHE;
-    } else if ($settingname == 'datacachepath') {
+    } elseif ($settingname == 'datacachepath') {
         return $DB_DATACACHEPATH;
     }
     if (!isset($settings[$settingname])) {

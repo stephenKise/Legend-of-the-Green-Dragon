@@ -38,4 +38,3 @@ output("b) To write and receive Ye Olde Mail.`n");
 output("c) To make sure you see our newest Message of the Day (MoTD).`n");
 output("That last one is very important, since until you've viewed it the window will continue to try to open on every page load. These messages are for server announcements such as outages, current known bugs (which you really don't have to petition about, since we already know of them), and other things that the staff think you need to know about right away.`n`n");
 rawoutput("<hr><a href='petition.php?op=faq'>$c</a>");
-?>

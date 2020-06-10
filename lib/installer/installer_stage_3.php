@@ -1,6 +1,6 @@
 <?php
 
-require_once("lib/installer/installer_functions.php");
+require_once "lib/installer/installer_functions.php";
 rawoutput("<form action='installer.php?stage=4' method='POST'>");
 output("`@`c`bDatabase Connection Information`b`c`2");
 output("In order to run Legend of the Green Dragon, your server must have access to a MySQL database.");
@@ -45,4 +45,3 @@ if (file_exists("dbconnect.php")) {
     output_notl("`n`n<input type='submit' value='$submit' class='button'>", true);
 }
 rawoutput("</form>");
-?>

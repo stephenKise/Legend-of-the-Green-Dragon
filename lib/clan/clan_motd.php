@@ -4,8 +4,9 @@ page_header("Update Clan Description / MoTD");
 addnav("Clan Options");
 if ($session['user']['clanrank'] >= CLAN_OFFICER) {
     $clanmotd = substr(httppost('clanmotd'), 0, 4096);
-    if (httppostisset('clanmotd') &&
-            stripslashes($clanmotd) != $claninfo['clanmotd']) {
+    if (httppostisset('clanmotd')
+        && stripslashes($clanmotd) != $claninfo['clanmotd']
+    ) {
         $sql = "UPDATE " . db_prefix("clans") . " SET clanmotd='$clanmotd',motdauthor={$session['user']['acctid']} WHERE clanid={$claninfo['clanid']}";
         db_query($sql);
         invalidatedatacache("clandata-{$claninfo['clanid']}");
@@ -14,9 +15,10 @@ if ($session['user']['clanrank'] >= CLAN_OFFICER) {
         $claninfo['motdauthor'] = $session['user']['acctid'];
     }
     $clandesc = httppost('clandesc');
-    if (httppostisset('clandesc') &&
-            stripslashes($clandesc) != $claninfo['clandesc'] &&
-            $claninfo['descauthor'] != 4294967295) {
+    if (httppostisset('clandesc')
+        && stripslashes($clandesc) != $claninfo['clandesc']
+        && $claninfo['descauthor'] != 4294967295
+    ) {
         $sql = "UPDATE " . db_prefix("clans") . " SET clandesc='" . addslashes(substr(stripslashes($clandesc), 0, 4096)) . "',descauthor={$session['user']['acctid']} WHERE clanid={$claninfo['clanid']}";
         db_query($sql);
         invalidatedatacache("clandata-{$claninfo['clanid']}");
@@ -69,4 +71,3 @@ if ($session['user']['clanrank'] >= CLAN_OFFICER) {
     output("You do not have authority to change your clan's motd or description.");
 }
 addnav("Return to your clan hall", "clan.php");
-?>

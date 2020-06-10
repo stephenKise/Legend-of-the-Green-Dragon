@@ -52,4 +52,3 @@ if (db_num_rows($result) == 0) {
     output("`#You already have a superuser account set up on this server.");
     savesetting("installer_version", $logd_version);
 }
-?>

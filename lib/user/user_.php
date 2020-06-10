@@ -38,11 +38,13 @@ if ($display == 1) {
         $laston = relativedate($row['laston']);
         $loggedin = (date("U") - strtotime($row['laston']) <
                 getsetting("LOGINTIMEOUT", 900) && $row['loggedin']);
-        if ($loggedin)
+        if ($loggedin) {
             $laston = translate_inline("`#Online`0");
+        }
         $row['laston'] = $laston;
-        if ($row[$order] != $oorder)
+        if ($row[$order] != $oorder) {
             $rn++;
+        }
         $oorder = $row[$order];
         rawoutput("<tr class='" . ($rn % 2 ? "trlight" : "trdark") . "'>");
         rawoutput("<td nowrap>");
@@ -78,4 +80,3 @@ if ($display == 1) {
     output("Total CPU time: %s seconds`n", round($gentime, 3));
     output("Average page gen time is %s seconds`n", round($gentime / max($gentimecount, 1), 4));
 }
-?>

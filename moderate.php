@@ -3,10 +3,10 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/sanitize.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/sanitize.php";
+require_once "lib/http.php";
 
 tlschema("moderate");
 
@@ -14,7 +14,7 @@ addcommentary();
 
 check_su_access(SU_EDIT_COMMENTS);
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 addnav("Other");
@@ -40,10 +40,12 @@ if ($op == "commentdelete") {
         $reason = httppost("reason");
         $reason0 = httppost("reason0");
         $default = "Banned for comments you posted.";
-        if ($reason0 != $reason && $reason0 != $default)
+        if ($reason0 != $reason && $reason0 != $default) {
             $reason = $reason0;
-        if ($reason == "")
+        }
+        if ($reason == "") {
             $reason = $default;
+        }
         while ($row = db_fetch_assoc($result)) {
             $sql = "SELECT * FROM " . db_prefix("bans") . " WHERE uniqueid = '{$row['uniqueid']}'";
             $result2 = db_query($sql);
@@ -63,8 +65,9 @@ if ($op == "commentdelete") {
             }
         }
     }
-    if (!isset($comment) || !is_array($comment))
+    if (!isset($comment) || !is_array($comment)) {
         $comment = array();
+    }
     $sql = "SELECT " .
             db_prefix("commentary") . ".*," . db_prefix("accounts") . ".name," .
             db_prefix("accounts") . ".login, " . db_prefix("accounts") . ".clanrank," .
@@ -174,8 +177,9 @@ if ($op == "") {
     $limit = "75";
     $where = "1=1 ";
     $moderator = httpget("moderator");
-    if ($moderator > "")
+    if ($moderator > "") {
         $where .= "AND moderator=$moderator ";
+    }
     $sql = "SELECT name, " . db_prefix("moderatedcomments") .
             ".* FROM " . db_prefix("moderatedcomments") . " LEFT JOIN " .
             db_prefix("accounts") .
@@ -197,8 +201,9 @@ if ($op == "") {
         $comment = unserialize($row['comment']);
         output_notl("`0(%s)", $comment['section']);
 
-        if ($comment['clanrank'] > 0)
+        if ($comment['clanrank'] > 0) {
             output_notl("%s<%s%s>`0", $clanrankcolors[ceil($comment['clanrank'] / 10)], $comment['clanshort'], $clanrankcolors[ceil($comment['clanrank'] / 10)]);
+        }
         output_notl("%s", $comment['name']);
         output_notl("-");
         output_notl("%s", comment_sanitize($comment['comment']));
@@ -250,8 +255,9 @@ if ($session['user']['superuser'] & SU_MODERATE_CLANS) {
         addnav(array("<%s> %s", $row['clanshort'], $row['clanname']), "moderate.php?area=clan-{$row['clanid']}");
     }
     tlschema();
-} elseif ($session['user']['superuser'] & SU_EDIT_COMMENTS &&
-        getsetting("officermoderate", 0)) {
+} elseif ($session['user']['superuser'] & SU_EDIT_COMMENTS
+    && getsetting("officermoderate", 0)
+) {
     // the CLAN_OFFICER requirement was chosen so that moderators couldn't
     // just get accepted as a member to any random clan and then proceed to
     // wreak havoc.
@@ -261,8 +267,9 @@ if ($session['user']['superuser'] & SU_MODERATE_CLANS) {
     // cases, as players that are trusted with moderator powers are also
     // often trusted with at least the rank of officer in their respective
     // clans.
-    if (($session['user']['clanid'] != 0) &&
-            ($session['user']['clanrank'] >= CLAN_OFFICER)) {
+    if (($session['user']['clanid'] != 0)
+        && ($session['user']['clanrank'] >= CLAN_OFFICER)
+    ) {
         addnav("Clan Halls");
         $sql = "SELECT clanid,clanname,clanshort FROM " . db_prefix("clans") . " WHERE clanid='" . $session['user']['clanid'] . "'";
         $result = db_query($sql);
@@ -289,4 +296,3 @@ foreach ($mods as $area => $name) {
 tlschema();
 
 page_footer();
-?>

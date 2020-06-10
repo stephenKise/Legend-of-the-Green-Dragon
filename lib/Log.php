@@ -15,7 +15,7 @@ class Log implements LoggerInterface
         $category = addslashes($category);
         $message = addslashes($message);
         db_query(
-                "INSERT INTO $database (`category`, `message`, `who`)
+            "INSERT INTO $database (`category`, `message`, `who`)
             VALUES ('{$category}', '{$message}', {$user->getID()})"
         );
     }
@@ -28,13 +28,14 @@ class Log implements LoggerInterface
     }
 
     public static function findByCategory(
-    string $category, int $offset, int $limit
-    ): array
-    {
+        string $category,
+        int $offset,
+        int $limit
+    ): array {
         $database = db_prefix(self::$database);
         $category = addslashes($category);
         $sql = db_query(
-                "SELECT * FROM {$database}
+            "SELECT * FROM {$database}
             WHERE `category` = '{$category}' LIMIT $offset, $limit"
         );
         debug("SELECT * FROM {$database} WHERE `category` = '{$category}'");
@@ -47,5 +48,4 @@ class Log implements LoggerInterface
         }
         return $returnArray;
     }
-
 }

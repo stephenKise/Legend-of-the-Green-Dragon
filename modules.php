@@ -3,15 +3,15 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/sanitize.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/sanitize.php";
 check_su_access(SU_MANAGE_MODULES);
 tlschema("modulemanage");
 
 page_header("Module Manager");
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 addnav("Module Categories");
@@ -21,26 +21,32 @@ $op = httpget('op');
 $module = httpget('module');
 
 if ($op == 'mass') {
-    if (httppost("activate"))
+    if (httppost("activate")) {
         $op = "activate";
-    if (httppost("deactivate"))
+    }
+    if (httppost("deactivate")) {
         $op = "deactivate";
-    if (httppost("uninstall"))
+    }
+    if (httppost("uninstall")) {
         $op = "uninstall";
-    if (httppost("reinstall"))
+    }
+    if (httppost("reinstall")) {
         $op = "reinstall";
-    if (httppost("install"))
+    }
+    if (httppost("install")) {
         $op = "install";
+    }
     $module = httppost("module");
 }
 $theOp = $op;
 if (is_array($module)) {
     $modules = $module;
 } else {
-    if ($module)
+    if ($module) {
         $modules = array($module);
-    else
+    } else {
         $modules = array();
+    }
 }
 reset($modules);
 while (list($key, $module) = each($modules)) {
@@ -48,7 +54,6 @@ while (list($key, $module) = each($modules)) {
     output("`2Performing `^%s`2 on `%%s`0`n", translate_inline($op), $module);
     if ($op == "install") {
         if (install_module($module)) {
-            
         } else {
             httpset('cat', '');
         }
@@ -56,7 +61,6 @@ while (list($key, $module) = each($modules)) {
         httpset('op', "");
     } elseif ($op == "uninstall") {
         if (uninstall_module($module)) {
-            
         } else {
             output("Unable to inject module.  Module not uninstalled.`n");
         }
@@ -100,8 +104,9 @@ $cat = httpget('cat');
 if ($op == "") {
     if ($cat) {
         $sortby = httpget('sortby');
-        if (!$sortby)
+        if (!$sortby) {
             $sortby = "installdate";
+        }
         $order = httpget('order');
         $tcat = translate_inline($cat);
         output("`n`b%s Modules`b`n", $tcat);
@@ -175,10 +180,12 @@ if ($op == "") {
 
             rawoutput(" ]</td><td valign='top'>");
             output_notl($row['active'] ? $active : $inactive);
-            require_once("lib/sanitize.php");
-            rawoutput("</td><td nowrap valign='top'><span title=\"" .
+            include_once "lib/sanitize.php";
+            rawoutput(
+                "</td><td nowrap valign='top'><span title=\"" .
                     (isset($row['description']) && $row['description'] ?
-                            $row['description'] : sanitize($row['formalname'])) . "\">");
+                $row['description'] : sanitize($row['formalname'])) . "\">"
+            );
             output_notl("%s %s", $row['formalname'], $row['version']);
             rawoutput("<br>");
             output_notl("(%s) ", $row['modulename'], $row['version']);
@@ -203,8 +210,9 @@ if ($op == "") {
         rawoutput("</form>");
     } else {
         $sorting = httpget('sorting');
-        if (!$sorting)
+        if (!$sorting) {
             $sorting = "shortname";
+        }
         $order = httpget('order');
         output("`bUninstalled Modules`b`n");
         $install = translate_inline("Install");
@@ -237,19 +245,21 @@ if ($op == "") {
                 //test if the file is a valid module or a lib file/whatever that got in, maybe even malcode that does not have module form
                 $shortnamelower = strtolower($shortname);
                 $file = strtolower(file_get_contents("modules/src/$shortname.php"));
-                if (strpos($file, $shortnamelower . "_getmoduleinfo") === false ||
-                        //strpos($file,$shortname."_dohook")===false ||
-                        //do_hook is not a necessity
-                        strpos($file, $shortnamelower . "_install") === false ||
-                        strpos($file, $shortnamelower . "_uninstall") === false) {
+                if (strpos($file, $shortnamelower . "_getmoduleinfo") === false
+                    //strpos($file,$shortname."_dohook")===false ||
+                    //do_hook is not a necessity
+                    || strpos($file, $shortnamelower . "_install") === false
+                    || strpos($file, $shortnamelower . "_uninstall") === false
+                ) {
                     //here the files has neither do_hook nor getinfo, which means it won't execute as a module here --> block it + notify the admin who is the manage modules section
                     $temp = array_merge($invalidmodule, array("name" => $shortname . ".php " . appoencode(translate_inline("(`\$Invalid Module! Contact Author or check file!`0)"))));
                 } else {
                     $temp = get_module_info($shortname);
                 }
                 //end of testing
-                if (!$temp || empty($temp))
+                if (!$temp || empty($temp)) {
                     continue;
+                }
                 $temp['shortname'] = $shortname;
                 array_push($moduleinfo, $temp);
                 array_push($sortby, full_sanitize($temp[$sorting]));
@@ -272,11 +282,13 @@ if ($op == "") {
                     rawoutput("</a>]</td>");
                     addnav("", "modules.php?op=install&module={$moduleinfo[$i]['shortname']}&cat={$moduleinfo[$i]['category']}");
                 }
-                rawoutput("<td nowrap valign='top'><span title=\"" .
+                rawoutput(
+                    "<td nowrap valign='top'><span title=\"" .
                         (isset($moduleinfo[$i]['description']) &&
                         $moduleinfo[$i]['description'] ?
                                 $moduleinfo[$i]['description'] :
-                                sanitize($moduleinfo[$i]['name'])) . "\">");
+                    sanitize($moduleinfo[$i]['name'])) . "\">"
+                );
                 rawoutput($moduleinfo[$i]['name'] . " " . $moduleinfo[$i]['version']);
                 rawoutput("</span></td><td valign='top'>");
                 output_notl("`#%s`0", $moduleinfo[$i]['author'], true);
@@ -299,10 +311,11 @@ if ($op == "") {
                         } else {
                             output_notl("`\$");
                         }
-                        if (isset($info[1]))
+                        if (isset($info[1])) {
                             output_notl("$key {$info[0]} -- {$info[1]}`n");
-                        else
+                        } else {
                             output_notl("$key {$info[0]}`n");
+                        }
                     }
                     rawoutput("</td>");
                     rawoutput("</tr>");
@@ -321,4 +334,3 @@ if ($op == "") {
 }
 
 page_footer();
-?>

@@ -3,11 +3,11 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/systemmail.php");
-require_once("lib/sanitize.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/systemmail.php";
+require_once "lib/sanitize.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("bank");
 
@@ -113,13 +113,13 @@ if ($op == "") {
             $maxtfer = $row['level'] * getsetting("transferperlevel", 25);
             if ($session['user']['amountouttoday'] + $amt > $maxout) {
                 output("`@Elessa`6 shakes her head, \"`@I'm sorry, but I cannot complete that transfer; you are not allowed to transfer more than `^%s`@ gold total per day.`6\"", $maxout);
-            } else if ($maxtfer < $amt) {
+            } elseif ($maxtfer < $amt) {
                 output("`@Elessa`6 shakes her head, \"`@I'm sorry, but I cannot complete that transfer; `&%s`@ may only receive up to `^%s`@ gold per day.`6\"", $row['name'], $maxtfer);
-            } else if ($row['transferredtoday'] >= getsetting("transferreceive", 3)) {
+            } elseif ($row['transferredtoday'] >= getsetting("transferreceive", 3)) {
                 output("`@Elessa`6 shakes her head, \"`@I'm sorry, but I cannot complete that transfer; `&%s`@ has received too many transfers today, you will have to wait until tomorrow.`6\"", $row['name']);
-            } else if ($amt < (int) $session['user']['level']) {
+            } elseif ($amt < (int) $session['user']['level']) {
                 output("`@Elessa`6 shakes her head, \"`@I'm sorry, but I cannot complete that transfer; you might want to send a worthwhile transfer, at least as much as your level.`6\"");
-            } else if ($row['acctid'] == $session['user']['acctid']) {
+            } elseif ($row['acctid'] == $session['user']['acctid']) {
                 output("`@Elessa`6 glares at you, her eyes flashing dangerously, \"`@You may not transfer money to yourself!  That makes no sense!`6\"");
             } else {
                 debuglog("transferred $amt gold to", $row['acctid']);
@@ -207,7 +207,7 @@ if ($op == "") {
         output("`\$ERROR: Not enough gold in the bank to withdraw.`^`n`n");
         output("`6Having been informed that you have `^%s`6 gold in your account, you declare that you would like to withdraw all `^%s`6 of it.`n`n", $session['user']['goldinbank'], $amount);
         output("`@Elessa`6 looks at you for a few moments without blinking, then advises you to take basic arithmetic.  You realize your folly and think you should try again.");
-    } else if ($amount > $session['user']['goldinbank']) {
+    } elseif ($amount > $session['user']['goldinbank']) {
         $lefttoborrow = $amount;
         $didwithdraw = 0;
         $maxborrow = $session['user']['level'] * getsetting("borrowperlevel", 20);
@@ -253,12 +253,14 @@ addnav("Money");
 if ($session['user']['goldinbank'] >= 0) {
     addnav("W?Withdraw", "bank.php?op=withdraw");
     addnav("D?Deposit", "bank.php?op=deposit");
-    if (getsetting("borrowperlevel", 20))
+    if (getsetting("borrowperlevel", 20)) {
         addnav("L?Take out a Loan", "bank.php?op=borrow");
-}else {
+    }
+} else {
     addnav("D?Pay off Debt", "bank.php?op=deposit");
-    if (getsetting("borrowperlevel", 20))
+    if (getsetting("borrowperlevel", 20)) {
         addnav("L?Borrow More", "bank.php?op=borrow");
+    }
 }
 if (getsetting("allowgoldtransfer", 1)) {
     if ($session['user']['level'] >= getsetting("mintransferlev", 3) || $session['user']['dragonkills'] > 0) {
@@ -267,4 +269,3 @@ if (getsetting("allowgoldtransfer", 1)) {
 }
 
 page_footer();
-?>

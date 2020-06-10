@@ -43,7 +43,8 @@ function relativedate(string $inDate): string
         return 'Today';
     }
     return sprintf(
-            '%s days', round((strtotime('now') - strtotime($inDate)) / 86400, 0)
+        '%s days',
+        round((strtotime('now') - strtotime($inDate)) / 86400, 0)
     );
 }
 
@@ -54,8 +55,9 @@ function checkday(bool $force = true): bool
     $timeDetails = gametimedetails();
     $lastOn = strtotime($session['user']['laston'] ?: 'now');
     if ($session['user']['loggedin']) {
-        if (getsetting('nextDay', 0) <= $lastOn &&
-                $session['user']['loggedin']) {
+        if (getsetting('nextDay', 0) <= $lastOn
+            && $session['user']['loggedin']
+        ) {
             savesetting('nextDay', $timeDetails['nextdaytime']);
             //debug($timeDetails);
             resetLastHits();
@@ -165,9 +167,9 @@ function dhms(float $seconds, bool $ms = false): string
         if ($divided > 1) {
             if ($unit != 'ms' && $unit != 's') {
                 $seconds = $seconds % $time;
-            } else if ($unit == 's') {
+            } elseif ($unit == 's') {
                 $seconds = $seconds - floor($divided);
-            } else if ($unit == 'ms') {
+            } elseif ($unit == 'ms') {
                 $seconds = 0;
             }
             $return .= round($divided, 0) . "$unit ";

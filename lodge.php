@@ -3,30 +3,33 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/sanitize.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
-require_once("lib/names.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/sanitize.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
+require_once "lib/names.php";
 
 tlschema("lodge");
 
 addcommentary();
 
 $op = httpget('op');
-if ($op == "")
+if ($op == "") {
     checkday();
+}
 
 $pointsavailable = $session['user']['donation'] - $session['user']['donationspent'];
 $entry = ($session['user']['donation'] > 0) || ($session['user']['superuser'] & SU_EDIT_COMMENTS);
-if ($pointsavailable < 0)
+if ($pointsavailable < 0) {
     $pointsavailable = 0; // something weird.
+}
 
 page_header("Hunter's Lodge");
 addnav("Referrals", "referral.php");
-if ($op != "" && $entry)
+if ($op != "" && $entry) {
     addnav("L?Back to the Lodge", "lodge.php");
+}
 addnav("Describe Points", "lodge.php?op=points");
 villagenav();
 
@@ -53,13 +56,14 @@ if ($op == "") {
         output("You pull out your Frequent Boozer Card from %s, with 9 out of the 10 slots punched out with a small profile of %s`0's Head.`n`n", $iname, getsetting('barkeep', '`tCedrik'));
         output("The guard glances at it, advises you not to drink so much, and directs you down the path.");
     }
-} else if ($op == "points") {
+} elseif ($op == "points") {
     output("`b`3Points:`b`n`n");
     $points_messages = modulehook(
-            "donator_point_messages", array(
+        "donator_point_messages",
+        array(
         'messages' => array(
             'default' => tl("`7For each $1 donated, the account which makes the donation will receive 100 contributor points in the game.")
-        )
+            )
             )
     );
     foreach ($points_messages['messages'] as $id => $message) {
@@ -88,4 +92,3 @@ if ($op == "") {
 }
 
 page_footer();
-?>

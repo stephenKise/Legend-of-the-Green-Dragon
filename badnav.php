@@ -4,8 +4,8 @@
 // addnews ready
 // mail ready
 define("OVERRIDE_FORCED_NAV", true);
-require_once("common.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/villagenav.php";
 
 tlschema("badnav");
 
@@ -15,19 +15,20 @@ if ($session['user']['loggedin'] && $session['loggedin']) {
     }
     while (list($key, $val) = each($session['allowednavs'])) {
         //hack-tastic.
-        if (
-                trim($key) == "" ||
-                $key === 0 ||
-                substr($key, 0, 8) == "motd.php" ||
-                substr($key, 0, 8) == "mail.php"
-        )
+        if (trim($key) == ""
+            || $key === 0
+            || substr($key, 0, 8) == "motd.php"
+            || substr($key, 0, 8) == "mail.php"
+        ) {
             unset($session['allowednavs'][$key]);
+        }
     }
     $sql = "SELECT output FROM " . db_prefix("accounts_output") . " WHERE acctid={$session['user']['acctid']};";
     $result = db_query($sql);
     $row = db_fetch_assoc($result);
-    if (!is_array($session['allowednavs']) ||
-            count($session['allowednavs']) == 0 || $row['output'] == "") {
+    if (!is_array($session['allowednavs'])
+        || count($session['allowednavs']) == 0 || $row['output'] == ""
+    ) {
         $session['allowednavs'] = array();
         page_header("Your Navs Are Corrupted");
         if ($session['user']['alive']) {
@@ -48,4 +49,3 @@ if ($session['user']['loggedin'] && $session['loggedin']) {
     translator_setup();
     redirect("index.php");
 }
-?>

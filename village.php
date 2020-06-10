@@ -3,11 +3,11 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/http.php");
-require_once("lib/events.php");
-require_once("lib/experience.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/http.php";
+require_once "lib/events.php";
+require_once "lib/experience.php";
 
 tlschema('village');
 //mass_module_prepare(array("village","validlocation","villagetext","village-desc"));
@@ -122,7 +122,6 @@ if ($session['user']['slaydragon'] == 1) {
 
 
 if ($session['user']['alive']) {
-    
 } else {
     redirect("shades.php");
 }
@@ -132,8 +131,9 @@ if (getsetting("automaster", 1) && $session['user']['seenmaster'] != 1) {
     $level = $session['user']['level'] + 1;
     $dks = $session['user']['dragonkills'];
     $expreqd = exp_for_next_level($level, $dks);
-    if ($session['user']['experience'] > $expreqd &&
-            $session['user']['level'] < 15) {
+    if ($session['user']['experience'] > $expreqd
+        && $session['user']['level'] < 15
+    ) {
         redirect("train.php?op=autochallenge");
     }
 }
@@ -210,8 +210,9 @@ addnav("M?" . $texts['stablename'] . "`0", "stables.php");
 tlschema();
 
 addnav("G?The Gardens", "gardens.php");
-if (getsetting("allowclans", 1))
+if (getsetting("allowclans", 1)) {
     addnav("C?Clan Halls", "clan.php");
+}
 
 tlschema($schemas['infonav']);
 addnav($texts['infonav']);
@@ -291,8 +292,9 @@ modulehook("village", $texts);
 //special hook for all villages... saves queries...
 modulehook("village-{$session['user']['location']}", $texts);
 
-if ($skipvillagedesc)
+if ($skipvillagedesc) {
     output("`n");
+}
 
 $args = modulehook("blockcommentarea", array("section" => $texts['section']));
 if (!isset($args['block']) || $args['block'] != 'yes') {
@@ -304,4 +306,3 @@ if (!isset($args['block']) || $args['block'] != 'yes') {
 
 module_display_events("village", "village.php");
 page_footer();
-?>

@@ -2,17 +2,17 @@
 
 /**
  * Page explaining what LotGD is
- * 
+ *
  * This page is part of the about page system
  * and is MightyE explaining what LotGD is. It
  * also contains a way in which a server admin
  * can display information about his/her server.
- * 
- * @copyright Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
- * @version Lotgd 1.1.2 DragonPrime Edition
- * @package Core
+ *
+ * @copyright  Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
+ * @version    Lotgd 1.1.2 DragonPrime Edition
+ * @package    Core
  * @subpackage Library
- * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
 $order = array("1", "2");
 while (list($key, $val) = each($order)) {
@@ -26,7 +26,7 @@ while (list($key, $val) = each($order)) {
             rawoutput("<hr>");
             $impressum = getsetting("impressum", "");
             if ($impressum > "") {
-                require_once("lib/nltoappon.php");
+                include_once "lib/nltoappon.php";
                 output_notl("%s", nltoappon($impressum));
             }
             break;
@@ -98,4 +98,3 @@ addnav("Game Setup Info", "about?op=setup");
 addnav("Module Info", "about?op=listmodules");
 addnav("License Info", "about?op=license");
 modulehook("about");
-?>

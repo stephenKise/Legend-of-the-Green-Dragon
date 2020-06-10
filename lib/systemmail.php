@@ -1,7 +1,7 @@
 <?php
 
-require_once("lib/safeescape.php");
-require_once("lib/sanitize.php");
+require_once "lib/safeescape.php";
+require_once "lib/sanitize.php";
 
 function systemmail($to, $subject, $body, $from = 0, $noemail = false)
 {
@@ -29,7 +29,6 @@ function systemmail($to, $subject, $body, $from = 0, $noemail = false)
         $subject = str_replace("`n", "", $subject);
         $body = safeescape($body);
         if ((isset($prefs['dirtyemail']) && $prefs['dirtyemail']) || $from == 0) {
-            
         } else {
             $subject = soap($subject, false, "mail");
             $body = soap($body, false, "mail");
@@ -42,16 +41,19 @@ function systemmail($to, $subject, $body, $from = 0, $noemail = false)
     $email = false;
     if (isset($prefs['emailonmail']) && $prefs['emailonmail'] && $from > 0) {
         $email = true;
-    } elseif (isset($prefs['emailonmail']) && $prefs['emailonmail'] &&
-            $from == 0 && isset($prefs['systemmail']) && $prefs['systemmail']) {
+    } elseif (isset($prefs['emailonmail']) && $prefs['emailonmail']
+        && $from == 0 && isset($prefs['systemmail']) && $prefs['systemmail']
+    ) {
         $email = true;
     }
     $emailadd = "";
-    if (isset($row['emailaddress']))
+    if (isset($row['emailaddress'])) {
         $emailadd = $row['emailaddress'];
+    }
 
-    if (!isValidEmail($emailadd))
+    if (!isValidEmail($emailadd)) {
         $email = false;
+    }
     if ($email && !$noemail) {
         if ($serialized & 2) {
             $body = unserialize(stripslashes($body));
@@ -66,10 +68,11 @@ function systemmail($to, $subject, $body, $from = 0, $noemail = false)
         $result = db_query($sql);
         $row1 = db_fetch_assoc($result);
         db_free_result($result);
-        if ($row1['name'] != "")
+        if ($row1['name'] != "") {
             $fromline = full_sanitize($row1['name']);
-        else
+        } else {
             $fromline = translate_inline("The Green Dragon", "mail");
+        }
 
         $sql = "SELECT name FROM " . db_prefix("accounts") . " WHERE acctid='$to'";
         $result = db_query($sql);
@@ -84,7 +87,8 @@ function systemmail($to, $subject, $body, $from = 0, $noemail = false)
         $body = full_sanitize($body);
         $subject = htmlentities($subject, ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
         $mailsubj = translate_mail(array("New LoGD Mail (%s)", $subject), $to);
-        $mailbody = translate_mail(array("You have received new mail on LoGD at http://%s`n`n"
+        $mailbody = translate_mail(
+            array("You have received new mail on LoGD at http://%s`n`n"
             . "-=-=-=-=-=-=-=-=-=-=-=-=-=-`n"
             . "From: %s`n"
             . "To: %s`n"
@@ -100,7 +104,9 @@ function systemmail($to, $subject, $body, $from = 0, $noemail = false)
             full_sanitize(stripslashes($subject)),
             stripslashes($body),
             $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME'])
-                ), $to);
+            ),
+            $to
+        );
         mail($row['emailaddress'], $mailsubj, str_replace("`n", "\n", $mailbody), "From: " . getsetting("gameadminemail", "postmaster@localhost"));
     }
     invalidatedatacache("mail-$to");

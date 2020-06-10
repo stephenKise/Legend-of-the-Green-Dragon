@@ -9,8 +9,8 @@ define("OVERRIDE_FORCED_NAV", true);
 // Translate Untranslated Strings
 // Originally Written by Christian Rutsch
 // Slightly modified by JT Traub
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 check_su_access(SU_IS_TRANSLATOR);
 
@@ -143,7 +143,6 @@ if ($op == "list") {
 } // end list if
 addnav("R?Restart Translator", "untranslated.php");
 addnav("N?Translate by Namespace", "untranslated.php?op=list");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 page_footer();
-?>

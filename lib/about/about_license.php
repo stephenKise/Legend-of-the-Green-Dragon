@@ -2,16 +2,16 @@
 
 /**
  * Page explaining the LotGD license
- * 
+ *
  * This page is part of the about system
  * and is MightyE explaining the new license
  * in an easy to understand way.
- * 
- * @copyright Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
- * @version Lotgd 1.1.2 DragonPrime Edition
- * @package Core
+ *
+ * @copyright  Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
+ * @version    Lotgd 1.1.2 DragonPrime Edition
+ * @package    Core
  * @subpackage Library
- * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
 addnav("About LoGD");
 addnav("About LoGD", "about");
@@ -35,4 +35,3 @@ output("Allowing this would cause that imported code to be released under the GP
 output("Authors of modifications to 0.9.7 will need to re-release their modifications as derivatives/modifications to 0.9.8 code and place them under the same Creative Commons license.");
 output("It must be done by the original author since only the original author has the right to change the copyright or license upon their work.");
 output("[Additionally, reworking the modifications will be a good idea anyway as the mechanism for making modifications is substantially cleaner/clearer starting with the 0.9.8-prerelease code.]`@\"");
-?>

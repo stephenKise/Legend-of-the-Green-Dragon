@@ -3,8 +3,8 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 check_su_access(SU_EDIT_CREATURES);
 
@@ -19,7 +19,7 @@ for ($i = 1; $i < 18; $i++) {
 
 page_header("Creature Editor");
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 $op = httpget("op");
@@ -28,8 +28,9 @@ if ($op == "save") {
     $forest = (int) (httppost('forest'));
     $grave = (int) (httppost('graveyard'));
     $id = httppost('creatureid');
-    if (!$id)
+    if (!$id) {
         $id = httpget("creatureid");
+    }
     if ($subop == "") {
         $post = httpallpost();
         $lev = (int) httppost('creaturelevel');
@@ -37,8 +38,9 @@ if ($op == "save") {
             $sql = "";
             reset($post);
             while (list($key, $val) = each($post)) {
-                if (substr($key, 0, 8) == "creature")
+                if (substr($key, 0, 8) == "creature") {
                     $sql .= "$key = '$val', ";
+                }
             }
             reset($creaturestats[$lev]);
             while (list($key, $val) = each($creaturestats[$lev])) {
@@ -112,8 +114,9 @@ if ($op == "del") {
 }
 if ($op == "" || $op == "search") {
     $level = httpget("level");
-    if (!$level)
+    if (!$level) {
         $level = 1;
+    }
     $q = httppost("q");
     if ($q) {
         $where = "creaturename LIKE '%$q%' OR creatureweapon LIKE '%$q%' OR creaturelose LIKE '%$q%' OR createdby LIKE '%$q%'";
@@ -189,10 +192,11 @@ if ($op == "" || $op == "search") {
     rawoutput("</table>");
 } else {
     $level = httpget('level');
-    if (!$level)
+    if (!$level) {
         $level = 1;
+    }
     if ($op == "edit" || $op == "add") {
-        require_once("lib/showform.php");
+        include_once "lib/showform.php";
         addnav("Edit");
         addnav("Creature properties", "creatures.php?op=edit&creatureid=$id");
         addnav("Add");
@@ -247,4 +251,3 @@ if ($op == "" || $op == "search") {
     addnav("Return to the creature editor", "creatures.php?level=$level");
 }
 page_footer();
-?>

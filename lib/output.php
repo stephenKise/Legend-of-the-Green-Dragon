@@ -33,8 +33,9 @@ function rawoutput($indata)
 {
     global $output, $block_new_output;
 
-    if ($block_new_output)
+    if ($block_new_output) {
         return;
+    }
 
     $output .= $indata . "\n";
 }
@@ -50,8 +51,9 @@ function output_notl($indata)
 {
     global $output, $block_new_output;
 
-    if ($block_new_output)
+    if ($block_new_output) {
         return;
+    }
 
     $args = func_get_args();
     //pop true off the end if we have it
@@ -83,17 +85,18 @@ function output_notl($indata)
  * @param string|array What to output. If an array is passed then the format used by sprintf is assumed
  *
  * @see output_notl
- *
  */
 function output()
 {
     global $block_new_output;
 
-    if ($block_new_output)
+    if ($block_new_output) {
         return;
+    }
     $args = func_get_args();
-    if (is_array($args[0]))
+    if (is_array($args[0])) {
         $args = $args[0];
+    }
     if (is_bool($args[0]) && array_shift($args)) {
         $schema = array_shift($args);
         $args[0] = translate($args[0], $schema);
@@ -106,13 +109,13 @@ function output()
 /**
  * Generate debug output for players who have the SU_DEBUG_OUTPUT flag set in the superuser mask
  *
- * @param string $text The string to output
+ * @param string $text  The string to output
  * @param bool   $force If true, force debug output even for non SU/non flagged
  */
 function debug($text, $force = false)
 {
     global $session, $block_new_output;
-    require_once("lib/dump_item.php");
+    include_once "lib/dump_item.php";
     $temp = $block_new_output;
     set_block_new_output(false);
     if ($force || $session['user']['superuser'] & SU_DEBUG_OUTPUT) {
@@ -127,8 +130,8 @@ function debug($text, $force = false)
 /**
  * Generates the appropriate output based on the LOGD coding system (ie: `b: Bold, `i: Italic)
  *
- * @param string $data The string to be output
- * @param bool $priv Indicates if the passed string ($data) contains HTML
+ * @param  string $data The string to be output
+ * @param  bool   $priv Indicates if the passed string ($data) contains HTML
  * @return string An output (HTML) formatted string
  */
 function appoencode($data, $priv = false)
@@ -138,20 +141,27 @@ function appoencode($data, $priv = false)
     $out = "";
     if (($pos = strpos($data, "`")) !== false) {
         global $nestedtags;
-        if (!isset($nestedtags['font']))
+        if (!isset($nestedtags['font'])) {
             $nestedtags['font'] = false;
-        if (!isset($nestedtags['div']))
+        }
+        if (!isset($nestedtags['div'])) {
             $nestedtags['div'] = false;
-        if (!isset($nestedtags['i']))
+        }
+        if (!isset($nestedtags['i'])) {
             $nestedtags['i'] = false;
-        if (!isset($nestedtags['b']))
+        }
+        if (!isset($nestedtags['b'])) {
             $nestedtags['b'] = false;
-        if (!isset($nestedtags['<']))
+        }
+        if (!isset($nestedtags['<'])) {
             $nestedtags['<'] = false;
-        if (!isset($nestedtags['>']))
+        }
+        if (!isset($nestedtags['>'])) {
             $nestedtags['>'] = false;
-        if (!isset($nestedtags['h']))
+        }
+        if (!isset($nestedtags['h'])) {
             $nestedtags['h'] = false;
+        }
 
         static $colors = array(
             "1" => "colDkBlue",
@@ -205,10 +215,11 @@ function appoencode($data, $priv = false)
             }
             $start = $pos + 1;
             if (isset($colors[$data[$pos]])) {
-                if ($nestedtags['font'])
+                if ($nestedtags['font']) {
                     $out .= "</span>";
-                else
+                } else {
                     $nestedtags['font'] = true;
+                }
                 $out .= "<span class='" . $colors[$data[$pos]] . "'>";
             } else {
                 switch ($data[$pos]) {
@@ -216,8 +227,9 @@ function appoencode($data, $priv = false)
                         $out .= "<br>\n";
                         break;
                     case "0":
-                        if ($nestedtags['font'])
+                        if ($nestedtags['font']) {
                             $out .= "</span>";
+                        }
                         $nestedtags['font'] = false;
                         break;
                     case "b":
@@ -285,8 +297,9 @@ function appoencode($data, $priv = false)
                         break;
                     case "w":
                         global $session;
-                        if (!isset($session['user']['weapon']))
+                        if (!isset($session['user']['weapon'])) {
                             $session['user']['weapon'] = "";
+                        }
                         $out .= appoencode($session['user']['weapon'], $priv);
                         break;
                     case "`":
@@ -320,8 +333,8 @@ $blockednavs = array(
  * if $partial is true, it will block any nav that begins with the given $link.
  * if $partial is false, it will block only navs that have exactly the given $link.
  *
- * @param string $link The URL to block
- * @param bool $partial
+ * @param string $link    The URL to block
+ * @param bool   $partial
  */
 function blocknav($link, $partial = false)
 {
@@ -336,8 +349,9 @@ function blocknav($link, $partial = false)
     if ($partial) {
         reset($blockednavs['unblockpartial']);
         while (list($key, $val) = each($blockednavs['unblockpartial'])) {
-            if (substr($link, 0, strlen($val)) == $val ||
-                    substr($val, 0, strlen($link)) == $link) {
+            if (substr($link, 0, strlen($val)) == $val
+                || substr($val, 0, strlen($link)) == $link
+            ) {
                 unset($blockednavs['unblockpartial'][$val]);
             }
         }
@@ -349,8 +363,8 @@ function blocknav($link, $partial = false)
  * if $partial is true, it will unblock any nav that begins with the given $link.
  * if $partial is false, it will unblock only navs that have exactly the given $link.
  *
- * @param string $link The nav to unblock
- * @param bool $partial If the passed nav is partial or not
+ * @param string $link    The nav to unblock
+ * @param bool   $partial If the passed nav is partial or not
  */
 function unblocknav($link, $partial = false)
 {
@@ -366,8 +380,9 @@ function unblocknav($link, $partial = false)
     if ($partial) {
         reset($blockednavs['blockpartial']);
         while (list($key, $val) = each($blockednavs['blockpartial'])) {
-            if (substr($link, 0, strlen($val)) == $val ||
-                    substr($val, 0, strlen($link)) == $link) {
+            if (substr($link, 0, strlen($val)) == $val
+                || substr($val, 0, strlen($link)) == $link
+            ) {
                 unset($blockednavs['blockpartial'][$val]);
             }
         }
@@ -383,8 +398,9 @@ function blocknavcat($cat)
 {
     //prevents a script from being able to generate navs on the given $cat.
     global $blockednavs;
-    if (!isset($blockednavs["blockcat"][$cat]))
+    if (!isset($blockednavs["blockcat"][$cat])) {
         $blockednavs["blockcat"][$cat] = true;
+    }
 }
 
 /**
@@ -438,32 +454,36 @@ function set_block_new_navs($block)
 /**
  * Generate and/or store a nav banner for the player
  *
- * @param string $text the display string for the nav banner
+ * @param string   $text     the display string for the nav banner
  * @param collapse $collapse (default true) can the nav section collapse
  */
-function addnavheader($text, $collapse = true, $translate = TRUE)
+function addnavheader($text, $collapse = true, $translate = true)
 {
     global $navsection, $navbysection, $translation_namespace;
     global $navschema, $navnocollapse, $block_new_navs, $notranslate;
 
-    if ($block_new_navs)
+    if ($block_new_navs) {
         return;
+    }
 
     if (is_array($text)) {
         $text = "!array!" . serialize($text);
     }
     $navsection = $text;
-    if (!array_key_exists($text, $navschema))
+    if (!array_key_exists($text, $navschema)) {
         $navschema[$text] = $translation_namespace;
+    }
     //So we can place sections with out adding navs to them.
-    if (!isset($navbysection[$navsection]))
+    if (!isset($navbysection[$navsection])) {
         $navbysection[$navsection] = array();
+    }
     if ($collapse === false) {
         $navnocollapse[$text] = true;
     }
     if ($translate === false) {
-        if (!isset($notranslate))
+        if (!isset($notranslate)) {
             $notranslate = array();
+        }
         array_push($notranslate, array($text, ""));
     }
 }
@@ -474,10 +494,10 @@ function addnavheader($text, $collapse = true, $translate = TRUE)
  * If $text is missing - the nav will be stored in the allowed navs for the player but not displayed
  * <B>ALL</B> internal site links that are displayed <B>MUST</B> also call addnav or badnav will occur.
  *
- * @param string $text (optional) The display string for the nav or nav banner
- * @param string $link (optional) The URL of the link
- * @param bool $priv Indicates if the name contains HTML
- * @param bool $pop Indicates if the URL should generate a popup
+ * @param string $text    (optional) The display string for the nav or nav banner
+ * @param string $link    (optional) The URL of the link
+ * @param bool   $priv    Indicates if the name contains HTML
+ * @param bool   $pop     Indicates if the URL should generate a popup
  * @param string $popsize If a popup - the size of the popup window
  *
  * @see badnav, apponencode
@@ -487,13 +507,14 @@ function addnav_notl($text, $link = false, $priv = false, $pop = false, $popsize
     global $navsection, $navbysection, $navschema, $notranslate;
     global $block_new_navs;
 
-    if ($block_new_navs)
+    if ($block_new_navs) {
         return;
+    }
 
     if ($link === false) {
         // Don't do anything if text is ""
         if ($text != "") {
-            addnavheader($text, TRUE, FALSE);
+            addnavheader($text, true, false);
         }
     } else {
         $args = func_get_args();
@@ -502,10 +523,12 @@ function addnav_notl($text, $link = false, $priv = false, $pop = false, $popsize
             //the nav stack now.
             call_user_func_array("private_addnav", $args);
         } else {
-            if (!isset($navbysection[$navsection]))
+            if (!isset($navbysection[$navsection])) {
                 $navbysection[$navsection] = array();
-            if (!isset($notranslate))
+            }
+            if (!isset($notranslate)) {
                 $notranslate = array();
+            }
             array_push($navbysection[$navsection], $args);
             array_push($notranslate, $args);
         }
@@ -517,8 +540,9 @@ function addnav($text, $link = false, $priv = false, $pop = false, $popsize = "5
     global $navsection, $navbysection, $translation_namespace, $navschema;
     global $block_new_navs;
 
-    if ($block_new_navs)
+    if ($block_new_navs) {
         return;
+    }
 
     if ($link === false) {
         // Don't do anything if text is ""
@@ -532,14 +556,16 @@ function addnav($text, $link = false, $priv = false, $pop = false, $popsize = "5
             //the nav stack now.
             call_user_func_array("private_addnav", $args);
         } else {
-            if (!isset($navbysection[$navsection]))
+            if (!isset($navbysection[$navsection])) {
                 $navbysection[$navsection] = array();
+            }
             $t = $args[0];
             if (is_array($t)) {
                 $t = $t[0];
             }
-            if (!array_key_exists($t, $navschema))
+            if (!array_key_exists($t, $navschema)) {
                 $navschema[$t] = $translation_namespace;
+            }
             array_push($navbysection[$navsection], array_merge($args, array("translate" => false)));
         }
     }
@@ -548,21 +574,24 @@ function addnav($text, $link = false, $priv = false, $pop = false, $popsize = "5
 /**
  * Determine if a nav/URL is blocked
  *
- * @param string $link The nav to check
+ * @param  string $link The nav to check
  * @return bool
  */
 function is_blocked($link)
 {
     global $blockednavs;
-    if (isset($blockednavs['blockfull'][$link]))
+    if (isset($blockednavs['blockfull'][$link])) {
         return true;
+    }
     reset($blockednavs['blockpartial']);
     while (list($l, $dummy) = each($blockednavs['blockpartial'])) {
         $shouldblock = false;
         if (substr($link, 0, strlen($l)) == $l) {
-            if (isset($blockednavs['unblockfull'][$link]) &&
-                    $blockednavs['unblockfull'][$link])
+            if (isset($blockednavs['unblockfull'][$link])
+                && $blockednavs['unblockfull'][$link]
+            ) {
                 return false;
+            }
             reset($blockednavs['unblockpartial']);
             while (list($l2, $dummy) = each($blockednavs['unblockpartial'])) {
                 if (substr($link, 0, strlen($l2)) == $l2) {
@@ -578,7 +607,7 @@ function is_blocked($link)
 /**
  * Determine how many navs are available
  *
- * @param string $section The nav section to check
+ * @param  string $section The nav section to check
  * @return int
  */
 function count_viable_navs($section)
@@ -595,8 +624,9 @@ function count_viable_navs($section)
         while (list($k, $nav) = each($val)) {
             if (is_array($nav) && count($nav) > 0) {
                 $link = $nav[1]; // [0] is the text, [1] is the link
-                if (!is_blocked($link))
+                if (!is_blocked($link)) {
                     $count++;
+                }
             }
         }
     }
@@ -614,9 +644,11 @@ function checknavs()
 
     // If we already have navs entered (because someone stuck raw links in)
     // just return true;
-    if (is_array($session['allowednavs']) &&
-            count($session['allowednavs']) > 0)
+    if (is_array($session['allowednavs'])
+        && count($session['allowednavs']) > 0
+    ) {
         return true;
+    }
 
     // If we have any links which are going to be stuck in, return true
     reset($navbysection);
@@ -624,8 +656,9 @@ function checknavs()
         if (count_viable_navs($key) > 0) {
             reset($val);
             while (list($k, $v) = each($val)) {
-                if (is_array($v) && count($v) > 0)
+                if (is_array($v) && count($v) > 0) {
                     return true;
+                }
             }
         }
     }
@@ -649,14 +682,16 @@ function buildnavs()
         $navbanner = "";
         if (count_viable_navs($key) > 0) {
             if ($key > "") {
-                if ($session['loggedin'])
+                if ($session['loggedin']) {
                     tlschema($navschema[$key]);
+                }
                 if (substr($key, 0, 7) == "!array!") {
                     $key = unserialize(substr($key, 7));
                 }
                 $navbanner = private_addnav($key);
-                if ($session['loggedin'])
+                if ($session['loggedin']) {
                     tlschema();
+                }
             }
 
             $style = "default";
@@ -668,10 +703,12 @@ function buildnavs()
                 $args = array("name" => "nh-{$key}",
                     "title" => ($key ? $key : "Unnamed Navs"));
                 $args = modulehook("collapse-nav{", $args);
-                if (isset($args['content']))
+                if (isset($args['content'])) {
                     $collapseheader = $args['content'];
-                if (isset($args['style']))
+                }
+                if (isset($args['style'])) {
                     $style = $args['style'];
+                }
                 if (!($key > "") && $style == "classic") {
                     $navbanner = "<TR><TD>";
                 }
@@ -687,8 +724,9 @@ function buildnavs()
             // Generate the enclosing collapsable section footer
             if ($tkey > "" && (!array_key_exists($tkey, $navnocollapse) || !$navnocollapse[$tkey])) {
                 $args = modulehook("}collapse-nav");
-                if (isset($args['content']))
+                if (isset($args['content'])) {
                     $collapsefooter = $args['content'];
+                }
             }
 
             switch ($style) {
@@ -720,11 +758,11 @@ $quickkeys = array();
 /**
  * Private functions (Undocumented)
  *
- * @param string $text
- * @param string $link
- * @param bool $priv
- * @param bool $pop
- * @param bool $popsize
+ * @param  string $text
+ * @param  string $link
+ * @param  bool   $priv
+ * @param  bool   $pop
+ * @param  bool   $popsize
  * @return mixed
  */
 function private_addnav($text, $link = false, $priv = false, $pop = false, $popsize = "500x300")
@@ -732,30 +770,35 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
     //don't call this directly please.  I'll break your thumbs if you do.
     global $nav, $session, $accesskeys, $REQUEST_URI, $quickkeys, $navschema, $notranslate;
 
-    if (is_blocked($link))
+    if (is_blocked($link)) {
         return false;
+    }
 
     $thisnav = "";
     $unschema = 0;
     $translate = true;
-    if (isset($notranslate))
-        if (in_array(array($text, $link), $notranslate))
+    if (isset($notranslate)) {
+        if (in_array(array($text, $link), $notranslate)) {
             $translate = false;
+        }
+    }
 
     if (is_array($text)) {
         if ($text[0] && $session['loggedin']) {
-            if ($link === false)
+            if ($link === false) {
                 $schema = "!array!" . serialize($text);
-            else
+            } else {
                 $schema = $text[0];
+            }
             if ($translate) {
                 tlschema($navschema[$schema]);
                 $unschema = 1;
             }
         }
         if ($link != "!!!addraw!!!") {
-            if ($translate)
+            if ($translate) {
                 $text[0] = translate($text[0]);
+            }
             $text = call_user_func_array("sprintf", $text);
         } else {
             $text = call_user_func_array("sprintf", $text);
@@ -765,8 +808,9 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
             tlschema($navschema[$text]);
             $unschema = 1;
         }
-        if ($link != "!!!addraw!!!" && $text > "" && $translate)
+        if ($link != "!!!addraw!!!" && $text > "" && $translate) {
             $text = translate($text); //leave the hack in here for now, use addnav_notl please
+        }
     }
 
     $ignoreuntil = "";
@@ -785,9 +829,10 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
                 $hchar = strtolower($text[0]);
                 if ($hchar == ' ' || array_key_exists($hchar, $accesskeys) && $accesskeys[$hchar] == 1) {
                     $text = substr($text, 2);
-                    if ($hchar == ' ')
+                    if ($hchar == ' ') {
                         $key = " ";
-                }else {
+                    }
+                } else {
                     $key = $text[0];
                     $text = substr($text, 2);
                     $found = false;
@@ -798,13 +843,16 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
                             $ignoreuntil = "";
                         } else {
                             if ($ignoreuntil <> "") {
-                                if ($char == "<")
+                                if ($char == "<") {
                                     $ignoreuntil = ">";
-                                if ($char == "&")
+                                }
+                                if ($char == "&") {
                                     $ignoreuntil = ";";
-                                if ($char == "`")
+                                }
+                                if ($char == "`") {
                                     $ignoreuntil = $text[$i + 1];
-                            }else {
+                                }
+                            } else {
                                 if ($char == $key) {
                                     $found = true;
                                     break;
@@ -833,20 +881,24 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
                         $ignoreuntil = "";
                     } else {
                         if ((isset($accesskeys[strtolower($char)]) && $accesskeys[strtolower($char)] == 1) || (strpos("abcdefghijklmnopqrstuvwxyz0123456789", strtolower($char)) === false) || $ignoreuntil <> "") {
-                            if ($char == "<")
+                            if ($char == "<") {
                                 $ignoreuntil = ">";
-                            if ($char == "&")
+                            }
+                            if ($char == "&") {
                                 $ignoreuntil = ";";
-                            if ($char == "`")
+                            }
+                            if ($char == "`") {
                                 $ignoreuntil = substr($text, $i + 1, 1);
-                        }else {
+                            }
+                        } else {
                             break;
                         }
                     }
                 }
             }
-            if (!isset($i))
+            if (!isset($i)) {
                 $i = 0;
+            }
             if ($i < strlen($text) && $key != ' ') {
                 $key = substr($text, $i, 1);
                 $accesskeys[strtolower($key)] = 1;
@@ -857,7 +909,6 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
             }
 
             if ($key == "" || $key == " ") {
-                
             } else {
                 $pattern1 = "/^" . preg_quote($key, "/") . "/";
                 $pattern2 = "/([^`])" . preg_quote($key, "/") . "/";
@@ -877,12 +928,15 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
                     $quickkeys[$key] = "window.location='$link'";
                 }
             }
-            $n = templatereplace("navitem", array(
+            $n = templatereplace(
+                "navitem",
+                array(
                 "text" => appoencode($text, $priv),
                 "link" => HTMLEntities($link, ENT_COMPAT, getsetting("charset", "ISO-8859-1")),
                 "accesskey" => $keyrep,
                 "popup" => ($pop == true ? "target='_blank'" . ($popsize > "" ? " onClick=\"" . popup($link, $popsize) . "; return false;\"" : "") : "")
-            ));
+                )
+            );
             $n = str_replace("<a ", tlbutton_pop() . "<a ", $n);
             $thisnav .= $n;
         }
@@ -894,8 +948,9 @@ function private_addnav($text, $link = false, $priv = false, $pop = false, $pops
             $session['allowednavs'][$sublink] = true;
         }
     }
-    if ($unschema)
+    if ($unschema) {
         tlschema();
+    }
     $nav .= $thisnav;
     return $thisnav;
 }
@@ -913,8 +968,9 @@ function navcount()
     $c = count($session['allowednavs']);
     reset($navbysection);
     while (list($key, $val) = each($navbysection)) {
-        if (is_array($val))
+        if (is_array($val)) {
             $c += count($val);
+        }
     }
     reset($navbysection);
     return $c;
@@ -922,7 +978,6 @@ function navcount()
 
 /**
  * Reset and wipe the navs
- *
  */
 function clearnav()
 {
@@ -931,7 +986,6 @@ function clearnav()
 
 /**
  * Reset the output and wipe the navs
- *
  */
 function clearoutput()
 {

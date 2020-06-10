@@ -1,8 +1,8 @@
 <?php
 
-require_once("common.php");
-require_once("lib/showform.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/showform.php";
+require_once "lib/http.php";
 // translator ready
 // addnews ready
 // mail ready
@@ -14,15 +14,17 @@ tlschema("configuration");
 $op = httpget('op');
 $module = httpget('module');
 if ($op == "save") {
-    include_once("lib/gamelog.php");
+    include_once "lib/gamelog.php";
     //loadsettings();
-    if ((int) httppost('blockdupemail') == 1 &&
-            (int) httppost('requirevalidemail') != 1) {
+    if ((int) httppost('blockdupemail') == 1
+        && (int) httppost('requirevalidemail') != 1
+    ) {
         httppostset('requirevalidemail', "1");
         output("`brequirevalidemail has been set since blockdupemail was set.`b`n");
     }
-    if ((int) httppost('requirevalidemail') == 1 &&
-            (int) httppost('requireemail') != 1) {
+    if ((int) httppost('requirevalidemail') == 1
+        && (int) httppost('requireemail') != 1
+    ) {
         httppostset('requireemail', "1");
         output("`brequireemail has been set since requirevalidemail was set.`b`n");
     }
@@ -30,8 +32,9 @@ if ($op == "save") {
     if ($defsup != "") {
         $value = 0;
         while (list($k, $v) = each($defsup)) {
-            if ($v)
+            if ($v) {
                 $value += (int) $k;
+            }
         }
         httppostset('defaultsuperuser', $value);
     }
@@ -42,8 +45,9 @@ if ($op == "save") {
                 httppost("villagename") . "' WHERE location='" .
                 addslashes($settings['villagename']) . "'";
         db_query($sql);
-        if ($session['user']['location'] == $settings['villagename'])
+        if ($session['user']['location'] == $settings['villagename']) {
             $session['user']['location'] = stripslashes(httppost('villagename'));
+        }
         debug("Moving companions");
         $sql = "UPDATE " . db_prefix("companions") . " SET companionlocation = '" .
                 httppost("villagename") . "' WHERE companionlocation = '" .
@@ -57,8 +61,9 @@ if ($op == "save") {
                 httppost("innname") . "' WHERE location='" .
                 addslashes($settings['innname']) . "'";
         db_query($sql);
-        if ($session['user']['location'] == $settings['innname'])
+        if ($session['user']['location'] == $settings['innname']) {
             $session['user']['location'] = stripslashes(httppost('innname'));
+        }
     }
     if (stripslashes(httppost("motditems")) != $settings['motditems']) {
         invalidatedatacache("motd");
@@ -67,23 +72,29 @@ if ($op == "save") {
     reset($post);
     $old = $settings;
     while (list($key, $val) = each($post)) {
-        if (!isset($settings[$key]) ||
-                (stripslashes($val) != $settings[$key])) {
-            if (!isset($old[$key]))
+        if (!isset($settings[$key])
+            || (stripslashes($val) != $settings[$key])
+        ) {
+            if (!isset($old[$key])) {
                 $old[$key] = "";
+            }
             savesetting($key, stripslashes($val));
             output("Setting %s to %s`n", $key, stripslashes($val));
             gamelog("`@changed core setting `^$key`@ from `3{$old[$key]}`@ to `#$val`0", "settings");
             // Notify every module
-            modulehook("changesetting", array("module" => "core", "setting" => $key,
-                "old" => $old[$key], "new" => $val), true);
+            modulehook(
+                "changesetting",
+                array("module" => "core", "setting" => $key,
+                "old" => $old[$key], "new" => $val),
+                true
+            );
         }
     }
     output("`^Settings saved.`0");
     $op = "";
     httpset($op, "");
-}elseif ($op == "modulesettings") {
-    include_once("lib/gamelog.php");
+} elseif ($op == "modulesettings") {
+    include_once "lib/gamelog.php";
     if (injectmodule($module, true)) {
         $save = httpget('save');
         if ($save != "") {
@@ -111,11 +122,16 @@ if ($op == "save") {
                             db_query($sql);
                         }
                         $oldval = "";
-                        if (isset($old[$key]))
+                        if (isset($old[$key])) {
                             $oldval = $old[$key];
+                        }
                         gamelog("`@changed module setting `^$module.$key`@ from `3$oldval`@ to `#$val`0", "settings");
-                        modulehook("changesetting", array("module" => $module, "setting" => $key,
-                            "old" => $oldval, "new" => $val), true);
+                        modulehook(
+                            "changesetting",
+                            array("module" => $module, "setting" => $key,
+                            "old" => $oldval, "new" => $val),
+                            true
+                        );
                     }
                 }
                 output("`^Module %s settings saved.`0`n", $module);
@@ -138,8 +154,9 @@ if ($op == "save") {
                         $x = explode("|", $val);
                     }
                     $msettings[$key] = $x[0];
-                    if (!isset($module_settings[$mostrecentmodule][$key]) &&
-                            isset($x[1])) {
+                    if (!isset($module_settings[$mostrecentmodule][$key])
+                        && isset($x[1])
+                    ) {
                         $module_settings[$mostrecentmodule][$key] = $x[1];
                     }
                 }
@@ -175,7 +192,7 @@ if ($op == "save") {
 }
 
 page_header("Game Settings");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Module Manager", "modules.php");
 if ($module) {
@@ -191,13 +208,14 @@ module_editor_navs('settings', 'configuration.php?op=modulesettings&module=');
 
 if ($op == "") {
     $enum = "enumpretrans";
-    require_once("lib/datetime.php");
+    include_once "lib/datetime.php";
     $details = gametimedetails();
     $offset = getsetting("gameoffsetseconds", 0);
     for ($i = 0; $i <= 86400 / getsetting("daysperday", 4); $i += 300) {
         $off = ($details['realsecstotomorrow'] - ($offset - $i));
-        if ($off < 0)
+        if ($off < 0) {
             $off += 86400;
+        }
         $x = strtotime("+" . $off . " secs");
         $str = sprintf_translate("In %s at %s (+%s)", reltime($x), date("h:i a", $x), date("H:i", $i));
         $enum .= ",$i,$str";
@@ -420,4 +438,3 @@ if ($op == "") {
     rawoutput("</form>");
 }
 page_footer();
-?>

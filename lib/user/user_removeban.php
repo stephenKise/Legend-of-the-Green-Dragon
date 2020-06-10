@@ -20,8 +20,9 @@ if ($subop == "xml") {
         echo urlencode(appoencode("`0{$ro['name']}"));
         echo "\"/>";
     }
-    if (db_num_rows($r) == 0)
+    if (db_num_rows($r) == 0) {
         echo "<name name=\"$none\"/>";
+    }
     echo "</xml>";
     exit();
 }
@@ -55,7 +56,8 @@ addnav("4 years", "user.php?op=removeban&duration=4+years");
 addnav("Forever", "user.php?op=removeban&duration=forever");
 $sql = "SELECT * FROM " . db_prefix("bans") . " $since ORDER BY banexpire";
 $result = db_query($sql);
-rawoutput("<script language='JavaScript'>
+rawoutput(
+    "<script language='JavaScript'>
 function getUserInfo(ip,id,divid){
 	var filename='user.php?op=removeban&subop=xml&ip='+ip+'&id='+id;
 	//set up the DOM object
@@ -77,7 +79,8 @@ function getUserInfo(ip,id,divid){
 	document.getElementById('user'+divid).innerHTML=output;
 }
 </script>
-");
+"
+);
 rawoutput("<table border=0 cellpadding=2 cellspacing=1 bgcolor='#999999'>");
 $ops = translate_inline("Ops");
 $bauth = translate_inline("Ban Author");
@@ -104,14 +107,18 @@ while ($row = db_fetch_assoc($result)) {
     rawoutput("</td><td>");
     // "43200" used so will basically round to nearest day rather than floor number of days
     $expire = sprintf_translate("%s days", round((strtotime($row['banexpire']) + 43200 - strtotime("now")) / 86400, 0));
-    if (substr($expire, 0, 2) == "1 ")
+    if (substr($expire, 0, 2) == "1 ") {
         $expire = translate_inline("1 day");
-    if (date("Y-m-d", strtotime($row['banexpire'])) == date("Y-m-d"))
+    }
+    if (date("Y-m-d", strtotime($row['banexpire'])) == date("Y-m-d")) {
         $expire = translate_inline("Today");
-    if (date("Y-m-d", strtotime($row['banexpire'])) == date("Y-m-d", strtotime("1 day")))
+    }
+    if (date("Y-m-d", strtotime($row['banexpire'])) == date("Y-m-d", strtotime("1 day"))) {
         $expire = translate_inline("Tomorrow");
-    if ($row['banexpire'] == "0000-00-00")
+    }
+    if ($row['banexpire'] == "0000-00-00") {
         $expire = translate_inline("Never");
+    }
     output_notl("%s", $expire);
     rawoutput("</td><td>");
     output_notl("%s", $row['banreason']);
@@ -127,4 +134,3 @@ while ($row = db_fetch_assoc($result)) {
     $i++;
 }
 rawoutput("</table>");
-?>

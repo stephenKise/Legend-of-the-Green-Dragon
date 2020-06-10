@@ -4,8 +4,8 @@
 // addnews ready
 // mail ready
 define("OVERRIDE_FORCED_NAV", true);
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 tlschema("mail");
 
@@ -71,22 +71,21 @@ rawoutput("</tr></table>");
 output_notl("`n`n");
 
 if ($op == "send") {
-    require("lib/mail/case_send.php");
+    include "lib/mail/case_send.php";
 }
 
 switch ($op) {
     case "read":
-        require("lib/mail/case_read.php");
+        include "lib/mail/case_read.php";
         break;
     case "address":
-        require("lib/mail/case_address.php");
+        include "lib/mail/case_address.php";
         break;
     case "write":
-        require("lib/mail/case_write.php");
+        include "lib/mail/case_write.php";
         break;
     default:
-        require("lib/mail/case_default.php");
+        include "lib/mail/case_default.php";
         break;
 }
 popup_footer();
-?>

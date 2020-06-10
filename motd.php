@@ -5,11 +5,11 @@
 // mail ready
 define("ALLOW_ANONYMOUS", true);
 define("OVERRIDE_FORCED_NAV", true);
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/nltoappon.php");
-require_once("lib/http.php");
-require_once("lib/motd.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/nltoappon.php";
+require_once "lib/http.php";
+require_once "lib/motd.php";
 
 tlschema("motd");
 
@@ -38,19 +38,21 @@ if ($op == "vote") {
 }
 if ($op == "add" || $op == "addpoll" || $op == "del") {
     if ($session['user']['superuser'] & SU_POST_MOTD) {
-        if ($op == "add")
+        if ($op == "add") {
             motd_form($id);
-        elseif ($op == "addpoll")
+        } elseif ($op == "addpoll") {
             motd_poll_form($id);
-        elseif ($op == "del")
+        } elseif ($op == "del") {
             motd_del($id);
+        }
     } else {
         if ($session['user']['loggedin']) {
             $session['user']['experience'] = round($session['user']['experience'] * 0.9, 0);
             addnews(
-                    sprintf_translate(
-                            "%s was penalized for attempting to defile the gods.", $session['user']['name']
-                    )
+                sprintf_translate(
+                    "%s was penalized for attempting to defile the gods.",
+                    $session['user']['name']
+                )
             );
             output("You've attempted to defile the gods.  You are struck with a wand of forgetfulness.  Some of what you knew, you no longer know.");
             saveuser();
@@ -60,8 +62,9 @@ if ($op == "add" || $op == "addpoll" || $op == "del") {
 if ($op == "") {
     $count = getsetting("motditems", 5);
     $newcount = httpget("newcount");
-    if (!$newcount || !httppost('proceed'))
+    if (!$newcount || !httppost('proceed')) {
         $newcount = 0;
+    }
     /*
       motditem("Beta!","Please see the beta message below.","","", "");
      */
@@ -71,16 +74,19 @@ if ($op == "") {
         $result = db_query_cached($sql, "motd-$m");
     } else {
         $sql = "SELECT " . db_prefix("motd") . ".*,name AS motdauthorname FROM " . db_prefix("motd") . " LEFT JOIN " . db_prefix("accounts") . " ON " . db_prefix("accounts") . ".acctid = " . db_prefix("motd") . ".motdauthor ORDER BY motddate DESC limit $newcount," . ($newcount + $count);
-        if ($newcount = 0) //cache only the last x items
+        if ($newcount = 0) { //cache only the last x items
             $result = db_query_cached($sql, "motd");
-        else
+        } else {
             $result = db_query($sql);
+        }
     }
     while ($row = db_fetch_assoc($result)) {
-        if (!isset($session['user']['lastmotd']))
+        if (!isset($session['user']['lastmotd'])) {
             $session['user']['lastmotd'] = 0;
-        if ($row['motdauthorname'] == "")
+        }
+        if ($row['motdauthorname'] == "") {
             $row['motdauthorname'] = "`@Green Dragon Staff`0";
+        }
         if ($row['motdtype'] == 0) {
             motditem($row['motdtitle'], $row['motdbody'], $row['motdauthorname'], $row['motddate'], $row['motditem']);
         } else {
@@ -119,4 +125,3 @@ $row = db_fetch_assoc($result);
 $session['user']['lastmotd'] = $row['motddate'];
 
 popup_footer();
-?>

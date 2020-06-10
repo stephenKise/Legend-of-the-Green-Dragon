@@ -9,10 +9,11 @@ function show_enemies($enemies)
 {
     global $enemycounter, $session;
     foreach ($enemies as $index => $badguy) {
-        if ((isset($badguy['istarget']) && $badguy['istarget'] == true) && $enemycounter > 1)
+        if ((isset($badguy['istarget']) && $badguy['istarget'] == true) && $enemycounter > 1) {
             $ccode = "`#";
-        else
+        } else {
             $ccode = "`2";
+        }
         if (isset($badguy['hidehitpoints']) && $badguy['hidehitpoints'] == true) {
             $health = "???";
         } else {
@@ -34,7 +35,7 @@ function show_enemies($enemies)
 /**
  * This function prepares the fight, sets up options and gives hook a hook to change options on a per-player basis.
  *
- * @param array $options The options given by a module or basics.
+ * @param  array $options The options given by a module or basics.
  * @return array The complete options.
  */
 function prepare_fight($options = false)
@@ -56,7 +57,6 @@ function prepare_fight($options = false)
 
 /**
  * This functions prepares companions to be able to take part in a fight. Uses global copies.
- *
  */
 function prepare_companions()
 {
@@ -76,8 +76,8 @@ function prepare_companions()
 /**
  * Suspends companions on a given parameter.
  *
- * @param string $susp The type of suspension
- * @param mixed $nomsg The message to be displayed upon suspending. If false, no message will be displayed.
+ * @param string $susp  The type of suspension
+ * @param mixed  $nomsg The message to be displayed upon suspending. If false, no message will be displayed.
  */
 function suspend_companions($susp, $nomsg = false)
 {
@@ -88,10 +88,8 @@ function suspend_companions($susp, $nomsg = false)
         foreach ($companions as $name => $companion) {
             if ($susp) {
                 if (isset($companion[$susp]) && $companion[$susp] == true) {
-                    
                 } else {
                     if (isset($companion['suspended']) && $companion['suspended'] == true) {
-                        
                     } else {
                         $suspended = true;
                         $companion['suspended'] = true;
@@ -109,11 +107,13 @@ function suspend_companions($susp, $nomsg = false)
             $nomsg = "`&Your companions stand back during this fight!`n";
         }
         if ($nomsg !== true) {
-            if ($schema)
+            if ($schema) {
                 tlschema($schema);
+            }
             output($nomsg);
-            if ($schema)
+            if ($schema) {
                 tlschema();
+            }
         }
     }
     $companions = $newcompanions;
@@ -122,8 +122,8 @@ function suspend_companions($susp, $nomsg = false)
 /**
  * Enables suspended companions.
  *
- * @param string $susp The type of suspension
- * @param mixed $nomsg The message to be displayed upon unsuspending. If false, no message will be displayed.
+ * @param string $susp  The type of suspension
+ * @param mixed  $nomsg The message to be displayed upon unsuspending. If false, no message will be displayed.
  */
 function unsuspend_companions($susp, $nomsg = false)
 {
@@ -147,11 +147,13 @@ function unsuspend_companions($susp, $nomsg = false)
             $nomsg = "`&Your companions return to stand by your side!`n";
         }
         if ($nomsg !== true) {
-            if ($schema)
+            if ($schema) {
                 tlschema($schema);
+            }
             output($nomsg);
-            if ($schema)
+            if ($schema) {
                 tlschema();
+            }
         }
     }
     $companions = $newcompanions;
@@ -160,7 +162,7 @@ function unsuspend_companions($susp, $nomsg = false)
 /**
  * Automatically chooses the first still living enemy as target for attacks.
  *
- * @param array $localenemies The stack of enemies to find a valid one from.
+ * @param  array $localenemies The stack of enemies to find a valid one from.
  * @return array $localenemies The stack with changed targetting.
  */
 function autosettarget($localenemies)
@@ -169,10 +171,12 @@ function autosettarget($localenemies)
     if (is_array($localenemies)) {
         foreach ($localenemies as $index => $badguy) {
             $localenemies[$index] += array("dead" => false, "istarget" => false); // This line will add these two indices if they haven't been set.
-            if (count($localenemies) == 1)
+            if (count($localenemies) == 1) {
                 $localenemies[$index]['istarget'] = true;
-            if ($localenemies[$index]['istarget'] == true && $localenemies[$index]['dead'] == false)
+            }
+            if ($localenemies[$index]['istarget'] == true && $localenemies[$index]['dead'] == false) {
                 $targetted++;
+            }
         }
     }
     if (!$targetted && is_array($localenemies)) {
@@ -192,8 +196,8 @@ function autosettarget($localenemies)
 /**
  * Based upon the type of the companion different actions are performed and the companion is marked as "used" after that.
  *
- * @param array $companion The companion itself
- * @param string $activate The stage of activation. Can be one of these: "fight", "defend", "heal" or "magic".
+ * @param  array  $companion The companion itself
+ * @param  string $activate  The stage of activation. Can be one of these: "fight", "defend", "heal" or "magic".
  * @return array The changed companion
  */
 function report_companion_move($companion, $activate = "fight")
@@ -210,7 +214,7 @@ function report_companion_move($companion, $activate = "fight")
         $damage_received = $roll['selfdmg'];
         if ($damage_done == 0) {
             output("`^%s`4 tries to hit %s but `\$MISSES!`n", $companion['name'], $badguy['creaturename']);
-        } else if ($damage_done < 0) {
+        } elseif ($damage_done < 0) {
             output("`^%s`4 tries to hit %s but %s `\$RIPOSTES`4 for `^%s`4 points of damage!`n", $companion['name'], $badguy['creaturename'], $badguy['creaturename'], abs($damage_done));
             $companion['hitpoints'] += $damage_done;
         } else {
@@ -221,7 +225,7 @@ function report_companion_move($companion, $activate = "fight")
         if ($badguy['creaturehealth'] >= 0) {
             if ($damage_received == 0) {
                 output("`^%s`4 tries to hit `\$%s`4 but `^MISSES!`n", $badguy['creaturename'], $companion['name']);
-            } else if ($damage_received < 0) {
+            } elseif ($damage_received < 0) {
                 output("`^%s`4 tries to hit `\$%s`4 but %s `^RIPOSTES`4 for `^%s`4 points of damage!`n", $badguy['creaturename'], $companion['name'], $companion['name'], abs($damage_received));
                 $badguy['creaturehealth'] += $damage_received;
             } else {
@@ -230,7 +234,7 @@ function report_companion_move($companion, $activate = "fight")
             }
         }
         $companion['used'] = true;
-    } else if ($activate == "heal" && isset($companion['abilities']['heal']) && $companion['abilities']['heal'] == true && $companion['used'] == false) {
+    } elseif ($activate == "heal" && isset($companion['abilities']['heal']) && $companion['abilities']['heal'] == true && $companion['used'] == false) {
         // This one will be tricky! We are looking for the first target which can be healed. This can be the player himself
         // or any other companion or our fellow companion himself.
         // But if our little friend is the second companion, all other companions will have been copied to the newenemies
@@ -240,8 +244,9 @@ function report_companion_move($companion, $activate = "fight")
             $session['user']['hitpoints'] += $hptoheal;
             $companion['used'] = true;
             $msg = $companion['healmsg'];
-            if ($msg == "")
+            if ($msg == "") {
                 $msg = "{companion} heals your wounds. You regenerate {damage} hitpoints.";
+            }
             $msg = substitute_array("`)" . $msg . "`0`n", array("{companion}", "{damage}"), array($companion['name'], $hptoheal));
             tlschema(isset($companion['schema']) ? $companion['schema'] : "battle");
             output($msg);
@@ -250,8 +255,9 @@ function report_companion_move($companion, $activate = "fight")
             // Okay. We really have to do this :(
             global $newcompanions;
             $mynewcompanions = $newcompanions;
-            if (!is_array($mynewcompanions))
+            if (!is_array($mynewcompanions)) {
                 $mynewcompanions = array();
+            }
             $healed = false;
             foreach ($mynewcompanions as $myname => $mycompanion) {
                 if ($mycompanion['hitpoints'] >= $mycompanion['maxhitpoints'] || $healed || (isset($companion['cannotbehealed']) && $companion['cannotbehealed'] == true)) {
@@ -261,8 +267,9 @@ function report_companion_move($companion, $activate = "fight")
                     $mycompanion['hitpoints'] += $hptoheal;
                     $companion['used'] = true;
                     $msg = $companion['healcompanionmsg'];
-                    if ($msg == "")
+                    if ($msg == "") {
                         $msg = "{companion} heals {target}'s wounds. {target} regenerates {damage} hitpoints.";
+                    }
                     $msg = substitute_array("`)" . $msg . "`0`n", array("{companion}", "{damage}", "{target}"), array($companion['name'], $hptoheal, $mycompanion['name']));
                     tlschema(isset($companion['schema']) ? $companion['schema'] : "battle");
                     output($msg);
@@ -291,20 +298,21 @@ function report_companion_move($companion, $activate = "fight")
                                 $mycompanion['hitpoints'] += $hptoheal;
                                 $companion['used'] = true;
                                 $msg = $companion['healcompanionmsg'];
-                                if ($msg == "")
+                                if ($msg == "") {
                                     $msg = "{companion} heals {target}'s wounds. {target} regenerates {damage} hitpoints.";
+                                }
                                 $msg = substitute_array("`)" . $msg . "`0`n", array("{companion}", "{damage}", "{target}"), array($companion['name'], $hptoheal, $mycompanion['name']));
                                 tlschema(isset($companion['schema']) ? $companion['schema'] : "battle");
                                 output($msg);
                                 tlschema();
                                 $healed = true;
                                 $companions[$myname] = $mycompanion;
-                            } // else	// These
-                        } // foreach	// are
-                    } // else			// some
-                } // foreach			// totally
-            } // if						// senseless
-        } // else						// comments.
+                            } // else   // These
+                        } // foreach    // are
+                    } // else           // some
+                } // foreach            // totally
+            } // if                     // senseless
+        } // else                       // comments.
         unset($mynewcompanions);
         unset($mycompanions);
         $roll = rollcompaniondamage($companion);
@@ -313,7 +321,7 @@ function report_companion_move($companion, $activate = "fight")
         if ($badguy['creaturehealth'] >= 0) {
             if ($damage_received == 0) {
                 output("`^%s`4 tries to hit `\$%s`4 but `^MISSES!`n", $badguy['creaturename'], $companion['name']);
-            } else if ($damage_received < 0) {
+            } elseif ($damage_received < 0) {
                 output("`^%s`4 tries to hit `\$%s`4 but %s `^RIPOSTES`4 for `^%s`4 points of damage!`n", $badguy['creaturename'], $companion['name'], $companion['name'], abs($damage_received));
                 $badguy['creaturehealth'] += $damage_received;
             } else {
@@ -322,14 +330,14 @@ function report_companion_move($companion, $activate = "fight")
             }
         }
         $companion['used'] = true;
-    } else if ($activate == "defend" && isset($companion['abilities']['defend']) && $companion['abilities']['defend'] == true && $defended == false && $companion['used'] == false) {
+    } elseif ($activate == "defend" && isset($companion['abilities']['defend']) && $companion['abilities']['defend'] == true && $defended == false && $companion['used'] == false) {
         $defended = 1;
         $roll = rollcompaniondamage($companion);
         $damage_done = $roll['creaturedmg'];
         $damage_received = $roll['selfdmg'];
         if ($damage_done == 0) {
             output("`^%s`4 tries to hit %s but `^MISSES!`n", $companion['name'], $badguy['creaturename']);
-        } else if ($damage_done < 0) {
+        } elseif ($damage_done < 0) {
             output("`^%s`4 tries to hit %s but %s `^RIPOSTES`4 for `^%s`4 points of damage!`n", $companion['name'], $badguy['creaturename'], $badguy['creaturename'], abs($damage_done));
             $companion['hitpoints'] += $damage_done;
         } else {
@@ -340,7 +348,7 @@ function report_companion_move($companion, $activate = "fight")
         if ($badguy['creaturehealth'] >= 0) {
             if ($damage_received == 0) {
                 output("`^%s`4 tries to hit `\$%s`4 but `^MISSES!`n", $badguy['creaturename'], $companion['name']);
-            } else if ($damage_received < 0) {
+            } elseif ($damage_received < 0) {
                 output("`^%s`4 tries to hit `\$%s`4 but %s `^RIPOSTES`4 for `^%s`4 points of damage!`n", $badguy['creaturename'], $companion['name'], $companion['name'], abs($damage_received));
                 $badguy['creaturehealth'] += $damage_received;
             } else {
@@ -349,18 +357,19 @@ function report_companion_move($companion, $activate = "fight")
             }
         }
         $companion['used'] = true;
-    } else if ($activate == "magic" && isset($companion['abilities']['magic']) && $companion['abilities']['magic'] == true && $companion['used'] == false) {
+    } elseif ($activate == "magic" && isset($companion['abilities']['magic']) && $companion['abilities']['magic'] == true && $companion['used'] == false) {
         $roll = rollcompaniondamage($companion);
         $damage_done = abs($roll['creaturedmg']);
         if ($damage_done == 0) {
             $msg = $companion['magicfailmsg'];
-            if ($msg == "")
+            if ($msg == "") {
                 $msg = "{companion} shoots a magical arrow at {badguy} but misses.";
+            }
             $msg = substitute_array("`)" . $msg . "`0`n", array("{companion}"), array($companion['name']));
             tlschema(isset($companion['schema']) ? $companion['schema'] : "battle");
             output($msg);
             tlschema();
-        }else {
+        } else {
             if (isset($companion['magicmsg'])) {
                 $msg = $companion['magicmsg'];
             } else {
@@ -403,7 +412,7 @@ function report_companion_move($companion, $activate = "fight")
 /**
  * Based upon the companion's stats damage values are calculated.
  *
- * @param array $companion
+ * @param  array $companion
  * @return array
  */
 function rollcompaniondamage($companion)
@@ -433,8 +442,9 @@ function rollcompaniondamage($companion)
 
         while (!isset($creaturedmg) || !isset($selfdmg) || $creaturedmg == 0 && $selfdmg == 0) {
             $atk = $companion['attack'] * $compatkmod;
-            if (e_rand(1, 20) == 1 && $options['type'] != "pvp")
+            if (e_rand(1, 20) == 1 && $options['type'] != "pvp") {
                 $atk *= 3;
+            }
             /*
               debug("Attack score: $atk");
              */
@@ -506,7 +516,7 @@ function battle_spawn($creature)
             $newenemies[$nextindex] = $row;
             output("`^%s`2 summons `^%s`2 for help!`n", $badguy['creaturename'], $row['creaturename']);
         }
-    } else if (is_array($creature)) {
+    } elseif (is_array($creature)) {
         $newenemies[$nextindex] = $creature;
     }
     ksort($newenemies);
@@ -515,7 +525,7 @@ function battle_spawn($creature)
 /**
  * Allows creatures to heal themselves or another badguy.
  *
- * @param int $amount Amount of helath to be restored
+ * @param int   $amount Amount of helath to be restored
  * @param mixed $target If false badguy will heal itself otherwise the enemy with this index.
  */
 function battle_heal($amount, $target = false)
@@ -561,7 +571,7 @@ function execute_ai_script($script)
 /**
  * Returns an A.I. Script form the database
  *
- * @param int $spriptid The id for the script
+ * @param  int $spriptid The id for the script
  * @return string The script itself. An empty string is returned, if script is found.
  */
 function load_ai_script($scriptid)

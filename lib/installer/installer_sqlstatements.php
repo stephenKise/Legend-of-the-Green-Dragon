@@ -828,4 +828,3 @@ $sql_upgrade_statements = array(
     )"
     ],
 );
-?>

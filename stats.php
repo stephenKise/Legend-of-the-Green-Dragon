@@ -3,14 +3,14 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
+require_once "common.php";
 
 tlschema("stats");
 
 check_su_access(SU_EDIT_CONFIG);
 
 page_header("Stats");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 //addnav("Refresh the stats","stats.php");
 addnav("Stats Types");
@@ -52,13 +52,14 @@ if ($op == "stats" || $op == "") {
         for ($j = 0; $j < $number2; $j++) {
             $r = db_fetch_assoc($res2);
             output_notl(($r['refererawarded'] ? "`&" : "`$") . $r['name'] . "`0");
-            if ($j != $number2 - 1)
+            if ($j != $number2 - 1) {
                 output_notl(",");
+            }
         }
         rawoutput("</td></tr>");
     }
     rawoutput("</table>");
-}elseif ($op == "graph") {
+} elseif ($op == "graph") {
     $sql = "SELECT count(acctid) AS c, substring(laston,1,10) AS d FROM " . db_prefix("accounts") . " GROUP BY d DESC ORDER BY d DESC";
     $result = db_query($sql);
     output("`n`%`bDate accounts last logged on:`b");
@@ -77,8 +78,8 @@ if ($op == "stats" || $op == "") {
             $class = (date("W", strtotime("$odate -$x days")) % 2 ? "trlight" : "trdark");
             rawoutput("<tr class='$class'><td>" . date("Y-m-d", strtotime("$odate -$x days")) . "</td><td>&nbsp;&nbsp;</td><td>0</td><td>&nbsp;&nbsp;</td><td align='right'>$cumul</td></tr>");
         }
-        //	if ($j%7==0) $class=($class=="trlight"?"trdark":"trlight");
-        //	$j++;
+        //  if ($j%7==0) $class=($class=="trlight"?"trdark":"trlight");
+        //  $j++;
         $class = (date("W", strtotime($row['d'])) % 2 ? "trlight" : "trdark");
         $cumul += $row['c'];
         rawoutput("<tr class='$class'><td>{$row['d']}</td><td>&nbsp;&nbsp;</td><td><img src='images/trans.gif' width='{$row['c']}' border='1' height='5'>{$row['c']}</td><td>&nbsp;&nbsp;</td><td align='right'>$cumul</td></tr>");
@@ -87,4 +88,3 @@ if ($op == "stats" || $op == "") {
     rawoutput("</table>");
 }
 page_footer();
-?>

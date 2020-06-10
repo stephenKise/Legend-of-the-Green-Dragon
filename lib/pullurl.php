@@ -3,8 +3,9 @@
 function _curl($url)
 {
     $ch = curl_init();
-    if (!$ch)
+    if (!$ch) {
         return false;
+    }
 
     // set URL and other appropriate options
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -14,7 +15,7 @@ function _curl($url)
 
     $val = 5;
     if (defined("DB_CONNECTED") && DB_CONNECTED == true) {
-        require_once("lib/settings.php");
+        include_once "lib/settings.php";
         $val = getsetting("curltimeout", 5);
     }
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $val);
@@ -39,21 +40,25 @@ function _curl($url)
 function _sock($url)
 {
     $a = preg_match("!http://([^/:]+)(:[0-9]+)?(/.*)!", $url, $matches);
-    if (!$a)
+    if (!$a) {
         return false;
+    }
 
     $host = $matches[1];
     $port = (int) $matches[2];
-    if ($port == 0)
+    if ($port == 0) {
         $port = 80;
+    }
     $path = $matches[3];
 
     $f = @fsockopen($host, $port, $errno, $errstr, 1);
-    if (!$f)
+    if (!$f) {
         return false;
+    }
 
-    if (function_exists("stream_set_timeout"))
+    if (function_exists("stream_set_timeout")) {
         stream_set_timeout($f, 1);
+    }
 
     $out = "GET $path HTTP/1.1\r\n";
     $out .= "Host: $host\r\n";
@@ -69,8 +74,9 @@ function _sock($url)
             $skip = 0;
             continue;
         }
-        if (!$skip)
+        if (!$skip) {
             $done[] = $buf;
+        }
     }
     $info = stream_get_meta_data($fp);
     fclose($f);
@@ -83,8 +89,9 @@ function _sock($url)
 
 function pullurl($url)
 {
-    if (function_exists("curl_init"))
+    if (function_exists("curl_init")) {
         return _curl($url);
+    }
     // For sume reason the socket code isn't working
     //if (function_exists("fsockopen")) return _sock($url);
     return @file($url);

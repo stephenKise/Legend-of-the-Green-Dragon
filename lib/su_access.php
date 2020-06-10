@@ -30,27 +30,28 @@ function check_su_access($level)
         // wipes all buffs when you enter it.  This means that you never really
         // have this effect unless you log out without going to the graveyard
         // for some odd reason.
-//      apply_buff('angrygods',
-//          array(
-//              "name"=>"`^The gods are angry!",
-//              "rounds"=>10,
-//              "wearoff"=>"`^The gods have grown bored with teasing you.",
-//              "minioncount"=>$session['user']['level'],
-//              "maxgoodguydamage"=> 2,
-//              "effectmsg"=>"`7The gods curse you, causing `\${damage}`7 damage!",
-//              "effectnodmgmsg"=>"`7The gods have elected not to tease you just now.",
-//              "allowinpvp"=>1,
-//              "survivenewday"=>1,
-//              "newdaymessage"=>"`6The gods are still angry with you!",
-//              "schema"=>"superuser",
-//              )
-//      );
+        //      apply_buff('angrygods',
+        //          array(
+        //              "name"=>"`^The gods are angry!",
+        //              "rounds"=>10,
+        //              "wearoff"=>"`^The gods have grown bored with teasing you.",
+        //              "minioncount"=>$session['user']['level'],
+        //              "maxgoodguydamage"=> 2,
+        //              "effectmsg"=>"`7The gods curse you, causing `\${damage}`7 damage!",
+        //              "effectnodmgmsg"=>"`7The gods have elected not to tease you just now.",
+        //              "allowinpvp"=>1,
+        //              "survivenewday"=>1,
+        //              "newdaymessage"=>"`6The gods are still angry with you!",
+        //              "schema"=>"superuser",
+        //              )
+        //      );
         output("For attempting to defile the gods, you have been smitten down!`n`n");
         output("%s`\$, Overlord of Death`) appears before you in a vision, seizing your mind with his, and wordlessly telling you that he finds no favor with you.`n`n", getsetting('deathoverlord', '`$Ramius'));
         addnews(
-                sprintf_translate(
-                        "`&%s was smitten down for attempting to defile the gods (they tried to hack superuser pages).", $session['user']['name']
-                )
+            sprintf_translate(
+                "`&%s was smitten down for attempting to defile the gods (they tried to hack superuser pages).",
+                $session['user']['name']
+            )
         );
         debuglog("Lost {$session['user']['gold']} and " . ($session['user']['experience'] * 0.25) . " experience trying to hack superuser pages.");
         $session['user']['hitpoints'] = 0;
@@ -63,7 +64,7 @@ function check_su_access($level)
         addnav("Daily News", "news.php");
         $sql = "SELECT acctid FROM " . db_prefix("accounts") . " WHERE (superuser&" . SU_EDIT_USERS . ")";
         $result = db_query($sql);
-        require_once("lib/systemmail.php");
+        include_once "lib/systemmail.php";
         while ($row = db_fetch_assoc($result)) {
             $subj = "`#%s`# tried to hack the superuser pages!";
             $subj = sprintf($subj, $session['user']['name']);

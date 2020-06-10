@@ -6,7 +6,6 @@ namespace LOTGD;
 
 /**
  * Interface to manage the $_SESSION;
- *
  */
 interface SessionInterface
 {

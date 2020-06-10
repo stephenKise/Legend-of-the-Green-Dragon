@@ -3,8 +3,8 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 check_su_access(SU_EDIT_COMMENTS);
 
@@ -14,7 +14,7 @@ $op = httpget('op');
 //yuck, this page is a mess, but it gets the job done.
 page_header("Bad word editor");
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Bad Word Editor");
 
@@ -29,10 +29,11 @@ rawoutput("<input name='word'><input type='submit' class='button' value='$test'>
 if ($op == "test") {
     $word = httppost("word");
     $return = soap($word, true);
-    if ($return == $word)
+    if ($return == $word) {
         output("`7\"%s\" does not trip any filters.`0`n`n", $word);
-    else
+    } else {
         output("`7%s`0`n`n", $return);
+    }
 }
 
 output_notl("<font size='+1'>", true);
@@ -57,7 +58,6 @@ $result = db_query($sql);
 $row = db_fetch_assoc($result);
 $words = explode(" ", $row['words']);
 if ($op == "addgood") {
-
     $newregexp = stripslashes(httppost('word'));
 
     // not sure if the line below should appear, as the strings in the good
@@ -65,25 +65,26 @@ if ($op == "addgood") {
     // and strings with single quotes in them currently have odd and
     // unreliable behaviour, both under the good word list and the nasty
     // word list
-    //	$newregexp = preg_replace('/(?<!\\\\)\'/', '\\\'', $newregexp);
+    //  $newregexp = preg_replace('/(?<!\\\\)\'/', '\\\'', $newregexp);
     // $newregexp = str_replace("\n", '', $newregexp);
     // appears to only remove the line feed character, chr(10),
     // but leaves the carriage return character, chr(13), intact
     $newregexp = str_replace("\n", '', $newregexp);
     $newregexp = str_replace("\r", '', $newregexp);
 
-    if ($newregexp !== '')
+    if ($newregexp !== '') {
         array_push($words, $newregexp);
+    }
 
     //array_push($words,stripslashes(httppost('word')));
 }
 if ($op == "removegood") {
-
     // false if not found
     $removekey = array_search(stripslashes(httppost('word')), $words);
     // $removekey can be 0
-    if ($removekey !== false)
+    if ($removekey !== false) {
         unset($words[$removekey]);
+    }
 
     //unset($words[array_search(stripslashes(httppost('word')),$words)]);
 }
@@ -119,7 +120,6 @@ $words = explode(" ", $row['words']);
 reset($words);
 
 if ($op == "add") {
-
     $newregexp = stripslashes(httppost('word'));
 
     // automagically escapes all unescaped single quote characters
@@ -131,8 +131,9 @@ if ($op == "add") {
     $newregexp = str_replace("\n", '', $newregexp);
     $newregexp = str_replace("\r", '', $newregexp);
 
-    if ($newregexp !== '')
+    if ($newregexp !== '') {
         array_push($words, $newregexp);
+    }
 
     //array_push($words,stripslashes(httppost('word')));
 }
@@ -140,8 +141,9 @@ if ($op == "remove") {
     // false if not found
     $removekey = array_search(stripslashes(httppost('word')), $words);
     // $removekey can be 0
-    if ($removekey !== false)
+    if ($removekey !== false) {
         unset($words[$removekey]);
+    }
 
     //unset($words[array_search(stripslashes(httppost('word')),$words)]);
 }
@@ -173,5 +175,3 @@ function show_word_list($words)
         }
     }
 }
-
-?>

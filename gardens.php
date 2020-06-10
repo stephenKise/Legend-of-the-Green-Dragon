@@ -3,11 +3,11 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/villagenav.php");
-require_once("lib/events.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/villagenav.php";
+require_once "lib/events.php";
+require_once "lib/http.php";
 
 tlschema("gardens");
 
@@ -53,4 +53,3 @@ commentdisplay("", "gardens", "Whisper here", 30, "whispers");
 
 module_display_events("gardens", "gardens.php");
 page_footer();
-?>

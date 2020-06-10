@@ -1,9 +1,9 @@
 <?php
 
-require_once("lib/taunt.php");
-require_once("lib/e_rand.php");
-require_once("lib/pageparts.php");
-require_once("lib/output.php");
+require_once "lib/taunt.php";
+require_once "lib/e_rand.php";
+require_once "lib/pageparts.php";
+require_once "lib/output.php";
 
 function forestvictory($enemies, $denyflawless = false)
 {
@@ -23,11 +23,13 @@ function forestvictory($enemies, $denyflawless = false)
         }
         $gold += $badguy['creaturegold'];
         tlschema("battle");
-        if (isset($badguy['creaturelose']))
+        if (isset($badguy['creaturelose'])) {
             $msg = translate_inline($badguy['creaturelose']);
+        }
         tlschema();
-        if (isset($msg))
+        if (isset($msg)) {
             output_notl("`b`&%s`0`b`n", $msg);
+        }
         output("`b`\$You have slain %s!`0`b`n", $badguy['creaturename']);
         $count++;
         // If any creature did damage, we have no flawless fight. Easy as that.
@@ -101,10 +103,11 @@ function forestvictory($enemies, $denyflawless = false)
     $session['user']['gold'] += $gold;
     // Increase the level for each enemy by one half, so flawless fights can be achieved for
     // fighting multiple low-level critters
-    if (!$creaturelevel)
+    if (!$creaturelevel) {
         $creaturelevel = $badguy['creaturelevel'];
-    else
+    } else {
         $creaturelevel += (0.5 * ($count - 1));
+    }
 
     if (!$diddamage) {
         output("`c`b`&~~ Flawless Fight! ~~`0`b`c");
@@ -134,23 +137,27 @@ function forestdefeat($enemies, $where = "in the forest")
     $killer = false;
     foreach ($enemies as $index => $badguy) {
         $names[] = $badguy['creaturename'];
-        if (isset($badguy['killedplayer']) && $badguy['killedplayer'] == true)
+        if (isset($badguy['killedplayer']) && $badguy['killedplayer'] == true) {
             $killer = $badguy;
+        }
         if (isset($badguy['creaturewin']) && $badguy['creaturewin'] > "") {
             $msg = translate_inline($badguy['creaturewin'], "battle");
             output_notl("`b`&%s`0`b`n", $msg);
         }
     }
-    if ($killer)
+    if ($killer) {
         $badguy = $killer;
-    elseif (!isset($badguy['creaturename']))
+    } elseif (!isset($badguy['creaturename'])) {
         $badguy = $enemies[0];
-    if (count($names) > 1)
+    }
+    if (count($names) > 1) {
         $lastname = array_pop($names);
+    }
     $enemystring = join(", ", $names);
     $and = translate_inline("and");
-    if (isset($lastname) && $lastname > "")
+    if (isset($lastname) && $lastname > "") {
         $enemystring = "$enemystring $and $lastname";
+    }
     $taunt = select_taunt_array();
     if (is_array($where)) {
         $where = sprintf_translate($where);
@@ -159,9 +166,13 @@ function forestdefeat($enemies, $where = "in the forest")
     }
 
     addnews(
-            sprintf_translate(
-                    "`%%s`5 has been slain %s by %s.`n%s", $session['user']['name'], $where, $badguy['creaturename'], $taunt
-            )
+        sprintf_translate(
+            "`%%s`5 has been slain %s by %s.`n%s",
+            $session['user']['name'],
+            $where,
+            $badguy['creaturename'],
+            $taunt
+        )
     );
     $session['user']['alive'] = false;
     debuglog("lost gold when they were slain $where", false, false, "forestlose", -$session['user']['gold']);
@@ -183,8 +194,9 @@ function buffbadguy($badguy)
         //make badguys get harder as you advance in dragon kills.
         $dk = 0;
         while (list($key, $val) = each($session['user']['dragonpoints'])) {
-            if ($val == "at" || $val == "de")
+            if ($val == "at" || $val == "de") {
                 $dk++;
+            }
         }
         $dk += (int) (($session['user']['maxhitpoints'] - ($session['user']['level'] * 10)) / 5);
         // How many of the dk points should actually be used.

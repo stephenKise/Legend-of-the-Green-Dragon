@@ -3,10 +3,10 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/forest.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/forest.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("healer");
 
@@ -107,7 +107,6 @@ addnav("`bHeal Companions`b");
 $compheal = false;
 foreach ($companions as $name => $companion) {
     if (isset($companion['cannotbehealed']) && $companion['cannotbehealed'] == true) {
-        
     } else {
         $points = $companion['maxhitpoints'] - $companion['hitpoints'];
         if ($points > 0) {
@@ -134,4 +133,3 @@ if ($return == "") {
 tlschema();
 output_notl("`0");
 page_footer();
-?>

@@ -6,7 +6,10 @@ $to = translate_inline('To:');
 $search = translate_inline('Search');
 $prePop = htmlent(stripslashes(httpget('prepop')));
 output_notl(
-        "`2<input name='to' id='to' placeholder='%s' value='%s' autofocus>", $to, $prePop, true
+    "`2<input name='to' id='to' placeholder='%s' value='%s' autofocus>",
+    $to,
+    $prePop,
+    true
 );
 output_notl("<input type='submit' class='button' value='%s'>", $search, true);
 if ($session['user']['superuser'] & SU_IS_GAMEMASTER) {

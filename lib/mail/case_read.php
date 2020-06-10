@@ -48,9 +48,11 @@ if (db_num_rows($result) > 0) {
     } else {
         rawoutput("<td>&nbsp;</td>");
     }
-    rawoutput("<td><a href='mail.php?op=del&id={$row['messageid']}' class='motd'>$del</a></td>
+    rawoutput(
+        "<td><a href='mail.php?op=del&id={$row['messageid']}' class='motd'>$del</a></td>
 		</tr><tr>
-		<td><a href='mail.php?op=unread&id={$row['messageid']}' class='motd'>$unread</a></td>");
+		<td><a href='mail.php?op=unread&id={$row['messageid']}' class='motd'>$unread</a></td>"
+    );
     // Don't allow reporting of system messages as abuse.
     if ((int) $row['msgfrom'] != 0) {
         rawoutput("<td><a href=\"petition.php?problem=" . rawurlencode($problem) . "&abuse=yes\" class='motd'>$report</a></td>");
@@ -93,4 +95,3 @@ if (db_num_rows($result) > 0) {
 } else {
     output("Eek, no such message was found!");
 }
-?>

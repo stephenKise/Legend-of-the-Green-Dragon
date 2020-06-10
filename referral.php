@@ -4,8 +4,8 @@
 // addnews ready
 // mail ready
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 tlschema("referral");
 
@@ -14,14 +14,17 @@ if ($session['user']['loggedin']) {
     if (file_exists("lodge.php")) {
         addnav("L?Return to the Lodge", "lodge.php");
     } else {
-        require_once("lib/villagenav.php");
+        include_once "lib/villagenav.php";
         villagenav();
     }
     output("You will automatically receive %s points for each person that you refer to this website who makes it to level %s.`n`n", getsetting("refereraward", 25), getsetting("referminlevel", 4));
 
-    $url = getsetting("serverurl", "http://" . $_SERVER['SERVER_NAME'] .
+    $url = getsetting(
+        "serverurl",
+        "http://" . $_SERVER['SERVER_NAME'] .
             ($_SERVER['SERVER_PORT'] == 80 ? "" : ":" . $_SERVER['SERVER_PORT']) .
-            dirname($_SERVER['REQUEST_URI']));
+        dirname($_SERVER['REQUEST_URI'])
+    );
     if (!preg_match("/\\/$/", $url)) {
         $url = $url . "/";
         savesetting("serverurl", $url);
@@ -69,4 +72,3 @@ if ($session['user']['loggedin']) {
     addnav("Login Page", "index.php");
     page_footer();
 }
-?>

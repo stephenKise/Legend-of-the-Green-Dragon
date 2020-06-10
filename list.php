@@ -4,9 +4,9 @@
 // translator ready
 // mail ready
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("list");
 
@@ -51,8 +51,9 @@ if ($op == "search") {
     $search = " AND name LIKE '" . addslashes($search) . "' ";
 } else {
     $pageoffset = (int) $page;
-    if ($pageoffset > 0)
+    if ($pageoffset > 0) {
         $pageoffset--;
+    }
     $pageoffset *= $playersperpage;
     $from = $pageoffset + 1;
     $to = min($pageoffset + $playersperpage, $totalplayers);
@@ -128,7 +129,7 @@ for ($i = 0; $i < $max; $i++) {
     rawoutput("<tr class='" . ($i % 2 ? "trdark" : "trlight") . "'><td>", true);
     if ($row['alive'] == true) {
         $a = $alive;
-    } else if ($row['hitpoints'] > 0) {
+    } elseif ($row['hitpoints'] > 0) {
         $a = $unconscious;
     } else {
         $a = $dead;
@@ -145,8 +146,9 @@ for ($i = 0; $i < $max; $i++) {
         addnav("", "bio.php?char=" . $row['acctid'] . "");
     }
     output_notl("`&%s`0", $row['name']);
-    if ($session['user']['loggedin'])
+    if ($session['user']['loggedin']) {
         rawoutput("</a>");
+    }
     rawoutput("</td><td>");
     $loggedin = (date("U") - strtotime($row['laston']) < getsetting("LOGINTIMEOUT", 900) && $row['loggedin']);
     output_notl("`&%s`0", $row['location']);
@@ -155,8 +157,9 @@ for ($i = 0; $i < $max; $i++) {
         output_notl("%s", $online);
     }
     rawoutput("</td><td>");
-    if (!$row['race'])
+    if (!$row['race']) {
         $row['race'] = RACE_UNKNOWN;
+    }
     tlschema("race");
     output($row['race']);
     tlschema();
@@ -171,4 +174,3 @@ for ($i = 0; $i < $max; $i++) {
 rawoutput("</table>");
 output_notl("`c");
 page_footer();
-?>

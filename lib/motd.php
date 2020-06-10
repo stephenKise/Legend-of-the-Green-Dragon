@@ -17,25 +17,30 @@ function motd_admin($id, $poll = false)
 
 function motditem($subject, $body, $author, $date, $id)
 {
-    if ($date)
+    if ($date) {
         rawoutput("<a name='motd" . date("YmdHis", strtotime($date)) . "'>");
+    }
     output_notl("`b`^%s`0`b", $subject);
     if ($id > "") {
         motd_admin($id);
     }
-    if ($date || $author)
+    if ($date || $author) {
         output_notl("`n");
+    }
     if ($author > "") {
         output_notl("`3%s`0", $author);
     }
-    if ($date > "")
+    if ($date > "") {
         output_notl("`0 &#150; `#%s`0", $date, true);
-    if ($date || $author)
+    }
+    if ($date || $author) {
         output_notl("`n");
+    }
 
     output_notl("`2%s`0", nltoappon($body), true);
-    if ($date)
+    if ($date) {
         rawoutput("</a>");
+    }
     rawoutput("<hr>");
 }
 
@@ -54,8 +59,9 @@ function pollitem($id, $subject, $body, $author, $date, $showpoll = true)
         rawoutput("<input type='hidden' name='motditem' value='$id'>", true);
     }
     output_notl("`b`&%s `^%s`0`b", $poll, $subject);
-    if ($showpoll)
+    if ($showpoll) {
         motd_admin($id, true);
+    }
     output_notl("`n`3%s`0 &#150; `#%s`0`n", $author, $date, true);
     output_notl("`2%s`0`n", stripslashes($body['body']));
     $sql = "SELECT count(resultid) AS c, choice FROM " . db_prefix("pollresults") . " WHERE motditem='$id' GROUP BY choice ORDER BY choice";
@@ -66,13 +72,15 @@ function pollitem($id, $subject, $body, $author, $date, $showpoll = true)
     while ($row = db_fetch_assoc($result)) {
         $choices[$row['choice']] = $row['c'];
         $totalanswers += $row['c'];
-        if ($row['c'] > $maxitem)
+        if ($row['c'] > $maxitem) {
             $maxitem = $row['c'];
+        }
     }
     while (list($key, $val) = each($body['opt'])) {
         if (trim($val) != "") {
-            if ($totalanswers <= 0)
+            if ($totalanswers <= 0) {
                 $totalanswers = 1;
+            }
             $percent = 0;
             if (isset($choices[$key])) {
                 $percent = round($choices[$key] / $totalanswers * 100, 1);
@@ -131,17 +139,22 @@ function motd_form($id)
 
         rawoutput("<form action='motd.php?op=add&id={$row['motditem']}' method='POST'>");
         addnav("", "motd.php?op=add&id={$row['motditem']}");
-        if ($row['motdauthorname'] > "")
+        if ($row['motdauthorname'] > "") {
             output("Originally by `@%s`0 on %s`n", $row['motdauthorname'], $row['motddate']);
-        if ($subject > "")
+        }
+        if ($subject > "") {
             $row['motdtitle'] = stripslashes($subject);
-        if ($body > "")
+        }
+        if ($body > "") {
             $row['motdbody'] = stripslashes($body);
+        }
         if ($preview > "") {
-            if (httppost('changeauthor') || $row['motdauthorname'] == "")
+            if (httppost('changeauthor') || $row['motdauthorname'] == "") {
                 $row['motdauthorname'] = $session['user']['name'];
-            if (httppost('changedate') || !isset($row['motddate']) || $row['motddate'] == "")
+            }
+            if (httppost('changedate') || !isset($row['motddate']) || $row['motddate'] == "") {
                 $row['motddate'] = date("Y-m-d H:i:s");
+            }
             motditem($row['motdtitle'], $row['motdbody'], $row['motdauthorname'], $row['motddate'], "");
         }
         output("Subject: ");
@@ -161,10 +174,12 @@ function motd_form($id)
     } else {
         if ($id > "") {
             $sql = " SET motdtitle='$subject', motdbody='$body'";
-            if (httppost('changeauthor'))
+            if (httppost('changeauthor')) {
                 $sql .= ", motdauthor={$session['user']['acctid']}";
-            if (httppost('changedate'))
+            }
+            if (httppost('changedate')) {
                 $sql .= ", motddate='" . date("Y-m-d H:i:s") . "'";
+            }
             $sql = "UPDATE " . db_prefix("motd") . $sql . " WHERE motditem='$id'";
             db_query($sql);
             invalidatedatacache("motd");
@@ -175,11 +190,12 @@ function motd_form($id)
             if ($id > "") {
                 $sql = "SELECT * FROM " . db_prefix("motd") . " WHERE motditem='$id'";
                 $result = db_query($sql);
-                if (db_num_rows($result) > 0)
+                if (db_num_rows($result) > 0) {
                     $doinsert = false;
-                else
+                } else {
                     $doinsert = true;
-            }else {
+                }
+            } else {
                 $doinsert = true;
             }
             if ($doinsert) {

@@ -1,8 +1,8 @@
 <?php
 
-require_once("lib/bell_rand.php");
-require_once("lib/e_rand.php");
-require_once("lib/buffs.php");
+require_once "lib/bell_rand.php";
+require_once "lib/e_rand.php";
+require_once "lib/buffs.php";
 
 function rolldamage()
 {
@@ -31,8 +31,9 @@ function rolldamage()
 
         while (!isset($creaturedmg) || !isset($selfdmg) || $creaturedmg == 0 && $selfdmg == 0) {
             $atk = $session['user']['attack'] * $atkmod;
-            if (e_rand(1, 20) == 1 && $options['type'] != "pvp")
+            if (e_rand(1, 20) == 1 && $options['type'] != "pvp") {
                 $atk *= 3;
+            }
             /*
               debug("Attack score: $atk");
              */
@@ -52,8 +53,11 @@ function rolldamage()
             $creaturedmg = 0 - (int) ($catkroll - $patkroll);
             if ($creaturedmg < 0) {
                 $creaturedmg = (int) ($creaturedmg / 2);
-                $creaturedmg = round($buffset['badguydmgmod'] *
-                        $creaturedmg, 0);
+                $creaturedmg = round(
+                    $buffset['badguydmgmod'] *
+                    $creaturedmg,
+                    0
+                );
             }
             if ($creaturedmg > 0) {
                 $creaturedmg = round($buffset['dmgmod'] * $creaturedmg, 0);
@@ -122,8 +126,9 @@ function suspend_buffs($susp = false, $msg = false)
     $suspendnotify = 0;
     reset($session['bufflist']);
     while (list($key, $buff) = each($session['bufflist'])) {
-        if (array_key_exists('suspended', $buff) && $buff['suspended'])
+        if (array_key_exists('suspended', $buff) && $buff['suspended']) {
             continue;
+        }
         // Suspend non pvp allowed buffs when in pvp
         if ($susp && (!isset($buff[$susp]) || !$buff[$susp])) {
             $session['bufflist'][$key]['suspended'] = 1;
@@ -139,11 +144,13 @@ function suspend_buffs($susp = false, $msg = false)
             $schema = "battle";
             $msg = "`&The gods have suspended some of your enhancements!`n";
         }
-        if ($schema)
+        if ($schema) {
             tlschema($schema);
+        }
         output($msg);
-        if ($schema)
+        if ($schema) {
             tlschema();
+        }
     }
 }
 
@@ -151,8 +158,9 @@ function suspend_buff_by_name($name, $msg = false)
 {
     global $session;
     // If it's not already suspended.
-    if ($session['bufflist'][$name] &&
-            !$session['bufflist'][$name]['suspended']) {
+    if ($session['bufflist'][$name]
+        && !$session['bufflist'][$name]['suspended']
+    ) {
         $session['bufflist'][$name]['suspended'] = 1;
 
         // And notify.
@@ -161,11 +169,13 @@ function suspend_buff_by_name($name, $msg = false)
             $schema = "battle";
             $msg = "`&The gods have suspended some of your enhancements!`n";
         }
-        if ($schema)
+        if ($schema) {
             tlschema($schema);
+        }
         output($msg);
-        if ($schema)
+        if ($schema) {
             tlschema();
+        }
     }
 }
 
@@ -173,8 +183,9 @@ function unsuspend_buff_by_name($name, $msg = false)
 {
     global $session;
     // If it's not already suspended.
-    if ($session['bufflist'][$name] &&
-            $session['bufflist'][$name]['suspended']) {
+    if ($session['bufflist'][$name]
+        && $session['bufflist'][$name]['suspended']
+    ) {
         $session['bufflist'][$name]['suspended'] = 0;
 
         // And notify.
@@ -183,11 +194,13 @@ function unsuspend_buff_by_name($name, $msg = false)
             $schema = "battle";
             $msg = "`&The gods have restored all suspended enhancements.`n`n";
         }
-        if ($schema)
+        if ($schema) {
             tlschema($schema);
+        }
         output($msg);
-        if ($schema)
+        if ($schema) {
             tlschema();
+        }
     }
 }
 
@@ -204,9 +217,9 @@ function unsuspend_buffs($susp = false, $msg = false)
     $unsuspendnotify = 0;
     reset($session['bufflist']);
     while (list($key, $buff) = each($session['bufflist'])) {
-        if (array_key_exists("expireafterfight", $buff) && $buff['expireafterfight'])
+        if (array_key_exists("expireafterfight", $buff) && $buff['expireafterfight']) {
             unset($session['bufflist'][$key]);
-        elseif (array_key_exists("suspended", $buff) && $buff['suspended'] && $susp && (!array_key_exists($susp, $buff) || !$buff[$susp])) {
+        } elseif (array_key_exists("suspended", $buff) && $buff['suspended'] && $susp && (!array_key_exists($susp, $buff) || !$buff[$susp])) {
             $session['bufflist'][$key]['suspended'] = 0;
             $unsuspendnotify = 1;
         }
@@ -218,11 +231,13 @@ function unsuspend_buffs($susp = false, $msg = false)
             $schema = "battle";
             $msg = "`&The gods have restored all suspended enhancements.`n`n";
         }
-        if ($schema)
+        if ($schema) {
             tlschema($schema);
+        }
         output($msg);
-        if ($schema)
+        if ($schema) {
             tlschema();
+        }
     }
 }
 
@@ -257,7 +272,9 @@ function apply_bodyguard($level)
                 $rounds = -1;
                 break;
         }
-        apply_buff('bodyguard', array(
+        apply_buff(
+            'bodyguard',
+            array(
             "startmsg" => "`\${badguy}'s bodyguard protects them!",
             "name" => "`&Bodyguard",
             "wearoff" => "The bodyguard seems to have fallen asleep.",
@@ -267,7 +284,7 @@ function apply_bodyguard($level)
             "allowinpvp" => 1,
             "expireafterfight" => 1,
             "schema" => "pvp"
-                )
+            )
         );
     }
 }
@@ -276,7 +293,9 @@ function apply_skill($skill, $l)
 {
     global $session;
     if ($skill == "godmode") {
-        apply_buff('godmode', array(
+        apply_buff(
+            'godmode',
+            array(
             "name" => "`&GOD MODE",
             "rounds" => 1,
             "wearoff" => "You feel mortal again.",
@@ -285,7 +304,8 @@ function apply_skill($skill, $l)
             "invulnerable" => 1,
             "startmsg" => "`&`bYou feel godlike.`b",
             "schema" => "skill"
-        ));
+            )
+        );
     }
     modulehook("apply-specialties");
 }

@@ -3,13 +3,13 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/forest.php");
-require_once("lib/fightnav.php");
-require_once("lib/http.php");
-require_once("lib/taunt.php");
-require_once("lib/events.php");
-require_once("lib/battle-skills.php");
+require_once "common.php";
+require_once "lib/forest.php";
+require_once "lib/fightnav.php";
+require_once "lib/http.php";
+require_once "lib/taunt.php";
+require_once "lib/events.php";
+require_once "lib/battle-skills.php";
 
 tlschema("forest");
 
@@ -38,7 +38,7 @@ if ($op == "run") {
 }
 
 if ($op == "dragon") {
-    require_once("lib/partner.php");
+    include_once "lib/partner.php";
     addnav("Enter the cave", "dragon.php");
     addnav("Run away like a baby", "inn.php?op=fleedragon");
     output("`\$You approach the blackened entrance of a cave deep in the forest, though the trees are scorched to stumps for a hundred yards all around.");
@@ -124,7 +124,7 @@ if ($op == "search") {
                         } else {
                             $mintargetlevel = $targetlevel - 2;
                         }
-                    } else if ($type == "thrill") {
+                    } elseif ($type == "thrill") {
                         $multi += e_rand(getsetting("multithrillmin", 1), getsetting("multithrillmax", 2));
                         if (e_rand(0, 1)) {
                             $targetlevel++;
@@ -132,7 +132,7 @@ if ($op == "search") {
                         } else {
                             $mintargetlevel = $targetlevel - 1;
                         }
-                    } else if ($type == "suicide") {
+                    } elseif ($type == "suicide") {
                         $multi += e_rand(getsetting("multisuimin", 2), getsetting("multisuimax", 4));
                         if (e_rand(0, 1)) {
                             $mintargetlevel = $targetlevel - 1;
@@ -147,12 +147,15 @@ if ($op == "search") {
                 $multi = 1;
             }
             $multi = max(1, $multi);
-            if ($targetlevel < 1)
+            if ($targetlevel < 1) {
                 $targetlevel = 1;
-            if ($mintargetlevel < 1)
+            }
+            if ($mintargetlevel < 1) {
                 $mintargetlevel = 1;
-            if ($mintargetlevel > $targetlevel)
+            }
+            if ($mintargetlevel > $targetlevel) {
                 $mintargetlevel = $targetlevel;
+            }
             if ($targetlevel > 17) {
                 $multi += $targetlevel - 17;
                 $targetlevel = 17;
@@ -188,7 +191,7 @@ if ($op == "search") {
                 $badguy['creaturedefense'] = $session['user']['defense'];
                 $stack[] = $badguy;
             } else {
-                require_once("lib/forestoutcomes.php");
+                include_once "lib/forestoutcomes.php";
                 if ($packofmonsters == true) {
                     $initialbadguy = db_fetch_assoc($result);
                     $prefixs = array("Elite", "Dangerous", "Lethal", "Savage", "Deadly", "Malevolent", "Malignant");
@@ -286,17 +289,16 @@ if ($op == "fight" || $op == "run" || $op == "newtarget") {
 }
 
 if ($battle) {
-
-    require_once("battle.php");
+    include_once "battle.php";
 
     if ($victory) {
-        require_once("lib/forestoutcomes.php");
+        include_once "lib/forestoutcomes.php";
         $op = "";
         httpset('op', "");
         forestvictory($newenemies, isset($options['denyflawless']) ? $options['denyflawless'] : false);
         $dontdisplayforestmessage = true;
     } elseif ($defeat) {
-        require_once("lib/forestoutcomes.php");
+        include_once "lib/forestoutcomes.php";
         forestdefeat($newenemies);
     } else {
         fightnav();
@@ -309,4 +311,3 @@ if ($op == "") {
     forest($dontdisplayforestmessage);
 }
 page_footer();
-?>

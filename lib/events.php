@@ -1,7 +1,7 @@
 <?php
 
-require_once("lib/constants.php");
-require_once("lib/http.php");
+require_once "lib/constants.php";
+require_once "lib/http.php";
 
 // This file encapsulates all the special event handling for most locations
 // Returns whether or not the description should be skipped

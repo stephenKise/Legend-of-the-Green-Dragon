@@ -1,7 +1,7 @@
 <?php
 
-require_once("lib/dbwrapper.php");
-require_once("lib/e_rand.php");
+require_once "lib/dbwrapper.php";
+require_once "lib/e_rand.php";
 
 function valid_dk_title($title, $dks, $gender)
 {
@@ -10,15 +10,19 @@ function valid_dk_title($title, $dks, $gender)
     $res = db_query($sql);
     $d = -1;
     while ($row = db_fetch_assoc($res)) {
-        if ($d == -1)
+        if ($d == -1) {
             $d = $row['dk'];
+        }
         // Only care about best dk rank for this person
-        if ($row['dk'] != $d)
+        if ($row['dk'] != $d) {
             break;
-        if ($gender && ($row['female'] == $title))
+        }
+        if ($gender && ($row['female'] == $title)) {
             return true;
-        if (!$gender && ($row['male'] == $title))
+        }
+        if (!$gender && ($row['male'] == $title)) {
             return true;
+        }
     }
     return false;
 }
@@ -65,8 +69,9 @@ function get_dk_title($dks, $gender, $ref = false)
     if (db_num_rows($res) != 0) {
         $row = db_fetch_assoc($res);
     }
-    if ($gender == SEX_MALE)
+    if ($gender == SEX_MALE) {
         return $row['male'];
-    else
+    } else {
         return $row['female'];
+    }
 }

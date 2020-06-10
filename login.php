@@ -4,10 +4,10 @@
 // addnews ready
 // translator ready
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/systemmail.php");
-require_once("lib/checkban.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/systemmail.php";
+require_once "lib/checkban.php";
+require_once "lib/http.php";
 
 tlschema("login");
 translator_setup();
@@ -39,8 +39,9 @@ if ($name != "") {
         if (db_num_rows($result) == 1) {
             $session['user'] = db_fetch_assoc($result);
             $companions = @unserialize($session['user']['companions']);
-            if (!is_array($companions))
+            if (!is_array($companions)) {
                 $companions = array();
+            }
             $baseaccount = $session['user'];
             checkban($session['user']['login'], true);
             modulehook("check-login");
@@ -57,10 +58,12 @@ if ($name != "") {
                 $session['user']['dragonpoints'] = unserialize($session['user']['dragonpoints']);
                 $session['user']['prefs'] = unserialize($session['user']['prefs']);
                 $session['bufflist'] = unserialize($session['user']['bufflist']);
-                if (!is_array($session['bufflist']))
+                if (!is_array($session['bufflist'])) {
                     $session['bufflist'] = array();
-                if (!is_array($session['user']['dragonpoints']))
+                }
+                if (!is_array($session['user']['dragonpoints'])) {
                     $session['user']['dragonpoints'] = array();
+                }
                 invalidatedatacache("charlisthomepage");
                 invalidatedatacache("list.php-warsonline");
                 $session['user']['laston'] = date("Y-m-d H:i:s");
@@ -88,8 +91,9 @@ if ($name != "") {
 
                 $session['user']['loggedin'] = true;
                 $location = $session['user']['location'];
-                if ($session['user']['location'] == $iname)
+                if ($session['user']['location'] == $iname) {
                     $session['user']['location'] = $vname;
+                }
 
                 if ($session['user']['restorepage'] > "") {
                     redirect($session['user']['restorepage']);
@@ -147,10 +151,11 @@ if ($name != "") {
                                 //delete old messages that
                                 $sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgto={$row2['acctid']} AND msgfrom=0 AND subject = '" . serialize($subj) . "' AND seen=0";
                                 db_query($sql);
-                                if (db_affected_rows() > 0)
+                                if (db_affected_rows() > 0) {
                                     $noemail = true;
-                                else
+                                } else {
                                     $noemail = false;
+                                }
                                 $msg = translate_mail(array("This message is generated as a result of one or more of the accounts having been a superuser account.  Log Follows:`n`n%s", $alert), 0);
                                 systemmail($row2['acctid'], $subj, $msg, 0, $noemail);
                             }//end for
@@ -161,7 +166,7 @@ if ($name != "") {
             redirect("home");
         }
     }
-}else if ($op == "logout") {
+} elseif ($op == "logout") {
     if ($session['user']['loggedin']) {
         $location = $session['user']['location'];
         if ($location == $iname) {
@@ -190,4 +195,3 @@ if ($name != "") {
 $session = array();
 $session['message'] = translate_inline("`4Error, your login was incorrect`0");
 redirect("home");
-?>

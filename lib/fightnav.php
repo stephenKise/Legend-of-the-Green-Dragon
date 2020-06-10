@@ -9,7 +9,7 @@ function fightnav($allowspecial = true, $allowflee = true, $script = false)
     } else {
         if (!strpos($script, "?")) {
             $script .= "?";
-//		}elseif (substr($script,strlen($script)-1)!="&" && !substr($script,strlen($script)-1)=="?"){
+            //      }elseif (substr($script,strlen($script)-1)!="&" && !substr($script,strlen($script)-1)=="?"){
         } elseif (substr($script, strlen($script) - 1) != "&") {
             $script .= "&";
         }
@@ -54,8 +54,9 @@ function fightnav($allowspecial = true, $allowflee = true, $script = false)
     if (count($newenemies) > 1) {
         addnav("Targets");
         foreach ($newenemies as $index => $badguy) {
-            if ($badguy['creaturehealth'] <= 0 || (isset($badguy['dead']) && $badguy['dead'] == true))
+            if ($badguy['creaturehealth'] <= 0 || (isset($badguy['dead']) && $badguy['dead'] == true)) {
                 continue;
+            }
             addnav(array("%s%s`0", (isset($badguy['istarget']) && $badguy['istarget']) ? "`#*`0" : "", $badguy['creaturename']), $script . "op=fight&newtarget=$index");
         }
     }

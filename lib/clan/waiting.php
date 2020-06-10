@@ -12,4 +12,3 @@ if ($session['user']['clanrank'] == CLAN_APPLICANT) {
 } else {
     addnav("Return to your Clan Rooms", "clan.php");
 }
-?>

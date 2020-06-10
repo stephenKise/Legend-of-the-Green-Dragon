@@ -6,8 +6,9 @@ function return_legal_dirs($dirs, &$legal_dirs, $path = "./")
     global $select_dir;
     foreach ($dirs as $dir => $value) {
         // If this is a dir to exclude, skip it
-        if (!$value)
+        if (!$value) {
             continue;
+        }
 
         $sdir = $dir;
         $base = $path . $sdir;
@@ -25,17 +26,20 @@ function return_legal_dirs($dirs, &$legal_dirs, $path = "./")
         $add_dirs = array();
         while ($entry = $d->read()) {
             // Skip any . files
-            if ($entry[0] == '.')
+            if ($entry[0] == '.') {
                 continue;
+            }
             // skip any php files
-            if (substr($entry, strrpos($entry, '.')) == ".php")
+            if (substr($entry, strrpos($entry, '.')) == ".php") {
                 continue;
+            }
             $ndir = $base . "/" . $entry;
             // Okay, check if it's a directory
             $test = preg_replace("!^\\./!", "", $ndir);
             if (is_dir($ndir)) {
-                if ((!isset($dirs[$test]) ||
-                        $dirs[$test] != 0) && ((strpos($select_dir, $base) !== false)) && $select_dir != "./") {
+                if ((!isset($dirs[$test])
+                    || $dirs[$test] != 0) && ((strpos($select_dir, $base) !== false)) && $select_dir != "./"
+                ) {
                     $add_dirs[$ndir . "/*"] = 1;
                 }
             }

@@ -2,12 +2,12 @@
 
 //addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/showform.php");
-require_once("lib/datetime.php");
-require_once("lib/http.php");
-require_once("lib/sanitize.php");
-require_once("lib/names.php");
+require_once "common.php";
+require_once "lib/showform.php";
+require_once "lib/datetime.php";
+require_once "lib/http.php";
+require_once "lib/sanitize.php";
+require_once "lib/names.php";
 
 tlschema("user");
 check_su_access(SU_EDIT_USERS);
@@ -24,20 +24,22 @@ page_header("User Editor");
 $sort = httpget('sort');
 $petition = httpget("returnpetition");
 $returnpetition = "";
-if ($petition != "")
+if ($petition != "") {
     $returnpetition = "&returnpetition=$petition";
+}
 
 $gentime = 0;
 $gentimecount = 0;
 
 $order = "acctid";
-if ($sort != "")
+if ($sort != "") {
     $order = "$sort";
+}
 $display = 0;
 $query = httppost('q') == '' ? $session['user']['login'] : httppost('q');
 
 if ($op == "search" || $op == "") {
-    require_once("lib/lookup_user.php");
+    include_once "lib/lookup_user.php";
     list($searchresult, $err) = lookup_user($query, $order);
     $op = "";
     if ($err) {
@@ -49,8 +51,9 @@ if ($op == "search" || $op == "") {
 
 
 $m = httpget("module");
-if ($m)
+if ($m) {
     $m = "&module=$m&subop=module";
+}
 rawoutput("<form action='user.php?op=search$m' method='POST'>");
 output("Search by any field below: ");
 rawoutput("<input name='q' id='q'>");
@@ -59,7 +62,7 @@ rawoutput("<input type='submit' class='button' value='$se'>");
 rawoutput("</form>");
 rawoutput("<script language='JavaScript'>document.getElementById('q').focus();</script>");
 addnav("", "user.php?op=search$m");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Bans");
 addnav("Add a ban", "user.php?op=setupban");
@@ -68,7 +71,7 @@ addnav("List/Remove bans", "user.php?op=removeban");
 // This doesn't seem to be used, so I'm going to comment it out now
 //$msg = httpget('msg');
 //if ($msg>"") {
-//	output("Message: %s`n", $msg);
+//  output("Message: %s`n", $msg);
 //}
 // Collect a list of the mounts
 $mounts = "0," . translate_inline("None");
@@ -82,19 +85,21 @@ $specialties = array("" => translate_inline("Undecided"));
 $specialties = modulehook("specialtynames", $specialties);
 $enum = "";
 foreach ($specialties as $key => $name) {
-    if ($enum)
+    if ($enum) {
         $enum .= ",";
+    }
     $enum .= "$key,$name";
 }
 
 //Inserted for v1.1.0 Dragonprime Edition to extend clan possibilities
 $ranks = array(CLAN_APPLICANT => "`!Applicant`0", CLAN_MEMBER => "`#Member`0", CLAN_OFFICER => "`^Officer`0", CLAN_LEADER => "`&Leader`0", CLAN_FOUNDER => "`\$Founder");
-$ranks = modulehook("clanranks", array("ranks" => $ranks, "clanid" => NULL, "userid" => $userid));
+$ranks = modulehook("clanranks", array("ranks" => $ranks, "clanid" => null, "userid" => $userid));
 $ranks = $ranks['ranks'];
 $rankstring = "";
 foreach ($ranks as $rankid => $rankname) {
-    if ($rankstring != "")
+    if ($rankstring != "") {
         $rankstring .= ",";
+    }
     $rankstring .= $rankid . "," . sanitize($rankname);
 }
 $userinfo = array(
@@ -229,43 +234,43 @@ while ($row = db_fetch_assoc($result)) {
 
 switch ($op) {
     case "lasthit":
-        require("lib/user/user_lasthit.php");
+        include "lib/user/user_lasthit.php";
         break;
     case "savemodule":
-        require("lib/user/user_savemodule.php");
+        include "lib/user/user_savemodule.php";
         break;
     case "special":
-        require("lib/user/user_special.php");
+        include "lib/user/user_special.php";
         break;
     case "save":
-        require("lib/user/user_save.php");
+        include "lib/user/user_save.php";
         break;
 }
 
 switch ($op) {
     case "edit":
-        require("lib/user/user_edit.php");
+        include "lib/user/user_edit.php";
         break;
     case "setupban":
-        require("lib/user/user_setupban.php");
+        include "lib/user/user_setupban.php";
         break;
     case "del":
-        require("lib/user/user_del.php");
+        include "lib/user/user_del.php";
         break;
     case "saveban":
-        require("lib/user/user_saveban.php");
+        include "lib/user/user_saveban.php";
         break;
     case "delban":
-        require("lib/user/user_delban.php");
+        include "lib/user/user_delban.php";
         break;
     case "removeban":
-        require("lib/user/user_removeban.php");
+        include "lib/user/user_removeban.php";
         break;
     case "debuglog":
-        require("lib/user/user_debuglog.php");
+        include "lib/user/user_debuglog.php";
         break;
     case "":
-        require("lib/user/user_.php");
+        include "lib/user/user_.php";
         break;
 }
 page_footer();
@@ -280,5 +285,3 @@ function show_bitfield($val)
     }
     return($out);
 }
-
-?>

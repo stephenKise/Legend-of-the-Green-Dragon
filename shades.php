@@ -3,8 +3,8 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
+require_once "common.php";
+require_once "lib/commentary.php";
 
 
 tlschema("shades");
@@ -13,8 +13,9 @@ page_header("Land of the Shades");
 addcommentary();
 checkday();
 
-if ($session['user']['alive'])
+if ($session['user']['alive']) {
     redirect("village.php");
+}
 output("`\$You walk among the dead now, you are a shade. ");
 output("Everywhere around you are the souls of those who have fallen in battle, in old age, and in grievous accidents. ");
 output("Each bears telltale signs of the means by which they met their end.`n`n");
@@ -54,4 +55,3 @@ if ($session['user']['superuser'] & SU_INFINITE_DAYS) {
 tlschema();
 
 page_footer();
-?>

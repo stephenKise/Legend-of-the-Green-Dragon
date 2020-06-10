@@ -5,7 +5,7 @@ if ($session['user']['gravefights'] <= 0) {
     $op = "";
     httpset('op', "");
 } else {
-    require_once("lib/extended-battle.php");
+    include_once "lib/extended-battle.php";
     suspend_companions("allowinshades", true);
     if (module_events("graveyard", getsetting("gravechance", 0)) != 0) {
         if (!checknavs()) {
@@ -27,8 +27,9 @@ if ($session['user']['gravefights'] <= 0) {
         $badguy = db_fetch_assoc($result);
         $level = $session['user']['level'];
         $shift = 0;
-        if ($level < 5)
+        if ($level < 5) {
             $shift = -1;
+        }
         $badguy['creatureattack'] = 9 + $shift + (int) (($level - 1) * 1.5);
         // Make graveyard creatures easier.
         $badguy['creaturedefense'] = (int) ((9 + $shift + (($level - 1) * 1.5)));
@@ -41,4 +42,3 @@ if ($session['user']['gravefights'] <= 0) {
         $session['user']['badguy'] = createstring($attackstack);
     }
 }
-?>

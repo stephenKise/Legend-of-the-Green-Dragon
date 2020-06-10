@@ -6,7 +6,6 @@ namespace LOTGD;
 
 /**
  * Interface to manage accounts.
- *
  */
 interface AccountInterface
 {

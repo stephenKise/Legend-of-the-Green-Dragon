@@ -53,4 +53,3 @@ output("`^11. How did they get to be so darn attractive, anyway?`n");
 output("`@Lots of at-home facials, my dear!!");
 output("MightyE especially enjoys the Grapefruit Essence Facial Masque.`n");
 rawoutput("<hr><a href='petition.php?op=faq'>$c</a>");
-?>

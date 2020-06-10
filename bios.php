@@ -3,9 +3,9 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/systemmail.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/systemmail.php";
+require_once "lib/http.php";
 
 tlschema("bio");
 check_su_access(SU_EDIT_COMMENTS);
@@ -34,20 +34,22 @@ output("`b`&Player Bios:`0`b`n");
 $number = db_num_rows($result);
 for ($i = 0; $i < $number; $i++) {
     $row = db_fetch_assoc($result);
-    if ($row['biotime'] > $session['user']['recentcomments'])
+    if ($row['biotime'] > $session['user']['recentcomments']) {
         rawoutput("<img src='images/new.gif' alt='&gt;' width='3' height='5' align='absmiddle'> ");
+    }
     output_notl("`![<a href='bios.php?op=block&userid={$row['acctid']}'>$block</a>]", true);
     addnav("", "bios.php?op=block&userid={$row['acctid']}");
     output_notl("`&%s`0: `^%s`0`n", $row['name'], soap($row['bio']));
 }
 db_free_result($result);
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 addnav("Moderation");
 
-if ($session['user']['superuser'] & SU_EDIT_COMMENTS)
+if ($session['user']['superuser'] & SU_EDIT_COMMENTS) {
     addnav("Return to Comment Moderation", "moderate.php");
+}
 
 addnav("Refresh", "bios.php");
 $sql = "SELECT name,acctid,bio,biotime FROM " . db_prefix("accounts") . " WHERE biotime>'9000-01-01' AND bio>'' ORDER BY biotime DESC LIMIT 100";
@@ -64,4 +66,3 @@ for ($i = 0; $i < $number; $i++) {
 }
 db_free_result($result);
 page_footer();
-?>

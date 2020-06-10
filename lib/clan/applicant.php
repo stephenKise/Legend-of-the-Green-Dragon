@@ -5,9 +5,9 @@ $registrar = getsetting('clanregistrar', '`%Karissa');
 addnav("Clan Options");
 output("`b`c`&Clan Halls`c`b");
 if ($op == "apply") {
-    require_once("lib/clan/applicant_apply.php");
+    include_once "lib/clan/applicant_apply.php";
 } elseif ($op == "new") {
-    require_once("lib/clan/applicant_new.php");
+    include_once "lib/clan/applicant_new.php";
 } else {
     output("`7You stand in the center of a great marble lobby filled with pillars.");
     output("All around the walls of the lobby are various doors which lead to various clan halls.");
@@ -44,4 +44,3 @@ if ($op == "apply") {
         }
     }
 }
-?>

@@ -9,9 +9,9 @@ if (!isset($_GET['op']) || $_GET['op'] != 'list') {
     //don't want people to be able to visit the list while logged in -- breaks their navs.
     define("OVERRIDE_FORCED_NAV", true);
 }
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/sanitize.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/sanitize.php";
 
 tlschema("logdnet");
 
@@ -42,8 +42,9 @@ function lotgdsort($a, $b)
     // This is true whether or not they are the official version or not.
     // We bubble the official version to the top below.
     if (strcmp($aver, $bver) == 0) {
-        if ($a['priority'] == $b['priority'])
+        if ($a['priority'] == $b['priority']) {
             return 0;
+        }
         return (($a['priority'] < $b['priority']) ? 1 : -1);
     }
 
@@ -59,12 +60,16 @@ function lotgdsort($a, $b)
     $costa = 10000;
     $costb = 10000;
     foreach ($official_prefixes as $index => $value) {
-        if (strncmp($aver, $value, strlen($value)) == 0)
-            if ($costa == 10000)
+        if (strncmp($aver, $value, strlen($value)) == 0) {
+            if ($costa == 10000) {
                 $costa = $index;
-        if (strncmp($bver, $value, strlen($value)) == 0)
-            if ($costb == 10000)
+            }
+        }
+        if (strncmp($bver, $value, strlen($value)) == 0) {
+            if ($costb == 10000) {
                 $costb = $index;
+            }
+        }
     }
 
     // If both are the same prefix (or no prefix), just strcmp.
@@ -84,10 +89,12 @@ if ($op == "") {
     $count = httpget('c') * 1;
     $lang = httpget('l');
 
-    if ($vers == "")
+    if ($vers == "") {
         $vers = "Unknown";
-    if ($admin == "" || $admin == "postmaster@localhost.com")
+    }
+    if ($admin == "" || $admin == "postmaster@localhost.com") {
         $admin = "unknown";
+    }
 
     // See if we know this server.
     $sql = "SELECT lastupdate,serverid,lastping,recentips FROM " . db_prefix("logdnet") . " WHERE address='$addy'";
@@ -98,8 +105,9 @@ if ($op == "") {
     $desc = logdnet_sanitize($desc);
     $desc = soap($desc);
     // Limit descs to 75 characters.
-    if (strlen($desc) > 75)
+    if (strlen($desc) > 75) {
         $desc = substr($desc, 0, 75);
+    }
 
     $date = date("Y-m-d H:i:s");
     if (db_num_rows($result) > 0) {
@@ -112,12 +120,12 @@ if ($op == "") {
         // Also, nothing ever expires the IP from this list.
         //$ips = array_flip(explode(",",$row['recentips']));
         //if (isset($ips[$_SERVER['REMOTE_ADDR']])){
-        //	//we've seen this user too recently.
+        //  //we've seen this user too recently.
         //}else{
-        //	$ips = array_keys($ips);
-        //	if (!isset($ips[$_SERVER['REMOTE_ADDR']]))
-        //		array_push($ips,$_SERVER['REMOTE_ADDR']);
-        //	$ips = addslashes(join(',',$ips));
+        //  $ips = array_keys($ips);
+        //  if (!isset($ips[$_SERVER['REMOTE_ADDR']]))
+        //      array_push($ips,$_SERVER['REMOTE_ADDR']);
+        //  $ips = addslashes(join(',',$ips));
         // TEMP hack for IPs
         $ips = $_SERVER['REMOTE_ADDR'];
         // Only one update per minute allowed.
@@ -126,7 +134,7 @@ if ($op == "") {
             $sql = "UPDATE " . db_prefix("logdnet") . " SET lang='$lang',count='$count',recentips='$ips',priority=priority+1,description='$desc',version='$vers',admin='$admin',lastupdate='$date',lastping='$date' WHERE serverid={$row['serverid']}";
             db_query($sql);
         }
-        //	}
+        //  }
     } else {
         // This is a new server, so add it and give it a small priority boost.
         $sql = "INSERT INTO " . db_prefix("logdnet") . " (address,description,version,admin,priority,lastupdate,lastping,count,recentips,lang) VALUES ('$addy','$desc','$vers','$admin',10,'$date','$date','$count','{$_SERVER['REMOTE_ADDR']}','$lang')";
@@ -211,28 +219,31 @@ if ($op == "") {
     rawoutput("</td><td>");
     output("Version");
     rawoutput("</td>");
-    require_once("lib/pullurl.php");
+    include_once "lib/pullurl.php";
     $u = getsetting("logdnetserver", "http://logdnet.logd.com/");
     if (!preg_match("/\\/$/", $u)) {
         $u = $u . "/";
         savesetting("logdnetserver", $u);
     }
     $servers = pullurl($u . "logdnet.php?op=net");
-    if (!$servers)
+    if (!$servers) {
         $servers = array();
+    }
     $i = 0;
     while (list($key, $val) = each($servers)) {
         $row = unserialize($val);
 
         // If we aren't given an address, continue on.
-        if (substr($row['address'], 0, 7) != "http://" &&
-                substr($row['address'], 0, 8) != "https://") {
+        if (substr($row['address'], 0, 7) != "http://"
+            && substr($row['address'], 0, 8) != "https://"
+        ) {
             continue;
         }
 
         // Give undescribed servers a boring descriptionn
-        if (trim($row['description']) == "")
+        if (trim($row['description']) == "") {
             $row['description'] = "Another boring and undescribed LotGD server";
+        }
 
         // Strip out any embedded html.
         $row['description'] = preg_replace("|<[a-zA-Z0-9/ =]+>|", "", $row['description']);
@@ -241,15 +252,17 @@ if ($op == "") {
         $row['description'] = logdnet_sanitize($row['description']);
         $row['description'] = soap($row['description']);
         // Limit descs to 75 characters.
-        if (strlen($row['description']) > 75)
+        if (strlen($row['description']) > 75) {
             $row['description'] = substr($row['description'], 0, 75);
+        }
 
         $row['description'] = htmlentities(stripslashes($row['description']), ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
         $row['description'] = str_replace("`&amp;", "`&", $row['description']);
 
         // Correct for old logdnet servers
-        if ($row['version'] == "")
+        if ($row['version'] == "") {
             $row['version'] = translate_inline("Unknown");
+        }
 
         // Output the information we have.
         rawoutput("<tr class='" . ($i % 2 == 0 ? "trlight" : "trdark") . "'>");
@@ -278,5 +291,3 @@ function apply_logdnet_bans($logdnet)
     }
     return $logdnet;
 }
-
-?>

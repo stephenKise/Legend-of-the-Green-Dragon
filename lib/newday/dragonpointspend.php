@@ -73,8 +73,9 @@ if ($dkills - $dp > 1) {
     reset($labels);
     $count = 0;
     foreach ($labels as $type => $label) {
-        if ($count > 0)
+        if ($count > 0) {
             break;
+        }
         if (isset($canbuy[$type]) && $canbuy[$type]) {
             rawoutput("<script language='JavaScript'>document.getElementById('$type').focus();</script>");
             $count++;
@@ -106,8 +107,9 @@ if ($dkills - $dp > 1) {
     rawoutput("<table>");
     reset($labels);
     foreach ($labels as $type => $label) {
-        if ($type == 'unknown' && $dist[$type] == 0)
+        if ($type == 'unknown' && $dist[$type] == 0) {
             continue;
+        }
         rawoutput("<tr><td nowrap>");
         output($label);
         output_notl(":");
@@ -118,4 +120,3 @@ if ($dkills - $dp > 1) {
     rawoutput("</table>");
     rawoutput("</blockquote>");
 }
-?>

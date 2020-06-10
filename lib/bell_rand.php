@@ -612,8 +612,9 @@ function bell_rand($min = false, $max = false)
     $index = "0.00000";
     for ($n = 0; $n < strlen($r); $n++) {
         $f = substr($r, 0, $n);
-        if (isset($bell_curve[(float) $f]))
+        if (isset($bell_curve[(float) $f])) {
             $index = $f;
+        }
     }
     if (strlen($index) >= 7) {
         return $min + $bell_curve[(float) $f] * ($max - $min);
@@ -622,10 +623,12 @@ function bell_rand($min = false, $max = false)
     $o = pow(10, $o); // $o is orders of magnitude of our current closest index match
     for ($n = 0; $n < 10000; $n++) {
         $x = $n / $o;
-        if (isset($bell_curve[(float) ($f + $x)]))
+        if (isset($bell_curve[(float) ($f + $x)])) {
             return $min + $bell_curve[(float) ($f + $x)] * ($max - $min);
-        if (isset($bell_curve[(float) ($f - $x)]))
+        }
+        if (isset($bell_curve[(float) ($f - $x)])) {
             return $min + $bell_curve[(float) ($f - $x)] * ($max - $min);
+        }
     }
     echo "\n<br>Unable to locate random value, \$r was $r<br>\n";
 }

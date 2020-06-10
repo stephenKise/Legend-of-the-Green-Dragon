@@ -4,9 +4,9 @@
 // mail ready
 // translator ready
 // hilarious copy of mounts.php
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/showform.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/showform.php";
 
 check_su_access(SU_EDIT_MOUNTS);
 
@@ -14,7 +14,7 @@ tlschema("companions");
 
 page_header("Companion Editor");
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 addnav("Companion Editor");
@@ -52,7 +52,7 @@ if ($op == "deactivate") {
         $row['hitpoints'] = $row['maxhitpoints'];
         $row = modulehook("alter-companion", $row);
         $row['abilities'] = @unserialize($row['abilities']);
-        require_once("lib/buffs.php");
+        include_once "lib/buffs.php";
         apply_companion($row['name'], $row);
         output("`\$Succesfully taken `^%s`\$ as companion.", $row['name']);
     }
@@ -89,8 +89,9 @@ if ($op == "deactivate") {
             $vals = "";
             $i = 0;
             while (list($key, $val) = each($companion)) {
-                if (is_array($val))
+                if (is_array($val)) {
                     $val = addslashes(serialize($val));
+                }
                 $sql .= (($i > 0) ? ", " : "") . "$key='$val'";
                 $keys .= (($i > 0) ? ", " : "") . "$key";
                 $vals .= (($i > 0) ? ", " : "") . "'$val'";
@@ -108,7 +109,7 @@ if ($op == "deactivate") {
             if (db_affected_rows() > 0) {
                 output("`^Companion saved!`0`n`n");
             } else {
-//				if (strlen($sql) > 400) $sql = substr($sql,0,200)." ... ".substr($sql,strlen($sql)-200);
+                //              if (strlen($sql) > 400) $sql = substr($sql,0,200)." ... ".substr($sql,strlen($sql)-200);
                 output("`^Companion `\$not`^ saved: `\$%s`0`n`n", $sql);
             }
         }
@@ -222,64 +223,91 @@ if ($op == "") {
 function companionform($companion)
 {
     // Let's sanitize the data
-    if (!isset($companion['companionactive']))
+    if (!isset($companion['companionactive'])) {
         $companion['companionactive'] = "";
-    if (!isset($companion['name']))
+    }
+    if (!isset($companion['name'])) {
         $companion['name'] = "";
-    if (!isset($companion['companionid']))
+    }
+    if (!isset($companion['companionid'])) {
         $companion['companionid'] = "";
-    if (!isset($companion['description']))
+    }
+    if (!isset($companion['description'])) {
         $companion['description'] = "";
-    if (!isset($companion['dyingtext']))
+    }
+    if (!isset($companion['dyingtext'])) {
         $companion['dyingtext'] = "";
-    if (!isset($companion['jointext']))
+    }
+    if (!isset($companion['jointext'])) {
         $companion['jointext'] = "";
-    if (!isset($companion['category']))
+    }
+    if (!isset($companion['category'])) {
         $companion['category'] = "";
-    if (!isset($companion['companionlocation']))
+    }
+    if (!isset($companion['companionlocation'])) {
         $companion['companionlocation'] = 'all';
-    if (!isset($companion['companioncostdks']))
+    }
+    if (!isset($companion['companioncostdks'])) {
         $companion['companioncostdks'] = 0;
+    }
 
-    if (!isset($companion['companioncostgems']))
+    if (!isset($companion['companioncostgems'])) {
         $companion['companioncostgems'] = 0;
-    if (!isset($companion['companioncostgold']))
+    }
+    if (!isset($companion['companioncostgold'])) {
         $companion['companioncostgold'] = 0;
+    }
 
-    if (!isset($companion['attack']))
+    if (!isset($companion['attack'])) {
         $companion['attack'] = "";
-    if (!isset($companion['attackperlevel']))
+    }
+    if (!isset($companion['attackperlevel'])) {
         $companion['attackperlevel'] = "";
-    if (!isset($companion['defense']))
+    }
+    if (!isset($companion['defense'])) {
         $companion['defense'] = "";
-    if (!isset($companion['defenseperlevel']))
+    }
+    if (!isset($companion['defenseperlevel'])) {
         $companion['defenseperlevel'] = "";
-    if (!isset($companion['hitpoints']))
+    }
+    if (!isset($companion['hitpoints'])) {
         $companion['hitpoints'] = "";
-    if (!isset($companion['maxhitpoints']))
+    }
+    if (!isset($companion['maxhitpoints'])) {
         $companion['maxhitpoints'] = "";
-    if (!isset($companion['maxhitpointsperlevel']))
+    }
+    if (!isset($companion['maxhitpointsperlevel'])) {
         $companion['maxhitpointsperlevel'] = "";
+    }
 
-    if (!isset($companion['abilities']['fight']))
+    if (!isset($companion['abilities']['fight'])) {
         $companion['abilities']['fight'] = 0;
-    if (!isset($companion['abilities']['defend']))
+    }
+    if (!isset($companion['abilities']['defend'])) {
         $companion['abilities']['defend'] = 0;
-    if (!isset($companion['abilities']['heal']))
+    }
+    if (!isset($companion['abilities']['heal'])) {
         $companion['abilities']['heal'] = 0;
-    if (!isset($companion['abilities']['magic']))
+    }
+    if (!isset($companion['abilities']['magic'])) {
         $companion['abilities']['magic'] = 0;
+    }
 
-    if (!isset($companion['cannotdie']))
+    if (!isset($companion['cannotdie'])) {
         $companion['cannotdie'] = 0;
-    if (!isset($companion['cannotbehealed']))
+    }
+    if (!isset($companion['cannotbehealed'])) {
         $companion['cannotbehealed'] = 1;
-    if (!isset($companion['allowinshades']))
+    }
+    if (!isset($companion['allowinshades'])) {
         $companion['allowinshades'] = 0;
-    if (!isset($companion['allowinpvp']))
+    }
+    if (!isset($companion['allowinpvp'])) {
         $companion['allowinpvp'] = 0;
-    if (!isset($companion['allowintrain']))
+    }
+    if (!isset($companion['allowintrain'])) {
         $companion['allowintrain'] = 0;
+    }
 
     rawoutput("<form action='companions.php?op=save&id={$companion['companionid']}' method='POST'>");
     rawoutput("<input type='hidden' name='companion[companionactive]' value=\"" . $companion['companionactive'] . "\">");
@@ -385,4 +413,3 @@ function companionform($companion)
 }
 
 page_footer();
-?>

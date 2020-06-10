@@ -3,11 +3,11 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/buffs.php");
-require_once("lib/sanitize.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/buffs.php";
+require_once "lib/sanitize.php";
+require_once "lib/villagenav.php";
 
 tlschema('stables');
 
@@ -72,7 +72,7 @@ addnav("Other");
 villagenav();
 modulehook("stables-nav");
 
-require_once("lib/mountname.php");
+require_once "lib/mountname.php";
 list($name, $lcname) = getmountname();
 
 $repaygold = 0;
@@ -146,8 +146,9 @@ if ($op == 'confirmbuy') {
         tlschema();
     } else {
         $mount = db_fetch_assoc($result);
-        if (($session['user']['gold'] + $repaygold) < $mount['mountcostgold'] ||
-                ($session['user']['gems'] + $repaygems) < $mount['mountcostgems']) {
+        if (($session['user']['gold'] + $repaygold) < $mount['mountcostgold']
+            || ($session['user']['gems'] + $repaygems) < $mount['mountcostgems']
+        ) {
             tlschema($schemas['toolittle']);
             output($texts['toolittle'], $mount['mountname'], $mount['mountcostgold'], $mount['mountcostgems']);
             tlschema();
@@ -162,8 +163,9 @@ if ($op == 'confirmbuy') {
                 tlschema();
             }
             $debugmount1 = isset($playermount['mountname']) ? $playermount['mountname'] : false;
-            if ($debugmount1)
+            if ($debugmount1) {
                 $debugmount1 = "a " . $debugmount1;
+            }
             $session['user']['hashorse'] = $mount['mountid'];
             $debugmount2 = $mount['mountname'];
             $goldcost = $repaygold - $mount['mountcostgold'];
@@ -172,8 +174,9 @@ if ($op == 'confirmbuy') {
             $session['user']['gems'] += $gemcost;
             debuglog(($goldcost <= 0 ? "spent " : "gained ") . abs($goldcost) . " gold and " . ($gemcost <= 0 ? "spent " : "gained ") . abs($gemcost) . " gems trading $debugmount1 for a new mount, a $debugmount2");
             $buff = unserialize($mount['mountbuff']);
-            if ($buff['schema'] == "")
+            if ($buff['schema'] == "") {
                 $buff['schema'] = "mounts";
+            }
             apply_buff('mount', unserialize($mount['mountbuff']));
             // Recalculate so the selling stuff works right
             $playermount = getmount($mount['mountid']);
@@ -182,20 +185,21 @@ if ($op == 'confirmbuy') {
             // Recalculate the special name as well.
             modulehook("stable-mount", array());
             modulehook("boughtmount");
-            require_once("lib/mountname.php");
+            include_once "lib/mountname.php";
             list($name, $lcname) = getmountname();
             $grubprice = round($session['user']['level'] * $playermount['mountfeedcost'], 0);
         }
     }
-}elseif ($op == 'feed') {
+} elseif ($op == 'feed') {
     if (getsetting("allowfeed", 0) == 0) {
         tlschema($schemas['nofeed']);
         output($texts['nofeed'], ($session['user']['sex'] ? $texts["lass"] : $texts["lad"]));
         tlschema();
     } elseif ($session['user']['gold'] >= $grubprice) {
         $buff = unserialize($playermount['mountbuff']);
-        if (!isset($buff['schema']) || $buff['schema'] == "")
+        if (!isset($buff['schema']) || $buff['schema'] == "") {
             $buff['schema'] = "mounts";
+        }
         if (isset($session['bufflist']['mount']) && $session['bufflist']['mount']['rounds'] == $buff['rounds']) {
             tlschema($schemas['nothungry']);
             output($texts['nothungry'], $name);
@@ -217,8 +221,12 @@ if ($op == 'confirmbuy') {
             apply_buff('mount', $buff);
             $session['user']['fedmount'] = 1;
             tlschema($schemas['mountfull']);
-            output($texts['mountfull'], ($session['user']['sex'] ? $texts["lass"] : $texts["lad"]), ($playermount['basename'] ?
-                            $playermount['basename'] : $playermount['mountname']));
+            output(
+                $texts['mountfull'],
+                ($session['user']['sex'] ? $texts["lass"] : $texts["lad"]),
+                ($playermount['basename'] ?
+                $playermount['basename'] : $playermount['mountname'])
+            );
             tlschema();
         }
     } else {
@@ -248,8 +256,9 @@ if ($op == 'confirmbuy') {
         $amtstr .= "%s gold";
     }
     if ($repaygems > 0) {
-        if ($repaygold)
+        if ($repaygold) {
             $amtstr .= " and ";
+        }
         $amtstr .= "%s gems";
     }
     if ($repaygold > 0 && $repaygems > 0) {
@@ -261,8 +270,12 @@ if ($op == 'confirmbuy') {
     }
 
     tlschema($schemas['mountsold']);
-    output($texts['mountsold'], ($playermount['newname'] ?
-                    $playermount['newname'] : $playermount['mountname']), $amtstr);
+    output(
+        $texts['mountsold'],
+        ($playermount['newname'] ?
+        $playermount['newname'] : $playermount['mountname']),
+        $amtstr
+    );
     tlschema();
 }
 
@@ -288,10 +301,10 @@ if ($confirm == 0) {
             addnav(array("%s", $row['mountcategory']));
             $category = $row['mountcategory'];
         }
-        if ($row['mountdkcost'] <= $session['user']['dragonkills'])
+        if ($row['mountdkcost'] <= $session['user']['dragonkills']) {
             addnav(array("Examine %s`0", $row['mountname']), "stables.php?op=examine&id={$row['mountid']}");
+        }
     }
 }
 
 page_footer();
-?>

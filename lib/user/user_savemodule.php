@@ -22,4 +22,3 @@ if (isset($post['validation_error']) && $post['validation_error']) {
 $op = "edit";
 httpset("op", "edit");
 httpset("subop", "module", true);
-?>

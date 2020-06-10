@@ -12,6 +12,8 @@ interface LoggerInterface
     public static function read(int $logid): array;
 
     public static function findByCategory(
-    string $category, int $offset, int $limit
+        string $category,
+        int $offset,
+        int $limit
     ): array;
 }

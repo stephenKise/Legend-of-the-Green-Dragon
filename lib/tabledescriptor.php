@@ -31,13 +31,15 @@ function synctable($tablename, $descriptor, $nodrop = false)
         reset($descriptor);
         $changes = array();
         while (list($key, $val) = each($descriptor)) {
-            if ($key == "RequireMyISAM")
+            if ($key == "RequireMyISAM") {
                 continue;
+            }
             $val['type'] = descriptor_sanitize_type($val['type']);
             if (!isset($val['name'])) {
-                if (($val['type'] == "key" ||
-                        $val['type'] == "unique key" ||
-                        $val['type'] == "primary key")) {
+                if (($val['type'] == "key"
+                    || $val['type'] == "unique key"
+                    || $val['type'] == "primary key")
+                ) {
                     if (substr($key, 0, 4) == "key-") {
                         $val['name'] = substr($key, 4);
                     } else {
@@ -48,9 +50,10 @@ function synctable($tablename, $descriptor, $nodrop = false)
                     $val['name'] = $key;
                 }
             } else {
-                if ($val['type'] == "key" ||
-                        $val['type'] == "unique key" ||
-                        $val['type'] == "primary key") {
+                if ($val['type'] == "key"
+                    || $val['type'] == "unique key"
+                    || $val['type'] == "primary key"
+                ) {
                     $key = "key-" . $val['name'];
                 } else {
                     $key = $val['name'];
@@ -68,8 +71,9 @@ function synctable($tablename, $descriptor, $nodrop = false)
                     //this descriptor line has changed.  Change the
                     //table to suit.
                     debug("Old: $oldsql<br>New:$newsql");
-                    if ($existing[$key]['type'] == "key" ||
-                            $existing[$key]['type'] == "unique key") {
+                    if ($existing[$key]['type'] == "key"
+                        || $existing[$key]['type'] == "unique key"
+                    ) {
                         array_push($changes, "DROP KEY {$existing[$key]['name']}");
                         array_push($changes, "ADD $newsql");
                     } elseif ($existing[$key]['type'] == "primary key") {
@@ -127,9 +131,10 @@ function table_create_from_descriptor($tablename, $descriptor)
             continue;
         }
         if (!isset($val['name'])) {
-            if (($val['type'] == "key" ||
-                    $val['type'] == "unique key" ||
-                    $val['type'] == "primary key")) {
+            if (($val['type'] == "key"
+                || $val['type'] == "unique key"
+                || $val['type'] == "primary key")
+            ) {
                 if (substr($key, 0, 4) == "key-") {
                     $val['name'] = substr($key, 4);
                 } else {
@@ -140,16 +145,18 @@ function table_create_from_descriptor($tablename, $descriptor)
                 $val['name'] = $key;
             }
         } else {
-            if ($val['type'] == "key" ||
-                    $val['type'] == "unique key" ||
-                    $val['type'] == "primary key") {
+            if ($val['type'] == "key"
+                || $val['type'] == "unique key"
+                || $val['type'] == "primary key"
+            ) {
                 $key = "key-" . $val['name'];
             } else {
                 $key = $val['name'];
             }
         }
-        if ($i > 0)
+        if ($i > 0) {
             $sql .= ",\n";
+        }
         $sql .= descriptor_createsql($val);
         $i++;
     }
@@ -170,12 +177,15 @@ function table_create_descriptor($tablename)
         $item = array();
         $item['name'] = $row['Field'];
         $item['type'] = $row['Type'];
-        if ($row['Null'])
+        if ($row['Null']) {
             $item['null'] = true;
-        if (trim($row['Default']) != "")
+        }
+        if (trim($row['Default']) != "") {
             $item['default'] = $row['Default'];
-        if (trim($row['Extra']) !== "")
+        }
+        if (trim($row['Extra']) !== "") {
             $item['extra'] = $row['Extra'];
+        }
         $descriptor[$item['name']] = $item;
     }
 
@@ -186,21 +196,25 @@ function table_create_descriptor($tablename)
             //this is a secondary+ column on some previous key;
             //add this to that column's keys.
             $str = $row['Column_name'];
-            if ($row['Sub_part'])
+            if ($row['Sub_part']) {
                 $str .= "(" . $row['Sub_part'] . ")";
+            }
             $descriptor['key-' . $row['Key_name']]['columns'] .= "," . $str;
-        }else {
+        } else {
             $item = array();
             $item['name'] = $row['Key_name'];
-            if ($row['Key_name'] == "PRIMARY")
+            if ($row['Key_name'] == "PRIMARY") {
                 $item['type'] = "primary key";
-            else
+            } else {
                 $item['type'] = "key";
-            if ($row['Non_unique'] == 0)
+            }
+            if ($row['Non_unique'] == 0) {
                 $item['unique'] = true;
+            }
             $str = $row['Column_name'];
-            if ($row['Sub_part'])
+            if ($row['Sub_part']) {
                 $str .= "(" . $row['Sub_part'] . ")";
+            }
             $item['columns'] = $str;
             $descriptor['key-' . $item['name']] = $item;
         }//end if
@@ -214,8 +228,9 @@ function descriptor_createsql($input)
     $input['type'] = descriptor_sanitize_type($input['type']);
     if ($input['type'] == "key" || $input['type'] == 'unique key') {
         //this is a standard index
-        if (is_array($input['columns']))
+        if (is_array($input['columns'])) {
             $input['columns'] = join(",", $input['columns']);
+        }
         if (!isset($input['name'])) {
             //if the user didn't define a name we should give it one
             if (strpos($input['columns'], ",") !== false) {
@@ -228,20 +243,23 @@ function descriptor_createsql($input)
                 $input['name'] = $input['columns'];
             }
         }
-        if (substr($input['type'], 0, 7) == "unique ")
+        if (substr($input['type'], 0, 7) == "unique ") {
             $input['unique'] = true;
+        }
         $return = (isset($input['unique']) && $input['unique'] ? "UNIQUE " : "")
                 . "KEY {$input['name']} "
                 . "({$input['columns']})";
-    }elseif ($input['type'] == "primary key") {
+    } elseif ($input['type'] == "primary key") {
         //this is a primary key
-        if (is_array($input['columns']))
+        if (is_array($input['columns'])) {
             $input['columns'] = join(",", $input['columns']);
+        }
         $return = "PRIMARY KEY ({$input['columns']})";
-    }else {
+    } else {
         //this is a standard column
-        if (!array_key_exists('extra', $input))
+        if (!array_key_exists('extra', $input)) {
             $input['extra'] = "";
+        }
         $return = $input['name'] . " "
                 . $input['type']
                 . (isset($input['null']) && $input['null'] ? "" : " NOT NULL")
@@ -261,8 +279,9 @@ function descriptor_sanitize_type($type)
         "index" => "key",
         "unique index" => "unique key",
     );
-    if (isset($changes[$type]))
+    if (isset($changes[$type])) {
         return $changes[$type];
-    else
+    } else {
         return $type;
+    }
 }

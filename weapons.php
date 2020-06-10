@@ -3,9 +3,9 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("weapon");
 
@@ -105,7 +105,6 @@ if ($op == "") {
         rawoutput("<tr class='" . ($i % 2 == 1 ? "trlight" : "trdark") . "'><td>");
         $color = "`)";
         if ($row['value'] <= ($session['user']['gold'] + $tradeinvalue)) {
-
             if ($link) {
                 $color = "`&";
                 rawoutput("<a href='weapons.php?op=buy&id={$row['weaponid']}'>");
@@ -134,7 +133,7 @@ if ($op == "") {
     }
     rawoutput("</table>");
     villagenav();
-} else if ($op == "buy") {
+} elseif ($op == "buy") {
     $id = httpget("id");
     $sql = "SELECT * FROM " . db_prefix("weapons") . " WHERE weaponid='$id'";
     $result = db_query($sql);
@@ -172,4 +171,3 @@ if ($op == "") {
 }
 
 page_footer();
-?>

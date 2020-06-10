@@ -4,9 +4,9 @@
 // addnews ready
 // mail ready
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/showform.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/showform.php";
+require_once "lib/http.php";
 
 tlschema("about");
 
@@ -17,11 +17,13 @@ checkday();
 $op = httpget('op');
 
 switch ($op) {
-    case "setup": case "listmodules": case "license":
-        require("lib/about/about_$op.php");
+    case "setup":
+    case "listmodules":
+    case "license":
+        include "lib/about/about_$op.php";
         break;
     default:
-        require("lib/about/about_default.php");
+        include "lib/about/about_default.php";
         break;
 }
 if ($session['user']['loggedin']) {
@@ -30,4 +32,3 @@ if ($session['user']['loggedin']) {
     addnav("Login Page", "home");
 }
 page_footer();
-?>

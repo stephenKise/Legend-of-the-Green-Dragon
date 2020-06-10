@@ -85,4 +85,3 @@ output("The fact is that because there's so many people, there can be several co
 output("Also, the thing to understand is that not all the comments are posted immediately, and that sometimes a person won't press the refresh or add button for several minutes, during which time more comments could have been said that the person missed while they were typing their own.");
 output("Not to worry, though. Don't be shy, join in!`n`n");
 rawoutput("<hr><a href='petition.php?op=faq'>$c</a>");
-?>

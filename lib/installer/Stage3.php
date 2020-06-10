@@ -14,7 +14,7 @@ if ($name > '' && $pass > '') {
         return;
     }
     $sql = db_query(
-            "INSERT INTO $accounts
+        "INSERT INTO $accounts
         (login, password, superuser, name, ctitle, regdate)
         VALUES
         ('$name', '$pass', $superUser, '`@Dev`0 $name', '`@Dev`0',
@@ -22,7 +22,7 @@ if ($name > '' && $pass > '') {
     );
     if (!db_error()) {
         output(
-                "`@Your superuser account has been created!Enjoy your 
+            "`@Your superuser account has been created!Enjoy your 
             server, $name`@!"
         );
         blocknav('installer.php', true);
@@ -38,7 +38,7 @@ output("`^Name: ");
 rawoutput("<input name='name' value='$name'>");
 output("`n`^Password: ");
 rawoutput(
-        "<input name='pass' type='password'>
+    "<input name='pass' type='password'>
     <br><input type='submit' value='$submit' class='button'>
     </form>"
 );

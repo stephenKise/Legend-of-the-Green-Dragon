@@ -3,9 +3,9 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/showform.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/showform.php";
+require_once "lib/http.php";
 
 check_su_access(SU_EDIT_EQUIPMENT);
 
@@ -13,7 +13,7 @@ tlschema("armor");
 
 page_header("Armor Editor");
 $armorlevel = (int) httpget('level');
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Armor Editor");
 addnav("Armor Editor Home", "armoreditor.php?level=$armorlevel");
@@ -43,13 +43,13 @@ if ($op == "edit" || $op == "add") {
     addnav("", "armoreditor.php?op=save&level=$armorlevel");
     showform($armorarray, $row);
     rawoutput("</form>");
-} else if ($op == "del") {
+} elseif ($op == "del") {
     $sql = "DELETE FROM " . db_prefix("armor") . " WHERE armorid='$id'";
     db_query($sql);
     //output($sql);
     $op = "";
     httpset("op", $op);
-} else if ($op == "save") {
+} elseif ($op == "save") {
     $armorid = httppost('armorid');
     $armorname = httppost('armorname');
     $defense = httppost('defense');
@@ -68,10 +68,11 @@ if ($op == "") {
     $row = db_fetch_assoc($res);
     $max = $row['level'];
     for ($i = 0; $i <= $max; $i++) {
-        if ($i == 1)
+        if ($i == 1) {
             addnav(array("Armor for %s DK", $i), "armoreditor.php?level=$i");
-        else
+        } else {
             addnav(array("Armor for %s DKs", $i), "armoreditor.php?level=$i");
+        }
     }
     $sql = "SELECT * FROM " . db_prefix("armor") . " WHERE level=$armorlevel ORDER BY defense";
     $result = db_query($sql);
@@ -107,4 +108,3 @@ if ($op == "") {
     rawoutput("</table>");
 }
 page_footer();
-?>

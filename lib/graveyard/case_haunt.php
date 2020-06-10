@@ -13,4 +13,3 @@ addnav("Places");
 addnav("S?Land of the Shades", "shades.php");
 addnav("G?The Graveyard", "graveyard.php");
 addnav("M?Return to the Mausoleum", "graveyard.php?op=enter");
-?>

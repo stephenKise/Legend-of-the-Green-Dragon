@@ -13,12 +13,13 @@ if (isset($_POST['template'])) {
 }
 
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 
-if (!isset($session['loggedin']))
+if (!isset($session['loggedin'])) {
     $session['loggedin'] = false;
+}
 if ($session['loggedin']) {
     redirect("badnav");
 }
@@ -30,9 +31,10 @@ $op = httpget('op');
 page_header();
 output('`c');
 output(
-        getsetting(
-                'serverdescription', 'Welcome to Legend of the Green Dragon, a browser-based roleplay game!'
-        )
+    getsetting(
+        'serverdescription',
+        'Welcome to Legend of the Green Dragon, a browser-based roleplay game!'
+    )
 );
 output('`n');
 if (getsetting("homecurtime", 1)) {
@@ -43,7 +45,8 @@ $timeDetails = gametimedetails();
 if (getsetting("homenewdaytime", 1)) {
     $secstonewday = secondstonextgameday();
     output(
-            "`@Next new game day in: `\$%s (real time)`0`n`n", reltime(secondstonextgameday())
+        "`@Next new game day in: `\$%s (real time)`0`n`n",
+        reltime(secondstonextgameday())
     );
 }
 
@@ -96,10 +99,12 @@ if ($onlinecount < getsetting("maxonline", 0) || getsetting("maxonline", 0) == 0
         $session['message'] .= translate_inline("It appears that you may be blocking cookies from this site.  At least session cookies must be enabled in order to use this site.`n");
         $session['message'] .= translate_inline("`b`#If you are not sure what cookies are, please <a href='http://en.wikipedia.org/wiki/WWW_browser_cookie'>read this article</a> about them, and how to enable them.`b`n");
     }
-    if (isset($session['message']) && $session['message'] > "")
+    if (isset($session['message']) && $session['message'] > "") {
         output_notl("`b`\$%s`b`n", $session['message'], true);
+    }
     rawoutput("<script language='JavaScript' src='lib/md5.js'></script>");
-    rawoutput("<script language='JavaScript'>
+    rawoutput(
+        "<script language='JavaScript'>
     <!--
     function md5pass(){
         //encode passwords before submission to protect them even from network sniffing attacks.
@@ -109,7 +114,8 @@ if ($onlinecount < getsetting("maxonline", 0) || getsetting("maxonline", 0) == 0
         }
     }
     //-->
-    </script>");
+    </script>"
+    );
     $uname = translate_inline("<u>U</u>sername");
     $pass = translate_inline("<u>P</u>assword");
     $butt = translate_inline("Log in");
@@ -125,8 +131,9 @@ if ($onlinecount < getsetting("maxonline", 0) || getsetting("maxonline", 0) == 0
         $session['message'] .= translate_inline("It appears that you may be blocking cookies from this site. At least session cookies must be enabled in order to use this site.`n");
         $session['message'] .= translate_inline("`b`#If you are not sure what cookies are, please <a href='http://en.wikipedia.org/wiki/WWW_browser_cookie'>read this article</a> about them, and how to enable them.`b`n");
     }
-    if ($session['message'] > "")
+    if ($session['message'] > "") {
         output("`b`\$%s`b`n", $session['message'], true);
+    }
     rawoutput(templatereplace("loginfull", array()));
     output_notl("`c");
 }
@@ -141,9 +148,10 @@ if (getsetting("homeskinselect", 1)) {
     rawoutput("<table align='center'><tr><td>");
     $form = array("template" => "Choose a different display skin:,theme");
     $prefs['template'] = $_COOKIE['template'];
-    if ($prefs['template'] == "")
+    if ($prefs['template'] == "") {
         $prefs['template'] = getsetting("defaultskin", "jade.htm");
-    require_once("lib/showform.php");
+    }
+    include_once "lib/showform.php";
     showform($form, $prefs, true);
     $submit = translate_inline("Choose");
     rawoutput("</td><td><br>&nbsp;<input type='submit' class='button' value='$submit'></td>");
@@ -151,4 +159,3 @@ if (getsetting("homeskinselect", 1)) {
 }
 
 page_footer();
-?>

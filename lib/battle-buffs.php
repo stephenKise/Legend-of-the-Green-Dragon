@@ -2,14 +2,14 @@
 
 /**
  *
- * 
- * @copyright Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
- * @version Lotgd 1.1.2 DragonPrime Edition
- * @package Core
+ *
+ * @copyright  Copyright © 2002-2005, Eric Stevens & JT Traub, © 2006-2009, Dragonprime Development Team
+ * @version    Lotgd 1.1.2 DragonPrime Edition
+ * @package    Core
  * @subpackage Library
- * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
+ * @license    http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
-require_once("lib/substitute.php");
+require_once "lib/substitute.php";
 
 function activate_buffs($tag)
 {
@@ -30,10 +30,12 @@ function activate_buffs($tag)
     $result['dmgshield'] = array();
 
     foreach ($session['bufflist'] as $key => $buff) {
-        if (array_key_exists('suspended', $buff) && $buff['suspended'])
+        if (array_key_exists('suspended', $buff) && $buff['suspended']) {
             continue;
-        if ($buff['schema'])
+        }
+        if ($buff['schema']) {
             tlschema($buff['schema']);
+        }
         if (isset($buff['startmsg'])) {
             if (is_array($buff['startmsg'])) {
                 $buff['startmsg'] = str_replace("`%", "`%%", $buff['startmsg']);
@@ -50,36 +52,50 @@ function activate_buffs($tag)
         // Figure out activate based on buff features
         $activate = false;
         if ($tag == "roundstart") {
-            if (isset($buff['regen']))
+            if (isset($buff['regen'])) {
                 $activate = true;
-            if (isset($buff['minioncount']))
+            }
+            if (isset($buff['minioncount'])) {
                 $activate = true;
-        } else if ($tag == "offense") {
-            if (isset($buff['invulnerable']) && $buff['invulnerable'])
+            }
+        } elseif ($tag == "offense") {
+            if (isset($buff['invulnerable']) && $buff['invulnerable']) {
                 $activate = true;
-            if (isset($buff['atkmod']))
+            }
+            if (isset($buff['atkmod'])) {
                 $activate = true;
-            if (isset($buff['dmgmod']))
+            }
+            if (isset($buff['dmgmod'])) {
                 $activate = true;
-            if (isset($buff['badguydefmod']))
+            }
+            if (isset($buff['badguydefmod'])) {
                 $activate = true;
-            if (isset($buff['lifetap']))
+            }
+            if (isset($buff['lifetap'])) {
                 $activate = true;
-            if (isset($buff['damageshield']))
+            }
+            if (isset($buff['damageshield'])) {
                 $activate = true;
-        } else if ($tag == "defense") {
-            if (isset($buff['invulnerable']) && $buff['invulnerable'])
+            }
+        } elseif ($tag == "defense") {
+            if (isset($buff['invulnerable']) && $buff['invulnerable']) {
                 $activate = true;
-            if (isset($buff['defmod']))
+            }
+            if (isset($buff['defmod'])) {
                 $activate = true;
-            if (isset($buff['badguyatkmod']))
+            }
+            if (isset($buff['badguyatkmod'])) {
                 $activate = true;
-            if (isset($buff['badguydmgmod']))
+            }
+            if (isset($buff['badguydmgmod'])) {
                 $activate = true;
-            if (isset($buff['lifetap']))
+            }
+            if (isset($buff['lifetap'])) {
                 $activate = true;
-            if (isset($buff['damageshield']))
+            }
+            if (isset($buff['damageshield'])) {
                 $activate = true;
+            }
         }
 
         // If this should activate now and it hasn't already activated,
@@ -142,17 +158,20 @@ function activate_buffs($tag)
             $hptoregen = (int) $buff['regen'];
             $hpdiff = $session['user']['maxhitpoints'] - $session['user']['hitpoints'];
             // Don't regen if we are above max hp
-            if ($hpdiff < 0)
+            if ($hpdiff < 0) {
                 $hpdiff = 0;
-            if ($hpdiff < $hptoregen)
+            }
+            if ($hpdiff < $hptoregen) {
                 $hptoregen = $hpdiff;
+            }
             $session['user']['hitpoints'] += $hptoregen;
             // Now, take abs value just incase this was a damaging buff
             $hptoregen = abs($hptoregen);
-            if ($hptoregen == 0)
+            if ($hptoregen == 0) {
                 $msg = $buff['effectnodmgmsg'];
-            else
+            } else {
                 $msg = $buff['effectmsg'];
+            }
 
             if (is_array($msg)) {
                 $msg = sprintf_translate($msg);
@@ -189,8 +208,9 @@ function activate_buffs($tag)
                                 }
                             }
                         }
-                        if (!$unset)
+                        if (!$unset) {
                             $newcompanions[$name] = $companion;
+                        }
                     }
                     $companions = $newcompanions; // Seemed to need this...
                 }
@@ -198,8 +218,9 @@ function activate_buffs($tag)
         }
         if (isset($buff['minioncount']) && $tag == "roundstart" && ((isset($buff['areadamage']) && $buff['areadamage'] == true) || $badguy['istarget'] == true) && $badguy['dead'] == false) {
             $who = -1;
-            if (isset($buff['maxbadguydamage']) &&
-                    $buff['maxbadguydamage'] <> 0) {
+            if (isset($buff['maxbadguydamage'])
+                && $buff['maxbadguydamage'] <> 0
+            ) {
                 $max = $buff['maxbadguydamage'];
                 $min = isset($buff['minbadguydamage']) ? $buff['minbadguydamage'] : 0;
                 $who = 0;
@@ -218,31 +239,33 @@ function activate_buffs($tag)
                         $badguy['dead'] = true;
                         $count = 1;
                     }
-                } else if ($who == 1) {
+                } elseif ($who == 1) {
                     $session['user']['hitpoints'] -= $damage;
                 }
                 if ($damage < 0) {
                     $msg = $buff['effectfailmsg'];
-                } else if ($damage == 0) {
+                } elseif ($damage == 0) {
                     $msg = $buff['effectnodmgmsg'];
-                } else if ($damage > 0) {
+                } elseif ($damage > 0) {
                     $msg = $buff['effectmsg'];
                 }
                 if (is_array($msg)) {
                     $msg = sprintf_translate($msg);
                     $msg = substitute("`)" . $msg . "`0`n", array("{damage}"), array(abs($damage)));
                     output_notl($msg); //Here it's already translated
-                } else if ($msg > "") {
+                } elseif ($msg > "") {
                     $msg = substitute_array("`)" . $msg . "`0`n", array("{damage}"), array(abs($damage)));
                     output($msg);
                 }
-                if ($badguy['dead'] == true)
+                if ($badguy['dead'] == true) {
                     break;
+                }
                 $minioncounter++;
             }
         }
-        if ($buff['schema'])
+        if ($buff['schema']) {
             tlschema();
+        }
     }
     tlschema();
     return $result;
@@ -253,10 +276,12 @@ function process_lifetaps($ltaps, $damage)
     global $session, $badguy;
     tlschema("buffs");
     foreach ($ltaps as $buff) {
-        if (isset($buff['suspended']) && $buff['suspended'])
+        if (isset($buff['suspended']) && $buff['suspended']) {
             continue;
-        if ($buff['schema'])
+        }
+        if ($buff['schema']) {
             tlschema($buff['schema']);
+        }
         $healhp = $session['user']['maxhitpoints'] - $session['user']['hitpoints'];
         if ($healhp < 0) {
             $healhp = 0;
@@ -272,7 +297,7 @@ function process_lifetaps($ltaps, $damage)
             }
             if ($healhp > 0) {
                 $msg = isset($buff['effectmsg']) ? $buff['effectmsg'] : "";
-            } else if ($healhp == 0) {
+            } elseif ($healhp == 0) {
                 $msg = isset($buff['effectfailmsg']) ? $buff['effectfailmsg'] : "";
             }
         }
@@ -281,12 +306,13 @@ function process_lifetaps($ltaps, $damage)
             $msg = sprintf_translate($msg);
             $msg = substitute("`)" . $msg . "`0`n", array("{damage}"), array($healhp));
             output_notl($msg); //Here it's already translated
-        } else if ($msg > "") {
+        } elseif ($msg > "") {
             $msg = substitute_array("`)" . $msg . "`0`n", array("{damage}"), array($healhp));
             output($msg);
         }
-        if ($buff['schema'])
+        if ($buff['schema']) {
             tlschema();
+        }
     }
     tlschema();
 }
@@ -311,7 +337,7 @@ function process_dmgshield($dshield, $damage)
             if (isset($buff['effectmsg'])) {
                 $msg = $buff['effectmsg'];
             }
-        } else if ($realdamage == 0) {
+        } elseif ($realdamage == 0) {
             if (isset($buff['effectfailmsg'])) {
                 $msg = $buff['effectfailmsg'];
             }
@@ -326,7 +352,7 @@ function process_dmgshield($dshield, $damage)
             $msg = sprintf_translate($msg);
             $msg = substitute("`)" . $msg . "`0`n", array("{damage}"), array($realdamage));
             output_notl($msg); //Here it's already translated
-        } else if ($msg > "") {
+        } elseif ($msg > "") {
             $msg = substitute_array("`)" . $msg . "`0`n", array("{damage}"), array($realdamage));
             output($msg);
         }
@@ -342,10 +368,12 @@ function expire_buffs()
     global $session, $badguy;
     tlschema("buffs");
     foreach ($session['bufflist'] as $key => $buff) {
-        if (array_key_exists('suspended', $buff) && $buff['suspended'])
+        if (array_key_exists('suspended', $buff) && $buff['suspended']) {
             continue;
-        if ($buff['schema'])
+        }
+        if ($buff['schema']) {
             tlschema($buff['schema']);
+        }
         if (array_key_exists('used', $buff) && $buff['used']) {
             $session['bufflist'][$key]['used'] = 0;
             if ($session['bufflist'][$key]['rounds'] > 0) {
@@ -367,8 +395,9 @@ function expire_buffs()
                 strip_buff($key);
             }
         }
-        if ($buff['schema'])
+        if ($buff['schema']) {
             tlschema();
+        }
     }
     tlschema();
 }

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 function soap(string $input, bool $debug = false, bool $skiphook = false): string
 {
     global $session;
-    require_once("lib/sanitize.php");
-    require_once('lib/sanitize.php');
+    include_once "lib/sanitize.php";
+    include_once 'lib/sanitize.php';
     $final_output = $input;
     $output = full_sanitize($input);
     $mix_mask = str_pad('', strlen($output), 'X');
@@ -34,13 +34,17 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
                         $times--;
                         if ($debug) {
                             output(
-                                    "This word is ok because it was caught by an exception: `b`^%s`7`b`n", $longword
+                                "This word is ok because it was caught by an exception: `b`^%s`7`b`n",
+                                $longword
                             );
                         }
                     } else {
                         if ($debug) {
                             output(
-                                    "`7This word is not ok: \"`%%s`7\"; it blocks on the pattern `i%s`i at \"`\$%s`7\".`n", $longword, $word, $shortword
+                                "`7This word is not ok: \"`%%s`7\"; it blocks on the pattern `i%s`i at \"`\$%s`7\".`n",
+                                $longword,
+                                $word,
+                                $shortword
                             );
                         }
                         $len = strlen($shortword);
@@ -68,7 +72,9 @@ function soap(string $input, bool $debug = false, bool $skiphook = false): strin
         }
         if ($session['user']['superuser'] & SU_EDIT_COMMENTS && $changed_content) {
             output(
-                    "`0The filter would have tripped on \"`#%s`0\" but since you're a moderator, I'm going to be lenient on you.  The text would have read, \"`#%s`0\"`n`n", $input, $final_output
+                "`0The filter would have tripped on \"`#%s`0\" but since you're a moderator, I'm going to be lenient on you.  The text would have read, \"`#%s`0\"`n`n",
+                $input,
+                $final_output
             );
             return $input;
         } else {
@@ -86,7 +92,8 @@ function good_word_list(): array
 {
     $nastyWords = db_prefix('nastywords');
     $sql = db_query_cached(
-            "SELECT * FROM $nastyWords WHERE type = 'good'", 'goodwordlist'
+        "SELECT * FROM $nastyWords WHERE type = 'good'",
+        'goodwordlist'
     );
     $row = db_fetch_assoc($sql);
     if (!empty($row['words'])) {

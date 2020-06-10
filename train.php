@@ -3,15 +3,15 @@
 //addnews ready
 // mail ready
 // translator ready
-require_once("common.php");
-require_once("lib/systemmail.php");
-require_once("lib/increment_specialty.php");
-require_once("lib/fightnav.php");
-require_once("lib/http.php");
-require_once("lib/taunt.php");
-require_once("lib/substitute.php");
-require_once("lib/villagenav.php");
-require_once("lib/experience.php");
+require_once "common.php";
+require_once "lib/systemmail.php";
+require_once "lib/increment_specialty.php";
+require_once "lib/fightnav.php";
+require_once "lib/http.php";
+require_once "lib/taunt.php";
+require_once "lib/substitute.php";
+require_once "lib/villagenav.php";
+require_once "lib/experience.php";
 
 tlschema("train");
 
@@ -43,8 +43,9 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
     $master['creaturewin'] = stripslashes($master['creaturewin']);
     $master['creaturelose'] = stripslashes($master['creaturelose']);
     $master['creatureweapon'] = stripslashes($master['creatureweapon']);
-    if ($master['creaturename'] == "Gadriel the Elven Ranger" &&
-            $session['user']['race'] == "Elf") {
+    if ($master['creaturename'] == "Gadriel the Elven Ranger"
+        && $session['user']['race'] == "Elf"
+    ) {
         $master['creaturewin'] = "You call yourself an Elf?? Maybe Half-Elf! Come back when you've been better trained.";
         $master['creaturelose'] = "It is only fitting that another Elf should best me.  You make good progress.";
     }
@@ -63,12 +64,13 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
             addnav("Superuser Gain level", "train.php?op=challenge&victory=1&master=$mid");
         }
         villagenav();
-    } else if ($op == "challenge") {
+    } elseif ($op == "challenge") {
         if (httpget('victory')) {
             $victory = true;
             $defeat = false;
-            if ($session['user']['experience'] < $exprequired)
+            if ($session['user']['experience'] < $exprequired) {
                 $session['user']['experience'] = $exprequired;
+            }
             $session['user']['seenmaster'] = 0;
         }
         if ($session['user']['seenmaster']) {
@@ -83,8 +85,9 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
                 $dk = 0;
                 restore_buff_fields();
                 while (list($key, $val) = each($session['user']['dragonpoints'])) {
-                    if ($val == "at" || $val == "de")
+                    if ($val == "at" || $val == "de") {
                         $dk++;
+                    }
                 }
                 $dk += (int) (($session['user']['maxhitpoints'] -
                         ($session['user']['level'] * 10)) / 5);
@@ -125,7 +128,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
                 villagenav();
             }
         }
-    } else if ($op == "question") {
+    } elseif ($op == "question") {
         checkday();
         output("You approach `^%s`0 timidly and inquire as to your standing in the class.", $master['creaturename']);
         if ($session['user']['experience'] >= $exprequired) {
@@ -139,7 +142,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
             addnav("Superuser Gain level", "train.php?op=challenge&victory=1&master=$mid");
         }
         villagenav();
-    } else if ($op == "autochallenge") {
+    } elseif ($op == "autochallenge") {
         addnav("Fight Your Master", "train.php?op=challenge&master=$mid");
         output("`^%s`0 has heard of your prowess as a warrior, and heard of rumors that you think you are so much more powerful than he that you don't even need to fight him to prove anything. ", $master['creaturename']);
         output("His ego is understandably bruised, and so he has come to find you.");
@@ -151,9 +154,11 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
         modulehook("master-autochallenge");
         if (getsetting('displaymasternews', 1)) {
             addnews(
-                    sprintf_translate(
-                            "`3%s`3 was hunted down by their master, `^%s`3, for being truant.", $session['user']['name'], $master['creaturename']
-                    )
+                sprintf_translate(
+                    "`3%s`3 was hunted down by their master, `^%s`3, for being truant.",
+                    $session['user']['name'],
+                    $master['creaturename']
+                )
             );
         }
     }
@@ -167,12 +172,12 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
     }
 
     if ($battle) {
-        require_once("lib/battle-skills.php");
-        require_once("lib/extended-battle.php");
+        include_once "lib/battle-skills.php";
+        include_once "lib/extended-battle.php";
         suspend_buffs('allowintrain', "`&Your pride prevents you from using extra abilities during the fight!`0`n");
         suspend_companions("allowintrain");
         if (!$victory) {
-            require_once("battle.php");
+            include_once "battle.php";
         }
         if ($victory) {
             $badguy['creaturelose'] = substitute_array($badguy['creaturelose']);
@@ -236,31 +241,44 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
             if ($session['user']['age'] == 1) {
                 if (getsetting('displaymasternews', 1)) {
                     addnews(
-                            sprintf_translate(
-                                    "`%%s`3 has defeated %s master, `%%s`3 to advance to level `^%s`3 after `^1`3 day!!", $session['user']['name'], ($session['user']['sex'] ? "her" : "his"), $badguy['creaturename'], $session['user']['level']
-                            )
+                        sprintf_translate(
+                            "`%%s`3 has defeated %s master, `%%s`3 to advance to level `^%s`3 after `^1`3 day!!",
+                            $session['user']['name'],
+                            ($session['user']['sex'] ? "her" : "his"),
+                            $badguy['creaturename'],
+                            $session['user']['level']
+                        )
                     );
                 }
             } else {
                 if (getsetting('displaymasternews', 1)) {
                     addnews(
-                            sprintf_translate(
-                                    "`%%s`3 has defeated %s master, `%%s`3 to advance to level `^%s`3 after `^%s`3 days!!", $session['user']['name'], ($session['user']['sex'] ? "her" : "his"), $badguy['creaturename'], $session['user']['level'], $session['user']['age']
-                            )
+                        sprintf_translate(
+                            "`%%s`3 has defeated %s master, `%%s`3 to advance to level `^%s`3 after `^%s`3 days!!",
+                            $session['user']['name'],
+                            ($session['user']['sex'] ? "her" : "his"),
+                            $badguy['creaturename'],
+                            $session['user']['level'],
+                            $session['user']['age']
+                        )
                     );
                 }
             }
-            if ($session['user']['hitpoints'] < $session['user']['maxhitpoints'])
+            if ($session['user']['hitpoints'] < $session['user']['maxhitpoints']) {
                 $session['user']['hitpoints'] = $session['user']['maxhitpoints'];
+            }
             modulehook("training-victory", $badguy);
-        }elseif ($defeat) {
+        } elseif ($defeat) {
             $taunt = select_taunt_array();
 
             if (getsetting('displaymasternews', 1)) {
                 addnews(
-                        sprintf_translate(
-                                "`%%s`5 has challenged their master, %s and lost!`n%s", $session['user']['name'], $badguy['creaturename'], $taunt
-                        )
+                    sprintf_translate(
+                        "`%%s`5 has challenged their master, %s and lost!`n%s",
+                        $session['user']['name'],
+                        $badguy['creaturename'],
+                        $taunt
+                    )
                 );
             }
             $session['user']['hitpoints'] = $session['user']['maxhitpoints'];
@@ -296,4 +314,3 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14) {
     villagenav();
 }
 page_footer();
-?>

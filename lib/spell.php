@@ -5,8 +5,9 @@ $spell_dictionary = array();
 function spell($input, $words = false, $prefix = "<span style='border: 1px dotted #FF0000;'>", $postfix = "</span>")
 {
     global $spell_dictionary;
-    if ($words === false)
+    if ($words === false) {
         $words = getsetting("dictionary", "/usr/share/dict/words");
+    }
     if (file_exists($words)) {
         if (!is_array($spell_dictionary) || count($spell_dictionary) == 0) {
             //retrieve dictionary
@@ -87,8 +88,9 @@ function spell($input, $words = false, $prefix = "<span style='border: 1px dotte
                         $found = true;
                     }
                     if (!$found) {
-                        if (preg_match("/[[:digit:]]/", $v))
+                        if (preg_match("/[[:digit:]]/", $v)) {
                             $found = true;
+                        }
                     }
                     if (!$found) {
                         $val = $val . $prefix . $v . $postfix;

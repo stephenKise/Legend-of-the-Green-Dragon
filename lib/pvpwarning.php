@@ -5,10 +5,11 @@ function pvpwarning($dokill = false)
     global $session;
     $days = getsetting("pvpimmunity", 5);
     $exp = getsetting("pvpminexp", 1500);
-    if ($session['user']['age'] <= $days &&
-            $session['user']['dragonkills'] == 0 &&
-            $session['user']['pk'] == 0 &&
-            $session['user']['experience'] <= $exp) {
+    if ($session['user']['age'] <= $days
+        && $session['user']['dragonkills'] == 0
+        && $session['user']['pk'] == 0
+        && $session['user']['experience'] <= $exp
+    ) {
         if ($dokill) {
             output("`\$Warning!`^ Since you were still under PvP immunity, but have chosen to attack another player, you have lost this immunity!!`n`n");
             $session['user']['pk'] = 1;

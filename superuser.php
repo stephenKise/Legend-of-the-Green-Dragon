@@ -3,16 +3,16 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/sanitize.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/sanitize.php";
+require_once "lib/http.php";
 
 check_su_access(0xFFFFFFFF & ~ SU_DOESNT_GIVE_GROTTO);
 addcommentary();
 tlschema("superuser");
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 $op = httpget('op');
@@ -41,61 +41,85 @@ if ($session['user']['sex']) {
 }
 commentdisplay("", "superuser", "Engage in idle conversation with other gods:", 25);
 addnav("Actions");
-if ($session['user']['superuser'] & SU_EDIT_PETITIONS)
+if ($session['user']['superuser'] & SU_EDIT_PETITIONS) {
     addnav("Petition Viewer", "viewpetition.php");
-if ($session['user']['superuser'] & SU_EDIT_COMMENTS)
+}
+if ($session['user']['superuser'] & SU_EDIT_COMMENTS) {
     addnav("C?Recent Commentary", "moderate.php");
-if ($session['user']['superuser'] & SU_EDIT_COMMENTS)
+}
+if ($session['user']['superuser'] & SU_EDIT_COMMENTS) {
     addnav("B?Player Bios", "bios.php");
-if ($session['user']['superuser'] & SU_EDIT_DONATIONS)
+}
+if ($session['user']['superuser'] & SU_EDIT_DONATIONS) {
     addnav("Donator Page", "donators.php");
-if (file_exists("paylog.php") &&
-        ($session['user']['superuser'] & SU_EDIT_PAYLOG)) {
+}
+if (file_exists("paylog.php")
+    && ($session['user']['superuser'] & SU_EDIT_PAYLOG)
+) {
     addnav("Payment Log", "paylog.php");
 }
-if ($session['user']['superuser'] & SU_RAW_SQL)
+if ($session['user']['superuser'] & SU_RAW_SQL) {
     addnav("Q?Run Raw SQL", "rawsql.php");
-if ($session['user']['superuser'] & SU_IS_TRANSLATOR)
+}
+if ($session['user']['superuser'] & SU_IS_TRANSLATOR) {
     addnav("U?Untranslated Texts", "untranslated.php");
+}
 
 addnav("Editors");
-if ($session['user']['superuser'] & SU_EDIT_USERS)
+if ($session['user']['superuser'] & SU_EDIT_USERS) {
     addnav("User Editor", "user.php");
-if ($session['user']['superuser'] & SU_EDIT_USERS)
+}
+if ($session['user']['superuser'] & SU_EDIT_USERS) {
     addnav("Title Editor", "titleedit.php");
-if ($session['user']['superuser'] & SU_EDIT_CREATURES)
+}
+if ($session['user']['superuser'] & SU_EDIT_CREATURES) {
     addnav("E?Creature Editor", "creatures.php");
-if ($session['user']['superuser'] & SU_EDIT_MOUNTS)
+}
+if ($session['user']['superuser'] & SU_EDIT_MOUNTS) {
     addnav("Mount Editor", "mounts.php");
-if ($session['user']['superuser'] & SU_EDIT_MOUNTS)
+}
+if ($session['user']['superuser'] & SU_EDIT_MOUNTS) {
     addnav("Companion Editor", "companions.php");
-if ($session['user']['superuser'] & SU_EDIT_CREATURES)
+}
+if ($session['user']['superuser'] & SU_EDIT_CREATURES) {
     addnav("Taunt Editor", "taunt.php");
-if ($session['user']['superuser'] & SU_EDIT_CREATURES)
+}
+if ($session['user']['superuser'] & SU_EDIT_CREATURES) {
     addnav("Master Editor", "masters.php");
-if (file_exists("looteditor.php") &&
-        $session['user']['superuser'] & SU_EDIT_ITEMS) {
+}
+if (file_exists("looteditor.php")
+    && $session['user']['superuser'] & SU_EDIT_ITEMS
+) {
     addnav("Loot Editor", "looteditor.php");
 }
-if ($session['user']['superuser'] & SU_EDIT_EQUIPMENT)
+if ($session['user']['superuser'] & SU_EDIT_EQUIPMENT) {
     addnav("Weapon Editor", "weaponeditor.php");
-if ($session['user']['superuser'] & SU_EDIT_EQUIPMENT)
+}
+if ($session['user']['superuser'] & SU_EDIT_EQUIPMENT) {
     addnav("Armor Editor", "armoreditor.php");
-if ($session['user']['superuser'] & SU_EDIT_COMMENTS)
+}
+if ($session['user']['superuser'] & SU_EDIT_COMMENTS) {
     addnav("Nasty Word Editor", "badword.php");
-if ($session['user']['superuser'] & SU_MANAGE_MODULES)
+}
+if ($session['user']['superuser'] & SU_MANAGE_MODULES) {
     addnav("Manage Modules", "modules.php");
+}
 
-if ($session['user']['superuser'] & SU_EDIT_CONFIG)
+if ($session['user']['superuser'] & SU_EDIT_CONFIG) {
     addnav("Mechanics");
-if ($session['user']['superuser'] & SU_EDIT_CONFIG)
+}
+if ($session['user']['superuser'] & SU_EDIT_CONFIG) {
     addnav("Game Settings", "configuration.php");
-if ($session['user']['superuser'] & SU_EDIT_CONFIG)
+}
+if ($session['user']['superuser'] & SU_EDIT_CONFIG) {
     addnav("Referring URLs", "referers.php");
-if ($session['user']['superuser'] & SU_EDIT_CONFIG)
+}
+if ($session['user']['superuser'] & SU_EDIT_CONFIG) {
     addnav("Stats", "stats.php");
-/* // */if (file_exists("gamelog.php") &&
-        /* // */ $session['user']['superuser'] & SU_EDIT_CONFIG) {
+}
+/* // */if (file_exists("gamelog.php")
+    /* // */ && $session['user']['superuser'] & SU_EDIT_CONFIG
+) {
     /* // */ addnav("Gamelog Viewer", "gamelog.php");
     /* // */
 }
@@ -105,4 +129,3 @@ addnav("Module Configurations");
 modulehook("superuser", array(), true);
 
 page_footer();
-?>

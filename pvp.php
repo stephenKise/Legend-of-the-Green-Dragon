@@ -3,14 +3,14 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/fightnav.php");
-require_once("lib/pvpwarning.php");
-require_once("lib/pvplist.php");
-require_once("lib/pvpsupport.php");
-require_once("lib/http.php");
-require_once("lib/taunt.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/fightnav.php";
+require_once "lib/pvpwarning.php";
+require_once "lib/pvplist.php";
+require_once "lib/pvpsupport.php";
+require_once "lib/http.php";
+require_once "lib/taunt.php";
+require_once "lib/villagenav.php";
 
 tlschema("pvp");
 
@@ -35,7 +35,7 @@ if ($op == "" && $act != "attack") {
     addnav("L?Refresh List of Warriors", "pvp.php");
     pvplist();
     villagenav();
-} else if ($act == "attack") {
+} elseif ($act == "attack") {
     $name = httpget('name');
     $badguy = setup_target($name);
     $options['type'] = "pvp";
@@ -79,8 +79,7 @@ if ($op == "fight" || $op == "run") {
     $battle = true;
 }
 if ($battle) {
-
-    require_once("battle.php");
+    include_once "battle.php";
 
     if ($victory) {
         $killedin = $badguy['location'];
@@ -91,15 +90,20 @@ if ($battle) {
         if (!$handled) {
             if ($killedin == $iname) {
                 addnews(
-                        sprintf_translate(
-                                "`4%s`3 defeated `4%s`3 by sneaking into their room in the inn!", $session['user']['name'], $badguy['creaturename']
-                        )
+                    sprintf_translate(
+                        "`4%s`3 defeated `4%s`3 by sneaking into their room in the inn!",
+                        $session['user']['name'],
+                        $badguy['creaturename']
+                    )
                 );
             } else {
                 addnews(
-                        sprintf_translate(
-                                "`4%s`3 defeated `4%s`3 in fair combat in the fields of %s.", $session['user']['name'], $badguy['creaturename'], $killedin
-                        )
+                    sprintf_translate(
+                        "`4%s`3 defeated `4%s`3 in fair combat in the fields of %s.",
+                        $session['user']['name'],
+                        $badguy['creaturename'],
+                        $killedin
+                    )
                 );
             }
         }
@@ -126,24 +130,31 @@ if ($battle) {
         if (!$handled) {
             if ($killedin == $iname) {
                 addnews(
-                        sprintf_translate(
-                                "`%%s`5 has been slain while breaking into the inn room of `^%s`5 in order to attack them.`n%s`0", $session['user']['name'], $badguy['creaturename'], $taunt
-                        )
+                    sprintf_translate(
+                        "`%%s`5 has been slain while breaking into the inn room of `^%s`5 in order to attack them.`n%s`0",
+                        $session['user']['name'],
+                        $badguy['creaturename'],
+                        $taunt
+                    )
                 );
             } else {
                 addnews(
-                        sprintf_translate(
-                                "`%%s`5 has been slain while attacking `^%s`5 in the fields of `&%s`5.`n%s`0", $session['user']['name'], $badguy['creaturename'], $killedin, $taunt
-                        )
+                    sprintf_translate(
+                        "`%%s`5 has been slain while attacking `^%s`5 in the fields of `&%s`5.`n%s`0",
+                        $session['user']['name'],
+                        $badguy['creaturename'],
+                        $killedin,
+                        $taunt
+                    )
                 );
             }
         }
     } else {
         $extra = "";
-        if (httpget('inn'))
+        if (httpget('inn')) {
             $extra = "?inn=1";
+        }
         fightnav(false, false, "pvp.php$extra");
     }
 }
 page_footer();
-?>

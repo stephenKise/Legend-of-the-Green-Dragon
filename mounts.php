@@ -3,9 +3,9 @@
 // addnews ready
 // mail ready
 // translator ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/showform.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/showform.php";
 
 $op = httpget('op');
 $id = httpget('id');
@@ -34,7 +34,7 @@ tlschema("mounts");
 
 page_header("Mount Editor");
 
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 addnav("Mount Editor");
@@ -73,12 +73,13 @@ if ($op == "deactivate") {
     $result = db_query_cached($sql, "mountdata-$id", 3600);
     $row = db_fetch_assoc($result);
     $buff = unserialize($row['mountbuff']);
-    if ($buff['schema'] == "")
+    if ($buff['schema'] == "") {
         $buff['schema'] = "mounts";
+    }
     apply_buff("mount", $buff);
     $op = "";
     httpset("op", "");
-}elseif ($op == "save") {
+} elseif ($op == "save") {
     $subop = httpget("subop");
     if ($subop == "") {
         $buff = array();
@@ -134,7 +135,8 @@ if ($op == "") {
     while ($row = db_fetch_assoc($result)) {
         $mounts[$row['hashorse']] = $row['c'];
     }
-    rawoutput("<script language='JavaScript'>
+    rawoutput(
+        "<script language='JavaScript'>
 	function getUserInfo(id,divid){
 		var filename='mounts.php?op=xml&id='+id;
 		var xmldom;
@@ -153,7 +155,8 @@ if ($op == "") {
 		}
 		document.getElementById('mountusers'+divid).innerHTML=output;
 	}
-	</script>");
+	</script>"
+    );
 
     $sql = "SELECT * FROM " . db_prefix("mounts") . " ORDER BY mountcategory, mountcostgems, mountcostgold";
     $ops = translate_inline("Ops");
@@ -270,79 +273,115 @@ if ($op == "") {
 function mountform($mount)
 {
     // Let's sanitize the data
-    if (!isset($mount['mountname']))
+    if (!isset($mount['mountname'])) {
         $mount['mountname'] = "";
-    if (!isset($mount['mountid']))
+    }
+    if (!isset($mount['mountid'])) {
         $mount['mountid'] = "";
-    if (!isset($mount['mountdesc']))
+    }
+    if (!isset($mount['mountdesc'])) {
         $mount['mountdesc'] = "";
-    if (!isset($mount['mountcategory']))
+    }
+    if (!isset($mount['mountcategory'])) {
         $mount['mountcategory'] = "";
-    if (!isset($mount['mountlocation']))
+    }
+    if (!isset($mount['mountlocation'])) {
         $mount['mountlocation'] = 'all';
-    if (!isset($mount['mountdkcost']))
+    }
+    if (!isset($mount['mountdkcost'])) {
         $mount['mountdkcost'] = 0;
-    if (!isset($mount['mountcostgems']))
+    }
+    if (!isset($mount['mountcostgems'])) {
         $mount['mountcostgems'] = 0;
-    if (!isset($mount['mountcostgold']))
+    }
+    if (!isset($mount['mountcostgold'])) {
         $mount['mountcostgold'] = 0;
-    if (!isset($mount['mountfeedcost']))
+    }
+    if (!isset($mount['mountfeedcost'])) {
         $mount['mountfeedcost'] = 0;
-    if (!isset($mount['mountforestfights']))
+    }
+    if (!isset($mount['mountforestfights'])) {
         $mount['mountforestfights'] = 0;
-    if (!isset($mount['newday']))
+    }
+    if (!isset($mount['newday'])) {
         $mount['newday'] = "";
-    if (!isset($mount['recharge']))
+    }
+    if (!isset($mount['recharge'])) {
         $mount['recharge'] = "";
-    if (!isset($mount['partrecharge']))
+    }
+    if (!isset($mount['partrecharge'])) {
         $mount['partrecharge'] = "";
-    if (!isset($mount['mountbuff']))
+    }
+    if (!isset($mount['mountbuff'])) {
         $mount['mountbuff'] = array();
-    if (!isset($mount['mountactive']))
+    }
+    if (!isset($mount['mountactive'])) {
         $mount['mountactive'] = 0;
-    if (!isset($mount['mountbuff']['name']))
+    }
+    if (!isset($mount['mountbuff']['name'])) {
         $mount['mountbuff']['name'] = "";
-    if (!isset($mount['mountbuff']['roundmsg']))
+    }
+    if (!isset($mount['mountbuff']['roundmsg'])) {
         $mount['mountbuff']['roundmsg'] = "";
-    if (!isset($mount['mountbuff']['wearoff']))
+    }
+    if (!isset($mount['mountbuff']['wearoff'])) {
         $mount['mountbuff']['wearoff'] = "";
-    if (!isset($mount['mountbuff']['effectmsg']))
+    }
+    if (!isset($mount['mountbuff']['effectmsg'])) {
         $mount['mountbuff']['effectmsg'] = "";
-    if (!isset($mount['mountbuff']['effectnodmgmsg']))
+    }
+    if (!isset($mount['mountbuff']['effectnodmgmsg'])) {
         $mount['mountbuff']['effectnodmgmsg'] = "";
-    if (!isset($mount['mountbuff']['effectfailmsg']))
+    }
+    if (!isset($mount['mountbuff']['effectfailmsg'])) {
         $mount['mountbuff']['effectfailmsg'] = "";
-    if (!isset($mount['mountbuff']['rounds']))
+    }
+    if (!isset($mount['mountbuff']['rounds'])) {
         $mount['mountbuff']['rounds'] = 0;
-    if (!isset($mount['mountbuff']['atkmod']))
+    }
+    if (!isset($mount['mountbuff']['atkmod'])) {
         $mount['mountbuff']['atkmod'] = "";
-    if (!isset($mount['mountbuff']['defmod']))
+    }
+    if (!isset($mount['mountbuff']['defmod'])) {
         $mount['mountbuff']['defmod'] = "";
-    if (!isset($mount['mountbuff']['invulnerable']))
+    }
+    if (!isset($mount['mountbuff']['invulnerable'])) {
         $mount['mountbuff']['invulnerable'] = "";
-    if (!isset($mount['mountbuff']['regen']))
+    }
+    if (!isset($mount['mountbuff']['regen'])) {
         $mount['mountbuff']['regen'] = "";
-    if (!isset($mount['mountbuff']['minioncount']))
+    }
+    if (!isset($mount['mountbuff']['minioncount'])) {
         $mount['mountbuff']['minioncount'] = "";
-    if (!isset($mount['mountbuff']['minbadguydamage']))
+    }
+    if (!isset($mount['mountbuff']['minbadguydamage'])) {
         $mount['mountbuff']['minbadguydamage'] = "";
-    if (!isset($mount['mountbuff']['maxbadguydamage']))
+    }
+    if (!isset($mount['mountbuff']['maxbadguydamage'])) {
         $mount['mountbuff']['maxbadguydamage'] = "";
+    }
 
-    if (!isset($mount['mountbuff']['mingoodguydamage']))
+    if (!isset($mount['mountbuff']['mingoodguydamage'])) {
         $mount['mountbuff']['mingoodguydamage'] = "";
-    if (!isset($mount['mountbuff']['maxgoodguydamage']))
+    }
+    if (!isset($mount['mountbuff']['maxgoodguydamage'])) {
         $mount['mountbuff']['maxgoodguydamage'] = "";
-    if (!isset($mount['mountbuff']['lifetap']))
+    }
+    if (!isset($mount['mountbuff']['lifetap'])) {
         $mount['mountbuff']['lifetap'] = "";
-    if (!isset($mount['mountbuff']['damageshield']))
+    }
+    if (!isset($mount['mountbuff']['damageshield'])) {
         $mount['mountbuff']['damageshield'] = "";
-    if (!isset($mount['mountbuff']['badguydmgmod']))
+    }
+    if (!isset($mount['mountbuff']['badguydmgmod'])) {
         $mount['mountbuff']['badguydmgmod'] = "";
-    if (!isset($mount['mountbuff']['badguyatkmod']))
+    }
+    if (!isset($mount['mountbuff']['badguyatkmod'])) {
         $mount['mountbuff']['badguyatkmod'] = "";
-    if (!isset($mount['mountbuff']['badguydefmod']))
+    }
+    if (!isset($mount['mountbuff']['badguydefmod'])) {
         $mount['mountbuff']['badguydefmod'] = "";
+    }
 
     rawoutput("<form action='mounts.php?op=save&id={$mount['mountid']}' method='POST'>");
     rawoutput("<input type='hidden' name='mount[mountactive]' value=\"" . $mount['mountactive'] . "\">");
@@ -481,4 +520,3 @@ function mountform($mount)
 }
 
 page_footer();
-?>

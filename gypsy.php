@@ -3,10 +3,10 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/commentary.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/commentary.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("gypsy");
 
@@ -39,11 +39,11 @@ if ($op == "pay") {
     output("\"`!For you, %s, the price is a trifling `^%s`! gold.`5\", she rasps.", translate_inline($session['user']['sex'] ? "my pretty" : "my handsome"), $cost);
     addnav("Seance");
     addnav(array("Pay to talk to the dead (%s gold)", $cost), "gypsy.php?op=pay");
-    if ($session['user']['superuser'] & SU_EDIT_COMMENTS)
+    if ($session['user']['superuser'] & SU_EDIT_COMMENTS) {
         addnav("Superuser Entry", "gypsy.php?op=talk");
+    }
     addnav("Other");
     addnav("Forget it", "village.php");
     modulehook("gypsy");
 }
 page_footer();
-?>

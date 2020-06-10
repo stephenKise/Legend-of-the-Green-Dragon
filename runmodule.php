@@ -7,12 +7,12 @@
 define("ALLOW_ANONYMOUS", true);
 define("OVERRIDE_FORCED_NAV", true);
 
-require_once("lib/http.php");
+require_once "lib/http.php";
 
-require_once("common.php");
-require_once("lib/dump_item.php");
-require_once("lib/modules.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/dump_item.php";
+require_once "lib/modules.php";
+require_once "lib/villagenav.php";
 
 if (injectmodule(httpget('module'), (httpget('admin') ? true : false))) {
     $info = get_module_info(httpget('module'));
@@ -51,4 +51,3 @@ if (injectmodule(httpget('module'), (httpget('admin') ? true : false))) {
     output("You are attempting to use a module which is no longer active, or has been uninstalled.");
     page_footer();
 }
-?>

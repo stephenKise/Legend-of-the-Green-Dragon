@@ -6,8 +6,8 @@
 ob_start();
 set_error_handler("payment_error");
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 tlschema("payment");
 
@@ -68,8 +68,9 @@ if (!$fp) {
                     $emsg .= "Already logged this transaction ID ($txn_id)\n";
                     payment_error(E_ERROR, $emsg, __FILE__, __LINE__);
                 }
-                if (($receiver_email != "logd@mightye.org") &&
-                        ($receiver_email != getsetting("paypalemail", ""))) {
+                if (($receiver_email != "logd@mightye.org")
+                    && ($receiver_email != getsetting("paypalemail", ""))
+                ) {
                     $emsg = "This payment isn't to me!  It's to $receiver_email.\n";
                     payment_error(E_WARNING, $emsg, __FILE__, __LINE__);
                 }
@@ -77,7 +78,7 @@ if (!$fp) {
             } else {
                 payment_error(E_ERROR, "Payment Status isn't 'Completed' it's '$payment_status'", __FILE__, __LINE__);
             }
-        } else if (strcmp($res, "INVALID") == 0) {
+        } elseif (strcmp($res, "INVALID") == 0) {
             // log for manual investigation
             payment_error(E_ERROR, "Payment Status is 'INVALID'!\n\nPOST data:`n" . serialize($_POST), __FILE__, __LINE__);
         }
@@ -105,8 +106,9 @@ function writelog($response)
             // we received back, with out counting the fees, which we
             // receive under a different transaction, but get no
             // notification for.
-            if ($txn_type == "reversal")
+            if ($txn_type == "reversal") {
                 $donation -= $payment_fee;
+            }
 
             $hookresult = modulehook("donation_adjustments", array("points" => $donation * 100, "amount" => $donation, "acctid" => $acctid, "messages" => array()));
             $hookresult['points'] = round($hookresult['points']);
@@ -121,8 +123,9 @@ function writelog($response)
             foreach ($hookresult['messages'] as $id => $message) {
                 debuglog($message, false, $acctid, "donation", 0, false);
             }
-            if (db_affected_rows() > 0)
+            if (db_affected_rows() > 0) {
                 $processed = 1;
+            }
             modulehook("donation", array("id" => $acctid, "amt" => $donation * 100, "manual" => false));
         }
     }
@@ -188,8 +191,9 @@ if ($payment_errors > "") {
 }
 $output = ob_get_contents();
 if ($output > "") {
-    if ($adminEmail == "")
+    if ($adminEmail == "") {
         $adminEmail = "trash@mightye.org";
+    }
     echo "<b>GET:</b><pre>";
     reset($_GET);
     var_dump($_GET);
@@ -203,4 +207,3 @@ if ($output > "") {
     mail($adminEmail, "Serious LoGD Payment Problems on {$_SERVER['HTTP_HOST']}", ob_get_contents(), "Content-Type: text/html");
 }
 ob_end_clean();
-?>

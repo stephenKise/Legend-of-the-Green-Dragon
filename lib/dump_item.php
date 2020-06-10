@@ -3,10 +3,11 @@
 function dump_item($item)
 {
     $out = "";
-    if (is_array($item))
+    if (is_array($item)) {
         $temp = $item;
-    else
+    } else {
         $temp = @unserialize($item);
+    }
     if (is_array($temp)) {
         $out .= "array(" . count($temp) . ") {<div style='padding-left: 20pt;'>";
         while (list($key, $val) = @each($temp)) {
@@ -22,10 +23,11 @@ function dump_item($item)
 function dump_item_ascode($item, $indent = "\t")
 {
     $out = "";
-    if (is_array($item))
+    if (is_array($item)) {
         $temp = $item;
-    else
+    } else {
         $temp = @unserialize($item);
+    }
     if (is_array($temp)) {
         $out .= "array(\n$indent";
         $row = array();

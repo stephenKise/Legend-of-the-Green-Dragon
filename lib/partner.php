@@ -8,7 +8,7 @@ function get_partner(int $player = 0): string
     $accounts = db_prefix('accounts');
     if ($player <> 0) {
         $sql = db_query(
-                "SELECT a.sex, b.name FROM $accounts AS a
+            "SELECT a.sex, b.name FROM $accounts AS a
             LEFT JOIN $accounts AS b ON a.marriedto = b.acctid
             WHERE a.acctid = '$player'"
         );
@@ -17,7 +17,7 @@ function get_partner(int $player = 0): string
             $partner = $row['name'];
         } else {
             db_query(
-                    "UPDATE $accounts SET marriedto = '0'
+                "UPDATE $accounts SET marriedto = '0'
                 WHERE acctid = '$player'"
             );
             $partner = (
@@ -28,7 +28,7 @@ function get_partner(int $player = 0): string
         }
     } else {
         $sql = db_query(
-                "SELECT name FROM $accounts
+            "SELECT name FROM $accounts
             WHERE acctid = '{$session['user']['marriedto']}'"
         );
         if ($row = db_fetch_assoc($sql)) {

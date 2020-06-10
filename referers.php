@@ -3,15 +3,16 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
+require_once "common.php";
 
 tlschema("referers");
 
 check_su_access(SU_EDIT_CONFIG);
 
 $expire = getsetting("expirecontent", 180);
-if ($expire > 0)
+if ($expire > 0) {
     $sql = "DELETE FROM " . db_prefix("referers") . " WHERE last<'" . date("Y-m-d H:i:s", strtotime("-" . $expire . " days")) . "'";
+}
 db_query($sql);
 $op = httpget('op');
 
@@ -22,13 +23,14 @@ if ($op == "rebuild") {
     for ($i = 0; $i < $number; $i++) {
         $row = db_fetch_assoc($result);
         $site = str_replace("http://", "", $row['uri']);
-        if (strpos($site, "/"))
+        if (strpos($site, "/")) {
             $site = substr($site, 0, strpos($site, "/"));
+        }
         $sql = "UPDATE " . db_prefix("referers") . " SET site='" . addslashes($site) . "' WHERE refererid='{$row['refererid']}'";
         db_query($sql);
     }
 }
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Referer Options");
 addnav("", $_SERVER['REQUEST_URI']);
@@ -42,8 +44,9 @@ addnav("Rebuild Sites", "referers.php?op=rebuild");
 
 page_header("Referers");
 $order = "count DESC";
-if ($sort != "")
+if ($sort != "") {
     $order = $sort;
+}
 $sql = "SELECT SUM(count) AS count, MAX(last) AS last,site FROM " . db_prefix("referers") . " GROUP BY site ORDER BY $order LIMIT 100";
 $count = translate_inline("Count");
 $last = translate_inline("Last");
@@ -82,17 +85,18 @@ for ($i = 0; $i < $number; $i++) {
             //output((int)($diffsecs/86400)."d".(int)($diffsecs/3600%3600)."h".(int)($diffsecs/60%60)."m".(int)($diffsecs%60)."s");
             output_notl(dhms($diffsecs));
             rawoutput("</td><td valign='top'>");
-            if ($row1['uri'] > "")
+            if ($row1['uri'] > "") {
                 rawoutput("<a href='" . HTMLEntities($row1['uri'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "' target='_blank'>" . HTMLEntities(substr($row1['uri'], 0, 100)) . "</a>");
-            else
+            } else {
                 output_notl($none);
+            }
             output_notl("`n");
             rawoutput("</td><td valign='top'>");
             output_notl($row1['dest'] == '' ? $notset : $row1['dest']);
             rawoutput("</td><td valign='top'>");
             output_notl($row1['ip'] == '' ? $notset : $row1['ip']);
             rawoutput("</td></tr>");
-        }else {
+        } else {
             $skippedcount++;
             $skippedtotal += $row1['count'];
         }
@@ -106,4 +110,3 @@ for ($i = 0; $i < $number; $i++) {
 }
 rawoutput("</table>");
 page_footer();
-?>

@@ -6,8 +6,9 @@ $oldvalues = stripslashes(httppost('oldvalues'));
 $oldvalues = unserialize($oldvalues);
 // Handle recombining the old name
 $otitle = $oldvalues['title'];
-if ($oldvalues['ctitle'])
+if ($oldvalues['ctitle']) {
     $otitle = $oldvalues['ctitle'];
+}
 $oldvalues['name'] = $otitle . ' ' . $oldvalues['name'];
 $post = httpallpost();
 reset($post);
@@ -26,8 +27,9 @@ while (list($key, $val) = each($post)) {
         } elseif ($key == "superuser") {
             $value = 0;
             while (list($k, $v) = each($val)) {
-                if ($v)
+                if ($v) {
                     $value += (int) $k;
+                }
             }
             //strip off an attempt to set privs that the user doesn't
             //have authority to set.
@@ -137,8 +139,9 @@ while (list($key, $val) = each($post)) {
 $sql = substr($sql, 0, strlen($sql) - 1);
 $sql = "UPDATE " . db_prefix("accounts") . " SET " . $sql . " WHERE acctid=\"$userid\"";
 $petition = httpget("returnpetition");
-if ($petition != "")
+if ($petition != "") {
     addnav("", "viewpetition.php?op=view&id=$petition");
+}
 addnav("", "user.php");
 if ($updates > 0) {
     db_query($sql);
@@ -149,4 +152,3 @@ if ($updates > 0) {
 }
 $op = "edit";
 httpset($op, "edit");
-?>

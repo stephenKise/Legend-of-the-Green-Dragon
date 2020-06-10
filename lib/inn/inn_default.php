@@ -32,8 +32,9 @@ if (!$skipinndesc) {
         output("You pelt into the inn as if the Devil himself is at your heels.  Slowly you catch your breath and look around.`n");
         output("%s`0 catches your eye and then looks away in disgust at your cowardice!`n`n", $partner);
         output("You `\$lose`0 a charm point.`n`n");
-        if ($session['user']['charm'] > 0)
+        if ($session['user']['charm'] > 0) {
             $session['user']['charm'] --;
+        }
     } else {
         output("You duck into a dim tavern that you know well.");
         output("The pungent aroma of pipe tobacco fills the air.`n");
@@ -63,4 +64,3 @@ if (!$skipinndesc) {
 }
 modulehook("inn", array());
 module_display_events("inn", "inn.php");
-?>

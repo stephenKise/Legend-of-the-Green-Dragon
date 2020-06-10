@@ -14,12 +14,14 @@ function do_forced_nav($anonymous, $overrideforced)
             $session['user'] = db_fetch_assoc($result);
             $baseaccount = $session['user'];
             $session['bufflist'] = unserialize($session['user']['bufflist']);
-            if (!is_array($session['bufflist']))
+            if (!is_array($session['bufflist'])) {
                 $session['bufflist'] = array();
+            }
             $session['user']['dragonpoints'] = unserialize($session['user']['dragonpoints']);
             $session['user']['prefs'] = unserialize($session['user']['prefs']);
-            if (!is_array($session['user']['dragonpoints']))
+            if (!is_array($session['user']['dragonpoints'])) {
                 $session['user']['dragonpoints'] = array();
+            }
             if (is_array(json_decode($session['user']['allowednavs'], true))) {
                 $session['allowednavs'] = json_decode($session['user']['allowednavs'], true);
             } else {
@@ -36,7 +38,8 @@ function do_forced_nav($anonymous, $overrideforced)
         }
         db_free_result($result);
         if ((isset($session['allowednavs'][$cleanRequest]) || isset($session['allowednavs'][$REQUEST_URI]))
-            && $overrideforced !== true) {
+            && $overrideforced !== true
+        ) {
             $session['allowednavs'] = array();
         } else {
             if ($overrideforced !== true) {

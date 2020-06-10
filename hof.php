@@ -6,9 +6,9 @@
 // New Hall of Fame features by anpera
 // http://www.anpera.net/forum/viewforum.php?f=27
 
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("hof");
 
@@ -23,11 +23,13 @@ villagenav();
 $playersperpage = 50;
 
 $op = httpget('op');
-if ($op == "")
+if ($op == "") {
     $op = "kills";
+}
 $subop = httpget('subop');
-if ($subop == "")
+if ($subop == "") {
     $subop = "most";
+}
 
 $sql = "SELECT count(acctid) AS c FROM " . db_prefix("accounts") . " WHERE $standardwhere";
 $extra = "";
@@ -41,11 +43,13 @@ $row = db_fetch_assoc($result);
 $totalplayers = $row['c'];
 
 $page = (int) httpget('page');
-if ($page == 0)
+if ($page == 0) {
     $page = 1;
+}
 $pageoffset = $page;
-if ($pageoffset > 0)
+if ($pageoffset > 0) {
     $pageoffset--;
+}
 $pageoffset *= $playersperpage;
 $from = $pageoffset + 1;
 $to = min($pageoffset + $playersperpage, $totalplayers);
@@ -81,18 +85,21 @@ function display_table($title, $sql, $none = false, $foot = false, $data_header 
     global $session, $from, $to, $page, $playersperpage, $totalplayers;
 
     $title = translate_inline($title);
-    if ($foot !== false)
+    if ($foot !== false) {
         $foot = translate_inline($foot);
-    if ($none !== false)
+    }
+    if ($none !== false) {
         $none = translate_inline($none);
-    else
+    } else {
         $none = translate_inline("No players found.");
+    }
     if ($data_header !== false) {
         $data_header = translate_inline($data_header);
         reset($data_header);
     }
-    if ($tag !== false)
+    if ($tag !== false) {
         $tag = translate_inline($tag);
+    }
     $rank = translate_inline("Rank");
     $name = translate_inline("Name");
 
@@ -127,12 +134,14 @@ function display_table($title, $sql, $none = false, $foot = false, $data_header 
                 for ($j = 0; $j < count($data_header); $j++) {
                     $id = "data" . ($j + 1);
                     $val = $row[$id];
-                    if (isset($translate[$id]) &&
-                            $translate[$id] == 1 && !is_numeric($val)) {
+                    if (isset($translate[$id])
+                        && $translate[$id] == 1 && !is_numeric($val)
+                    ) {
                         $val = translate_inline($val);
                     }
-                    if ($tag !== false)
+                    if ($tag !== false) {
                         $val = $val . " " . $tag[$j];
+                    }
                     output_notl("<td align='right'>%s</td>", $val, true);
                 }
             }
@@ -140,8 +149,9 @@ function display_table($title, $sql, $none = false, $foot = false, $data_header 
         }
     }
     rawoutput("</table>");
-    if ($foot !== false)
+    if ($foot !== false) {
         output_notl("`n`c%s`c", $foot);
+    }
 }
 
 if ($op == "days") {
@@ -170,8 +180,9 @@ if ($op == "money") {
     $sql = "SELECT name,(CAST(gold as signed)+goldinbank+round((((rand()*10)-5)/100)*(CAST(gold as signed)+goldinbank))) AS data1 FROM " . db_prefix("accounts") . " WHERE $standardwhere ORDER BY data1 $order, level $order, experience $order, acctid $order LIMIT $limit";
     $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere AND (goldinbank+CAST(gold as signed)+round((((rand()*10)-5)/100)*(goldinbank+CAST(gold as signed)))) $meop " . ($session['user']['goldinbank'] + $session['user']['gold']);
     $adverb = "richest";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "poorest";
+    }
     $title = "The $adverb warriors in the land";
     $foot = "(Gold Amount is accurate to +/- 5%)";
     $headers = array("Estimated Gold");
@@ -180,18 +191,20 @@ if ($op == "money") {
 } elseif ($op == "gems") {
     $sql = "SELECT name FROM " . db_prefix("accounts") . " WHERE $standardwhere ORDER BY gems $order, level $order, experience $order, acctid $order LIMIT $limit";
     $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere AND gems $meop {$session['user']['gems']}";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "least";
-    else
+    } else {
         $adverb = "most";
+    }
     $title = "The warriors with the $adverb gems in the land";
     $table = array($title, $sql);
 } elseif ($op == "charm") {
     $sql = "SELECT name,$sexsel AS data1, $racesel AS data2 FROM " . db_prefix("accounts") . " WHERE $standardwhere ORDER BY charm $order, level $order, experience $order, acctid $order LIMIT $limit";
     $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere AND charm $meop {$session['user']['charm']}";
     $adverb = "most beautiful";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "ugliest";
+    }
     $title = "The $adverb warriors in the land.";
     $headers = array("Gender", "Race");
     $translate = array("data1" => 1, "data2" => 1);
@@ -200,8 +213,9 @@ if ($op == "money") {
     $sql = "SELECT name,level AS data2 , $racesel as data1 FROM " . db_prefix("accounts") . " WHERE $standardwhere ORDER BY maxhitpoints $order, level $order, experience $order, acctid $order LIMIT $limit";
     $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere AND maxhitpoints $meop {$session['user']['maxhitpoints']}";
     $adverb = "toughest";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "wimpiest";
+    }
     $title = "The $adverb warriors in the land";
     $headers = array("Race", "Level");
     $translate = array("data1" => 1);
@@ -210,8 +224,9 @@ if ($op == "money") {
     $sql = "SELECT name,level AS data1 FROM " . db_prefix("accounts") . " WHERE $standardwhere ORDER BY resurrections $order, level $order, experience $order, acctid $order LIMIT $limit";
     $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere AND resurrections $meop {$session['user']['resurrections']}";
     $adverb = "most suicidal";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "least suicidal";
+    }
     $title = "The $adverb warriors in the land";
     $headers = array("Level");
     $table = array($title, $sql, false, false, $headers, false);
@@ -220,8 +235,9 @@ if ($op == "money") {
     $sql = "SELECT name, IF(bestdragonage,bestdragonage,'$unk') AS data1 FROM " . db_prefix("accounts") . " WHERE $standardwhere $extra ORDER BY bestdragonage $order, level $order, experience $order, acctid $order LIMIT $limit";
     $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere $extra AND bestdragonage $meop {$session['user']['bestdragonage']}";
     $adverb = "fastest";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "slowest";
+    }
     $title = "Heroes with the $adverb dragon kills in the land";
     $headers = array("Best Days");
     $none = "There are no heroes in the land.";
@@ -229,11 +245,13 @@ if ($op == "money") {
 } else {
     $unk = translate_inline("Unknown");
     $sql = "SELECT name,dragonkills AS data1,level AS data2,'&nbsp;' AS data3, IF(dragonage,dragonage,'$unk') AS data4, '&nbsp;' AS data5, IF(bestdragonage,bestdragonage,'$unk') AS data6 FROM " . db_prefix("accounts") . " WHERE $standardwhere $extra ORDER BY dragonkills $order,level $order,experience $order, acctid $order LIMIT $limit";
-    if ($session['user']['dragonkills'] > 0)
+    if ($session['user']['dragonkills'] > 0) {
         $me = "SELECT count(acctid) AS count FROM " . db_prefix("accounts") . " WHERE $standardwhere $extra AND dragonkills $meop {$session['user']['dragonkills']}";
+    }
     $adverb = "most";
-    if ($subop == "least")
+    if ($subop == "least") {
         $adverb = "least";
+    }
     $title = "Heroes with the $adverb dragon kills in the land";
     $headers = array("Kills", "Level", "&nbsp;", "Days", "&nbsp;", "Best Days");
     $none = "There are no heroes in the land.";
@@ -246,11 +264,11 @@ if (isset($table) && is_array($table)) {
         $meresult = db_query($me);
         $row = db_fetch_assoc($meresult);
         $pct = round(100 * $row['count'] / $totalplayers, 0);
-        if ($pct < 1)
+        if ($pct < 1) {
             $pct = 1;
+        }
         output("`c`7You rank within around the top `&%s`7%% in this listing.`0`c", $pct);
     }
 }
 
 page_footer();
-?>

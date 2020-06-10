@@ -7,9 +7,11 @@ function previewfield($name, $startdiv = false, $talkline = "says", $showcharsle
     $youhave = translate_inline("You have ");
     $charsleft = translate_inline(" characters left.");
 
-    if ($startdiv === false)
+    if ($startdiv === false) {
         $startdiv = "";
-    rawoutput("<script language='JavaScript'>
+    }
+    rawoutput(
+        "<script language='JavaScript'>
 				function previewtext$name(t,l){
 					var out = \"<span class=\\'colLtWhite\\'>" . addslashes(appoencode($startdiv)) . " \";
 					var end = '</span>';
@@ -17,9 +19,11 @@ function previewfield($name, $startdiv = false, $talkline = "says", $showcharsle
 					var y='';
 					var z='';
 					var max=document.getElementById('input$name');
-					var charsleft='';");
+					var charsleft='';"
+    );
     if ($talkline !== false) {
-        rawoutput("	if (t.substr(0,2)=='::'){
+        rawoutput(
+            "	if (t.substr(0,2)=='::'){
 						x=2;
 						out += '</span><span class=\\'colLtWhite\\'>';
 					}else if (t.substr(0,1)==':'){
@@ -27,26 +31,32 @@ function previewfield($name, $startdiv = false, $talkline = "says", $showcharsle
 						out += '</span><span class=\\'colLtWhite\\'>';
 					}else if (t.substr(0,3)=='/me'){
 						x=3;
-						out += '</span><span class=\\'colLtWhite\\'>';");
+						out += '</span><span class=\\'colLtWhite\\'>';"
+        );
         if ($session['user']['superuser'] & SU_IS_GAMEMASTER) {
-            rawoutput("
+            rawoutput(
+                "
 					}else if (t.substr(0,5)=='/game'){
 						x=5;
-						out = '<span class=\\'colLtWhite\\'>';");
+						out = '<span class=\\'colLtWhite\\'>';"
+            );
         }
-        rawoutput("	}else{
+        rawoutput(
+            "	}else{
 						out += '</span><span class=\\'colDkCyan\\'>" . addslashes(appoencode($talkline)) . ", \"</span><span class=\\'colLtCyan\\'>';
 						end += '</span><span class=\\'colDkCyan\\'>\"';
-					}");
+					}"
+        );
     }
     if ($showcharsleft == true) {
-        /* 		if (translate_inline($talkline,$schema)!="says")
+        /*      if (translate_inline($talkline,$schema)!="says")
           $tll = strlen(translate_inline($talkline,$schema))+11;
           else $tll=0;  // Don't know why needed
-          rawoutput("	if (x!=0) {
+          rawoutput("   if (x!=0) {
           if (max.maxlength!=200-$tll) max.maxlength=200-$tll;
           l=200-$tll; */ // Don't know why needed
-        rawoutput("	if (x!=0) {
+        rawoutput(
+            "	if (x!=0) {
 						//if (max.maxLength!=200) max.maxLength=200;
 						l=200;
 					}
@@ -56,9 +66,11 @@ function previewfield($name, $startdiv = false, $talkline = "says", $showcharsle
 					if (l-t.length<0) charsleft +='<span class=\\'colLtRed\\'>';
 					charsleft += '" . $youhave . "'+(l-t.length)+'" . $charsleft . "<br>';
 					if (l-t.length<0) charsleft +='</span>';
-					document.getElementById('charsleft$name').innerHTML=charsleft+'<br/>';");
+					document.getElementById('charsleft$name').innerHTML=charsleft+'<br/>';"
+        );
     }
-    rawoutput("		for (; x < t.length; x++){
+    rawoutput(
+        "		for (; x < t.length; x++){
 						y = t.substr(x,1);
 						if (y=='<'){
 							out += '&lt;';
@@ -168,7 +180,8 @@ function previewfield($name, $startdiv = false, $talkline = "says", $showcharsle
 					document.getElementById(\"previewtext$name\").innerHTML=out+end+'<br/>';
 				}
 				</script>
-				");
+				"
+    );
     if ($charsleft == true) {
         rawoutput("<span id='charsleft$name'></span>");
     }

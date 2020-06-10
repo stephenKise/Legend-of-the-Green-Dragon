@@ -14,10 +14,11 @@ if ($type == "ip") {
     $sql .= "\"" . httppost("id") . "\"";
 }
 $duration = (int) httppost("duration");
-if ($duration == 0)
+if ($duration == 0) {
     $duration = "0000-00-00";
-else
+} else {
     $duration = date("Y-m-d", strtotime("+$duration days"));
+}
 $sql .= ",\"$duration\",";
 $sql .= "\"" . httppost("reason") . "\")";
 if ($type == "ip") {
@@ -39,4 +40,3 @@ if ($sql != "") {
     output_notl("%s", db_error(LINK));
     debuglog("entered a ban: " . ($type == "ip" ? "IP: " . httppost("ip") : "ID: " . httppost("id")) . " Ends after: $duration  Reason: \"" . httppost("reason") . "\"");
 }
-?>

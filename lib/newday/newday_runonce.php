@@ -15,17 +15,17 @@ if (getsetting("usedatacache", 0)) {
             $fn = $datacachefilepath . "/" . $file;
             $fn = preg_replace("'//'", "/", $fn);
             $fn = preg_replace("'\\\\'", "\\", $fn);
-            if (is_file($fn) &&
-                    filemtime($fn) < strtotime("-24 hours")) {
+            if (is_file($fn)
+                && filemtime($fn) < strtotime("-24 hours")
+            ) {
                 unlink($fn);
             } else {
-                
             }
         }
     }
 }
 //Expire Chars
-require_once("lib/expire_chars.php");
+require_once "lib/expire_chars.php";
 
 //Clean up old mails
 $sql = "DELETE FROM " . db_prefix("mail") . " WHERE sent<'" . date("Y-m-d H:i:s", strtotime("-" . getsetting("oldmail", 14) . "days")) . "'";
@@ -40,7 +40,7 @@ if (getsetting("expirecontent", 180) > 0) {
     $timestamp = date("Y-m-d H:i:s", strtotime("-" . round(getsetting("expirecontent", 180) / 10, 0) . " days"));
     $sql = "DELETE FROM " . db_prefix("debuglog") . " WHERE date <'$timestamp'";
     db_query($sql);
-    require_once("lib/gamelog.php");
+    include_once "lib/gamelog.php";
     gamelog("Cleaned up " . db_affected_rows() . " from " . db_prefix("debuglog") . " older than $timestamp.", 'maintenance');
 
     //Clean up game log
@@ -61,6 +61,6 @@ if (getsetting("expirecontent", 180) > 0) {
     db_query($sql);
     gamelog("Deleted " . db_affected_rows() . " old moderated comments.", "comment expiration");
 }
-if (strtotime(getsetting("lastdboptimize", date("Y-m-d H:i:s", strtotime("-1 day")))) < strtotime("-1 day"))
-    require_once("lib/newday/dbcleanup.php");
-?>
+if (strtotime(getsetting("lastdboptimize", date("Y-m-d H:i:s", strtotime("-1 day")))) < strtotime("-1 day")) {
+    include_once "lib/newday/dbcleanup.php";
+}

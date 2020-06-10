@@ -1,6 +1,6 @@
 <?php
 
-require_once("lib/installer/installer_functions.php");
+require_once "lib/installer/installer_functions.php";
 if (array_key_exists('modules', $_POST)) {
     $session['moduleoperations'] = $_POST['modules'];
     $session['stagecompleted'] = $stage;
@@ -65,11 +65,12 @@ if (return_bytes($phpram) < 12582912 && $phpram != -1 && !$session['overridememo
         //test if the file is a valid module or a lib file/whatever that got in, maybe even malcode that does not have module form
         $modulenamelower = strtolower($modulename);
         $file = strtolower(file_get_contents("modules/$modulename.php"));
-        if (strpos($file, $modulenamelower . "_getmoduleinfo") === false ||
-                //strpos($file,$shortname."_dohook")===false ||
-                //do_hook is not a necessity
-                strpos($file, $modulenamelower . "_install") === false ||
-                strpos($file, $modulenamelower . "_uninstall") === false) {
+        if (strpos($file, $modulenamelower . "_getmoduleinfo") === false
+            //strpos($file,$shortname."_dohook")===false ||
+            //do_hook is not a necessity
+            || strpos($file, $modulenamelower . "_install") === false
+            || strpos($file, $modulenamelower . "_uninstall") === false
+        ) {
             //here the files has neither do_hook nor getinfo, which means it won't execute as a module here --> block it + notify the admin who is the manage modules section
             $moduleinfo = array_merge($invalidmodule, array("name" => $modulename . ".php " . appoencode(translate_inline("(`\$Invalid Module! Contact Author or check file!`0)"))));
         } else {
@@ -175,12 +176,14 @@ if (return_bytes($phpram) < 12582912 && $phpram != -1 && !$session['overridememo
                 rawoutput("<td><input type='radio' name='modules[$modulename]' id='activate-$modulename' value='$activateop'" . ($activatecheck ? " checked" : "") . "></td>");
             }
             output_notl("<td>" . (in_array($modulename, $recommended_modules) ? tl("`^Yes`0") : tl("`\$No`0")) . "</td>", true);
-            require_once("lib/sanitize.php");
-            rawoutput("<td><span title=\"" .
+            include_once "lib/sanitize.php";
+            rawoutput(
+                "<td><span title=\"" .
                     (isset($moduleinfo['description']) &&
                     $moduleinfo['description'] ?
                             $moduleinfo['description'] :
-                            sanitize($moduleinfo['formalname'])) . "\">");
+                sanitize($moduleinfo['formalname'])) . "\">"
+            );
             output_notl("`@");
             if (isset($moduleinfo['invalid']) && $moduleinfo['invalid'] == true) {
                 rawoutput($moduleinfo['formalname']);
@@ -199,24 +202,31 @@ if (return_bytes($phpram) < 12582912 && $phpram != -1 && !$session['overridememo
     rawoutput("<input type='button' onClick='chooseRecommendedModules();' class='button' value='$install' class='button'>");
     rawoutput("<input type='reset' value='$reset' class='button'>");
     rawoutput("</form>");
-    rawoutput("<script language='JavaScript'>
+    rawoutput(
+        "<script language='JavaScript'>
 function chooseRecommendedModules(){
 	var thisItem;
 	var selectedCount = 0;
-");
+"
+    );
     reset($recommended_modules);
     while (list($key, $val) = each($recommended_modules)) {
         rawoutput("thisItem = document.getElementById('activate-$val'); ");
         rawoutput("if (!thisItem.checked) { selectedCount++; thisItem.checked=true; }\n");
     }
-    rawoutput("
+    rawoutput(
+        "
 	alert('I selected '+selectedCount+' modules that I recommend, but which were not already selected.');
-}");
+}"
+    );
     if (!$session['dbinfo']['upgrade']) {
-        rawoutput("
-	chooseRecommendedModules();");
+        rawoutput(
+            "
+	chooseRecommendedModules();"
+        );
     }
-    rawoutput("
-</script>");
+    rawoutput(
+        "
+</script>"
+    );
 }
-?>

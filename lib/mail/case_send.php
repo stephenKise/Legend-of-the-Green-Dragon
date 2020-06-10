@@ -30,7 +30,7 @@ if (db_num_rows($result) > 0) {
         $body = str_replace("\r\n", "\n", $body);
         $body = str_replace("\r", "\n", $body);
         $body = addslashes(substr(stripslashes($body), 0, (int) getsetting("mailsizelimit", 1024)));
-        require_once("lib/systemmail.php");
+        include_once "lib/systemmail.php";
         systemmail($row1['acctid'], $subject, $body, $from);
         invalidatedatacache("mail-{$row1['acctid']}");
         output("Your message was sent!`n");
@@ -47,4 +47,3 @@ if (httppost("returnto")) {
     $op = "";
     httpset('op', "");
 }
-?>

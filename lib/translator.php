@@ -3,8 +3,9 @@
 function translator_setup()
 {
     //Determine what language to use
-    if (defined("TRANSLATOR_IS_SET_UP"))
+    if (defined("TRANSLATOR_IS_SET_UP")) {
         return;
+    }
     define("TRANSLATOR_IS_SET_UP", true);
 
     global $language, $session;
@@ -23,21 +24,25 @@ function translator_setup()
 
 $translation_table = array();
 
-function translate($indata, $namespace = FALSE)
+function translate($indata, $namespace = false)
 {
-    if (getsetting("enabletranslation", true) == false)
+    if (getsetting("enabletranslation", true) == false) {
         return $indata;
+    }
     global $session, $translation_table, $translation_namespace;
-    if (!$namespace)
+    if (!$namespace) {
         $namespace = $translation_namespace;
+    }
     $outdata = $indata;
-    if (!isset($namespace) || $namespace == "")
+    if (!isset($namespace) || $namespace == "") {
         tlschema();
+    }
 
     $foundtranslation = false;
     if ($namespace != "notranslate") {
-        if (!isset($translation_table[$namespace]) ||
-                !is_array($translation_table[$namespace])) {
+        if (!isset($translation_table[$namespace])
+            || !is_array($translation_table[$namespace])
+        ) {
             //build translation table for this page hit.
             $translation_table[$namespace] = translate_loadnamespace($namespace, (isset($session['tlanguage']) ? $session['tlanguage'] : false));
         }
@@ -117,7 +122,7 @@ function sprintf_translate()
     return $return;
 }
 
-function translate_inline($in, $namespace = FALSE)
+function translate_inline($in, $namespace = false)
 {
     $out = translate($in, $namespace);
     rawoutput(tlbutton_clear());
@@ -128,8 +133,9 @@ function translate_mail($in, $to = 0)
 {
     global $session;
     tlschema("mail"); // should be same schema like systemmails!
-    if (!is_array($in))
+    if (!is_array($in)) {
         $in = array($in);
+    }
     //this is done by sprintf_translate.
     //$in[0] = str_replace("`%","`%%",$in[0]);
     if ($to > 0) {
@@ -158,20 +164,22 @@ function tl($in)
 
 function translate_loadnamespace($namespace, $language = false)
 {
-    if ($language === false)
+    if ($language === false) {
         $language = LANGUAGE;
+    }
     $page = translator_page($namespace);
     $uri = translator_uri($namespace);
-    if ($page == $uri)
+    if ($page == $uri) {
         $where = "uri = '$page'";
-    else
+    } else {
         $where = "(uri='$page' OR uri='$uri')";
+    }
     $sql = "
 		SELECT intext,outtext
 		FROM " . db_prefix("translations") . "
 		WHERE language='$language'
 			AND $where";
-    /* 	debug(nl2br(htmlentities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")))); */
+    /*  debug(nl2br(htmlentities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")))); */
     if (!getsetting("cachetranslations", 0)) {
         $result = db_query($sql);
     } else {
@@ -188,21 +196,23 @@ function translate_loadnamespace($namespace, $language = false)
 $translatorbuttons = array();
 $seentlbuttons = array();
 
-function tlbutton_push($indata, $hot = false, $namespace = FALSE)
+function tlbutton_push($indata, $hot = false, $namespace = false)
 {
     global $translatorbuttons;
     global $translation_is_enabled, $seentlbuttons, $session;
-    if (!$translation_is_enabled)
+    if (!$translation_is_enabled) {
         return;
-    if (!$namespace)
+    }
+    if (!$namespace) {
         $namespace = "unknown";
+    }
     if ($session['user']['superuser'] & SU_IS_TRANSLATOR) {
         if (preg_replace("/[ 	\n\r]|`./", '', $indata) > "") {
             if (isset($seentlbuttons[$namespace][$indata])) {
                 $link = "";
             } else {
                 $seentlbuttons[$namespace][$indata] = true;
-                require_once("lib/sanitize.php");
+                include_once "lib/sanitize.php";
                 $uri = cmd_sanitize($namespace);
                 $uri = comscroll_sanitize($uri);
                 $link = "translatortool.php?u=" .
@@ -258,9 +268,10 @@ function tlschema($schema = false)
     global $translation_namespace, $translation_namespace_stack, $REQUEST_URI;
     if ($schema === false) {
         $translation_namespace = array_pop($translation_namespace_stack);
-        if ($translation_namespace == "")
+        if ($translation_namespace == "") {
             $translation_namespace = translator_uri($REQUEST_URI ?: 'home');
-    }else {
+        }
+    } else {
         array_push($translation_namespace_stack, $translation_namespace);
         $translation_namespace = $schema;
     }

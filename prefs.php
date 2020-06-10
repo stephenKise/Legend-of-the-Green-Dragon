@@ -4,7 +4,7 @@
 // mail ready
 // translator ready
 
-require_once("lib/http.php");
+require_once "lib/http.php";
 
 $skin = httppost('template');
 if ($skin > "") {
@@ -12,13 +12,13 @@ if ($skin > "") {
     $_COOKIE['template'] = $skin;
 }
 
-require_once("lib/villagenav.php");
-require_once("common.php");
+require_once "lib/villagenav.php";
+require_once "common.php";
 
 tlschema("prefs");
 
-require_once("lib/showform.php");
-require_once("lib/sanitize.php");
+require_once "lib/showform.php";
+require_once "lib/sanitize.php";
 
 page_header("Preferences");
 
@@ -26,15 +26,16 @@ $op = httpget('op');
 
 if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     $userid = httpget('userid');
-    require_once("lib/charcleanup.php");
+    include_once "lib/charcleanup.php";
     char_cleanup($userid, CHAR_DELETE_SUICIDE);
     $sql = "DELETE FROM " . db_prefix("accounts") . " WHERE acctid='$userid'";
     db_query($sql);
     output("Your character has been deleted!");
     addnews(
-            sprintf_translate(
-                    "`#%s quietly passed from this world.", $session['user']['name']
-            )
+        sprintf_translate(
+            "`#%s quietly passed from this world.",
+            $session['user']['name']
+        )
     );
     addnav("Login Page", "index.php");
     $session = array();
@@ -44,7 +45,6 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     invalidatedatacache("charlisthomepage");
     invalidatedatacache("list.php-warsonline");
 } else {
-
     checkday();
     if ($session['user']['alive']) {
         villagenav();
@@ -60,7 +60,6 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     unset($post['oldvalues']);
 
     if (count($post) == 0) {
-        
     } else {
         $pass1 = httppost('pass1');
         $pass2 = httppost('pass2');
@@ -92,20 +91,26 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
         );
         foreach ($post as $key => $val) {
             // If this is one we don't save, skip
-            if (isset($nonsettings[$key]) && $nonsettings[$key])
+            if (isset($nonsettings[$key]) && $nonsettings[$key]) {
                 continue;
-            if (isset($oldvalues[$key]) &&
-                    stripslashes($val) == $oldvalues[$key])
+            }
+            if (isset($oldvalues[$key])
+                && stripslashes($val) == $oldvalues[$key]
+            ) {
                 continue;
+            }
             // If this is a module userpref handle and skip
             if (strstr($key, "___")) {
                 $val = httppost($key);
                 $x = explode("___", $key);
                 $module = $x[0];
                 $key = $x[1];
-                modulehook("notifyuserprefchange", array("name" => $key,
+                modulehook(
+                    "notifyuserprefchange",
+                    array("name" => $key,
                     "old" => $oldvalues[$module . "___" . $key],
-                    "new" => $val));
+                    "new" => $val)
+                );
                 set_module_pref($key, $val, $module);
                 continue;
             }
@@ -145,8 +150,9 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
         output("Settings Saved");
     }
 
-    if (!isset($session['user']['prefs']['timeformat']))
+    if (!isset($session['user']['prefs']['timeformat'])) {
         $session['user']['prefs']['timeformat'] = "[m/d h:ia]";
+    }
 
     $form = array(
         "Account Preferences,title",
@@ -173,7 +179,8 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     );
     rawoutput("<script language='JavaScript' src='lib/md5.js'></script>");
     $warn = translate_inline("Your password is too short.  It must be at least 4 characters long.");
-    rawoutput("<script language='JavaScript'>
+    rawoutput(
+        "<script language='JavaScript'>
     <!--
     function md5pass(){
         //encode passwords before submission to protect them even from network sniffing attacks.
@@ -193,17 +200,20 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
         }
     }
     //-->
-    </script>");
+    </script>"
+    );
     //
     $prefs = $session['user']['prefs'];
     $prefs['bio'] = $session['user']['bio'];
     $prefs['template'] = $_COOKIE['template'];
-    if ($prefs['template'] == "")
+    if ($prefs['template'] == "") {
         $prefs['template'] = getsetting("defaultskin", "jade.htm");
+    }
     $prefs['email'] = $session['user']['emailaddress'];
     // Default tabbed config to true
-    if (!isset($prefs['tabconfig']))
+    if (!isset($prefs['tabconfig'])) {
         $prefs['tabconfig'] = 1;
+    }
 
     // Okay, allow modules to add prefs one at a time.
     // We are going to do it this way to *ensure* that modules don't conflict
@@ -217,14 +227,16 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     while ($row = db_fetch_assoc($result)) {
         $module = $row['modulename'];
         $info = get_module_info($module);
-        if (count($info['prefs']) <= 0)
+        if (count($info['prefs']) <= 0) {
             continue;
+        }
         $tempsettings = array();
         $tempdata = array();
         $found = 0;
         if (substr(array_values($info['prefs'])[0], -5) != 'title') {
             array_unshift(
-                    $info['prefs'], "{$info['name']} Preferences, title"
+                $info['prefs'],
+                "{$info['name']} Preferences, title"
             );
         }
         while (list($key, $val) = each($info['prefs'])) {
@@ -240,13 +252,15 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
                 $x = explode("|", $val);
             }
 
-            if (is_array($x[0]))
+            if (is_array($x[0])) {
                 $x[0] = call_user_func_array('sprintf', $x[0]);
+            }
             $type = explode(",", $x[0]);
-            if (isset($type[1]))
+            if (isset($type[1])) {
                 $type = trim($type[1]);
-            else
+            } else {
                 $type = "string";
+            }
 
             // Okay, if we have a title section, let's copy over the last
             // title section
@@ -261,9 +275,11 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
                 $tempdata = array();
             }
 
-            if (!$isuser && !$ischeck && !strstr($type, "title") &&
-                    !strstr($type, "note"))
+            if (!$isuser && !$ischeck && !strstr($type, "title")
+                && !strstr($type, "note")
+            ) {
                 continue;
+            }
             if ($isuser) {
                 $found = 1;
             }
@@ -271,8 +287,9 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
             // checkuserpref  (requested by cortalUX)
             if ($ischeck) {
                 $args = modulehook("checkuserpref", array("name" => $key, "pref" => $x[0], "default" => $x[1]), false, $module);
-                if (isset($args['allow']) && !$args['allow'])
+                if (isset($args['allow']) && !$args['allow']) {
                     continue;
+                }
                 $x[0] = $args['pref'];
                 $x[1] = $args['default'];
                 $found = 1;
@@ -307,8 +324,10 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     $prefs = array_merge($prefs, $mdata);
     rawoutput("<form action='prefs.php?op=save' method='POST' onSubmit='return(md5pass)'>");
     $info = showform($form, $prefs);
-    rawoutput("<input type='hidden' value=\"" .
-            htmlentities(serialize($info), ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\" name='oldvalues'>");
+    rawoutput(
+        "<input type='hidden' value=\"" .
+        htmlentities(serialize($info), ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\" name='oldvalues'>"
+    );
 
     rawoutput("</form><br />");
     addnav("", "prefs.php?op=save");
@@ -327,4 +346,3 @@ if ($op == "suicide" && getsetting("selfdelete", 0) != 0) {
     }
 }
 page_footer();
-?>

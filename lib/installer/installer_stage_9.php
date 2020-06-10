@@ -1,8 +1,8 @@
 <?php
 
-require_once("lib/installer/installer_sqlstatements.php");
-require_once("lib/installer/installer_functions.php");
-require_once("lib/installer/installer_default_settings.php");
+require_once "lib/installer/installer_sqlstatements.php";
+require_once "lib/installer/installer_functions.php";
+require_once "lib/installer/installer_default_settings.php";
 output("`@`c`bBuilding the Tables`b`c");
 output("`2I'm now going to build the tables.");
 output("If this is an upgrade, your current tables will be brought in line with the current version.");
@@ -10,7 +10,7 @@ output("If it's an install, the necessary tables will be placed in your database
 output("`n`@Table Synchronization Logs:`n");
 rawoutput("<div style='width: 100%; height: 150px; max-height: 150px; overflow: auto;'>");
 $descriptors = getAllTables($DB_PREFIX ?: '');
-require_once("lib/tabledescriptor.php");
+require_once "lib/tabledescriptor.php";
 reset($descriptors);
 while (list($tablename, $descriptor) = each($descriptors)) {
     output("`3Synchronizing table `#$tablename`3..`n");
@@ -44,8 +44,9 @@ while (list($key, $val) = each($sql_upgrade_statements)) {
                     continue;
                 }
                 $count++;
-                if ($count % 10 == 0 && $count != count($val))
+                if ($count % 10 == 0 && $count != count($val)) {
                     output_notl("`6$count...");
+                }
                 if (!db_query($sql)) {
                     output("`n`\$Error: `^'%s'`7 executing `#'%s'`7.`n", db_error(), $sql);
                 }
@@ -53,9 +54,11 @@ while (list($key, $val) = each($sql_upgrade_statements)) {
             output("$count.`n");
         }
     }
-    if ($key == $session['fromversion'] ||
-            $session['dbinfo']['upgrade'] == false)
+    if ($key == $session['fromversion']
+        || $session['dbinfo']['upgrade'] == false
+    ) {
         $dosql = true;
+    }
 }
 rawoutput("</div>");
 output("Now I'm going to insert default settings that you don't have.");
@@ -141,4 +144,3 @@ while (list($tablename, $descriptor) = each($descriptors)) {
 }
 rawoutput("</div>");
 output("`n`n`^You're ready for the next step.");
-?>

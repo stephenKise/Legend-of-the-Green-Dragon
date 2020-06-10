@@ -2,6 +2,7 @@
 
 /**
  * Execute a SQLite query.
+ *
  * @return void
  */
 function db_query(string $sql = '', bool $die = true)
@@ -23,11 +24,13 @@ function db_query(string $sql = '', bool $die = true)
             return [];
         } else {
             if ($session['user']['superuser'] & SU_DEVELOPER || 1) {
-                require_once("lib/show_backtrace.php");
+                include_once "lib/show_backtrace.php";
                 die(
-                        "<pre>" .
+                    "<pre>" .
                         HTMLEntities(
-                                $sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")
+                            $sql,
+                            ENT_COMPAT,
+                            getsetting("charset", "ISO-8859-1")
                         ) .
                         "</pre>" .
                         db_error(LINK) .
@@ -35,7 +38,7 @@ function db_query(string $sql = '', bool $die = true)
                 );
             } else {
                 die(
-                        "Please use your browser's back button and try again."
+                    "Please use your browser's back button and try again."
                 );
             }
         }
@@ -47,7 +50,7 @@ function db_query(string $sql = '', bool $die = true)
             $s = substr($s, 0, 400) . " ... " . substr($s, strlen($s) - 400);
         }
         debug(
-                "Slow Query (" .
+            "Slow Query (" .
                 round($endtime - $starttime, 2) .
                 "s): " .
                 HTMLEntities($s, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) .
@@ -62,6 +65,7 @@ function db_query(string $sql = '', bool $die = true)
 
 /**
  * Execute a command and cache the results.
+ *
  * @return array
  */
 function &db_query_cached(string $sql, string $name, int $duration = 900): array
@@ -86,6 +90,7 @@ function &db_query_cached(string $sql, string $name, int $duration = 900): array
 
 /**
  * Grab the most recent error message.
+ *
  * @return string
  */
 function db_error(): string
@@ -94,7 +99,7 @@ function db_error(): string
     $err = $sqlite_resource->lastErrorMsg();
     if (defined("DB_NODB") && !defined("DB_INSTALLER_STAGE4")) {
         return "The database connection was never established";
-    } else if ($err == 'not an error') {
+    } elseif ($err == 'not an error') {
         return '';
     } else {
         return $err;
@@ -103,6 +108,7 @@ function db_error(): string
 
 /**
  * Return an associative array of recent statement, or checks the cache.
+ *
  * @return array
  */
 function db_fetch_assoc(array $result)
@@ -120,6 +126,7 @@ function db_fetch_assoc(array $result)
 
 /**
  * Get the ID of most recent insert.
+ *
  * @return int
  */
 function db_insert_id(): int
@@ -134,6 +141,7 @@ function db_insert_id(): int
 
 /**
  * Count the number of rows in a query result.
+ *
  * @return int
  */
 function db_num_rows(array $result): int
@@ -154,6 +162,7 @@ function db_num_rows(array $result): int
 
 /**
  * Count the number of recent changes in the database.
+ *
  * @return int
  */
 function db_affected_rows(): int
@@ -171,13 +180,14 @@ function db_affected_rows(): int
 
 /**
  * Connect to the SQLite database file.
+ *
  * @return bool
  */
 function db_connect($host, string $user, string $pass): SQLite3
 {
     global $sqlite_resource, $DB_NAME;
     $database = ($DB_NAME ? "$DB_NAME.sqlite" : "LotGD.sqlite");
-    $sqlite_resource = New SQLite3($database, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+    $sqlite_resource = new SQLite3($database, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
     //$sqlite_resource->query("CREATE TABLE logd_environment_test (a int(11) not null);");
     //var_dump($sqlite_resource->changes());
     return $sqlite_resource;
@@ -185,6 +195,7 @@ function db_connect($host, string $user, string $pass): SQLite3
 
 /**
  * Grab the server version data.
+ *
  * @return string The version number of SQLite3.
  */
 function db_get_server_version(): string
@@ -195,20 +206,24 @@ function db_get_server_version(): string
 
 /**
  * Check if a table exists.
+ *
  * @return bool
  */
 function db_select_db(string $dbName): bool
 {
     global $sqlite_resource;
     $dbName = filter_var($dbName, FILTER_SANITIZE_MAGIC_QUOTES);
-    return is_object($sqlite_resource->query(
-                    "SELECT name FROM sqlite_master
+    return is_object(
+        $sqlite_resource->query(
+            "SELECT name FROM sqlite_master
         WHERE type='table' AND name='$dbName'"
-    ));
+        )
+    );
 }
 
 /**
  * Free the most recent result.
+ *
  * @return bool
  */
 function db_free_result($result): bool
@@ -227,6 +242,7 @@ function db_free_result($result): bool
 
 /**
  * Check if current table exists.
+ *
  * @return bool
  */
 function db_table_exists(string $tableName): bool
@@ -236,12 +252,13 @@ function db_table_exists(string $tableName): bool
         return false;
     }
     return $exists = $sqlite_resource->query(
-            sprintf("SELECT 1 FROM %s LIMIT 0", db_prefix($tableName))
+        sprintf("SELECT 1 FROM %s LIMIT 0", db_prefix($tableName))
     );
 }
 
 /**
  * Apply our prefix for tables to the table name.
+ *
  * @return string The prefixed name of specified table.
  */
 function db_prefix(string $tableName): string

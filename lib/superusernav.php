@@ -15,7 +15,8 @@ function superusernav()
         }
     }
     $args = modulehook("mundanenav");
-    if (!array_key_exists('handled', $args) || !$args['handled'])
+    if (!array_key_exists('handled', $args) || !$args['handled']) {
         addnav("M?Return to the Mundane", "village.php");
+    }
     tlschema();
 }

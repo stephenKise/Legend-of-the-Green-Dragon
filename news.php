@@ -4,9 +4,9 @@
 // addnews ready
 // mail ready
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("news");
 
@@ -18,8 +18,9 @@ if ((int) getsetting("expirecontent", 180) > 0) {
     db_query($sql);
 }
 
-if ($session['user']['loggedin'])
+if ($session['user']['loggedin']) {
     checkday();
+}
 $newsperpage = 50;
 
 $offset = (int) httpget('offset');
@@ -29,11 +30,13 @@ $result = db_query($sql);
 $row = db_fetch_assoc($result);
 $totaltoday = $row['c'];
 $page = (int) httpget('page');
-if (!$page)
+if (!$page) {
     $page = 1;
+}
 $pageoffset = $page;
-if ($pageoffset > 0)
+if ($pageoffset > 0) {
     $pageoffset--;
+}
 $pageoffset *= $newsperpage;
 $sql = "SELECT * FROM " . db_prefix("news") . " WHERE newsdate='" . date("Y-m-d", $timestamp) . "' ORDER BY newsid DESC LIMIT $pageoffset,$newsperpage";
 $result = db_query($sql);
@@ -48,10 +51,11 @@ if ($totaltoday > $newsperpage) {
 $sql2 = "SELECT " . db_prefix("motd") . ".*,name AS motdauthorname FROM " . db_prefix("motd") . " LEFT JOIN " . db_prefix("accounts") . " ON " . db_prefix("accounts") . ".acctid = " . db_prefix("motd") . ".motdauthor ORDER BY motddate DESC LIMIT 1";
 $result2 = db_query_cached($sql2, "lastmotd");
 while ($row = db_fetch_assoc($result2)) {
-    require_once("lib/motd.php");
-    require_once("lib/nltoappon.php");
-    if ($row['motdauthorname'] == "")
+    include_once "lib/motd.php";
+    include_once "lib/nltoappon.php";
+    if ($row['motdauthorname'] == "") {
         $row['motdauthorname'] = "`@Green Dragon Staff`0";
+    }
     if ($row['motdtype'] == 0) {
         motditem($row['motdtitle'], $row['motdbody'], $row['motdauthorname'], $row['motddate'], "");
     } else {
@@ -91,7 +95,7 @@ if (db_num_rows($result) == 0) {
 output_notl("`c`2-=-`@=-=`2-=-`@=-=`2-=-`@=-=`2-=-`0`c");
 if (!$session['user']['loggedin']) {
     addnav("Login Screen", "index.php");
-} else if ($session['user']['alive']) {
+} elseif ($session['user']['alive']) {
     villagenav();
 } else {
     tlschema("nav");
@@ -102,7 +106,7 @@ if (!$session['user']['loggedin']) {
     }
     addnav("S?Land of Shades", "shades.php");
     addnav("G?The Graveyard", "graveyard.php");
-    require_once("lib/extended-battle.php");
+    include_once "lib/extended-battle.php";
     suspend_companions("allowinshades", true);
     addnav("Log out", "login.php?op=logout");
     tlschema();
@@ -112,8 +116,9 @@ addnav("Previous News", "news.php?offset=" . ($offset + 1));
 if ($offset > 0) {
     addnav("Next News", "news.php?offset=" . ($offset - 1));
 }
-if ($session['user']['loggedin'])
+if ($session['user']['loggedin']) {
     addnav("Preferences", "prefs.php");
+}
 addnav("About this game", "about.php");
 
 tlschema("nav");
@@ -145,4 +150,3 @@ if ($totaltoday > $newsperpage) {
 }
 
 page_footer();
-?>

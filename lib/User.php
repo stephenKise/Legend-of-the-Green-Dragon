@@ -6,7 +6,6 @@ namespace LOTGD;
 
 /**
  * Model for a user.
- *
  */
 class User implements AccountInterface, SessionInterface
 {
@@ -96,5 +95,4 @@ class User implements AccountInterface, SessionInterface
             $this->saveUser();
         }
     }
-
 }

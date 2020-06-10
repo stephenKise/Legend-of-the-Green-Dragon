@@ -3,13 +3,13 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/nltoappon.php");
-require_once("lib/commentary.php");
-require_once("lib/systemmail.php");
-require_once("lib/sanitize.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
+require_once "common.php";
+require_once "lib/nltoappon.php";
+require_once "lib/commentary.php";
+require_once "lib/systemmail.php";
+require_once "lib/sanitize.php";
+require_once "lib/http.php";
+require_once "lib/villagenav.php";
 
 tlschema("clans");
 
@@ -32,15 +32,15 @@ $op = httpget('op');
 
 $detail = httpget('detail');
 if ($detail > 0) {
-    require_once("lib/clan/detail.php");
+    include_once "lib/clan/detail.php";
 } elseif ($op == "list") {
-    require_once("lib/clan/list.php");
+    include_once "lib/clan/list.php";
 } elseif ($op == "waiting") {
-    require_once("lib/clan/waiting.php");
+    include_once "lib/clan/waiting.php";
 } elseif ($session['user']['clanrank'] == CLAN_APPLICANT) {
-    require_once("lib/clan/applicant.php");
+    include_once "lib/clan/applicant.php";
 } else {
-    require_once("lib/clan/clan_start.php");
+    include_once "lib/clan/clan_start.php";
 }
 
 
@@ -60,5 +60,3 @@ function clanform()
     $apply = translate_inline("Apply");
     rawoutput("<input type='submit' class='button' value='$apply'></form>");
 }
-
-?>

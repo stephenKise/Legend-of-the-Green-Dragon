@@ -1,11 +1,12 @@
 <?php
 
-require_once("lib/installer/installer_functions.php");
+require_once "lib/installer/installer_functions.php";
 if (httppostisset("DB_PREFIX") > "") {
     $session['dbinfo']['DB_PREFIX'] = httppost("DB_PREFIX");
 }
-if ($session['dbinfo']['DB_PREFIX'] > "" && substr($session['dbinfo']['DB_PREFIX'], -1) != "_")
+if ($session['dbinfo']['DB_PREFIX'] > "" && substr($session['dbinfo']['DB_PREFIX'], -1) != "_") {
     $session['dbinfo']['DB_PREFIX'] .= "_";
+}
 
 $descriptors = getAllTables($session['dbinfo']['DB_PREFIX'] ?: '');
 $unique = 0;
@@ -33,10 +34,12 @@ if ($missing * 10 < $game) {
 } else {
     $upgrade = false;
 }
-if (httpget("type") == "install")
+if (httpget("type") == "install") {
     $upgrade = false;
-if (httpget("type") == "upgrade")
+}
+if (httpget("type") == "upgrade") {
     $upgrade = true;
+}
 $session['dbinfo']['upgrade'] = $upgrade;
 if ($upgrade) {
     output("`@This looks like a game upgrade.");
@@ -51,8 +54,9 @@ if ($upgrade) {
         output("`n`n`\$There are table conflicts.`2");
         output("If you continue with an install, the following tables will be overwritten with the game's tables.  If the listed tables belong to LoGD, they will be upgraded, otherwise all existing data in those tables will be destroyed.  Once this is done, this cannot be undone unless you have a backup!`n");
         output("`nThese tables conflict: `^" . join(", ", $conflict) . "`2`n");
-        if (httpget("op") == "confirm_overwrite")
+        if (httpget("op") == "confirm_overwrite") {
             $session['sure i want to overwrite the tables'] = true;
+        }
         if (!$session['sure i want to overwrite the tables']) {
             $session['stagecompleted'] = 4;
             output("`nIf you are sure that you wish to overwrite these tables, <a href='installer.php?stage=5&op=confirm_overwrite'>click here</a>.`n", true);
@@ -73,4 +77,3 @@ if (count($conflict) == 0) {
 }
 output("`n`n`@Once you have submitted your prefix, you will be returned to this page to select the next step.");
 output("If you don't need a prefix, just select the next step now.");
-?>

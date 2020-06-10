@@ -102,7 +102,6 @@ if ($success && !$initial) {
     } else {
         output("`n`^You are ready for the next step.");
     }
-} else if (!$success) {
+} elseif (!$success) {
     $session['stagecompleted'] = 5;
 }
-?>

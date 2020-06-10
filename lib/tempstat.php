@@ -10,15 +10,17 @@ function apply_temp_stat($name, $value, $type = "add")
             $temp_user_stats['add'] = array();
         }
         $temp = &$temp_user_stats['add'];
-        if (!isset($temp[$name]))
+        if (!isset($temp[$name])) {
             $temp[$name] = $value;
-        else
+        } else {
             $temp[$name] += $value;
+        }
 
-        if (!$temp_user_stats['is_suspended'])
+        if (!$temp_user_stats['is_suspended']) {
             $session['user'][$name] += $value;
+        }
         return true;
-    }else {
+    } else {
         debug("Temp stat type $type is not supported.");
         return false;
     }

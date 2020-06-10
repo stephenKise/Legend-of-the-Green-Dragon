@@ -3,8 +3,8 @@
 // mail ready
 // addnews ready
 // translator ready
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 tlschema("paylog");
 
@@ -26,7 +26,7 @@ check_su_access(SU_EDIT_PAYLOG);
   +-----------+---------------------+------+-----+---------+----------------+
  */
 page_header("Payment Log");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 $op = httpget('op');
@@ -45,8 +45,9 @@ if ($op == "") {
         addnav(array("%s %s %s", date("M Y", strtotime($row['month'] . "-01")), getsetting("paypalcurrency", "USD"), $row['profit']), "paylog.php?month={$row['month']}");
     }
     $month = httpget('month');
-    if ($month == "")
+    if ($month == "") {
         $month = date("Y-m");
+    }
     $startdate = $month . "-01 00:00:00";
     $enddate = date("Y-m-d H:i:s", strtotime("+1 month", strtotime($startdate)));
     $sql = "SELECT " . db_prefix("paylog") . ".*," . db_prefix("accounts") . ".name," . db_prefix("accounts") . ".donation," . db_prefix("accounts") . ".donationspent FROM " . db_prefix("paylog") . " LEFT JOIN " . db_prefix("accounts") . " ON " . db_prefix("paylog") . ".acctid = " . db_prefix("accounts") . ".acctid WHERE processdate>='$startdate' AND processdate < '$enddate' ORDER BY payid DESC";
@@ -100,4 +101,3 @@ if ($op == "") {
     addnav("Refresh", "paylog.php");
 }
 page_footer();
-?>

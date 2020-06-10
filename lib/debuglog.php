@@ -2,13 +2,15 @@
 
 function debuglog($message, $target = false, $user = false, $field = false, $value = false, $consolidate = true)
 {
-    if ($target === false)
+    if ($target === false) {
         $target = 0;
+    }
     static $needsdebuglogdelete = true;
     global $session;
     $args = func_get_args();
-    if ($user === false)
+    if ($user === false) {
         $user = $session['user']['acctid'];
+    }
     $corevalue = $value;
     $id = 0;
     if ($field !== false && $value !== false && $consolidate) {
@@ -21,12 +23,15 @@ function debuglog($message, $target = false, $user = false, $field = false, $val
             $id = $row['id'];
         }
     }
-    if ($corevalue !== false)
+    if ($corevalue !== false) {
         $message .= " ($corevalue)";
-    if ($field === false)
+    }
+    if ($field === false) {
         $field = "";
-    if ($value === false)
+    }
+    if ($value === false) {
         $value = 0;
+    }
     if ($id > 0) {
         $sql = "UPDATE " . db_prefix("debuglog") . "
             SET

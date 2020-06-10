@@ -6,8 +6,9 @@ $debuggedbuffs = array();
 function calculate_buff_fields()
 {
     global $session, $badguy, $buffreplacements, $debuggedbuffs;
-    if (!$session['bufflist'])
+    if (!$session['bufflist']) {
         return;
+    }
 
     //run temp stats
     reset($session['bufflist']);
@@ -23,8 +24,9 @@ function calculate_buff_fields()
     }//end while
     //process calculated buff fields.
     reset($session['bufflist']);
-    if (!is_array($buffreplacements))
+    if (!is_array($buffreplacements)) {
         $buffreplacements = array();
+    }
     while (list($buffname, $buff) = each($session['bufflist'])) {
         if (!isset($buff['fields_calculated'])) {
             while (list($property, $value) = each($buff)) {
@@ -43,8 +45,9 @@ function calculate_buff_fields()
                         $errors = "";
                         $origstring = substr($origstring, 6);
                         $value = substr($value, 6);
-                        if (!isset($debuggedbuffs[$buffname]))
+                        if (!isset($debuggedbuffs[$buffname])) {
                             $debuggedbuffs[$buffname] = array();
+                        }
 
                         ob_start();
                         $val = eval("return $value;");
@@ -55,10 +58,12 @@ function calculate_buff_fields()
                             if ($errors == "") {
                                 debug("Buffs[$buffname][$property] evaluates successfully to $val");
                             } else {
-                                debug("Buffs[$buffname][$property] has an evaluation error<br>"
+                                debug(
+                                    "Buffs[$buffname][$property] has an evaluation error<br>"
                                         . htmlentities($origstring, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . " becomes <br>"
                                         . htmlentities($value, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "<br>"
-                                        . $errors);
+                                    . $errors
+                                );
                                 $val = "";
                             }
                             $debuggedbuffs[$buffname][$property] = true;
@@ -79,18 +84,22 @@ function calculate_buff_fields()
                 // (http://bugs.php.net/bug.php?id=27646&edit=2) -
                 // Unserialize doesn't recognize NAN, -INF and INF
                 if (function_exists('is_nan')) {
-                    if (is_numeric($val) &&
-                            (is_nan($val) || is_infinite($val)))
+                    if (is_numeric($val)
+                        && (is_nan($val) || is_infinite($val))
+                    ) {
                         $val = $value;
+                    }
                 } else {
                     // We have an older version of PHP, so, let's try
                     // something else.
                     $l = strtolower("$val");
-                    if ((substr($l, 3) == "nan") || (substr($l, -3) == "inf"))
+                    if ((substr($l, 3) == "nan") || (substr($l, -3) == "inf")) {
                         $val = $value;
+                    }
                 }
-                if (!isset($output))
+                if (!isset($output)) {
                     $output = "";
+                }
                 if ($output == "" && (string) $val != (string) $origstring) {
                     $buffreplacements[$buffname][$property] = $origstring;
                     $session['bufflist'][$buffname][$property] = $val;
@@ -121,8 +130,9 @@ function restore_buff_fields()
         }//end while
     }//end if
     //restore temp stats
-    if (!is_array($session['bufflist']))
+    if (!is_array($session['bufflist'])) {
         $session['bufflist'] = array();
+    }
     reset($session['bufflist']);
     while (list($buffname, $buff) = each($session['bufflist'])) {
         if (array_key_exists("tempstats_calculated", $buff) && $buff['tempstats_calculated']) {
@@ -147,8 +157,9 @@ function apply_buff($name, $buff)
         $buff['schema'] = $translation_namespace;
     }
 
-    if (isset($buffreplacements[$name]))
+    if (isset($buffreplacements[$name])) {
         unset($buffreplacements[$name]);
+    }
     if (isset($session['bufflist'][$name])) {
         //we'll need to unapply buff fields before applying this buff since
         //it's already set.
@@ -171,10 +182,10 @@ function apply_companion($name, $companion, $ignorelimit = false)
     $current = 0;
     foreach ($companions as $thisname => $thiscompanion) {
         if (isset($companion['ignorelimit']) && $companion['ignorelimit'] == true) {
-            
         } else {
-            if ($thisname != $name)
+            if ($thisname != $name) {
                 ++$current;
+            }
         }
     }
     if ($current < $companionsallowed || $ignorelimit == true) {
@@ -197,10 +208,12 @@ function strip_buff($name)
 {
     global $session, $buffreplacements;
     restore_buff_fields();
-    if (isset($session['bufflist'][$name]))
+    if (isset($session['bufflist'][$name])) {
         unset($session['bufflist'][$name]);
-    if (isset($buffreplacements[$name]))
+    }
+    if (isset($buffreplacements[$name])) {
         unset($buffreplacements[$name]);
+    }
     calculate_buff_fields();
 }
 
@@ -217,7 +230,8 @@ function strip_all_buffs()
 function has_buff($name)
 {
     global $session;
-    if (isset($session['bufflist'][$name]))
+    if (isset($session['bufflist'][$name])) {
         return true;
+    }
     return false;
 }

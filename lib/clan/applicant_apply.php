@@ -26,7 +26,6 @@ if ($to > 0) {
     $row = db_fetch_assoc($res);
 
     if (nltoappon($row['clandesc']) != "") {
-
         $subject = "Clan Application Reminder";
         $mail = "`&Did you remember to read the description of the clan of your choice before applying?  Note that some clans may have requirements that you have to fulfill before you can become a member.  If you are not accepted into the clan of your choice anytime soon, it may be because you have not fulfilled these requirements.  For your convenience, the description of the clan you are applying to is reproduced below.`n`n`c`#%s`@ <`^%s`@>`0`c`n%s";
 
@@ -47,8 +46,9 @@ if ($to > 0) {
                 db_query($sql);
             } else {
                 /* // */ $row = modulehook("clan-applymember", $row);
-                /* // */ if (isset($row['handled']) && $row['handled'])
+                /* // */ if (isset($row['handled']) && $row['handled']) {
                     continue;
+                }
                 $memb_n = translate_inline("(%s members)");
                 $memb_1 = translate_inline("(%s member)");
                 if ($row['c'] == 1) {
@@ -68,4 +68,3 @@ if ($to > 0) {
         addnav("Return to the Lobby", "clan.php");
     }
 }
-?>

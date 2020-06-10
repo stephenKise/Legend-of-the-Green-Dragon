@@ -37,7 +37,7 @@ function tip()
 
 function descriptors($prefix = "")
 {
-    require_once("lib/all_tables.php");
+    include_once "lib/all_tables.php";
     $array = get_all_tables();
     $out = array();
     while (list($key, $val) = each($array)) {
@@ -66,7 +66,7 @@ function return_bytes($val)
 /**
  * Gets all MySQL data from lib/installer/all_tables.json and prefixes the tables.
  *
- * @param string $prefix Prefix to append to each table.
+ * @param  string $prefix Prefix to append to each table.
  * @return array The array of MySQL tables, and their default data.
  */
 function getAllTables(string $prefix): array

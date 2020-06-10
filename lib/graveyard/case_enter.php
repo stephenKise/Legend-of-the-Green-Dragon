@@ -14,4 +14,3 @@ addnav("Places");
 addnav("S?Land of the Shades", "shades.php");
 addnav("G?Return to the Graveyard", "graveyard.php");
 modulehook("mausoleum");
-?>

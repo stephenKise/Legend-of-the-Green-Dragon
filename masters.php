@@ -3,8 +3,8 @@
 // Initially written as a module by Chris Vorndran.
 // Moved into core by JT Traub
 
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 check_su_access(SU_EDIT_CREATURES);
 
@@ -15,7 +15,7 @@ $id = (int) httpget('id');
 $act = httpget('act');
 
 page_header("Masters Editor");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 if ($op == "del") {
@@ -36,8 +36,9 @@ if ($op == "del") {
         $atk = $lev * 2;
         $def = $lev * 2;
         $hp = $lev * 11;
-        if ($hp == 11)
+        if ($hp == 11) {
             $hp++;
+        }
         $sql = "INSERT INTO " . db_prefix("masters") . " (creatureid,creaturelevel,creaturename,creatureweapon,creaturewin,creaturelose,creaturehealth,creatureattack,creaturedefense) VALUES ($id,$lev,'$name', '$weapon', '$win', '$lose', '$hp', '$atk', '$def')";
     }
     db_query($sql);
@@ -143,4 +144,3 @@ if ($op == "") {
     output("It is suggested, that you do not toy around with this, unless you know what you are doing.`0`n");
 }
 page_footer();
-?>

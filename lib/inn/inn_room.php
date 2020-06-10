@@ -4,16 +4,18 @@ $config = unserialize($session['user']['donationconfig']);
 $expense = round(($session['user']['level'] * (10 + log($session['user']['level']))), 0);
 $pay = httpget('pay');
 if ($pay) {
-    if ($pay == 2 || $session['user']['gold'] >= $expense ||
-            $session['user']['boughtroomtoday']) {
+    if ($pay == 2 || $session['user']['gold'] >= $expense
+        || $session['user']['boughtroomtoday']
+    ) {
         if ($session['user']['loggedin']) {
             if (!$session['user']['boughtroomtoday']) {
                 if ($pay == 2) {
                     $fee = getsetting("innfee", "5%");
-                    if (strpos($fee, "%"))
+                    if (strpos($fee, "%")) {
                         $expense += round($expense * $fee / 100, 0);
-                    else
+                    } else {
                         $expense += $fee;
+                    }
                     $session['user']['goldinbank'] -= $expense;
                 } else {
                     $session['user']['gold'] -= $expense;
@@ -71,4 +73,3 @@ if ($pay) {
         }
     }
 }
-?>

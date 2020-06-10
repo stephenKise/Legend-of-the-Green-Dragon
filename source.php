@@ -5,9 +5,9 @@
 // mail ready
 define("ALLOW_ANONYMOUS", true);
 define("OVERRIDE_FORCED_NAV", true);
-require_once("common.php");
-require_once("lib/errorhandling.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/errorhandling.php";
+require_once "lib/http.php";
 
 tlschema("source");
 
@@ -91,16 +91,18 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
     output("View Source: ");
     output_notl("%s", htmlentities($url, ENT_COMPAT, getsetting("charset", "ISO-8859-1")));
     rawoutput("</h1>");
-    if ($url)
+    if ($url) {
         output("<a href='#source'>Click here for the source,</a> OR`n", true);
+    }
     output("`bOther files that you may wish to view the source of:`b");
     rawoutput("<ul>");
     // Gather all the legal dirs
     $legal_dirs = array();
     foreach ($legal_start_dirs as $dir => $value) {
         // If this is a dir to exclude, skip it
-        if (!$value)
+        if (!$value) {
             continue;
+        }
 
         $sdir = $dir;
         $base = "./$sdir";
@@ -117,17 +119,20 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
         $d = dir("$base");
         while ($entry = $d->read()) {
             // Skip any . files
-            if ($entry[0] == '.')
+            if ($entry[0] == '.') {
                 continue;
+            }
             // skip any php files
-            if (substr($entry, strrpos($entry, '.')) == ".php")
+            if (substr($entry, strrpos($entry, '.')) == ".php") {
                 continue;
+            }
             $ndir = $base . "/" . $entry;
             // Okay, check if it's a directory
             $test = preg_replace("!^\\./!", "", $ndir);
             if (is_dir($ndir)) {
-                if ((!isset($legal_start_dirs[$test]) ||
-                        $legal_start_dirs[$test] != 0) && ((strpos(strtolower($select_dir), strtolower($ndir)) !== false) || (strpos(strtolower($ndir), strtolower($select_dir)) !== false)) && $select_dir != "./") {
+                if ((!isset($legal_start_dirs[$test])
+                    || $legal_start_dirs[$test] != 0) && ((strpos(strtolower($select_dir), strtolower($ndir)) !== false) || (strpos(strtolower($ndir), strtolower($select_dir)) !== false)) && $select_dir != "./"
+                ) {
                     array_push($legal_dirs, $ndir . "/");
                 }
             }
@@ -158,8 +163,9 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
         $d->close();
         asort($files);
         foreach ($files as $entry) {
-            if (isset($illegal_files["$key2$entry"]) &&
-                    $illegal_files["$key2$entry"] != "") {
+            if (isset($illegal_files["$key2$entry"])
+                && $illegal_files["$key2$entry"] != ""
+            ) {
                 if ($illegal_files["$key2$entry"] == "X") {
                     //we're hiding the file completely.
                 } else {
@@ -181,8 +187,9 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
         rawoutput("</a></h1>");
 
         $page_name = $url;
-        if (substr($page_name, 0, 1) == "/")
+        if (substr($page_name, 0, 1) == "/") {
             $page_name = substr($page_name, 1);
+        }
         if ($legal_files[$url]) {
             rawoutput("<table bgcolor=#cccccc>");
             rawoutput("<tr><td>");
@@ -194,7 +201,7 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
             rawoutput($t);
             rawoutput("</font>", true);
             rawoutput("</td></tr></table>", true);
-        } else if ($illegal_files[$url] != "" && $illegal_files[$url] != "X") {
+        } elseif ($illegal_files[$url] != "" && $illegal_files[$url] != "X") {
             $reason = translate_inline($illegal_files[$url]);
             output("`nCannot view this file: %s`n", $reason);
         } else {
@@ -203,4 +210,3 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
     }
     popup_footer();
 }
-?>

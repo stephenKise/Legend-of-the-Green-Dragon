@@ -49,15 +49,16 @@ if ($apply == 1) {
             addnav("Return to the Lobby", "clan.php");
         } else {
             if ($session['user']['gold'] < $gold || $session['user']['gems'] < $gems) {
-                if ($gold > 0 && $gems <= 0)
+                if ($gold > 0 && $gems <= 0) {
                     output_notl($e[5], $registrar, $gold);
-                elseif ($gems > 0 && $gold <= 0)
+                } elseif ($gems > 0 && $gold <= 0) {
                     output_notl($e[7], $registrar, $gems);
-                else
+                } else {
                     output_notl($e[6], $registrar, $gold, $gems);
+                }
                 output_notl($e[8], $registrar);
                 addnav("Return to the Lobby", "clan.php");
-            }else {
+            } else {
                 /* // */ $args = array("ocn" => $ocn, "ocs" => $ocs, "clanname" => $clanname, "clanshort" => $clanshort);
                 /* // */ $args = modulehook("process-createclan", $args);
                 /* // */ if (isset($args['blocked']) && $args['blocked']) {
@@ -106,4 +107,3 @@ if ($apply == 1) {
         }
     }
 }
-?>

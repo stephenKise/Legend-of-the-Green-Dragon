@@ -15,12 +15,13 @@ function sanitize_uri()
             reset($get);
             $i = 0;
             while (list($key, $val) = each($get)) {
-                if ($i > 0)
+                if ($i > 0) {
                     $REQUEST_URI .= "&";
+                }
                 $REQUEST_URI .= "$key=" . URLEncode($val);
                 $i++;
             }
-        }else {
+        } else {
             $REQUEST_URI = $SCRIPT_NAME;
         }
         $_SERVER['REQUEST_URI'] = $REQUEST_URI;
@@ -35,7 +36,7 @@ function sanitize_uri()
 
 function php_generic_environment()
 {
-    require_once("lib/register_global.php");
+    include_once "lib/register_global.php";
     register_global($_SERVER);
     sanitize_uri();
 }

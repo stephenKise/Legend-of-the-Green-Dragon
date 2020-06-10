@@ -3,8 +3,9 @@
 function saveuser()
 {
     global $session, $dbqueriesthishit, $baseaccount, $companions;
-    if (defined("NO_SAVE_USER"))
+    if (defined("NO_SAVE_USER")) {
         return false;
+    }
 
     if ($session['loggedin'] && $session['user']['acctid'] != "") {
         // Any time we go to save a user, make SURE that any tempstat changes
@@ -13,13 +14,15 @@ function saveuser()
 
         $session['user']['allowednavs'] = json_encode($session['allowednavs']);
         $session['user']['bufflist'] = serialize($session['bufflist']);
-        if (isset($companions) && is_array($companions))
+        if (isset($companions) && is_array($companions)) {
             $session['user']['companions'] = serialize($companions);
+        }
         $sql = "";
         reset($session['user']);
         while (list($key, $val) = each($session['user'])) {
-            if (is_array($val))
+            if (is_array($val)) {
                 $val = serialize($val);
+            }
             //only update columns that have changed.
             if ($baseaccount[$key] != $val) {
                 $sql .= "$key='" . addslashes($val) . "', ";

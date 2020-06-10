@@ -3,15 +3,15 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 tlschema("rawsql");
 
 check_su_access(SU_RAW_SQL);
 
 page_header("Raw SQL/PHP execution");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Execution");
 addnav("SQL", "rawsql.php");
@@ -91,4 +91,3 @@ if ($op == "" || $op == "sql") {
     addnav("", "rawsql.php?op=php");
 }
 page_footer();
-?>

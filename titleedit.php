@@ -2,8 +2,8 @@
 
 //Author: Lonny Luberts - 3/18/2005
 //Heavily modified by JT Traub
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 check_su_access(SU_EDIT_USERS);
 
@@ -21,7 +21,7 @@ $editarray = array(
     "female" => "Female Title,text|",
 );
 addnav("Other");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 addnav("Functions");
 
@@ -107,7 +107,7 @@ if ($op == "") {
     addnav("Reset Users Titles", "titleedit.php?op=reset");
     title_help();
 } elseif ($op == "edit" || $op == "add") {
-    require_once("lib/showform.php");
+    include_once "lib/showform.php";
     if ($op == "edit") {
         $sql = "SELECT * FROM " . db_prefix("titles") . " WHERE titleid='$id'";
         $result = db_query($sql);
@@ -124,8 +124,8 @@ if ($op == "") {
     addnav("Main Title Editor", "titleedit.php");
     title_help();
 } elseif ($op == "reset") {
-    require_once("lib/titles.php");
-    require_once("lib/names.php");
+    include_once "lib/titles.php";
+    include_once "lib/names.php";
 
     output("`^Rebuilding all titles.`0`n`n");
     $sql = "SELECT name,title,dragonkills,acctid,sex,ctitle FROM " . db_prefix("accounts");
@@ -179,4 +179,3 @@ function title_help()
 }
 
 page_footer();
-?>

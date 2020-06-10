@@ -1,6 +1,6 @@
 <?php
 
-require_once("lib/dump_item.php");
+require_once "lib/dump_item.php";
 
 function showform($layout, $row, $nosave = false, $keypref = false)
 {
@@ -19,10 +19,11 @@ function showform($layout, $row, $nosave = false, $keypref = false)
     $i = 0;
     while (list($key, $val) = each($layout)) {
         $pretrans = 0;
-        if ($keypref !== false)
+        if ($keypref !== false) {
             $keyout = sprintf($keypref, $key);
-        else
+        } else {
             $keyout = $key;
+        }
         if (is_array($val)) {
             $v = $val[0];
             $info = explode(",", $v);
@@ -36,10 +37,11 @@ function showform($layout, $row, $nosave = false, $keypref = false)
         } else {
             $info[0] = translate($info[0]);
         }
-        if (isset($info[1]))
+        if (isset($info[1])) {
             $info[1] = trim($info[1]);
-        else
+        } else {
             $info[1] = "";
+        }
 
         if ($info[1] == "title") {
             $title_id++;
@@ -57,8 +59,9 @@ function showform($layout, $row, $nosave = false, $keypref = false)
         } elseif ($info[1] == "invisible") {
             // Don't show
         } else {
-            if (isset($row[$key]))
+            if (isset($row[$key])) {
                 $returnvalues[$key] = $row[$key];
+            }
             rawoutput("<tr class='" . ($i % 2 ? 'trlight' : 'trdark') . "'><td valign='top'>");
             output_notl("%s", $info[0], true);
             rawoutput("</td><td valign='top'>");
@@ -125,7 +128,7 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 break;
             case "checkpretrans":
                 $pretrans = 1;
-            // FALLTHROUGH
+                // FALLTHROUGH
             case "checklist":
                 reset($info);
                 list($k, $v) = each($info);
@@ -135,8 +138,9 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                     $optval = $v;
                     list($k, $v) = each($info);
                     $optdis = $v;
-                    if (!$pretrans)
+                    if (!$pretrans) {
                         $optdis = translate_inline($optdis);
+                    }
                     if (is_array($row[$key])) {
                         if ($row[$key][$optval]) {
                             $checked = true;
@@ -154,7 +158,7 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 break;
             case "radiopretrans":
                 $pretrans = 1;
-            // FALLTHROUGH
+                // FALLTHROUGH
             case "radio":
                 reset($info);
                 list($k, $v) = each($info);
@@ -164,8 +168,9 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                     $optval = $v;
                     list($k, $v) = each($info);
                     $optdis = $v;
-                    if (!$pretrans)
+                    if (!$pretrans) {
                         $optdis = translate_inline($optdis);
+                    }
                     $select .= ("<input type='radio' name='$keyout' value='$optval'" . ($row[$key] == $optval ? " checked" : "") . ">&nbsp;" . ("$optdis") . "<br>");
                 }
                 rawoutput($select);
@@ -178,14 +183,16 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 // they define a time string which equates to 0 :/
                 $cur = $row[$key];
                 rawoutput("<select name='$keyout'>");
-                if ($cur && $cur < date("Y-m-d H:i:s", $start))
+                if ($cur && $cur < date("Y-m-d H:i:s", $start)) {
                     rawoutput("<option value='$cur' selected>" . htmlentities($cur, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</option>");
+                }
                 for ($j = $start; $j < $end; $j = strtotime($step, $j)) {
                     $d = date("Y-m-d H:i:s", $j);
                     rawoutput("<option value='$d'" . ($cur == $d ? " selected" : "") . ">" . HTMLEntities("$d", ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</option>");
                 }
-                if ($cur && $cur > date("Y-m-d H:i:s", $end))
+                if ($cur && $cur > date("Y-m-d H:i:s", $end)) {
                     rawoutput("<option value='$cur' selected>" . htmlentities($cur, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</option>");
+                }
                 rawoutput("</select>");
                 break;
 
@@ -193,11 +200,13 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 $min = (int) $info[2];
                 $max = (int) $info[3];
                 $step = (int) (isset($info[4]) ? $info[4] : false);
-                if ($step == 0)
+                if ($step == 0) {
                     $step = 1;
+                }
                 rawoutput("<select name='$keyout'>");
-                if ($min < $max && ($max - $min) / $step > 300)
+                if ($min < $max && ($max - $min) / $step > 300) {
                     $step = max(1, (int) (($max - $min) / 300));
+                }
                 for ($j = $min; $j <= $max; $j += $step) {
                     rawoutput("<option value='$j'" . ($row[$key] == $j ? " selected" : "") . ">" . HTMLEntities("$j", ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</option>");
                 }
@@ -207,8 +216,9 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 $min = round((float) $info[2], 2);
                 $max = round((float) $info[3], 2);
                 $step = round((float) $info[4], 2);
-                if ($step == 0)
+                if ($step == 0) {
                     $step = 1;
+                }
                 rawoutput("<select name='$keyout'>", true);
                 $val = round((float) $row[$key], 2);
                 for ($j = $min; $j <= $max; $j = round($j + $step, 2)) {
@@ -218,7 +228,7 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 break;
             case "bitfieldpretrans":
                 $pretrans = 1;
-            // FALLTHROUGH
+                // FALLTHROUGH
             case "bitfield":
                 //format:
                 //DisplayName,bitfield,disablemask,(highbit,display)+
@@ -230,13 +240,16 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 list($k, $disablemask) = each($info);
                 rawoutput("<input type='hidden' name='$keyout" . "[0]' value='1'>", true);
                 while (list($k, $v) = each($info)) {
-                    rawoutput("<input type='checkbox' name='$keyout" . "[$v]'"
-                            . (isset($row[$key]) && (int) $row[$key] & (int) $v ? " checked" : "")
-                            . ($disablemask & (int) $v ? "" : " disabled")
-                            . " value='1'> ");
+                    rawoutput(
+                        "<input type='checkbox' name='$keyout" . "[$v]'"
+                        . (isset($row[$key]) && (int) $row[$key] & (int) $v ? " checked" : "")
+                        . ($disablemask & (int) $v ? "" : " disabled")
+                        . " value='1'> "
+                    );
                     list($k, $v) = each($info);
-                    if (!$pretrans)
+                    if (!$pretrans) {
                         $v = translate_inline($v);
+                    }
                     output_notl("%s`n", $v, true);
                 }
                 break;
@@ -246,15 +259,15 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 // ok, I see that, but 24 hours and 1 day are the same
                 // aren't they?
                 $vals = array(
-                    "1 hour", "2 hours", "3 hours", "4 hours",
-                    "5 hours", "6 hours", "8 hours", "10 hours",
-                    "12 hours", "16 hours", "18 hours", "24 hours",
-                    "1 day", "2 days", "3 days", "4 days", "5 days",
-                    "6 days", "7 days",
-                    "1 week", "2 weeks", "3 weeks", "4 weeks",
-                    "1 month", "2 months", "3 months", "4 months",
-                    "6 months", "9 months", "12 months",
-                    "1 year"
+                "1 hour", "2 hours", "3 hours", "4 hours",
+                "5 hours", "6 hours", "8 hours", "10 hours",
+                "12 hours", "16 hours", "18 hours", "24 hours",
+                "1 day", "2 days", "3 days", "4 days", "5 days",
+                "6 days", "7 days",
+                "1 week", "2 weeks", "3 weeks", "4 weeks",
+                "1 month", "2 months", "3 months", "4 months",
+                "6 months", "9 months", "12 months",
+                "1 year"
                 );
                 tlschema("showform");
                 while (list($k, $v) = each($vals)) {
@@ -271,7 +284,7 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 break;
             case "enumpretrans":
                 $pretrans = 1;
-            // FALLTHROUGH
+                // FALLTHROUGH
             case "enum":
                 reset($info);
                 list($k, $v) = each($info);
@@ -286,8 +299,9 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                         $optdis = translate_inline($optdis);
                     }
                     $selected = 0;
-                    if (isset($row[$key]) && $row[$key] == $optval)
+                    if (isset($row[$key]) && $row[$key] == $optval) {
                         $selected = 1;
+                    }
 
                     $select .= ("<option value='$optval'" . ($selected ? " selected" : "") . ">" . HTMLEntities("$optdis", ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</option>");
                 }
@@ -295,10 +309,11 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 rawoutput($select);
                 break;
             case "password":
-                if (array_key_exists($key, $row))
+                if (array_key_exists($key, $row)) {
                     $out = $row[$key];
-                else
+                } else {
                     $out = "";
+                }
                 rawoutput("<input type='password' name='$keyout' value='" . HTMLEntities($out, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "'>");
                 break;
             case "bool":
@@ -312,23 +327,27 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 rawoutput("</select>", true);
                 break;
             case "hidden":
-                if (isset($row[$key]))
+                if (isset($row[$key])) {
                     rawoutput("<input type='hidden' name='$keyout' value=\"" . HTMLEntities($row[$key], ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\">" . HTMLEntities($row[$key], ENT_COMPAT, getsetting("charset", "ISO-8859-1")));
+                }
                 break;
             case "viewonly":
                 unset($returnvalues[$key]);
-                if (isset($row[$key]))
+                if (isset($row[$key])) {
                     output_notl(dump_item($row[$key]), true);
+                }
                 break;
             case "textarearesizeable":
                 $resize = true;
-            //FALLTHROUGH
+                //FALLTHROUGH
             case "textarea":
                 $cols = 0;
-                if (isset($info[2]))
+                if (isset($info[2])) {
                     $cols = $info[2];
-                if (!$cols)
+                }
+                if (!$cols) {
                     $cols = 70;
+                }
                 $text = "";
                 if (isset($row[$key])) {
                     $text = $row[$key];
@@ -342,10 +361,11 @@ function showform($layout, $row, $nosave = false, $keypref = false)
                 }
                 break;
             case "int":
-                if (array_key_exists($key, $row))
+                if (array_key_exists($key, $row)) {
                     $out = $row[$key];
-                else
+                } else {
                     $out = 0;
+                }
                 rawoutput("<input name='$keyout' value=\"" . HTMLEntities($out, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\" size='5'>");
                 break;
             case "float":
@@ -354,33 +374,40 @@ function showform($layout, $row, $nosave = false, $keypref = false)
             case "string":
                 $len = 50;
                 $minlen = 50;
-                if (isset($info[2]))
+                if (isset($info[2])) {
                     $len = (int) $info[2];
-                if ($len < $minlen)
+                }
+                if ($len < $minlen) {
                     $minlen = $len;
-                if ($len > $minlen)
+                }
+                if ($len > $minlen) {
                     $minlen = $len / 2;
-                if ($minlen > 70)
+                }
+                if ($minlen > 70) {
                     $minlen = 70;
-                if (array_key_exists($key, $row))
+                }
+                if (array_key_exists($key, $row)) {
                     $val = $row[$key];
-                else
+                } else {
                     $val = "";
+                }
                 rawoutput("<input size='$minlen' maxlength='$len' name='$keyout' value=\"" . HTMLEntities($val, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\">");
                 break;
             default:
                 if (array_key_exists($info[1], $extensions)) {
                     $func = $extensions[$info[1]];
-                    if (array_key_exists($key, $row))
+                    if (array_key_exists($key, $row)) {
                         $val = $row[$key];
-                    else
+                    } else {
                         $val = "";
+                    }
                     call_user_func($func, $keyout, $val, $info);
-                }else {
-                    if (array_key_exists($key, $row))
+                } else {
+                    if (array_key_exists($key, $row)) {
                         $val = $row[$key];
-                    else
+                    } else {
                         $val = "";
+                    }
                     rawoutput("<input size='50' name='$keyout' value=\"" . HTMLEntities($val, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\">");
                 }
         }
@@ -392,11 +419,12 @@ function showform($layout, $row, $nosave = false, $keypref = false)
         if ($startIndex == 0) {
             $startIndex = 1;
         }
-        if (isset($session['user']['prefs']['tabconfig']) &&
-                $session['user']['prefs']['tabconfig'] == 0) {
-            
+        if (isset($session['user']['prefs']['tabconfig'])
+            && $session['user']['prefs']['tabconfig'] == 0
+        ) {
         } else {
-            rawoutput("
+            rawoutput(
+                "
 		 	<script language='JavaScript'>
 		 	function prepare_form(id){
 		 		var theTable;
@@ -441,12 +469,13 @@ function showform($layout, $row, $nosave = false, $keypref = false)
 		 		}
 		 	}
 		 	formSections = new Array();
-			</script>");
+			</script>"
+            );
         }
     }
-    if (isset($session['user']['prefs']['tabconfig']) &&
-            $session['user']['prefs']['tabconfig'] == 0) {
-        
+    if (isset($session['user']['prefs']['tabconfig'])
+        && $session['user']['prefs']['tabconfig'] == 0
+    ) {
     } else {
         rawoutput("<script language='JavaScript'>");
         rawoutput("formSections[$showform_id] = new Array();");
@@ -454,17 +483,19 @@ function showform($layout, $row, $nosave = false, $keypref = false)
         while (list($key, $val) = each($formSections)) {
             rawoutput("formSections[$showform_id][$key] = '" . addslashes($val) . "';");
         }
-        rawoutput("
+        rawoutput(
+            "
 		prepare_form($showform_id);
-		</script>");
+		</script>"
+        );
     }
     rawoutput("</td></tr></table>");
     tlschema("showform");
     $save = translate_inline("Save");
     tlschema();
     if ($nosave) {
-        
-    } else
+    } else {
         rawoutput("<input type='submit' class='button' value='$save'>");
+    }
     return $returnvalues;
 }

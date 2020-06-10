@@ -9,7 +9,7 @@ function checkban(string $login, bool $connect = false): bool
     $bans = db_prefix('accounts');
     $today = date('Y-m-d');
     $sql = db_query(
-            "SELECT lastip, uniquid, banoverride, superuser FROM $accounts
+        "SELECT lastip, uniquid, banoverride, superuser FROM $accounts
         WHERE login = '$login'"
     );
     $row = db_fetch_assoc($sql);
@@ -18,7 +18,7 @@ function checkban(string $login, bool $connect = false): bool
     }
     db_free_result($sql);
     $sql = db_query(
-            "SELECT * FROM $bans
+        "SELECT * FROM $bans
         WHERE (
             (ipfilter = '{$row['lastip']}' OR ipfilter = '{$_SERVER['REMOTE_ADDR']}')
             OR (uniqueid = '{$row['uniqueid']}' OR uniqueid = '{$_COOKIE['lgi']}')
@@ -36,11 +36,12 @@ function checkban(string $login, bool $connect = false): bool
                     $session['message'] .= translate_inline("`\$This ban is permanent!`0");
                 } else {
                     $session['message'] .= sprintf_translate(
-                            "`^This ban will be removed `\$after`^ %s.`0", date("M d, Y", strtotime($row['banexpire']))
+                        "`^This ban will be removed `\$after`^ %s.`0",
+                        date("M d, Y", strtotime($row['banexpire']))
                     );
                 }
                 db_query(
-                        "UPDATE $bans
+                    "UPDATE $bans
                     SET lasthit = '$today 00:00:00'
                     WHERE ipfilter = '{$row['ipfilter']}'
                     AND uniqueid = '{$row['uniqueid']}'

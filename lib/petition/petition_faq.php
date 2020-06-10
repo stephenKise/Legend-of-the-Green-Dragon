@@ -29,4 +29,3 @@ output_notl("&#149;<a href='petition.php?op=faq3'>%s</a><br/>", $t, true);
 modulehook("faq-toc");
 modulehook("faq-posttoc");
 output("`nThank you,`nthe Management.`n");
-?>

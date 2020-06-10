@@ -5,8 +5,9 @@ function logd_error_handler($errno, $errstr, $errfile, $errline)
     global $session;
     static $in_error_handler = 0;
     // If we have used the @ operator, just don't report anything!
-    if (!error_reporting())
+    if (!error_reporting()) {
         return;
+    }
     $in_error_handler++;
     if ($in_error_handler > 1) {//prevents the error handler from being re-called when we're already within a call of it.
         if ($errno & (E_USER_WARNING | E_WARNING)) {
@@ -20,14 +21,15 @@ function logd_error_handler($errno, $errstr, $errfile, $errline)
     switch ($errno) {
         case E_NOTICE:
         case E_USER_NOTICE:
-            if (getsetting('show_notices', 0) &&
-                    $session['user']['superuser'] & SU_SHOW_PHPNOTICE) {
+            if (getsetting('show_notices', 0)
+            && $session['user']['superuser'] & SU_SHOW_PHPNOTICE
+            ) {
                 debug("PHP Notice: \"$errstr\"<br>in <b>$errfile</b> at <b>$errline</b>.");
             }
             break;
         case E_WARNING:
         case E_USER_WARNING:
-            require_once("lib/show_backtrace.php");
+            include_once "lib/show_backtrace.php";
             tlschema("errorhandler");
             output("PHP Warning: \"%s\"`nin `b%s`b at `b%s`b.`n", $errstr, $errfile, $errline, true);
             tlschema();
@@ -41,7 +43,7 @@ function logd_error_handler($errno, $errstr, $errfile, $errline)
             break;
         case E_ERROR:
         case E_USER_ERROR:
-            require_once("lib/show_backtrace.php");
+            include_once "lib/show_backtrace.php";
             echo sprintf("PHP ERROR: \"%s\"<br>in <b>%s</b> at <b>%s</b>.<br>", $errstr, $errfile, $errline);
             $backtrace = show_backtrace();
             echo $backtrace;
@@ -78,11 +80,10 @@ function logd_error_notify($errno, $errstr, $errfile, $errline, $backtrace)
         debug("First run, not notifying users.");
     } else {
         if ($do_notice) {
-
             /*             * *
              * Set up the mime bits
              * */
-            require_once("sanitize.php");
+            include_once "sanitize.php";
             $notice_text = "This is a multi-part message in MIME format.";
             $userstr = "";
             if ($session && isset($session['user']['name']) && isset($sesson['user']['acctid'])) {
@@ -117,10 +118,15 @@ $html_text
             while (list($key, $email) = each($sendto)) {
                 debug("Notifying $email of this error.");
 
-                mail($email, $subject, $body, "From: " . $from . "\n" .
+                mail(
+                    $email,
+                    $subject,
+                    $body,
+                    "From: " . $from . "\n" .
                         "MIME-Version: 1.0\n" .
                         "Content-Type: multipart/alternative;\n" .
-                        "     boundary=" . $mime_boundary_header);
+                    "     boundary=" . $mime_boundary_header
+                );
             }
             //mark the time that notice was last sent for this error.
             $data['errors'][$errstr] = strtotime("now");

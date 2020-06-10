@@ -59,9 +59,10 @@ if ($act == "") {
                     addnav("Who's upstairs?", "inn.php?op=bartender&act=listupstairs");
                 }
                 addnav("Tell me about colors", "inn.php?op=bartender&act=colors");
-                if (getsetting("allowspecialswitch", true))
+                if (getsetting("allowspecialswitch", true)) {
                     addnav("Switch specialty", "inn.php?op=bartender&act=specialty");
-            }else {
+                }
+            } else {
                 output("%s`0 begins to wipe down the counter top, an act that really needed doing a long time ago.", $barkeep);
                 if ($type == "gem") {
                     if ($amt == 1) {
@@ -80,11 +81,11 @@ if ($act == "") {
             addnav(array("B?Talk to %s`0 the Barkeep", $barkeep), "inn.php?op=bartender");
         }
     }
-} else if ($act == "listupstairs") {
+} elseif ($act == "listupstairs") {
     addnav("Refresh the list", "inn.php?op=bartender&act=listupstairs");
     output("%s`0 lays out a set of keys on the counter top, and tells you which key opens whose room.  The choice is yours, you may sneak in and attack any one of them.", $barkeep);
     pvplist($iname, "pvp.php", "?act=attack&inn=1");
-} else if ($act == "colors") {
+} elseif ($act == "colors") {
     output("%s`0 leans on the bar.  \"`%So you want to know about colors, do you?`0\" he asks.", $barkeep);
     output("You are about to answer when you realize the question was posed in the rhetoric.");
     output("%s`0 continues, \"`%To do colors, here's what you need to do.", $barkeep);
@@ -104,7 +105,7 @@ if ($act == "") {
     rawoutput("<script language='javascript'>document.getElementById('input').focus();</script>");
     output("`0`n`nThese colors can be used in your name, and in any conversations you have.");
     addnav("", $REQUEST_URI);
-} else if ($act == "specialty") {
+} elseif ($act == "specialty") {
     $specialty = httpget('specialty');
     if ($specialty == "") {
         output("\"`2I want to change my specialty,`0\" you announce to %s`0.`n`n", $barkeep);
@@ -125,4 +126,3 @@ if ($act == "") {
         $session['user']['specialty'] = $specialty;
     }
 }
-?>

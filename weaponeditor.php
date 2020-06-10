@@ -3,9 +3,9 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/showform.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/showform.php";
+require_once "lib/http.php";
 
 check_su_access(SU_EDIT_EQUIPMENT);
 
@@ -13,7 +13,7 @@ tlschema("weapon");
 
 page_header("Weapon Editor");
 $weaponlevel = (int) httpget("level");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 addnav("Editor");
@@ -50,12 +50,12 @@ if ($op == "edit" || $op == "add") {
     addnav("", "weaponeditor.php?op=save&level=$weaponlevel");
     showform($weaponarray, $row);
     rawoutput("</form>");
-} else if ($op == "del") {
+} elseif ($op == "del") {
     $sql = "DELETE FROM " . db_prefix("weapons") . " WHERE weaponid='$id'";
     db_query($sql);
     $op = "";
     httpset("op", $op);
-} else if ($op == "save") {
+} elseif ($op == "save") {
     $weaponid = (int) httppost("weaponid");
     $damage = httppost("damage");
     $weaponname = httppost("weaponname");
@@ -75,10 +75,11 @@ if ($op == "") {
     $row = db_fetch_assoc($res);
     $max = $row['level'];
     for ($i = 0; $i <= $max; $i++) {
-        if ($i == 1)
+        if ($i == 1) {
             addnav("Weapons for 1 DK", "weaponeditor.php?level=$i");
-        else
+        } else {
             addnav(array("Weapons for %s DKs", $i), "weaponeditor.php?level=$i");
+        }
     }
     $sql = "SELECT * FROM " . db_prefix("weapons") . " WHERE level=$weaponlevel ORDER BY damage";
     $result = db_query($sql);
@@ -114,4 +115,3 @@ if ($op == "") {
     rawoutput("</table>");
 }
 page_footer();
-?>

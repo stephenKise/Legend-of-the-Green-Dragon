@@ -39,8 +39,9 @@ function show_backtrace()
             if ($val['args'] && is_array($val['args'])) {
                 reset($val['args']);
                 while (list($k, $v) = each($val['args'])) {
-                    if ($y > 0)
+                    if ($y > 0) {
                         $return .= ", ";
+                    }
                     $return .= backtrace_getType($v);
                     $y++;
                 }
@@ -83,13 +84,14 @@ function backtrace_getType($in)
             reset($in);
             $x = 0;
             while (list($key, $val) = each($in)) {
-                if ($x > 0)
+                if ($x > 0) {
                     $return .= ", ";
+                }
                 $return .= backtrace_getType($key) . "=>" . backtrace_getType($val);
                 $x++;
             }
             $return .= "</blockquote>)</span>";
-        }else {
+        } else {
             $return .= "<span class='array'>Array()</span>";
         }
     } else {

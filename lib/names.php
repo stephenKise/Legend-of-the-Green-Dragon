@@ -1,6 +1,6 @@
 <?php
 
-require_once("lib/dbwrapper.php");
+require_once "lib/dbwrapper.php";
 
 function get_player_title($old = false)
 {
@@ -8,12 +8,14 @@ function get_player_title($old = false)
     $title = "";
     if ($old === false) {
         $title = $session['user']['title'];
-        if ($session['user']['ctitle'])
+        if ($session['user']['ctitle']) {
             $title = $session['user']['ctitle'];
+        }
     } else {
         $title = $old['title'];
-        if ($old['ctitle'])
+        if ($old['ctitle']) {
             $title = $old['ctitle'];
+        }
     }
     return $title;
 }
@@ -30,8 +32,9 @@ function get_player_basename($old = false)
     }
     if ($title) {
         $x = strpos($name, $title);
-        if ($x !== false)
+        if ($x !== false) {
             $name = trim(substr($name, $x + strlen($title)));
+        }
     }
 
     return str_replace("`0", "", $name);
@@ -39,16 +42,18 @@ function get_player_basename($old = false)
 
 function change_player_name($newname, $old = false)
 {
-    if ($newname == "")
+    if ($newname == "") {
         $newname = get_player_basename($old);
+    }
 
     $newname = str_replace("`0", "", $newname);
 
     $title = get_player_title($old);
     if ($title) {
         $x = strpos($newname, $title);
-        if ($x === 0)
+        if ($x === 0) {
             $newname = trim(substr($newname, $x + strlen($title)));
+        }
         $newname = $title . " " . $newname . "`0";
     }
     return $newname;

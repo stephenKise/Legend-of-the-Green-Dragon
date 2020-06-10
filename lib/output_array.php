@@ -20,8 +20,9 @@ function code_array($array)
     $output = "array(";
     $i = 0;
     while (list($key, $val) = each($array)) {
-        if ($i > 0)
+        if ($i > 0) {
             $output .= ", ";
+        }
         if (is_array($val)) {
             $output .= "'" . addslashes($key) . "'=>" . code_array($val);
         } else {

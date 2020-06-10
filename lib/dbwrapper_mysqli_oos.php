@@ -2,8 +2,9 @@
 
 function db_query($sql, $die = true)
 {
-    if (defined("DB_NODB") && !defined("LINK"))
+    if (defined("DB_NODB") && !defined("LINK")) {
         return array();
+    }
     global $session, $dbinfo, $mysqli_resource;
     $dbinfo['queriesthishit'] ++;
     // $fname = DBTYPE."_query";
@@ -16,9 +17,9 @@ function db_query($sql, $die = true)
             return array();
         } else {
             if ($session['user']['superuser'] & SU_DEVELOPER || 1) {
-                require_once("lib/show_backtrace.php");
+                include_once "lib/show_backtrace.php";
                 die(
-                        "<pre>" . HTMLEntities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</pre>"
+                    "<pre>" . HTMLEntities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "</pre>"
                         . db_error(LINK)
                         . show_backtrace()
                 );
@@ -30,8 +31,9 @@ function db_query($sql, $die = true)
     $endtime = getmicrotime();
     if ($endtime - $starttime >= 1.00 && ($session['user']['superuser'] & SU_DEBUG_OUTPUT)) {
         $s = trim($sql);
-        if (strlen($s) > 800)
+        if (strlen($s) > 800) {
             $s = substr($s, 0, 400) . " ... " . substr($s, strlen($s) - 400);
+        }
         debug("Slow Query (" . round($endtime - $starttime, 2) . "s): " . (HTMLEntities($s, ENT_COMPAT, getsetting("charset", "ISO-8859-1"))) . "`n");
     }
     unset($dbinfo['affected_rows']);
@@ -70,15 +72,16 @@ function &db_query_cached($sql, $name, $duration = 900)
 }
 
 if (file_exists("lib/dbremote.php")) {
-    require_once("lib/dbremote.php");
+    include_once "lib/dbremote.php";
 }
 
 function db_error()
 {
     global $mysqli_resource;
     $r = $mysqli_resource->error;
-    if ($r == "" && defined("DB_NODB") && !defined("DB_INSTALLER_STAGE4"))
+    if ($r == "" && defined("DB_NODB") && !defined("DB_INSTALLER_STAGE4")) {
         return "The database connection was never established";
+    }
     return $r;
 }
 
@@ -86,11 +89,12 @@ function db_fetch_assoc(&$result)
 {
     if (is_array($result)) {
         //cached data
-        if (list($key, $val) = each($result))
+        if (list($key, $val) = each($result)) {
             return $val;
-        else
+        } else {
             return false;
-    }else {
+        }
+    } else {
         //$fname = DBTYPE."_fetch_assoc";
         //$r = $fname($result);
         $r = $result->Fetch_Assoc();
@@ -101,8 +105,9 @@ function db_fetch_assoc(&$result)
 function db_insert_id()
 {
     global $mysqli_resource;
-    if (defined("DB_NODB") && !defined("LINK"))
+    if (defined("DB_NODB") && !defined("LINK")) {
         return -1;
+    }
     //$fname = DBTYPE."_insert_id";
     //$r = $fname();
     $r = $mysqli_resource->insert_id;
@@ -114,8 +119,9 @@ function db_num_rows($result)
     if (is_array($result)) {
         return count($result);
     } else {
-        if (defined("DB_NODB") && !defined("LINK"))
+        if (defined("DB_NODB") && !defined("LINK")) {
             return 0;
+        }
 
         $r = $result->num_rows;
         return $r;
@@ -128,8 +134,9 @@ function db_affected_rows($link = false)
     if (isset($dbinfo['affected_rows'])) {
         return $dbinfo['affected_rows'];
     }
-    if (defined("DB_NODB") && !defined("LINK"))
+    if (defined("DB_NODB") && !defined("LINK")) {
         return 0;
+    }
 
     $r = $mysqli_resource->affected_rows;
 
@@ -142,7 +149,7 @@ function db_pconnect($host, $user, $pass)
 
     // Constants cannot be an object
     // MySQLi do not know a pconnect
-    $mysqli_resource = New MySQLi($host, $user, $pass);
+    $mysqli_resource = new MySQLi($host, $user, $pass);
 
     if ($mysqli_resource) {
         return true;
@@ -156,7 +163,7 @@ function db_connect($host, $user, $pass)
     global $mysqli_resource;
 
     // Constants cannot be an object
-    $mysqli_resource = New MySQLi($host, $user, $pass);
+    $mysqli_resource = new MySQLi($host, $user, $pass);
 
     if ($mysqli_resource) {
         return true;
@@ -184,8 +191,9 @@ function db_free_result($result)
         //cached data
         unset($result);
     } else {
-        if (defined("DB_NODB") && !defined("LINK"))
+        if (defined("DB_NODB") && !defined("LINK")) {
             return false;
+        }
         $result->Free();
         return true;
     }
@@ -194,11 +202,13 @@ function db_free_result($result)
 function db_table_exists($tablename)
 {
     global $mysqli_resource;
-    if (defined("DB_NODB") && !defined("LINK"))
+    if (defined("DB_NODB") && !defined("LINK")) {
         return false;
+    }
     $exists = $mysqli_resource->Query("SELECT 1 FROM `$tablename` LIMIT 0");
-    if ($exists)
+    if ($exists) {
         return true;
+    }
     return false;
 }
 

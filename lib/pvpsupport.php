@@ -1,10 +1,10 @@
 <?php
 
-require_once("lib/pvplist.php");
-require_once("lib/pvpwarning.php");
-require_once("lib/substitute.php");
-require_once("lib/systemmail.php");
-require_once("lib/datetime.php");
+require_once "lib/pvplist.php";
+require_once "lib/pvpwarning.php";
+require_once "lib/substitute.php";
+require_once "lib/systemmail.php";
+require_once "lib/datetime.php";
 
 // This contains functions to support pvp
 function setup_target($name)
@@ -26,9 +26,9 @@ function setup_target($name)
         } elseif ($row['pvpflag'] > $pvptimeout) {
             output("`\$Oops:`4 That user is currently engaged by someone else, you'll have to wait your turn!");
             return false;
-        } elseif (strtotime($row['laston']) >
-                strtotime("-" . getsetting("LOGINTIMEOUT", 900) . " sec") &&
-                $row['loggedin']) {
+        } elseif (strtotime($row['laston']) >            strtotime("-" . getsetting("LOGINTIMEOUT", 900) . " sec")
+            && $row['loggedin']
+        ) {
             output("`\$Error:`4 That user is now online, and cannot be attacked until they log off again.");
             return false;
         } elseif ((int) $row['alive'] != 1) {
@@ -73,23 +73,31 @@ function pvpvictory($badguy, $killedloc, $options)
     // and amount of gold they were carrying this can some times work to
     // their advantage, sometimes against.  The basic idea is to prevent
     // exhorbitant amounts of money from being transferred this way.
-    $winamount = round(10 * $badguy['creaturelevel'] *
-            log(max(1, $badguy['creaturegold'])), 0);
+    $winamount = round(
+        10 * $badguy['creaturelevel'] *
+        log(max(1, $badguy['creaturegold'])),
+        0
+    );
     output("`b`\$You have slain %s!`0`b`n", $badguy['creaturename']);
-    if ($session['user']['level'] == 15)
+    if ($session['user']['level'] == 15) {
         $winamount = 0;
+    }
     output("`#You receive `^%s`# gold!`n", $winamount);
     $session['user']['gold'] += $winamount;
 
     $exp = round(getsetting("pvpattgain", 10) * $badguy['creatureexp'] / 100, 0);
-    if ($session['user']['level'] == 15)
+    if ($session['user']['level'] == 15) {
         $exp = 0;
-    $expbonus = round(($exp *
+    }
+    $expbonus = round(
+        ($exp *
             (1 + .1 * ($badguy['creaturelevel'] -
-            $session['user']['level']))) - $exp, 0);
+        $session['user']['level']))) - $exp,
+        0
+    );
     if ($expbonus > 0) {
         output("`#***Because of the difficult nature of this fight, you are awarded an additional `^%s`# experience!`n", $expbonus);
-    } else if ($expbonus < 0) {
+    } elseif ($expbonus < 0) {
         output("`#***Because of the simplistic nature of this fight, you are penalized `^%s`# experience!`n", abs($expbonus));
     }
     $wonexp = $exp + $expbonus;
@@ -98,7 +106,7 @@ function pvpvictory($badguy, $killedloc, $options)
 
     $lostexp = round($badguy['creatureexp'] * getsetting("pvpdeflose", 5) / 100, 0);
 
-//	debuglog("gained $winamount ({$badguy['creaturegold']} base) gold and $wonexp exp (loser lost $lostexp) for killing ", $badguy['acctid']);
+    //  debuglog("gained $winamount ({$badguy['creaturegold']} base) gold and $wonexp exp (loser lost $lostexp) for killing ", $badguy['acctid']);
     //player wins gold and exp from badguy
     debuglog("started the fight and defeated {$badguy['creaturename']} in $killedloc (earned $winamount of {$badguy['creaturegold']} gold and $wonexp of $lostexp exp)", false, $session['user']['acctid']);
     debuglog("was victim and has been defeated by {$session['user']['name']} in $killedloc (lost {$badguy['creaturegold']} gold and $lostexp exp, actor tooks $winamount gold and $wonexp exp)", false, $badguy['acctid']);
@@ -142,18 +150,23 @@ function pvpdefeat($badguy, $killedloc, $taunt, $options)
     // and amount of gold they were carrying this can some times work to
     // their advantage, sometimes against.  The basic idea is to prevent
     // exhorbitant amounts of money from being transferred this way.
-    $winamount = round(10 * $session['user']['level'] *
-            log(max(1, $session['user']['gold'])), 0);
-    if ($badguy['creaturelevel'] == 15)
+    $winamount = round(
+        10 * $session['user']['level'] *
+        log(max(1, $session['user']['gold'])),
+        0
+    );
+    if ($badguy['creaturelevel'] == 15) {
         $wonamount = 0;
+    }
 
     $sql = "SELECT level FROM " . db_prefix("accounts") . " WHERE acctid={$badguy['acctid']}";
     $result = db_query($sql);
     $row = db_fetch_assoc($result);
 
     $wonexp = round($session['user']['experience'] * getsetting("pvpdefgain", 10) / 100, 0);
-    if ($badguy['creaturelevel'] == 15)
+    if ($badguy['creaturelevel'] == 15) {
         $wonexp = 0;
+    }
 
     $lostexp = round($session['user']['experience'] * getsetting("pvpattlose", 15) / 100, 0);
 
@@ -173,8 +186,12 @@ function pvpdefeat($badguy, $killedloc, $taunt, $options)
         $msg .= "You received `^%s`2 experience and `^%s`2 gold";
     }
     $msg .= "!`n%s`n`0";
-    systemmail($badguy['acctid'], array("`2You were successful while you were in %s`2", $killedloc), array($msg, $session['user']['name'], $killedloc, $wonexp,
-        $winamount, $args['pvpmsgadd']));
+    systemmail(
+        $badguy['acctid'],
+        array("`2You were successful while you were in %s`2", $killedloc),
+        array($msg, $session['user']['name'], $killedloc, $wonexp,
+        $winamount, $args['pvpmsgadd'])
+    );
 
     if ($row['level'] >= $badguy['creaturelevel']) {
         // Only give the reward if the person didn't level down
@@ -190,8 +207,11 @@ function pvpdefeat($badguy, $killedloc, $taunt, $options)
 
     $session['user']['gold'] = 0;
     $session['user']['hitpoints'] = 0;
-    $session['user']['experience'] = round($session['user']['experience'] *
-            (100 - getsetting("pvpattlose", 15)) / 100, 0);
+    $session['user']['experience'] = round(
+        $session['user']['experience'] *
+        (100 - getsetting("pvpattlose", 15)) / 100,
+        0
+    );
     output("`b`&You have been slain by `%%s`&!!!`n", $badguy['creaturename']);
     output("`4All gold on hand has been lost!`n");
     output("`4%s%% of experience has been lost!`n", getsetting("pvpattlose", 15));

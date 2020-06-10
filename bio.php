@@ -3,8 +3,8 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/sanitize.php");
+require_once "common.php";
+require_once "lib/sanitize.php";
 
 tlschema("bio");
 
@@ -46,8 +46,9 @@ if ($target = db_fetch_assoc($result)) {
 
     output("`^Biography for %s`^.", $target['name']);
     $write = translate_inline("Write Mail");
-    if ($session['user']['loggedin'])
+    if ($session['user']['loggedin']) {
         rawoutput("<a href=\"mail.php?op=write&to={$target['login']}\" target=\"_blank\" onClick=\"" . popup("mail.php?op=write&to={$target['login']}") . ";return false;\"><img src='images/newscroll.GIF' width='16' height='16' alt='$write' border='0'></a>");
+    }
     output_notl("`n`n");
 
     if ($target['clanname'] > "" && getsetting("allowclans", false)) {
@@ -63,9 +64,9 @@ if ($target = db_fetch_assoc($result)) {
     output("`^Title: `@%s`n", $target['title']);
     output("`^Level: `@%s`n", $target['level']);
     $loggedin = false;
-    if ($target['loggedin'] &&
-            (date("U") - strtotime($target['laston']) <
-            getsetting("LOGINTIMEOUT", 900))) {
+    if ($target['loggedin']
+        && (date("U") - strtotime($target['laston']) <        getsetting("LOGINTIMEOUT", 900))
+    ) {
         $loggedin = true;
     }
     $status = translate_inline($loggedin ? "`#Online`0" : "`\$Offline`0");
@@ -74,8 +75,9 @@ if ($target = db_fetch_assoc($result)) {
     output("`^Resurrections: `@%s`n", $target['resurrections']);
 
     $race = $target['race'];
-    if (!$race)
+    if (!$race) {
         $race = RACE_UNKNOWN;
+    }
     tlschema("race");
     $race = translate_inline($race);
     tlschema();
@@ -96,17 +98,20 @@ if ($target = db_fetch_assoc($result)) {
     $mount['acctid'] = $target['acctid'];
     $mount = modulehook("bio-mount", $mount);
     $none = translate_inline("`iNone`i");
-    if (!isset($mount['mountname']) || $mount['mountname'] == "")
+    if (!isset($mount['mountname']) || $mount['mountname'] == "") {
         $mount['mountname'] = $none;
+    }
     output("`^Creature: `@%s`0`n", $mount['mountname']);
 
     modulehook("biostat", $target);
 
-    if ($target['dragonkills'] > 0)
+    if ($target['dragonkills'] > 0) {
         output("`^Dragon Kills: `@%s`n", $target['dragonkills']);
+    }
 
-    if ($target['bio'] > "")
+    if ($target['bio'] > "") {
         output("`^Bio: `@`n%s`n", soap($target['bio']));
+    }
 
     modulehook("bioinfo", $target);
 
@@ -181,4 +186,3 @@ if ($target = db_fetch_assoc($result)) {
     }
     page_footer();
 }
-?>

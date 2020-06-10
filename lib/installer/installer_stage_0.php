@@ -20,8 +20,9 @@ if (DB_CHOSEN) {
         if ($version == "-1") {
             // Passwords weren't encrypted in these versions
             $sql = "SELECT * FROM " . db_prefix("accounts") . " WHERE login='" . mysqli_real_escape_string($mysqli_resource, httppost("username")) . "' AND password='" . mysqli_real_escape_string($mysqli_resource, httppost("password")) . "' AND superuser & " . SU_MEGAUSER;
-        } else
+        } else {
             $sql = "SELECT * FROM " . db_prefix("accounts") . " WHERE login='" . mysqli_real_escape_string($mysqli_resource, httppost("username")) . "' AND password='" . md5(md5(stripslashes(httppost("password")))) . "' AND superuser & " . SU_MEGAUSER;
+        }
         $result = db_query($sql);
         if (db_num_rows($result) > 0) {
             $row = db_fetch_assoc($result);
@@ -40,8 +41,9 @@ if (DB_CHOSEN) {
                 // Okay, they are upgrading from 0.9.7  they will have
                 // either a non-encrypted password, or an encrypted singly
                 // password.
-                if (strlen($row['password']) == 32 &&
-                        $row['password'] == $p1) {
+                if (strlen($row['password']) == 32
+                    && $row['password'] == $p1
+                ) {
                     $needsauthentication = false;
                 } elseif ($row['password'] == $p) {
                     $needsauthentication = false;
@@ -71,8 +73,9 @@ if (DB_CHOSEN) {
     $needsauthentication = false;
 }
 //if a user with appropriate privs is already logged in, let's let them past.
-if ($session['user']['superuser'] & SU_MEGAUSER)
+if ($session['user']['superuser'] & SU_MEGAUSER) {
     $needsauthentication = false;
+}
 if ($needsauthentication) {
     $session['stagecompleted'] = -1;
     rawoutput("<form action='installer.php?stage=0' method='POST'>");
@@ -87,4 +90,3 @@ if ($needsauthentication) {
 } else {
     output("`nPlease continue on to the next page, \"License Agreement.\"");
 }
-?>

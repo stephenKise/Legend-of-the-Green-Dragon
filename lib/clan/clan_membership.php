@@ -31,7 +31,7 @@ if ($remove > "") {
     //delete unread application emails from this user.
     //breaks if the applicant has had their name changed via
     //dragon kill, superuser edit, or lodge color change
-    require_once("lib/safeescape.php");
+    include_once "lib/safeescape.php";
     $subj = safeescape(serialize(array($apply_short, $row['name'])));
     $sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgfrom=0 AND seen=0 AND subject='$subj'";
     db_query($sql);
@@ -54,7 +54,7 @@ $confirm = translate_inline("Are you sure you wish to remove this member from yo
 rawoutput("<tr class='trhead'><td>$rank</td><td>$name</td><td>$lev</td><td>$dk</td><td>$jd</td><td>$lo</td>" . ($session['user']['clanrank'] > CLAN_MEMBER ? "<td>$ops</td>" : "") . "</tr>", true);
 $i = 0;
 $tot = 0;
-require_once("lib/clan/func.php");
+require_once "lib/clan/func.php";
 while ($row = db_fetch_assoc($result)) {
     $i++;
     $tot += $row['dragonkills'];
@@ -105,4 +105,3 @@ while ($row = db_fetch_assoc($result)) {
 }
 rawoutput("</table>");
 output("`n`n`^This clan has a total of `\$%s`^ dragon kills.", $tot);
-?>

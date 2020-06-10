@@ -3,19 +3,20 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("lib/villagenav.php");
+require_once "lib/villagenav.php";
 
 function forest($noshowmessage = false)
 {
     global $session, $playermount;
     tlschema("forest");
-//	mass_module_prepare(array("forest", "validforestloc"));
+    //  mass_module_prepare(array("forest", "validforestloc"));
     addnav("Heal");
     addnav("H?Healer's Hut", "healer.php");
     addnav("Fight");
     addnav("L?Look for Something to Kill", "forest.php?op=search");
-    if ($session['user']['level'] > 1)
+    if ($session['user']['level'] > 1) {
         addnav("S?Go Slumming", "forest.php?op=search&type=slum");
+    }
     addnav("T?Go Thrillseeking", "forest.php?op=search&type=thrill");
     if (getsetting("suicide", 0)) {
         if (getsetting("suicidedk", 10) <= $session['user']['dragonkills']) {
@@ -54,5 +55,3 @@ function forest($noshowmessage = false)
     module_display_events("forest", "forest.php");
     tlschema();
 }
-?>
-

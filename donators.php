@@ -3,16 +3,16 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once("common.php");
-require_once("lib/http.php");
-require_once("lib/systemmail.php");
+require_once "common.php";
+require_once "lib/http.php";
+require_once "lib/systemmail.php";
 
 check_su_access(SU_EDIT_DONATIONS);
 
 tlschema("donation");
 
 page_header("Donator's Page");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 
 
@@ -27,19 +27,24 @@ $add = translate_inline("Add Donation");
 rawoutput("<form action='donators.php?op=add1&ret=" . rawurlencode($ret) . "' method='POST'>");
 addnav("", "donators.php?op=add1&ret=" . rawurlencode($ret) . "");
 $name = httppost("name");
-if ($name == "")
+if ($name == "") {
     $name = httpget("name");
+}
 $amt = httppost("amt");
-if ($amt == "")
+if ($amt == "") {
     $amt = httpget("amt");
+}
 $reason = httppost("reason");
-if ($reason == "")
+if ($reason == "") {
     $reason = httpget("reason");
+}
 $txnid = httppost("txnid");
-if ($txnid == "")
+if ($txnid == "") {
     $txnid = httpget("txnid");
-if ($reason == "")
+}
+if ($reason == "") {
     $reason = translate_inline("manual donation entry");
+}
 
 
 output("`bAdd Donation Points:`b`n");
@@ -51,14 +56,16 @@ output("`nReason: ");
 rawoutput("<input name='reason' size='30' value=\"" . htmlentities($reason, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\">");
 rawoutput("<input type='hidden' name='txnid' value=\"" . htmlentities($txnid, ENT_COMPAT, getsetting("charset", "ISO-8859-1")) . "\">");
 output_notl("`n");
-if ($txnid > "")
+if ($txnid > "") {
     output("For transaction: %s`n", $txnid);
+}
 rawoutput("<input type='submit' class='button' value='$add'>");
 rawoutput("</form>");
 
 addnav("Donations");
-if (($session['user']['superuser'] & SU_EDIT_PAYLOG) &&
-        file_exists("paylog.php")) {
+if (($session['user']['superuser'] & SU_EDIT_PAYLOG)
+    && file_exists("paylog.php")
+) {
     addnav("Payment Log", "paylog.php");
 }
 $op = httpget('op');
@@ -137,32 +144,38 @@ if ($op == "") {
         rawoutput("</tr>");
     }
     rawoutput("</table>", true);
-} else if ($op == "add1") {
+} elseif ($op == "add1") {
     $search = "%";
     $name = httppost('name');
-    if ($name == '')
+    if ($name == '') {
         $name = httpget('name');
+    }
     for ($i = 0; $i < strlen($name); $i++) {
         $z = substr($name, $i, 1);
-        if ($z == "'")
+        if ($z == "'") {
             $z = "\\'";
+        }
         $search .= $z . "%";
     }
     $sql = "SELECT name,acctid,donation,donationspent FROM " . db_prefix("accounts") . " WHERE login LIKE '$search' or name LIKE '$search' LIMIT 100";
     $result = db_query($sql);
     $ret = httpget('ret');
     $amt = httppost('amt');
-    if ($amt == '')
+    if ($amt == '') {
         $amt = httpget("amt");
+    }
     $reason = httppost("reason");
-    if ($reason == "")
+    if ($reason == "") {
         $reason = httpget("reason");
+    }
     $txnid = httppost('txnid');
-    if ($txnid == '')
+    if ($txnid == '') {
         $txnid = httpget("txnid");
+    }
     output("Confirm the addition of %s points to:`n", $amt);
-    if ($reason)
+    if ($reason) {
         output("(Reason: `^`b`i%s`i`b`0)`n`n", $reason);
+    }
     $number = db_num_rows($result);
     for ($i = 0; $i < $number; $i++) {
         $row = db_fetch_assoc($result);
@@ -182,4 +195,3 @@ if ($op == "") {
     }
 }
 page_footer();
-?>

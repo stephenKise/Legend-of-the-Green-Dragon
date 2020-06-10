@@ -4,7 +4,7 @@
 // translator ready
 // mail ready
 define("OVERRIDE_FORCED_NAV", true);
-require_once("common.php");
+require_once "common.php";
 tlschema("translatortool");
 
 check_su_access(SU_IS_TRANSLATOR);
@@ -15,10 +15,11 @@ if ($op == "") {
     $text = stripslashes(rawurldecode(httpget('t')));
 
     $translation = translate_loadnamespace($uri);
-    if (isset($translation[$text]))
+    if (isset($translation[$text])) {
         $trans = $translation[$text];
-    else
+    } else {
         $trans = "";
+    }
     $namespace = translate_inline("Namespace:");
     $texta = translate_inline("Text:");
     $translation = translate_inline("Translation:");
@@ -34,14 +35,15 @@ if ($op == "") {
     rawoutput("<input type='submit' value=\"$savenotclose\" class='button' name='savenotclose'>");
     rawoutput("</form>");
     popup_footer();
-}elseif ($_GET['op'] == 'save') {
+} elseif ($_GET['op'] == 'save') {
     $uri = httppost('uri');
     $text = httpPostClean('text');
     $trans = httpPostClean('trans');
     modulehook('translation-save', httpallpost());
     $page = $uri;
-    if (strpos($page, "?") !== false)
+    if (strpos($page, "?") !== false) {
         $page = substr($page, 0, strpos($page, "?"));
+    }
 
     if ($trans == "") {
         $sql = "DELETE ";
@@ -141,4 +143,3 @@ if ($op == "") {
     rawoutput("</table>");
     popup_footer();
 }
-?>

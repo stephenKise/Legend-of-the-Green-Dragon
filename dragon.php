@@ -3,13 +3,13 @@
 // addnews ready
 // translator ready
 // mail ready
-require_once("common.php");
-require_once("lib/fightnav.php");
-require_once("lib/titles.php");
-require_once("lib/http.php");
-require_once("lib/buffs.php");
-require_once("lib/taunt.php");
-require_once("lib/names.php");
+require_once "common.php";
+require_once "lib/fightnav.php";
+require_once "lib/titles.php";
+require_once "lib/http.php";
+require_once "lib/buffs.php";
+require_once "lib/taunt.php";
+require_once "lib/names.php";
 
 tlschema("dragon");
 $battle = false;
@@ -38,8 +38,9 @@ if ($op == "") {
     restore_buff_fields();
     reset($session['user']['dragonpoints']);
     while (list($key, $val) = each($session['user']['dragonpoints'])) {
-        if ($val == "at" || $val == "de")
+        if ($val == "at" || $val == "de") {
             $points++;
+        }
     }
 
     // Now, add points for hitpoint buffs that have been done by the dragon
@@ -65,7 +66,7 @@ if ($op == "") {
 
     $session['user']['badguy'] = createstring($badguy);
     $battle = true;
-}elseif ($op == "prologue1") {
+} elseif ($op == "prologue1") {
     output("`@Victory!`n`n");
     $flawless = (int) (httpget('flawless'));
     if ($flawless) {
@@ -101,8 +102,9 @@ if ($op == "") {
     reset($session['user']['dragonpoints']);
     $dkpoints = 0;
     while (list($key, $val) = each($session['user']['dragonpoints'])) {
-        if ($val == "hp")
+        if ($val == "hp") {
             $dkpoints += 5;
+        }
     }
 
     restore_buff_fields();
@@ -160,16 +162,17 @@ if ($op == "") {
     $nochange = modulehook("dk-preserve", $nochange);
 
     $session['user']['dragonage'] = $session['user']['age'];
-    if ($session['user']['dragonage'] < $session['user']['bestdragonage'] ||
-            $session['user']['bestdragonage'] == 0) {
+    if ($session['user']['dragonage'] < $session['user']['bestdragonage']
+        || $session['user']['bestdragonage'] == 0
+    ) {
         $session['user']['bestdragonage'] = $session['user']['dragonage'];
     }
     $number = db_num_rows($result);
     for ($i = 0; $i < $number; $i++) {
         $row = db_fetch_assoc($result);
-        if (array_key_exists($row['Field'], $nochange) &&
-                $nochange[$row['Field']]) {
-            
+        if (array_key_exists($row['Field'], $nochange)
+            && $nochange[$row['Field']]
+        ) {
         } elseif ($row['Field'] == "location") {
             $session['user'][$row['Field']] = getsetting("villagename", LOCATION_FIELDS);
         } else {
@@ -185,9 +188,12 @@ if ($op == "") {
     $restartgems = 0;
     if ($restartgold > getsetting("maxrestartgold", 300)) {
         $restartgold = getsetting("maxrestartgold", 300);
-        $restartgems = max(0, ($session['user']['dragonkills'] -
+        $restartgems = max(
+            0,
+            ($session['user']['dragonkills'] -
                 (getsetting("maxrestartgold", 300) /
-                getsetting("newplayerstartgold", 50)) - 1));
+            getsetting("newplayerstartgold", 50)) - 1)
+        );
         if ($restartgems > getsetting("maxrestartgems", 10)) {
             $restartgems = getsetting("maxrestartgems", 10);
         }
@@ -240,16 +246,22 @@ if ($op == "") {
     output("`n`n`^You are now known as `&%s`^!!", $session['user']['name']);
     if ($session['user']['dragonkills'] == 1) {
         addnews(
-                sprintf_translate(
-                        "`#%s`# has earned the title `&%s`# for having slain the `@Green Dragon`& `^%s`# time!", $regname, $session['user']['title'], $session['user']['dragonkills']
-                )
+            sprintf_translate(
+                "`#%s`# has earned the title `&%s`# for having slain the `@Green Dragon`& `^%s`# time!",
+                $regname,
+                $session['user']['title'],
+                $session['user']['dragonkills']
+            )
         );
         output("`n`n`&Because you have slain the dragon %s time, you start with some extras.  You also keep additional permanent hitpoints you've earned.`n", $session['user']['dragonkills']);
     } else {
         addnews(
-                sprintf_translate(
-                        "`#%s`# has earned the title `&%s`# for having slain the `@Green Dragon`& `^%s`# times!", $regname, $session['user']['title'], $session['user']['dragonkills']
-                )
+            sprintf_translate(
+                "`#%s`# has earned the title `&%s`# for having slain the `@Green Dragon`& `^%s`# times!",
+                $regname,
+                $session['user']['title'],
+                $session['user']['dragonkills']
+            )
         );
         output("`n`n`&Because you have slain the dragon %s times, you start with some extras.  You also keep additional permanent hitpoints you've earned.`n", $session['user']['dragonkills']);
     }
@@ -271,23 +283,25 @@ if ($op == "fight" || $op == "run") {
     $battle = true;
 }
 if ($battle) {
-    require_once("battle.php");
+    include_once "battle.php";
 
     if ($victory) {
         $flawless = 0;
-        if ($badguy['diddamage'] != 1)
+        if ($badguy['diddamage'] != 1) {
             $flawless = 1;
+        }
         $session['user']['dragonkills'] ++;
         output("`&With a mighty final blow, `@The Green Dragon`& lets out a tremendous bellow and falls at your feet, dead at last.");
         addnews(
-                sprintf_translate(
-                        "`&%s has slain the hideous creature known as `@The Green Dragon`&.  All across the land, people rejoice!", $session['user']['name']
-                )
+            sprintf_translate(
+                "`&%s has slain the hideous creature known as `@The Green Dragon`&.  All across the land, people rejoice!",
+                $session['user']['name']
+            )
         );
         tlschema("nav");
         addnav("Continue", "dragon.php?op=prologue1&flawless=$flawless");
         tlschema();
-    }else {
+    } else {
         if ($defeat) {
             tlschema("nav");
             addnav("Daily news", "news.php");
@@ -295,15 +309,19 @@ if ($battle) {
             $taunt = select_taunt_array();
             if ($session['user']['sex']) {
                 addnews(
-                        sprintf_translate(
-                                "`%%s`5 has been slain when she encountered `@The Green Dragon`5!!!  Her bones now litter the cave entrance, just like the bones of those who came before.`n%s", $session['user']['name'], $taunt
-                        )
+                    sprintf_translate(
+                        "`%%s`5 has been slain when she encountered `@The Green Dragon`5!!!  Her bones now litter the cave entrance, just like the bones of those who came before.`n%s",
+                        $session['user']['name'],
+                        $taunt
+                    )
                 );
             } else {
                 addnews(
-                        sprintf_translate(
-                                "`%%s`5 has been slain when he encountered `@The Green Dragon`5!!!  His bones now litter the cave entrance, just like the bones of those who came before.`n%s", $session['user']['name'], $taunt
-                        )
+                    sprintf_translate(
+                        "`%%s`5 has been slain when he encountered `@The Green Dragon`5!!!  His bones now litter the cave entrance, just like the bones of those who came before.`n%s",
+                        $session['user']['name'],
+                        $taunt
+                    )
                 );
             }
             $session['user']['alive'] = false;
@@ -321,4 +339,3 @@ if ($battle) {
     }
 }
 page_footer();
-?>

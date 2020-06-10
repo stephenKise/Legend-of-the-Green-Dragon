@@ -2,21 +2,23 @@
 
 /**
  * Sanitizes color and styling tags from an input.
- * 
- * @param string $input
- * @return string 
+ *
+ * @param  string $input
+ * @return string
  */
 function sanitize(string $input): string
 {
     return preg_replace(
-            "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/", "", $input
+        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/",
+        "",
+        $input
     );
 }
 
 /**
  * Alias of sanitizeNewline().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function newline_sanitize(string $input): string
@@ -26,8 +28,8 @@ function newline_sanitize(string $input): string
 
 /**
  * Strips newline characters from an input.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeNewline(string $input): string
@@ -37,8 +39,8 @@ function sanitizeNewline(string $input): string
 
 /**
  * Alias of sanitizeColor().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function color_sanitize(string $input): string
@@ -48,21 +50,23 @@ function color_sanitize(string $input): string
 
 /**
  * Removes only color tags from an input.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeColor(string $input): string
 {
     return preg_replace(
-            "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/", "", $input
+        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/",
+        "",
+        $input
     );
 }
 
 /**
  * Alias of sanitizeComment().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function comment_sanitize(string $input): string
@@ -72,21 +76,23 @@ function comment_sanitize(string $input): string
 
 /**
  * Sanitizes input so that it is suitable for commentary.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeComment(string $input): string
 {
     return preg_replace(
-            "/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/", "`0", $input
+        "/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/",
+        "`0",
+        $input
     );
 }
 
 /**
  * Alias of sanitizeLogdNet().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function logdnet_sanitize(string $input): string
@@ -97,22 +103,24 @@ function logdnet_sanitize(string $input): string
 /**
  * Removes colors introduced in DragonPrime Edition versions, so that LoGD Net's
  * server list page looks the same across all servers.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeLogdNet(string $input): string
 {
     $output = preg_replace(
-            "/[`](?=[^1234567890!@#\$%^&)Qqbi])/", chr(1) . chr(1), $input
+        "/[`](?=[^1234567890!@#\$%^&)Qqbi])/",
+        chr(1) . chr(1),
+        $input
     );
     return str_replace(chr(1), "`", $output);
 }
 
 /**
  * Alias of sanitize().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function full_sanitize(string $input): string
@@ -122,8 +130,8 @@ function full_sanitize(string $input): string
 
 /**
  * Alias of sanitizeCounter().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function cmd_sanitize(string $input): string
@@ -133,8 +141,8 @@ function cmd_sanitize(string $input): string
 
 /**
  * Removes the 'counter' feature in request uri.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeCounter(string $input): string
@@ -144,8 +152,8 @@ function sanitizeCounter(string $input): string
 
 /**
  * Alias of sanitizeComscroll().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function comscroll_sanitize(string $input): string
@@ -155,8 +163,8 @@ function comscroll_sanitize(string $input): string
 
 /**
  * Sanitizes the commentary functions from request uri.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeComscroll(string $input): string
@@ -170,8 +178,8 @@ function sanitizeComscroll(string $input): string
 
 /**
  * Alias of sanitizeBackticks().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function prevent_colors(string $input): string
@@ -181,8 +189,8 @@ function prevent_colors(string $input): string
 
 /**
  * Removes all backticks, to prevent color and style tags from being used.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeBackticks(string $input): string
@@ -192,23 +200,24 @@ function sanitizeBackticks(string $input): string
 
 /**
  * Removes the commentary and counter functions from a request uri.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function translator_uri(string $input): string
 {
     $uri = comscroll_sanitize($input);
     $uri = cmd_sanitize($uri);
-    if (substr($uri, -1) == "?")
+    if (substr($uri, -1) == "?") {
         $uri = substr($uri, 0, -1);
+    }
     return $uri;
 }
 
 /**
  * Returns the file name from a request uri.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function translator_page(string $input): string
@@ -227,8 +236,8 @@ function translator_page(string $input): string
 
 /**
  * Alias of sanitizeModuleName().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function modulename_sanitize(string $input): string
@@ -238,8 +247,8 @@ function modulename_sanitize(string $input): string
 
 /**
  * Removes any illegal characters from module names.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeModuleName(string $input): string
@@ -249,8 +258,8 @@ function sanitizeModuleName(string $input): string
 
 /**
  * Alias of stripslashesArray().
- * 
- * @param array $array
+ *
+ * @param  array $array
  * @return array
  */
 function stripslashes_array(array $array): array
@@ -260,8 +269,8 @@ function stripslashes_array(array $array): array
 
 /**
  * Runs through all keys and values of an array and maps them to stripslashes().
- * 
- * @param array $array
+ *
+ * @param  array $array
  * @return array
  */
 function stripslashesArray(array $array): array
@@ -274,9 +283,9 @@ function stripslashesArray(array $array): array
 
 /**
  * Alias of sanitizeName(). Passes $input to sanitizeName().
- * 
- * @param bool $spaceallowed Deprecated variable left over for legacy code.
- * @param string $input
+ *
+ * @param  bool   $spaceallowed Deprecated variable left over for legacy code.
+ * @param  string $input
  * @return string
  */
 function sanitize_name(bool $spaceallowed = true, string $input): string
@@ -286,8 +295,8 @@ function sanitize_name(bool $spaceallowed = true, string $input): string
 
 /**
  * Cleans a character's base name to not allow special characters or tags.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeName(string $input): string
@@ -297,14 +306,13 @@ function sanitizeName(string $input): string
 
 /**
  * Alias of sanitizeNameColor().
- * 
- * @param bool $spaceallowed Deprecated variable left over for legacy code.
- * @param string $input Passed on to sanitizeNameColor().
- * @param bool $admin Deprecated variable left over for legacy code.
+ *
+ * @param  bool   $spaceallowed Deprecated variable left over for legacy code.
+ * @param  string $input        Passed on to sanitizeNameColor().
+ * @param  bool   $admin        Deprecated variable left over for legacy code.
  * @return string
  */
-function sanitize_colorname(bool $spaceallowed, string $input, bool $admin
-): string
+function sanitize_colorname(bool $spaceallowed, string $input, bool $admin): string
 {
     return sanitizeNameColor($input);
 }
@@ -312,8 +320,8 @@ function sanitize_colorname(bool $spaceallowed, string $input, bool $admin
 /**
  * Removes any illegal characters from a character's colored name, while leaving
  * color and style tags in tact.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeNameColor(string $input): string
@@ -323,8 +331,8 @@ function sanitizeNameColor(string $input): string
 
 /**
  * Alias of sanitizeHTMl().
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitize_html(string $input): string
@@ -334,8 +342,8 @@ function sanitize_html(string $input): string
 
 /**
  * Strips HTML codes and the contents within script, style, and comment tags.
- * 
- * @param string $input
+ *
+ * @param  string $input
  * @return string
  */
 function sanitizeHTML(string $input): string
@@ -351,13 +359,15 @@ function sanitizeHTML(string $input): string
  *  Replace all html entities, based on your server's charset setting.
  *  This was made to replace all of those needlessly long strings in the core.
  *
- *  @param string $string The string to convert with htmlentities().
- *  @return string $string The string ran through htmlentities().
+ * @param  string $string The string to convert with htmlentities().
+ * @return string $string The string ran through htmlentities().
  */
 function htmlent(string $string): string
 {
     return htmlentities(
-            $string, ENT_COMPAT, getsetting('charset', 'ISO-8859-1')
+        $string,
+        ENT_COMPAT,
+        getsetting('charset', 'ISO-8859-1')
     );
 }
 

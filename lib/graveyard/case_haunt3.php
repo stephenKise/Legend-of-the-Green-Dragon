@@ -17,19 +17,23 @@ if (db_num_rows($result) > 0) {
             $sql = "UPDATE " . db_prefix("accounts") . " SET hauntedby='" . addslashes($session['user']['name']) . "' WHERE login='$name'";
             db_query($sql);
             addnews(
-                    sprintf_translate(
-                            "`7%s`) haunted `7%s`)!", $session['user']['name'], $row['name']
-                    )
+                sprintf_translate(
+                    "`7%s`) haunted `7%s`)!",
+                    $session['user']['name'],
+                    $row['name']
+                )
             );
             $subj = array("`)You have been haunted");
             $body = array("`)You have been haunted by `&%s`).", $session['user']['name']);
-            require("lib/systemmail.php");
+            include "lib/systemmail.php";
             systemmail($row['acctid'], $subj, $body);
         } else {
             addnews(
-                    sprintf_translate(
-                            "`7%s`) unsuccessfully haunted `7%s`)!", $session['user']['name'], $row['name']
-                    )
+                sprintf_translate(
+                    "`7%s`) unsuccessfully haunted `7%s`)!",
+                    $session['user']['name'],
+                    $row['name']
+                )
             );
             switch (e_rand(0, 5)) {
                 case 0:
@@ -65,4 +69,3 @@ addnav("Places");
 addnav("S?Land of the Shades", "shades.php");
 addnav("G?The Graveyard", "graveyard.php");
 addnav("M?Return to the Mausoleum", "graveyard.php?op=enter");
-?>

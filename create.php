@@ -4,9 +4,9 @@
 // addnews ready
 // mail ready
 define("ALLOW_ANONYMOUS", true);
-require_once("common.php");
-require_once("lib/checkban.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/checkban.php";
+require_once "lib/http.php";
 
 tlschema("create");
 
@@ -68,14 +68,17 @@ if ($op == "forgot") {
                     db_query($sql);
                 }
                 $subj = translate_mail("LoGD Account Verification", $row['acctid']);
-                $msg = translate_mail(array("Someone from %s requested a forgotten password link for your account.  If this was you, then here is your"
+                $msg = translate_mail(
+                    array("Someone from %s requested a forgotten password link for your account.  If this was you, then here is your"
                     . " link, you may click it to log into your account and change your password from your preferences page in the village square.`n`n"
                     . "If you didn't request this email, then don't sweat it, you're the one who is receiving this email, not them."
                     . "`n`n  http://%s?op=val&id=%s `n`n Thanks for playing!",
                     $_SERVER['REMOTE_ADDR'],
                     ($_SERVER['SERVER_NAME'] . ($_SERVER['SERVER_PORT'] == 80 ? "" : ":" . $_SERVER['SERVER_PORT']) . $_SERVER['SCRIPT_NAME']),
                     $row['emailvalidation']
-                        ), $row['acctid']);
+                    ),
+                    $row['acctid']
+                );
                 mail($row['emailaddress'], $subj, str_replace("`n", "\n", $msg), translate_inline("From:") . getsetting("gameadminemail", "postmaster@localhost.com"));
                 output("`#Sent a new validation email to the address on file for that account.");
                 output("You may use the validation email to log in and change your password.");
@@ -125,8 +128,9 @@ if (getsetting("allowcreation", 1) == 0) {
             }
 
             $passlen = (int) httppost("passlen");
-            if (substr($pass1, 0, 5) != "!md5!" &&
-                    substr($pass1, 0, 6) != "!md52!") {
+            if (substr($pass1, 0, 5) != "!md5!"
+                && substr($pass1, 0, 6) != "!md52!"
+            ) {
                 $passlen = strlen($pass1);
             }
             if ($passlen <= 3) {
@@ -146,7 +150,6 @@ if (getsetting("allowcreation", 1) == 0) {
                 $blockaccount = true;
             }
             if (getsetting("requireemail", 0) == 1 && isValidEmail($email) || getsetting("requireemail", 0) == 0) {
-                
             } else {
                 $msg .= translate_inline("You must enter a valid email address.`n");
                 $blockaccount = true;
@@ -167,9 +170,10 @@ if (getsetting("allowcreation", 1) == 0) {
                     $sex = (int) httppost('sex');
                     // Inserted the following line to prevent hacking
                     // Reported by Eliwood
-                    if ($sex <> SEX_MALE)
+                    if ($sex <> SEX_MALE) {
                         $sex = SEX_FEMALE;
-                    require_once("lib/titles.php");
+                    }
+                    include_once "lib/titles.php";
                     $title = get_dk_title(0, $sex);
                     if (getsetting("requirevalidemail", 0)) {
                         $emailverification = md5(date("Y-m-d H:i:s") . $email);
@@ -209,9 +213,12 @@ if (getsetting("allowcreation", 1) == 0) {
                         modulehook("process-create", $args);
                         if ($emailverification != "") {
                             $subj = translate_mail("LoGD Account Verification", 0);
-                            $msg = translate_mail(array("Login name: %s `n`nIn order to verify your account, you will need to click on the link below.`n`n http://%s?op=val&id=%s `n`nThanks for playing!", $shortname,
+                            $msg = translate_mail(
+                                array("Login name: %s `n`nIn order to verify your account, you will need to click on the link below.`n`n http://%s?op=val&id=%s `n`nThanks for playing!", $shortname,
                                 ($_SERVER['SERVER_NAME'] . ($_SERVER['SERVER_PORT'] == 80 ? "" : ":" . $_SERVER['SERVER_PORT']) . $_SERVER['SCRIPT_NAME']),
-                                $emailverification), 0);
+                                $emailverification),
+                                0
+                            );
                             mail($email, $subj, str_replace("`n", "\n", $msg), "From: " . getsetting("gameadminemail", "postmaster@localhost.com"));
                             output("`4An email was sent to `\$%s`4 to validate your address.  Click the link in the email to activate your account.`0`n`n", $email);
                         } else {
@@ -245,11 +252,13 @@ if (getsetting("allowcreation", 1) == 0) {
     if ($op == "") {
         output("`&`c`bCreate a Character`b`c`0");
         $refer = httpget('r');
-        if ($refer)
+        if ($refer) {
             $refer = "&r=" . htmlentities($refer, ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
+        }
 
         rawoutput("<script language='JavaScript' src='lib/md5.js'></script>");
-        rawoutput("<script language='JavaScript'>
+        rawoutput(
+            "<script language='JavaScript'>
 		<!--
 		function md5pass(){
 			// encode passwords
@@ -267,7 +276,8 @@ if (getsetting("allowcreation", 1) == 0) {
 
 		}
 		//-->
-		</script>");
+		</script>"
+        );
         rawoutput("<form action=\"create.php?op=create$refer\" method='POST' onSubmit=\"md5pass();\">");
         // this is the first thing a new player will se, so let's make it look
         // better
@@ -312,4 +322,3 @@ if (getsetting("allowcreation", 1) == 0) {
 }
 addnav("Login", "index.php");
 page_footer();
-?>

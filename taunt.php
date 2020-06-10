@@ -3,15 +3,15 @@
 // addnews ready
 // mail ready
 // translator ready
-require_once("common.php");
-require_once("lib/http.php");
+require_once "common.php";
+require_once "lib/http.php";
 
 tlschema("taunt");
 
 check_su_access(SU_EDIT_CREATURES);
 
 page_header("Taunt Editor");
-require_once("lib/superusernav.php");
+require_once "lib/superusernav.php";
 superusernav();
 $op = httpget('op');
 $tauntid = httpget('tauntid');
@@ -24,7 +24,7 @@ if ($op == "edit") {
         $sql = "SELECT * FROM " . db_prefix("taunts") . " WHERE tauntid=\"$tauntid\"";
         $result = db_query($sql);
         $row = db_fetch_assoc($result);
-        require_once("lib/substitute.php");
+        include_once "lib/substitute.php";
         $badguy = array('creaturename' => 'Baron Munchausen', 'creatureweapon' => 'Bad Puns');
         $taunt = substitute_array($row['taunt']);
         $taunt = call_user_func_array("sprintf_translate", $taunt);
@@ -46,12 +46,12 @@ if ($op == "edit") {
     $save = translate_inline("Save");
     rawoutput("<input type='submit' class='button' value='$save'>");
     rawoutput("</form>");
-} else if ($op == "del") {
+} elseif ($op == "del") {
     $sql = "DELETE FROM " . db_prefix("taunts") . " WHERE tauntid=\"$tauntid\"";
     db_query($sql);
     $op = "";
     httpset("op", "");
-} else if ($op == "save") {
+} elseif ($op == "save") {
     $taunt = httppost('taunt');
     if ($tauntid != "") {
         $sql = "UPDATE " . db_prefix("taunts") . " SET taunt=\"$taunt\",editor=\"" . addslashes($session['user']['login']) . "\" WHERE tauntid=\"$tauntid\"";
@@ -94,4 +94,3 @@ if ($op == "") {
     addnav("Add a new taunt", "taunt.php?op=edit");
 }
 page_footer();
-?>

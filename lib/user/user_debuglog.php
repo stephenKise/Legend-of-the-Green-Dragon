@@ -69,4 +69,3 @@ while ($row = db_fetch_assoc($result)) {
     }
     output_notl("`n");
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 
-require_once("lib/pullurl.php");
+require_once "lib/pullurl.php";
 $license = join("", pullurl("http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode"));
 $license = str_replace("\n", "", $license);
 $license = str_replace("\r", "", $license);
@@ -42,4 +42,3 @@ if (isset($licensemd5s[md5($license)])) {
     $stage = -1;
     $session['stagecompleted'] = -1;
 }
-?>
