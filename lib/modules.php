@@ -303,6 +303,7 @@ $module_preload = array();
  * @return bool Success
  */
 function mass_module_prepare($hooknames){
+	if (!file_exists('dbconnect.php')) return;
 	sort($hooknames);
 	$Pmodules = db_prefix("modules");
 	$Pmodule_hooks = db_prefix("module_hooks");
@@ -395,7 +396,7 @@ function mass_module_prepare($hooknames){
  * @return array The args modified by the event handlers
  */
 $currenthook = "";
-function modulehook($hookname, $args=false, $allowinactive=false, $only=false){
+	if (!file_exists('dbconnect.php')) return $args;
 	global $navsection, $mostrecentmodule;
 	global $blocked_modules, $block_all_modules, $unblocked_modules;
 	global $output, $session, $modulehook_queries;

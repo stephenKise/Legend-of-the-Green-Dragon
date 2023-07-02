@@ -17,6 +17,7 @@ $checkedforolddatacaches = false;
 define("DATACACHE_FILENAME_PREFIX","datacache_");
 
 function datacache($name,$duration=60){
+	if (!file_exists('dbconnect.php')) return false;
 	global $datacache;
 	if (getsetting("usedatacache",0)){
 		if (isset($datacache[$name])){
@@ -46,6 +47,7 @@ function datacache($name,$duration=60){
 //do NOT send simply a false value in to array or it will bork datacache in to
 //thinking that no data is cached or we are outside of the cache period.
 function updatedatacache($name,$data){
+	if (!file_exists('dbconnect.php')) return false;
 	global $datacache;
 	if (getsetting("usedatacache",0)){
 		$fullname = makecachetempname($name);
@@ -67,6 +69,7 @@ function updatedatacache($name,$data){
 //we want to be able to invalidate data caches when we know we've done
 //something which would change the data.
 function invalidatedatacache($name,$full=false){
+	if (!file_exists('dbconnect.php')) return false;
 	global $datacache;
 	if (getsetting("usedatacache",0)){
 		if(!$full) $fullname = makecachetempname($name);
@@ -79,6 +82,7 @@ function invalidatedatacache($name,$full=false){
 
 //Invalidates *all* caches, which contain $name at the beginning of their filename.
 function massinvalidate($name) {
+	if (!file_exists('dbconnect.php')) return false;
 	if (getsetting("usedatacache",0)){
 		$name = DATACACHE_FILENAME_PREFIX.$name;
 		global $datacachefilepath;
@@ -98,6 +102,7 @@ function massinvalidate($name) {
 
 
 function makecachetempname($name){
+	if (!file_exists('dbconnect.php')) return false;
 	//one place to sanitize names for data caches.
 	global $datacache, $datacachefilepath,$checkedforolddatacaches;
 	if ($datacachefilepath=="")

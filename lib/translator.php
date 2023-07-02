@@ -5,6 +5,7 @@
 
 function translator_setup(){
 	//Determine what language to use
+	if (!file_exists('dbconnect.php')) return;
 	if (defined("TRANSLATOR_IS_SET_UP")) return;
 	define("TRANSLATOR_IS_SET_UP",true);
 
@@ -24,6 +25,7 @@ function translator_setup(){
 
 $translation_table = array();
 function translate($indata,$namespace=FALSE){
+	if (!file_exists('dbconnect.php')) return $indata;
 	if (getsetting("enabletranslation", true) == false) return $indata;
 	global $session,$translation_table,$translation_namespace;
 	if (!$namespace) $namespace=$translation_namespace;

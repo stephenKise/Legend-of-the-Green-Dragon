@@ -125,19 +125,15 @@ function page_footer($saveuser=true){
 
 	restore_buff_fields();
 
+	$headscript = "";
+	if (file_exists('dbconnect.php') && !defined('IS_INSTALLER')) {
 	$sql = "SELECT motddate FROM " . db_prefix("motd") . " ORDER BY motditem DESC LIMIT 1";
 	$result = db_query($sql);
 	$row = db_fetch_assoc($result);
 	db_free_result($result);
-	$headscript = "";
-	if (isset($session['user']['lastmotd']) &&
-			($row['motddate']>$session['user']['lastmotd']) &&
-			(!isset($nopopup[$SCRIPT_NAME]) || $nopopups[$SCRIPT_NAME]!=1) &&
-			$session['user']['loggedin']){
-		$headscript.=popup("motd.php");
-		$session['needtoviewmotd']=true;
-	}else{
-		$session['needtoviewmotd']=false;
+	}
+	else {
+		$session['needtoviewmotd'] = false;
 	}
 	$pre_headscript = "<LINK REL=\"shortcut icon\" HREF=\"favicon.ico\" TYPE=\"image/x-icon\"/>";
 	if ($headscript>""){
@@ -714,29 +710,47 @@ function charstats(){
 		$ret = "";
 		if ($ret = datacache("charlisthomepage")){
 
-		}else{
-			$onlinecount=0;
+		}
+		else {
+			$onlinecount = 0;
 			// If a module wants to do it's own display of the online chars,
 			// let it.
-			$list = modulehook("onlinecharlist", array());
+			$list = modulehook("onlinecharlist", []);
 			if (isset($list['handled']) && $list['handled']) {
 				$onlinecount = $list['count'];
 				$ret = $list['list'];
-			} else {
-				$sql="SELECT name,alive,location,sex,level,laston,loggedin,lastip,uniqueid FROM " . db_prefix("accounts") . " WHERE locked=0 AND loggedin=1 AND laston>'".date("Y-m-d H:i:s",strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds"))."' ORDER BY level DESC";
+			}
+			else {
+				$loginTimeout = getsetting('LOGINTIMEOUT', 900);
+				$timeoutString = date(
+					'Y-m-d H:i:s', strtotime("-$loginTimeout seconds")
+				);
+				$accounts = db_prefix('accounts');
+				$sql =
+					"SELECT loggedin, login FROM $accounts WHERE locked = 0 AND loggedin = 1
+					AND laston > '$timeoutString' ORDER BY level DESC";
+				if (file_exists('dbconnect.php') && !defined('IS_INSTALLER')) {
 				$result = db_query($sql);
-				$ret.=appoencode(sprintf(translate_inline("`bOnline Characters (%s players):`b`n"),db_num_rows($result)));
+					$ret .= appoencode(
+						sprintf(
+							translate_inline("`bOnline Characters (%s players):`b`n"),
+							db_num_rows($result)
+						)
+					);
 				while ($row = db_fetch_assoc($result)) {
-					$ret.=appoencode("`^{$row['name']}`n");
+						$ret .= appoencode("`^{$row['name']}`n");
 					$onlinecount++;
 				}
 				db_free_result($result);
-				if ($onlinecount==0)
-					$ret.=appoencode(translate_inline("`iNone`i"));
+				}
+				if ($onlinecount == 0)
+					$ret .= appoencode(translate_inline("`iNone`i"));
 			}
+			if (file_exists('dbconnect.php') && !defined('IS_INSTALLER')) {
 			savesetting("OnlineCount",$onlinecount);
 			savesetting("OnlineCountLast",strtotime("now"));
 			updatedatacache("charlisthomepage",$ret);
+			}
 		}
 		return $ret;
 	}

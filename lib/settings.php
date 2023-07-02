@@ -2,7 +2,11 @@
 
 function savesetting(string $settingname, $value)
 {
-    global $settings;
+    global $settings, $mysqli_resource;
+    if (!file_exists('dbconnect.php')
+        || $mysqli_resource === null
+        || defined('IS_INSTALLER'))
+        return false;
     $table = db_prefix('settings');
     loadsettings();
     if (!isset($settings[$settingname])) {
