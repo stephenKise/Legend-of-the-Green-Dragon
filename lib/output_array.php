@@ -19,7 +19,7 @@ function code_array($array){
 	reset($array);
 	$output="array(";
 	$i=0;
-	while (list($key,$val)=each($array)){
+	foreach ($array as $key => $val) {
 		if ($i>0) $output.=", ";
 		if (is_array($val)){
 			$output.="'".addslashes($key)."'=>".code_array($val);

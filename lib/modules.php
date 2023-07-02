@@ -230,7 +230,7 @@ function module_check_requirements($reqs, $forceinject=false){
 
 	// Check the requirements.
 	reset($reqs);
-	while (list($key,$val)=each($reqs)){
+	foreach ($reqs as $key => $val) {
 		$info = explode("|",$val);
 		if (!is_module_installed($key,$info[0])) {
 			return false;
@@ -414,14 +414,14 @@ function modulehook($hookname, $args=false, $allowinactive=false, $only=false){
 		}
 		debug("Args parameter to modulehook $hookname from $where is not an array.");
 	}
-	if ($session['user']['superuser'] & SU_DEBUG_OUTPUT && !isset($hookcomment[$hookname])){
+	if (isset($session['user']['superuser']) && $session['user']['superuser'] & SU_DEBUG_OUTPUT && !isset($hookcomment[$hookname])){
 		rawoutput("<!--Module Hook: $hookname; allow inactive: ".($allowinactive?"true":"false")."; only this module: ".($only!==false?$only:"any module"));
 		if (!is_array($args)) {
 			$arg = $args . " (NOT AN ARRAY!)";
 			rawoutput("  arg: $arg");
 		} else {
 			reset($args);
-			while (list($key,$val)=each($args)){
+			foreach($args as $key => $val) {
 				$arg = $key." = ";
 				if (is_array($val)){
 					$arg.="array(".count($val).")";
@@ -1208,7 +1208,7 @@ function module_objpref_edit($type, $module, $id)
 	if (count($info['prefs-'.$type]) > 0) {
 		$data = array();
 		$msettings = array();
-		while(list($key, $val) = each($info['prefs-'.$type])) {
+		foreach ($info["prefs-$type"] as $key => $val) {
 			if (is_array($val)) {
 				$v = $val[0];
 				$x = explode("|", $v);

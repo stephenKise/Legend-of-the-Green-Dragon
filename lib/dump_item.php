@@ -8,7 +8,7 @@ function dump_item($item){
 	else $temp = @unserialize($item);
 	if (is_array($temp)) {
 		$out .= "array(" . count($temp) . ") {<div style='padding-left: 20pt;'>";
-		while(list($key, $val) = @each($temp)) {
+		foreach ($temp as $key => $val) {
 			$out .= "'$key' = '" . dump_item($val) . "'`n";
 		}
 		$out .= "</div>}";

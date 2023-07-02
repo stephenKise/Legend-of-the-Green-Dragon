@@ -109,9 +109,9 @@ function page_footer($saveuser=true){
 	//output any template part replacements that above hooks need (eg,
 	//advertising)
 	reset($replacementbits);
-	while (list($key,$val)=each($replacementbits)){
-		$header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
-		$footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+	foreach ($replacementbits as $key => $val) {		
+		$header = str_replace("{{$key}}", "{{$key}}" . join($val, ''), $header);
+		$footer = str_replace("{{$key}}", "{{$key}}" . join($val, ''), $footer);
 	}
 
 	$builtnavs = buildnavs();
@@ -152,7 +152,7 @@ function page_footer($saveuser=true){
 	if (!isset($session['user']['login'])) $session['user']['login']="";
 
 	//clean up unclosed output tags.
-	while (list($key,$val)=each($nestedtags)){
+	foreach ($nestedtags as $key => $val) {
 		if ($nestedtags[$key] === true) $output.="</$key>";
 
 		unset($nestedtags[$key]);
@@ -414,7 +414,7 @@ function popup_header($title="Legend of the Green Dragon"){
 function popup_footer(){
 	global $output,$nestedtags,$header,$session,$y2,$z2,$copyright, $template;
 
-	while (list($key,$val)=each($nestedtags)){
+	foreach ($nestedtags as $key => $val) {
 		if ($nestedtags[$key] === true) $output.="</$key>";
 		unset($nestedtags[$key]);
 	}
@@ -428,7 +428,7 @@ function popup_footer(){
 	$replacementbits = modulehook("footer-popup",array());
 	//output any template part replacements that above hooks need
 	reset($replacementbits);
-	while (list($key,$val)=each($replacementbits)){
+	foreach ($replacementbits as $key => $val) {
 		$header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
 		$footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
 	}
@@ -591,7 +591,7 @@ function charstats(){
 		$def=$u['defense'];
 		$buffcount = 0;
 		$buffs = "";
-		while (list($key,$val)=each($session['bufflist'])){
+		foreach ($session['bufflist'] as $key => $val) {
 			if (isset($val['suspended']) && $val['suspended']) continue;
 			if (isset($val['atkmod'])) {
 				$atk *= $val['atkmod'];
@@ -758,7 +758,7 @@ function loadtemplate($templatename){
 		$templatename="jade.htm";
 	$fulltemplate = file_get_contents("templates/$templatename");
 	$fulltemplate = explode("<!--!",$fulltemplate);
-	while (list($key,$val)=each($fulltemplate)){
+	foreach ($fulltemplate as $key => $val) {
 		$fieldname=substr($val,0,strpos($val,"-->"));
 		if ($fieldname!=""){
 			$template[$fieldname]=substr($val,strpos($val,"-->")+3);

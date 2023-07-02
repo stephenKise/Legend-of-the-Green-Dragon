@@ -10,7 +10,7 @@
 // of the dependancy, but it's not really worth it.
 function register_global(&$var){
 	@reset($var);
-	while (list($key,$val)=@each($var)){
+	foreach ($var as $key => $val) {
 		global $$key;
 		$$key = $val;
 	}

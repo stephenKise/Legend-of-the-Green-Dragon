@@ -17,7 +17,7 @@ function saveuser(){
 		if (isset($companions) && is_array($companions)) $session['user']['companions']=serialize($companions);
 		$sql="";
 		reset($session['user']);
-		while(list($key,$val)=each($session['user'])){
+		foreach (getSession('user') as $key => $val) {
 			if (is_array($val)) $val = serialize($val);
 			//only update columns that have changed.
 			if ($baseaccount[$key]!=$val){

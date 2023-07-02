@@ -111,7 +111,7 @@ $html_text
 			/***
 			  * Mime bits are set up,
 			 **/
-			while (list($key,$email)=each($sendto)){
+			foreach ($sendto as $key => $email) {
 				debug("Notifying $email of this error.");
 
 				mail($email, $subject, $body,

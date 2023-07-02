@@ -14,7 +14,7 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/2.0/legalcode
  */
 $order=array("1","2");
-while (list($key,$val)=each($order)){
+foreach ($order as $key => $val) {
 	switch($val){
 	case "2":
 		/* NOTICE

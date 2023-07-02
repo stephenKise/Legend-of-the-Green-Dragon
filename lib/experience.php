@@ -19,7 +19,7 @@ function exp_for_next_level($curlevel, $curdk)
 
 	if ($curlevel < 1) return 0;
 
-	while(list($key,$val) = each($exparray)) {
+	foreach ($exparray as $key => $val) {
 		$exparray[$key] = round($val + ($curdk/4) * $key * 100, 0);
 	}
 	if ($curlevel > 15) $curlevel = 15;

@@ -24,10 +24,10 @@ if (!isset($session['fromversion']) || $session['fromversion']==""){
 	if ($version=="-1") $version="0.9.7";
 	reset($sql_upgrade_statements);
 	rawoutput("<select name='version'>");
-	while(list($key,$val)=each($sql_upgrade_statements)){
-		if ($key!="-1"){
-			rawoutput("<option value='$key'".($version==$key?" selected":"").">$key</option>");
-		}
+	foreach ($sql_upgrade_statements as $key => $val) {
+		$versionSelected = $version == $key ? 'selected' : '';
+		if ($key != '-1') 
+			rawoutput("<option value='$key' $versionSelected>$key</option>");
 	}
 	rawoutput("</select>");
 	rawoutput("<br><input type='radio' value='install' name='type'".($session['dbinfo']['upgrade']?"":" checked").">");

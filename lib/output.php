@@ -317,7 +317,7 @@ function blocknav($link,$partial=false){
 	}
 	if ($partial){
 		reset($blockednavs['unblockpartial']);
-		while (list($key,$val)=each($blockednavs['unblockpartial'])){
+		foreach ($blockednavs['unblockpartial'] as $key => $val) {
 			if (substr($link,0,strlen($val))==$val ||
 					substr($val,0,strlen($link))==$link){
 				unset($blockednavs['unblockpartial'][$val]);
@@ -346,7 +346,7 @@ function unblocknav($link,$partial=false){
 	}
 	if ($partial){
 		reset($blockednavs['blockpartial']);
-		while (list($key,$val)=each($blockednavs['blockpartial'])){
+		foreach($blockednavs['blockpartial'] as $key => $val) {
 			if (substr($link,0,strlen($val))==$val ||
 					substr($val,0,strlen($link))==$link){
 				unset($blockednavs['blockpartial'][$val]);
@@ -525,7 +525,7 @@ function is_blocked($link)
 	global $blockednavs;
 	if (isset($blockednavs['blockfull'][$link])) return true;
 	reset($blockednavs['blockpartial']);
-	while (list($l,$dummy)=each($blockednavs['blockpartial'])){
+	foreach ($blockednavs['blockpartial'] as $l => $dummy) {
 		$shouldblock = false;
 		if (substr($link,0,strlen($l))==$l) {
 			if (isset($blockednavs['unblockfull'][$link]) &&
@@ -560,9 +560,9 @@ function count_viable_navs($section)
 	$val = $navbysection[$section];
 	reset($val);
 	if (count($val) > 0) {
-		while(list($k, $nav) = each($val)) {
+		foreach ($val as $k => $nav) {
 			if (is_array($nav) && count($nav) > 0) {
-				$link = $nav[1]; // [0] is the text, [1] is the link
+				$link = (isset($nav[1]) ? $nav[1] : ''); // [0] is the text, [1] is the link
 				if (!is_blocked($link)) $count++;
 			}
 		}
@@ -586,10 +586,10 @@ function checknavs() {
 
 	// If we have any links which are going to be stuck in, return true
 	reset($navbysection);
-	while(list($key, $val) = each($navbysection)) {
+	foreach ($navbysection as $key => $val) {
 		if (count_viable_navs($key) > 0) {
 			reset($val);
-			while(list($k, $v) = each($val)) {
+			foreach ($val as $k => $v) {
 				if (is_array($v) && count($v) > 0) return true;
 			}
 		}
@@ -608,16 +608,16 @@ function buildnavs(){
 	global $navbysection, $navschema, $session, $navnocollapse;
 	reset($navbysection);
 	$builtnavs="";
-	while (list($key,$val)=each($navbysection)){
+	foreach ($navbysection as $key => $val) {
 		$tkey = $key;
 		$navbanner="";
-		if (count_viable_navs($key)>0){
-			if ($key>"") {
+		if (count_viable_navs($key) > 0) {
+			if ($key > '') {
 				if ($session['loggedin']) tlschema($navschema[$key]);
-				if (substr($key,0,7)=="!array!"){
-					$key = unserialize(substr($key,7));
+				if (substr($key, 0, 7) == "!array!") {
+					$key = unserialize(substr($key, 7));
 				}
-				$navbanner = private_addnav($key);
+				$navbanner = private_addnav($key, '');
 				if ($session['loggedin']) tlschema();
 			}
 
@@ -625,7 +625,7 @@ function buildnavs(){
 			$collapseheader = "";
 			$collapsefooter = "";
 
-			if ($tkey > "" && (!array_key_exists($tkey,$navnocollapse) || !$navnocollapse[$tkey])) {
+			if ($tkey > '' && (!array_key_exists($tkey, $navnocollapse) || !$navnocollapse[$tkey])) {
 				// Generate the collapsable section header
 				$args = array("name"=>"nh-{$key}",
 						"title"=>($key ? $key : "Unnamed Navs"));
@@ -641,7 +641,7 @@ function buildnavs(){
 
 			reset($val);
 			$sublinks = "";
-			while (list($k,$v)=each($val)){
+			foreach ($val as $k => $v) {
 				if (is_array($v) && count($v)>0){
 					$sublinks .=   call_user_func_array("private_addnav",$v);
 				}//end if
@@ -870,9 +870,8 @@ function navcount(){
 	global $session,$navbysection;
 	$c=count($session['allowednavs']);
 	reset($navbysection);
-	while (list($key,$val)=each($navbysection)){
-		if (is_array($val)) $c+=count($val);
-	}
+	foreach ($navbysection as $key => $val)
+		if (is_array($val)) $c += count($val);
 	reset($navbysection);
 	return $c;
 }

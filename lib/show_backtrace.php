@@ -29,26 +29,27 @@ function show_backtrace(){
 	$return .= "<div class='stacktrace'><b>Call Stack:</b><br>";
 	reset($bt);
 	$x=0;
-	while(list($key,$val)=each($bt)){
+	foreach ($bt as $key => $val) {
 		if ($x > 0 && $val['function'] != 'logd_error_handler'){
 			$return .= "<b>$x:</b> <span class='function'>{$val['function']}(";
 			$y=0;
 			if ($val['args'] && is_array($val['args'])) {
 				reset($val['args']);
-				while (list($k,$v) = each($val['args'])){
-					if ($y > 0) $return.=", ";
-					$return.=backtrace_getType($v);
+				foreach ($val['args'] as $k => $v) {
+					if ($y > 0) $return .= ", ";
+					$return .= backtrace_getType($v);
 					$y++;
 				}
-			} elseif ($val['args']) {
-				// If for some reason it's not an array, don't barf.
-				$return.=backtrace_getType($val['args']);
 			}
-			$return.=")</span>&nbsp;called from <b>{$val['file']}</b> on line <b>{$val['line']}</b><br>";
+			elseif ($val['args']) {
+				// If for some reason it's not an array, don't barf.
+				$return .= backtrace_getType($val['args']);
+			}
+			$return .= ")</span>&nbsp;called from <b>{$val['file']}</b> on line <b>{$val['line']}</b><br>";
 		}
 		$x++;
 	}
-	$return.="</div>";
+	$return .= "</div>";
 	return $return;
 }
 function backtrace_getType($in){
@@ -76,9 +77,9 @@ function backtrace_getType($in){
 			$return.="<span class='array'>Array(<blockquote>";
 			reset($in);
 			$x=0;
-			while (list($key,$val)=each($in)){
-				if ($x>0) $return.=", ";
-				$return.=backtrace_getType($key)."=>".backtrace_getType($val);
+			foreach ($in as $key => $val) {
+				if ($x>0) $return .= ", ";
+				$return .= backtrace_getType($key) . "=>" . backtrace_getType($val);
 				$x++;
 			}
 			$return.="</blockquote>)</span>";

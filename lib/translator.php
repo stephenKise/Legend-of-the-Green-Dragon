@@ -44,7 +44,7 @@ function translate($indata,$namespace=FALSE){
 	if (is_array($indata)){
 		//recursive translation on arrays.
 		$outdata = array();
-		while (list($key,$val)=each($indata)){
+		foreach ($indata as $key => $val) {
 			$outdata[$key] = translate($val,$namespace);
 		}
 	}else{
@@ -95,8 +95,8 @@ function sprintf_translate(){
 		}
  	}
 	reset($args);
-	each($args);//skip the first entry which is the output text
-	while (list($key,$val)=each($args)){
+	next($args);//skip the first entry which is the output text
+	foreach ($args as $key => $val) {
 		if (is_array($val)){
 			//When passed a sub-array this represents an independant
 			//translation to happen then be inserted in the master string.

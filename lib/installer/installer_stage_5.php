@@ -12,17 +12,17 @@ $game=0;
 $missing=0;
 $conflict = array();
 
-$link = mysqli_connect($session['dbinfo']['DB_HOST'],$session['dbinfo']['DB_USER'],$session['dbinfo']['DB_PASS']);
-mysqli_select_db($session['dbinfo']['DB_NAME']);
-$sql = "SHOW TABLES";
-$result = mysqli_query($sql);
-while ($row = mysqli_fetch_assoc($result)){
-	list($key,$val)=each($row);
-	if (isset($descriptors[$val])){
-		$game++;
-		array_push($conflict,$val);
-	}else{
-		$unique++;
+mysqli_select_db($link, $session['dbinfo']['DB_NAME']);
+$result = mysqli_query($link, 'SHOW TABLES;');
+while ($row = mysqli_fetch_assoc($result)) {
+	foreach ($row as $key => $val) {
+		if (isset($descriptors[$val])) {
+			$game++;
+			array_push($conflict, $val);
+		}
+		else {
+			$unique++;
+		}
 	}
 }
 $missing = count($descriptors)-$game;

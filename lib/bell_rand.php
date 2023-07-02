@@ -599,7 +599,7 @@ function bell_rand($min=false,$max=false){
 	$r = mt_rand(0,100000);
 	//echo $r." = ";
 	reset($bell_curve);
-	while (list($key,$val)=each($bell_curve)){
+	foreach ($bell_curve as $key => $val) {
 		if ($key>=$r) {
 			return $min + $val * ($max-$min);
 		}

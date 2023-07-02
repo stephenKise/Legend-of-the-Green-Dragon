@@ -67,7 +67,7 @@ if (httpget("subop")==""){
 	if (count($info['prefs']) > 0) {
 		$data = array();
 		$msettings = array();
-		while (list($key,$val)=each($info['prefs'])){
+		foreach ($info['prefs'] as $key => $val) {
 			// Handle vals which are arrays.
 			if (is_array($val)) {
 				$v = $val[0];

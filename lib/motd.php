@@ -64,7 +64,7 @@ function pollitem($id,$subject,$body,$author,$date,$showpoll=true){
 		$totalanswers+=$row['c'];
 		if ($row['c']>$maxitem) $maxitem = $row['c'];
 	}
-	while (list($key,$val)=each($body['opt'])){
+	foreach ($body['opt'] as $key => $val) {
 		if (trim($val)!=""){
 			if ($totalanswers<=0) $totalanswers=1;
 			$percent = 0;

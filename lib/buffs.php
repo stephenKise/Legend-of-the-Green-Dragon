@@ -10,24 +10,24 @@ function calculate_buff_fields(){
 	if (!$session['bufflist']) return;
 
 	//run temp stats
-	reset($session['bufflist']);
-	while (list($buffname,$buff)=each($session['bufflist'])){
-		if (!isset($buff['tempstats_calculated'])){
-			while (list($property,$value)=each($buff)){
-				if (substr($property,0,9)=='tempstat-'){
-					apply_temp_stat(substr($property,9),$value);
+	reset($buffList);
+	foreach ($buffList as $buffName => $buff) {
+		if (!isset($buff['tempstats_calculated'])) {
+			foreach ($buff as $property => $value) {
+				if (substr($property, 0, 9) == 'tempstat-') {
+					apply_temp_stat(substr($property, 9), $value);
 				}
-			}//end while
-			$session['bufflist'][$buffname]['tempstats_calculated']=true;
-		}//end if
-	}//end while
+			}
+			$session['bufflist'][$buffName]['tempstats_calculated']=true;
+		}
+	}
 
 	//process calculated buff fields.
-	reset($session['bufflist']);
+	reset($buffList);
 	if (!is_array($buffreplacements)) $buffreplacements = array();
-	while (list($buffname,$buff)=each($session['bufflist'])){
+	foreach ($buffList as $buffName => $buff) {
 		if (!isset($buff['fields_calculated'])){
-			while (list($property,$value)=each($buff)){
+			foreach ($buff as $property => $value) {
 				//calculate dynamic buff fields
 				$origstring = $value;
 				//Simple <module|variable> replacements for get_module_pref('variable','module')
@@ -43,24 +43,24 @@ function calculate_buff_fields(){
 						$errors="";
 						$origstring = substr($origstring,6);
 						$value = substr($value,6);
-						if (!isset($debuggedbuffs[$buffname])) $debuggedbuffs[$buffname]=array();
+						if (!isset($debuggeduffs[$buffName])) $debuggedbuffs[$buffName]=array();
 
 						ob_start();
 						$val = eval("return $value;");
 						$errors = ob_get_contents();
 						ob_end_clean();
 
-						if (!isset($debuggedbuffs[$buffname][$property])){
+						if (!isset($debuggedbuffs[$buffName][$property])){
 							if ($errors==""){
-								debug("Buffs[$buffname][$property] evaluates successfully to $val");
+								debug("Buffs[$buffName][$property] evaluates successfully to $val");
 							}else{
-								debug("Buffs[$buffname][$property] has an evaluation error<br>"
+								debug("Buffs[$buffName][$property] has an evaluation error<br>"
 								.htmlentities($origstring, ENT_COMPAT, getsetting("charset", "ISO-8859-1"))." becomes <br>"
 								.htmlentities($value, ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."<br>"
 								.$errors);
 								$val="";
 							}
-							$debuggedbuffs[$buffname][$property]=true;
+							$debuggedbuffs[$buffName][$property]=true;
 						}
 
 						$origstring="debug:".$origstring;
@@ -90,14 +90,14 @@ function calculate_buff_fields(){
 				}
 				if (!isset($output)) $output = "";
 				if ($output == "" && (string)$val != (string)$origstring){
-					$buffreplacements[$buffname][$property] = $origstring;
-					$session['bufflist'][$buffname][$property] = $val;
+					$buffreplacements[$buffName][$property] = $origstring;
+					$session['bufflist'][$buffName][$property] = $val;
 				}//end if
 				unset($val);
-			}//end while
-			$session['bufflist'][$buffname]['fields_calculated']=true;
+			}
+			$session['bufflist'][$buffName]['fields_calculated']=true;
 		}//end if
-	}//end while
+	}
 
 }//end function
 
@@ -105,32 +105,32 @@ function restore_buff_fields(){
 	global $session, $buffreplacements;
 	if (is_array($buffreplacements)){
 		reset($buffreplacements);
-		while (list($buffname,$val)=each($buffreplacements)){
+		foreach ($buffreplacements as $buffName => $val) {
 			reset($val);
-			while (list($property,$value)=each($val)){
-				if (isset($session['bufflist'][$buffname])){
-					$session['bufflist'][$buffname][$property] = $value;
-					unset($session['bufflist'][$buffname]['fields_calculated']);
+			foreach ($val as $property => $value) {
+				if (isset($session['bufflist'][$buffName])){
+					$session['bufflist'][$buffName][$property] = $value;
+					unset($session['bufflist'][$buffName]['fields_calculated']);
 				}//end if
-			}//end while
-			unset($buffreplacements[$buffname]);
-		}//end while
+			}
+			unset($buffreplacements[$buffName]);
+		}
 	}//end if
 
 	//restore temp stats
 	if (!is_array($session['bufflist'])) $session['bufflist'] = array();
 	reset($session['bufflist']);
-	while (list($buffname,$buff)=each($session['bufflist'])){
+	foreach ($session['bufflist'] as $buffName => $buff) {
 		if (array_key_exists("tempstats_calculated",$buff) && $buff['tempstats_calculated']){
 			reset($buff);
-			while (list($property,$value)=each($buff)){
+			foreach ($buff as $property => $value) {
 				if (substr($property,0,9)=='tempstat-'){
 					apply_temp_stat(substr($property,9),-$value);
 				}
-			}//end while
-			unset($session['bufflist'][$buffname]['tempstats_calculated']);
+			}
+			unset($session['bufflist'][$buffName]['tempstats_calculated']);
 		}//end if
-	}//end while
+	}
 }//end function
 
 function apply_buff($name,$buff){
@@ -198,8 +198,8 @@ function strip_all_buffs(){
 	global $session;
 	$thebuffs = $session['bufflist'];
 	reset($thebuffs);
-	while (list($buffname,$buff)=each($thebuffs)){
-		strip_buff($buffname);
+	foreach ($thebuffs as $buffName => $buff) {
+		strip_buff($buffName);
 	}
 }
 
