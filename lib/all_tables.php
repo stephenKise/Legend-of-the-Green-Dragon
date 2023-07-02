@@ -960,8 +960,8 @@ return array(
 		'location'=>array(
 			'name'=>'location', 'type'=>'varchar(50)'
 			),
-		'function'=>array(
-			'name'=>'function', 'type'=>'varchar(50)'
+		'func'=>array(
+			'name'=>'func', 'type'=>'varchar(50)'
 			),
 		'whenactive'=>array(
 			'name'=>'whenactive', 'type'=>'text'
@@ -973,7 +973,7 @@ return array(
 			'name'=>'PRIMARY',
 			'type'=>'primary key',
 			'unique'=>'1',
-			'columns'=>'modulename,location,function'
+			'columns'=>'modulename,location,func'
 			),
 		'key-location'=>array(
 			'name'=>'location', 'type'=>'key', 'columns'=>'location'
