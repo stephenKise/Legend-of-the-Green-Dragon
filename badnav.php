@@ -12,7 +12,7 @@ if ($session['user']['loggedin'] && $session['loggedin']){
 	if (strpos($session['output'],"<!--CheckNewDay()-->")){
 		checkday();
 	}
-	while (list($key,$val)=each($session['allowednavs'])){
+	foreach (getSession('allowednav') as $key => $val) {
 		//hack-tastic.
 		if (
 			trim($key)=="" ||

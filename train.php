@@ -82,7 +82,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14){
             if ($session['user']['experience']>=$exprequired){
                 $dk = 0;
                 restore_buff_fields();
-                while(list($key, $val)=each($session['user']['dragonpoints'])) {
+                foreach (getSessionUser('dragonpoints') as $key => $val) {
                     if ($val=="at" || $val=="de") $dk++;
                 }
                 $dk += (int)(($session['user']['maxhitpoints'] -

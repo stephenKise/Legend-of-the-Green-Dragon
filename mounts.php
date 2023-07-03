@@ -83,7 +83,7 @@ if ($op=="deactivate"){
 		$mount = httppost('mount');
 		if ($mount) {
 			reset($mount['mountbuff']);
-			while (list($key,$val)=each($mount['mountbuff'])){
+			foreach ($mount['mountbuff'] as $key => $val) {
 				if ($val>""){
 					$buff[$key]=stripslashes($val);
 				}

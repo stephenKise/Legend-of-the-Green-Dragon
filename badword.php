@@ -157,7 +157,7 @@ page_footer();
 function show_word_list($words){
 	sort($words);
 	$lastletter="";
-	while (list($key,$val)=each($words)){
+	foreach ($words as $key => $val) {
 		if (trim($val)==""){
 			unset($words[$key]);
 		}else{

@@ -218,7 +218,7 @@ if ($op==""){
 	$servers=pullurl($u."logdnet.php?op=net");
 	if (!$servers) $servers = array();
 	$i = 0;
-	while (list($key,$val)=each($servers)){
+	foreach ($servers as $key => $val) {
 		$row=unserialize($val);
 
 		// If we aren't given an address, continue on.
@@ -266,7 +266,7 @@ function apply_logdnet_bans($logdnet){
 	$result = db_query($sql,"logdnetbans");
 	while ($row = db_fetch_assoc($result)){
 		reset($logdnet);
-		while (list($i,$net)=each($logdnet)){
+		foreach ($logdnet as $i => $net) {
 			if (preg_match("/{$row['banvalue']}/i",$net[$row['bantype']])){
 				unset($logdnet[$i]);
 			}

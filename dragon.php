@@ -36,7 +36,7 @@ if ($op==""){
     $points = 0;
     restore_buff_fields();
     reset($session['user']['dragonpoints']);
-    while(list($key,$val)=each($session['user']['dragonpoints'])){
+    foreach (getSessionUser('dragonpoints') as $key => $val) {
         if ($val=="at" || $val == "de") $points++;
     }
 
@@ -98,7 +98,7 @@ if ($op==""){
 
     reset($session['user']['dragonpoints']);
     $dkpoints = 0;
-    while(list($key,$val)=each($session['user']['dragonpoints'])){
+    foreach (getSessionUser('dragonpoints') as $key => $val) {
         if ($val=="hp") $dkpoints+=5;
     }
 
@@ -213,7 +213,7 @@ if ($op==""){
     $session['user']['name'] = $newname;
 
     reset($session['user']['dragonpoints']);
-    while(list($key,$val)=each($session['user']['dragonpoints'])){
+    foreach (getSessionUser('dragonpoints') as $key => $val) {
         if ($val=="at"){
             $session['user']['attack']++;
         }

@@ -28,7 +28,7 @@ if ($op=="save"){
 	$defsup = httppost("defaultsuperuser");
 	if ($defsup != "") {
 		$value = 0;
-		while(list($k, $v)=each($defsup)) {
+		foreach ($defsup as $k => $v) {
 			if ($v) $value += (int)$k;
 		}
 		httppostset('defaultsuperuser', $value);
@@ -65,7 +65,7 @@ if ($op=="save"){
 	$post = httpallpost();
 	reset($post);
 	$old=$settings;
-	while (list($key,$val)=each($post)){
+	foreach ($post as $key => $val) {
 		if (!isset($settings[$key]) ||
 				(stripslashes($val) != $settings[$key])) {
 			if (!isset($old[$key]))
@@ -98,7 +98,7 @@ if ($op=="save"){
 						$post['validation_error']);
 			} else {
 				reset($post);
-				while (list($key,$val)=each($post)){
+				foreach ($post as $key => $val) {
 					$key = stripslashes($key);
 					$val = stripslashes($val);
 					set_module_setting($key,$val);
@@ -130,7 +130,7 @@ if ($op=="save"){
 			if (count($info['settings'])>0){
 				load_module_settings($mostrecentmodule);
 				$msettings=array();
-				while (list($key,$val)=each($info['settings'])){
+				foreach ($info['settings'] as $key => $val) {
 					if (is_array($val)) {
 						$v = $val[0];
 						$x = explode("|", $v);
@@ -214,7 +214,7 @@ if ($op == "") {
 		"emailpetitions"=>"Should submitted petitions be emailed to Admin Email address?,bool",
 		"Enter languages here like this: `i(shortname 2 chars) comma (readable name of the language)`i and continue as long as you wish,note",
 		"serverlanguages"=>"Languages available on this server",
-		"defaultlanguage"=>"Default Language,enum,".getsetting("serverlanguages","en,English,fr,Français,dk,Danish,de,Deutsch,es,Español,it,Italian"),
+		"defaultlanguage"=>"Default Language,enum,".getsetting("serverlanguages","en,English,fr,Franï¿½ais,dk,Danish,de,Deutsch,es,Espaï¿½ol,it,Italian"),
 		"edittitles"=>"Should DK titles be editable in user editor,bool",
 		"motditems"=>"How many items should be shown on the motdlist,int",
 
