@@ -92,6 +92,7 @@ require_once("lib/php_generic_environment.php");
 session_start();
 $session = [];
 $session =& $_SESSION['session'];
+require_once('lib/session.php');
 
 // lets us provide output in dbconnect.php that only appears if there's a
 // problem connecting to the database server.  Useful for migration moves
@@ -254,20 +255,20 @@ if ($logd_version != getsetting("installer_version","-1") && !defined("IS_INSTAL
 	page_footer();
 }
 
-if ($session['user']['hitpoints']>0){
-	$session['user']['alive']=true;
-}else{
-	$session['user']['alive']=false;
+if (getSessionUser('hitpoints') > 0) {
+	$session['user']['alive'] = true;
 }
-if (isset($session['user']['bufflist']))
-	$session['bufflist']=unserialize($session['user']['bufflist']);
+else {
+	$session['user']['alive'] = false;
+}
+if (getSession('bufflist'))
+	$session['bufflist'] = unserialize($session['user']['bufflist']);
 else
-	$session['bufflist'] = array();
-if (!is_array($session['bufflist'])) $session['bufflist']=array();
+	$session['bufflist'] = [];
+if (!is_array(getSession('bufflist'))) $session['bufflist'] = [];
 $session['user']['lastip']=$REMOTE_ADDR;
-if (strlen($_COOKIE['lgi'])<32){
+$u = md5(microtime());
 	if (strlen($session['user']['uniqueid'])<32){
-		$u=md5(microtime());
 		setcookie("lgi",$u,strtotime("+365 days"));
 		$_COOKIE['lgi']=$u;
 		$session['user']['uniqueid']=$u;
@@ -348,7 +349,7 @@ if ($session['user']['superuser']==0){
 
 prepare_template();
 
-if (!isset($session['user']['hashorse'])) $session['user']['hashorse']=0;
+if (!getSessionUser('hashorse')) $session['user']['hashorse']=0;
 $playermount = getmount($session['user']['hashorse']);
 $temp_comp = @unserialize($session['user']['companions']);
 $companions = array();

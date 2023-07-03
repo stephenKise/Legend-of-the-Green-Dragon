@@ -15,6 +15,8 @@ define("ALLOW_ANONYMOUS",true);
 require_once("common.php");
 require_once("lib/http.php");
 
+if (!getSession('message'))
+	$session['message'] = '';
 
 if (!isset($session['loggedin'])) $session['loggedin']=false;
 if ($session['loggedin']){
