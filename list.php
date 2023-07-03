@@ -61,9 +61,9 @@ addnav("Pages");
 for ($i=0;$i<$totalplayers;$i+=$playersperpage){
 	$pnum = $i/$playersperpage+1;
 	if ($page == $pnum) {
-		addnav(array(" ?`b`#Page %s`0 (%s-%s)`b", $pnum, $i+1, min($i+$playersperpage,$totalplayers)), "list.php?page=$pnum");
+		addnav(sprintf_translate(" ?`b`#Page %s`0 (%s-%s)`b", $pnum, $i+1, min($i+$playersperpage,$totalplayers)), "list.php?page=$pnum");
 	} else {
-		addnav(array(" ?Page %s (%s-%s)", $pnum, $i+1, min($i+$playersperpage,$totalplayers)), "list.php?page=$pnum");
+		addnav(sprintf_translate(" ?Page %s (%s-%s)", $pnum, $i+1, min($i+$playersperpage,$totalplayers)), "list.php?page=$pnum");
 	}
 }
 

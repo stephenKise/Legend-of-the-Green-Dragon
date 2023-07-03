@@ -80,10 +80,10 @@ $seencats = $install_status['installedcategories'];
 $ucount = $install_status['uninstcount'];
 
 ksort($seencats);
-addnav(array(" ?Uninstalled - (%s modules)", $ucount), "modules.php");
+addnav(sprintf(" ?Uninstalled - (%s modules)", $ucount), "modules.php");
 reset($seencats);
 foreach ($seencats as $cat=>$count) {
-	addnav(array(" ?%s - (%s modules)", $cat, $count), "modules.php?cat=$cat");
+	addnav(sprintf(" ?%s - (%s modules)", $cat, $count), "modules.php?cat=$cat");
 }
 
 $cat = httpget('cat');

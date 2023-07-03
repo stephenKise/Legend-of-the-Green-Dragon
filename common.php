@@ -129,7 +129,8 @@ ob_end_clean();
 unset($DB_HOST);
 unset($DB_USER);
 unset($DB_PASS);
-if ($link===false){
+unset($DB_NAME);
+if (isset($link) && $link===false){
  	if (!defined("IS_INSTALLER")){
 		echo $out;
 		// Ignore this bit.  It's only really for Eric's server
@@ -149,7 +150,7 @@ if ($link===false){
 	define("DB_CONNECTED",true);
 }
 
-if (!DB_CONNECTED || !$DB_NAME || !db_select_db($DB_NAME)){
+if (isset($DB_NAME) && (!DB_CONNECTED || !$DB_NAME || !db_select_db($DB_NAME))){
 	if (!defined("IS_INSTALLER") && DB_CONNECTED){
 		// Ignore this bit.  It's only really for Eric's server
 		if (file_exists("lib/smsnotify.php")) {
@@ -164,15 +165,19 @@ if (!DB_CONNECTED || !$DB_NAME || !db_select_db($DB_NAME)){
 		page_footer();
 	}
 	define("DB_CHOSEN",false);
-}else{
-	define("LINK", $DB_NAME);
+}
+else {
+	if (isset($DB_NAME))
+		define('LINK', $DB_NAME);
+		else
+		define('LINK', false);
 	define("DB_CHOSEN",true);
 }
 
 if ($logd_version == getsetting("installer_version","-1")) {
 	define("IS_INSTALLER", false);
 }
-
+	if (defined('IS_INSTALLER') == false) {
 header("Content-Type: text/html; charset=".getsetting('charset','ISO-8859-1'));
 
 if (strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds") > $session['lasthit'] && $session['lasthit']>0 && $session['loggedin']){
@@ -186,14 +191,6 @@ if (strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds") > $session['lasthit
 	$session['message'].=translate_inline("`nYour session has expired!`n","common");
 }
 $session['lasthit']=strtotime("now");
-
-$cp = $copyright;
-$l = $license;
-php_generic_environment();
-do_forced_nav(ALLOW_ANONYMOUS,OVERRIDE_FORCED_NAV);
-
-$script = substr($SCRIPT_NAME,0,strrpos($SCRIPT_NAME,"."));
-
 mass_module_prepare([
 	'template-header',
 	'template-footer',
@@ -209,8 +206,8 @@ mass_module_prepare([
 	'template-login',
 	'template-loginfull',
 	'everyhit',
-	"header-$script",
-	"footer-$script",
+			(isset($script) ? "header-$script" : ''),
+			(isset($script) ? "footer-$script" : ''),
 	'holiday',
 	'collapse{',
 	'collapse-nav{',
@@ -218,6 +215,13 @@ mass_module_prepare([
 	'}collapse',
 	'charstats'
 ]);
+	}
+$cp = $copyright;
+$l = $license;
+php_generic_environment();
+do_forced_nav(ALLOW_ANONYMOUS,OVERRIDE_FORCED_NAV);
+
+$script = substr($SCRIPT_NAME,0,strrpos($SCRIPT_NAME,"."));
 
 // In the event of redirects, we want to have a version of their session we
 // can revert to:
@@ -268,6 +272,7 @@ else
 if (!is_array(getSession('bufflist'))) $session['bufflist'] = [];
 $session['user']['lastip']=$REMOTE_ADDR;
 $u = md5(microtime());
+if (isset($_COOKIE['lgi']) && strlen($_COOKIE['lgi'])<32){
 	if (strlen($session['user']['uniqueid'])<32){
 		setcookie("lgi",$u,strtotime("+365 days"));
 		$_COOKIE['lgi']=$u;
@@ -275,8 +280,12 @@ $u = md5(microtime());
 	}else{
 		setcookie("lgi",$session['user']['uniqueid'],strtotime("+365 days"));
 	}
-}else{
-	$session['user']['uniqueid']=$_COOKIE['lgi'];
+}
+else if (isset($_COOKIE['lgi'])) {
+	$session['user']['uniqueid'] = $_COOKIE['lgi'];
+}
+else {
+	$session['user']['uniqueid'] = $u; 
 }
 $url = "http://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
 $url = substr($url,0,strlen($url)-1);

@@ -44,7 +44,7 @@ if (getsetting("homenewdaytime", 1)) {
 if (getsetting("homenewestplayer", 1)) {
 	$name = "";
 	$newplayer = getsetting("newestplayer", "");
-	if ($newplayer != 0) {
+	if ($newplayer != '') {
 		$sql = "SELECT name FROM " . db_prefix("accounts") . " WHERE acctid='$newplayer'";
 		$result = db_query_cached($sql, "newest");
 		$row = db_fetch_assoc($result);
