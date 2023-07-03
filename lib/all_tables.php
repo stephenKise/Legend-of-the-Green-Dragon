@@ -516,7 +516,7 @@ return array(
 			'name'=>'banner', 'type'=>'varchar(50)'
 			),
 		'lasthit'=>array(
-			'name'=>'lasthit', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
+			'name'=>'lasthit', 'type'=>'datetime', 'default'=> null
 			),
 		'key-banexpire'=>array(
 			'name'=>'banexpire', 'type'=>'key', 'columns'=>'banexpire'
