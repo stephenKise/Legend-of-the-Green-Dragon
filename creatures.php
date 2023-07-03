@@ -34,11 +34,11 @@ if ($op == "save"){
 		if ($id){
 			$sql = "";
 			reset($post);
-			while (list($key,$val)=each($post)){
+			foreach ($post as $key => $val) {
 				if (substr($key,0,8)=="creature") $sql.="$key = '$val', ";
 			}
 			reset($creaturestats[$lev]);
-			while (list($key,$val)=each($creaturestats[$lev])){
+			foreach ($creaturestats[$lev] as $key => $val) {
 				if ( $key!="creaturelevel" && substr($key,0,8)=="creature"){
 					$sql.="$key = \"".addslashes($val)."\", ";
 				}
@@ -52,7 +52,7 @@ if ($op == "save"){
 			$vals = array();
 
 			reset($post);
-			while (list($key,$val)=each($post)){
+			foreach ($post as $key => $val) {
 				if (substr($key,0,8)=="creature") {
 					array_push($cols,$key);
 					array_push($vals,$val);
@@ -63,7 +63,7 @@ if ($op == "save"){
 			array_push($cols, "graveyard");
 			array_push($vals, $grave);
 			reset($creaturestats[$lev]);
-			while (list($key,$val)=each($creaturestats[$lev])){
+			foreach ($creaturestats[$lev] as $key => $val) {
 				if ($key!="creaturelevel"&& substr($key,0,8)=="creature"){
 					array_push($cols,$key);
 					array_push($vals,$val);

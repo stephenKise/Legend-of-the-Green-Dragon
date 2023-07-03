@@ -169,7 +169,7 @@ if ($dp < $dkills) {
 
     reset($session['user']['dragonpoints']);
     $dkff=0;
-    while(list($key,$val)=each($session['user']['dragonpoints'])){
+    foreach (getSessionUser('dragonpoints') as $key => $val) {
         if ($val=="ff"){
             $dkff++;
         }
