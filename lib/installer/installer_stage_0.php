@@ -64,13 +64,14 @@ if (DB_CHOSEN && file_exists('dbconnect.php')) {
 			$needsauthentication=false;
 		}
 	}
-}else{
-	$needsauthentication=false;
+}
+else {
+	$needsauthentication = false;
 }
 //if a user with appropriate privs is already logged in, let's let them past.
-if ($session['user']['superuser'] & SU_MEGAUSER) $needsauthentication=false;
-if ($needsauthentication){
-	$session['stagecompleted']=-1;
+if (getSessionSuperUser() & SU_MEGAUSER) $needsauthentication=false;
+if ($needsauthentication) {
+	$session['stagecompleted'] = -1;
 	rawoutput("<form action='installer.php?stage=0' method='POST'>");
 	output("`%In order to upgrade this LoGD installation, you will need to provide the username and password of a superuser account with the MEGAUSER privilege`n");
 	output("`^Username: `0");
@@ -80,7 +81,8 @@ if ($needsauthentication){
 	$submit = translate_inline("Submit");
 	rawoutput("<input type='submit' value='$submit' class='button'>");
 	rawoutput("</form>");
-}else{
+}
+else {
 	output("`nPlease continue on to the next page, \"License Agreement.\"");
 }
 ?>

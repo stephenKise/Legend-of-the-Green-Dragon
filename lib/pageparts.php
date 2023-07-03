@@ -102,7 +102,7 @@ function page_footer($saveuser=true){
 	// invalid one which we can then blow away.
 	$replacementbits['__scriptfile__'] = $script;
 	$replacementbits = modulehook("everyfooter",$replacementbits);
-	if ($session['user']['loggedin']) {
+	if (getSessionUser('loggedin')) {
 		$replacementbits = modulehook("everyfooter-loggedin", $replacementbits);
 	}
 	unset($replacementbits['__scriptfile__']);
@@ -131,6 +131,14 @@ function page_footer($saveuser=true){
 	$result = db_query($sql);
 	$row = db_fetch_assoc($result);
 	db_free_result($result);
+	$lastMotd = getSessionUser('lastmotd');
+	if ($lastMotd &&
+			($row['motddate'] > $lastMotd) &&
+			(!isset($nopopup[$SCRIPT_NAME]) || $nopopups[$SCRIPT_NAME] != 1) &&
+			getSessionUser('loggedin')) {
+		$headscript .= popup("motd.php");
+		$session['needtoviewmotd'] = true;
+	}
 	}
 	else {
 		$session['needtoviewmotd'] = false;
@@ -316,7 +324,7 @@ function page_footer($saveuser=true){
 
 	$header=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$header);
 	$footer=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$footer);
-	if ($session['user']['superuser'] & SU_EDIT_PETITIONS){
+	if (getSessionSuperUser() & SU_EDIT_PETITIONS){
 		$sql = "SELECT count(petitionid) AS c,status FROM " . db_prefix("petitions") . " GROUP BY status";
 		$result = db_query_cached($sql,"petition_counts");
 		$petitions=array(0=>0,1=>0,2=>0,3=>0,4=>0,5=>0,6=>0,7=>0);
@@ -573,9 +581,9 @@ function charstats(){
 
 	wipe_charstats();
 
-	$u =& $session['user'];
+	$u =& getSession('user');
 
-	if ($session['loggedin']){
+	if (getSession('loggedin')) {
 		$u['hitpoints']=round($u['hitpoints'],0);
 		$u['experience']=round($u['experience'],0);
 		$u['maxhitpoints']=round($u['maxhitpoints'],0);

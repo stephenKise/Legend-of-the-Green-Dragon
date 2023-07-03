@@ -108,7 +108,7 @@ function debug($text, $force=false){
 	global $session, $block_new_output;
 	$temp = $block_new_output;
 	set_block_new_output(false);
-	if ($force || $session['user']['superuser'] & SU_DEBUG_OUTPUT){
+	if ($force || (getSessionSuperUser() & SU_DEBUG_OUTPUT)) {
 		if (is_array($text)){
 			require_once("lib/dump_item.php");
 			$text = appoencode(dump_item($text),true);
@@ -715,7 +715,7 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 			$text = call_user_func_array("sprintf",$text);
 		}
 	}else{
-		if ($text && $session['loggedin'] && $translate) {
+		if ($text && getSession('loggedin') && $translate) {
 			tlschema($navschema[$text]);
 			$unschema = 1;
 		}
@@ -732,8 +732,10 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 		$thisnav.=tlbutton_pop().templatereplace("navhelp",array("text"=>appoencode($text,$priv)));
 	} elseif ($link == "!!!addraw!!!") {
 		$thisnav .= $text;
-	}else{
-		if ($text!=""){
+
+	if (!getSession('counter'))
+		$session['counter'] = 0;
+	if ($text != "" && $link != '') {
 			$extra="";
 			if (strpos($link,"?")){
 				$extra="&c={$session['counter']}";
@@ -868,7 +870,7 @@ function navcount(){
 	//returns count of total navs added, be it they are pending addition or
 	//actually added.
 	global $session,$navbysection;
-	$c=count($session['allowednavs']);
+	$c = count(getSession('allowednavs'));
 	reset($navbysection);
 	foreach ($navbysection as $key => $val)
 		if (is_array($val)) $c += count($val);

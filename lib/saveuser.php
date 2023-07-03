@@ -7,7 +7,7 @@ function saveuser(){
 	global $session,$dbqueriesthishit,$baseaccount,$companions;
 	if (defined("NO_SAVE_USER")) return false;
 
-	if ($session['loggedin'] && $session['user']['acctid']!=""){
+	if (getSession('loggedin') && getSessionUser('acctid') != '') {
 		// Any time we go to save a user, make SURE that any tempstat changes
 		// are undone.
 		restore_buff_fields();

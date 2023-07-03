@@ -181,11 +181,12 @@ function translate_loadnamespace($namespace,$language=false){
 $translatorbuttons = array();
 $seentlbuttons = array();
 function tlbutton_push($indata,$hot=false,$namespace=FALSE){
+	require_once('lib/session.php');
 	global $translatorbuttons;
 	global $translation_is_enabled,$seentlbuttons,$session;
 	if (!$translation_is_enabled) return;
 	if (!$namespace) $namespace="unknown";
-	if ($session['user']['superuser'] & SU_IS_TRANSLATOR){
+	if (getSessionSuperUser() & SU_IS_TRANSLATOR){
 		if (preg_replace("/[ 	\n\r]|`./",'',$indata)>""){
 			if (isset($seentlbuttons[$namespace][$indata])){
 				$link = "";
@@ -210,8 +211,9 @@ function tlbutton_push($indata,$hot=false,$namespace=FALSE){
 }
 
 function tlbutton_pop(){
+	require_once('lib/session.php');
 	global $translatorbuttons,$session;
-	if ($session['user']['superuser'] & SU_IS_TRANSLATOR){
+	if (getSessionSuperUser() & SU_IS_TRANSLATOR){
 		return array_pop($translatorbuttons);
 	}else{
 		return "";
@@ -220,7 +222,7 @@ function tlbutton_pop(){
 
 function tlbutton_clear(){
 	global $translatorbuttons,$session;
-	if ($session['user']['superuser'] & SU_IS_TRANSLATOR){
+	if (getSessionSuperUser() & SU_IS_TRANSLATOR){
 		$return = tlbutton_pop().join("",$translatorbuttons);
 		$translatorbuttons = array();
 		return $return;

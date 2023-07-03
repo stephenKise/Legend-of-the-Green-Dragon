@@ -6,6 +6,8 @@ function redirect($location,$reason=false){
 	global $session,$REQUEST_URI;
 	// This function is deliberately not localized.  It is meant as error
 	// handling.
+	if (!getSession('debug'))
+		$session['message'] = '';
 	if (strpos($location,"badnav.php")===false) {
 		//deliberately html in translations so admins can personalize this, also in once scheme
 		$session['allowednavs']=array();
