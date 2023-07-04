@@ -4,7 +4,7 @@
 // mail ready
 function output_array($array,$prefix=""){
 	$out="";
-	while (list($key,$val)=@each($array)){
+	foreach ($array as $key => $val) {
 		$out.=$prefix."[$key] = ";
 		if (is_array($val)){
 			$out.="array{\n".output_array($val,$prefix."[$key]")."\n}\n";

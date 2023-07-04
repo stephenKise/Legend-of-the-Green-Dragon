@@ -531,7 +531,7 @@ function is_blocked($link)
 			if (isset($blockednavs['unblockfull'][$link]) &&
 					$blockednavs['unblockfull'][$link]) return false;
 			reset($blockednavs['unblockpartial']);
-			while (list($l2,$dummy)= each($blockednavs['unblockpartial'])){
+			foreach ($blockednavs['unblockpartial'] as $l2 => $dummy) {
 				if (substr($link,0,strlen($l2))==$l2){
 					return false;
 				}

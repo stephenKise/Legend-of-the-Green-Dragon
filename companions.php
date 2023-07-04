@@ -88,7 +88,7 @@ if ($op=="deactivate"){
 			$keys = "";
 			$vals = "";
 			$i = 0;
-			while(list($key, $val) = each($companion)) {
+			foreach ($companion as $key => $val) {
 				if (is_array($val)) $val = addslashes(serialize($val));
 				$sql .= (($i > 0) ? ", " : "") . "$key='$val'";
 				$keys .= (($i > 0) ? ", " : "") . "$key";
@@ -116,7 +116,7 @@ if ($op=="deactivate"){
 		$module = httpget("module");
 		$post = httpallpost();
 		reset($post);
-		while(list($key, $val) = each($post)) {
+		foreach ($post as $key => $val) {
 			set_module_objpref("companions", $id, $key, $val, $module);
 		}
 		output("`^Saved!`0`n");

@@ -69,7 +69,7 @@ function postparse($verify=false, $subval=false){
 	$keys = "";
 	$vals = "";
 	$i = 0;
-	while(list($key, $val) = each($var)) {
+	foreach ($var as $key => $val) {
 		if ($verify === false || isset($verify[$key])) {
 			if (is_array($val)) $val = addslashes(serialize($val));
 			$sql .= (($i > 0) ? "," : "") . "$key='$val'";

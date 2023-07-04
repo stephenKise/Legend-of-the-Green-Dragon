@@ -186,7 +186,7 @@ function page_footer($saveuser=true){
 		if (target.nodeName.toUpperCase()=='INPUT' || target.nodeName.toUpperCase()=='TEXTAREA' || altKey || ctrlKey){
 		}else{";
 	reset($quickkeys);
-	while (list($key,$val)=each($quickkeys)){
+	foreach ($quickkeys as $key => $val) {
 		$script.="\n			if (c == '".strtoupper($key)."') { $val; return false; }";
 	}
 	$script.="

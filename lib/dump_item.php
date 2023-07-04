@@ -25,7 +25,7 @@ function dump_item_ascode($item,$indent="\t"){
 	if (is_array($temp)) {
 		$out .= "array(\n$indent";
 		$row = array();
-		while(list($key, $val) = @each($temp)) {
+		foreach ($temp as $key => $val) {
 			array_push($row,"'$key'=&gt;" . dump_item_ascode($val,$indent."\t"));
 		}
 		if (strlen(join(", ",$row)) > 80){

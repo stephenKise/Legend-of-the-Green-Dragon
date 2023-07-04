@@ -120,7 +120,7 @@ if ($target = db_fetch_assoc($result)) {
 		  $arguments = array();
 		  $base_arguments = unserialize($row['arguments']);
 		  array_push($arguments, $row['newstext']);
-		  while(list($key, $val) = each($base_arguments)) {
+			foreach ($base_arguments as $key => $val) {
 			  array_push($arguments, $val);
 		  }
 		  $news = call_user_func_array("sprintf_translate", $arguments);
