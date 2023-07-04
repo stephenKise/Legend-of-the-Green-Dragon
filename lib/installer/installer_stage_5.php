@@ -1,16 +1,22 @@
 <?php
-require_once("lib/installer/installer_functions.php");
-if (httppostisset("DB_PREFIX") > ""){
-	$session['dbinfo']['DB_PREFIX'] = httppost("DB_PREFIX");
+require_once('lib/installer/installer_functions.php');
+if (httppostisset('DB_PREFIX') > ''){
+	$session['dbinfo']['DB_PREFIX'] = httppost('DB_PREFIX');
 }
-if ($session['dbinfo']['DB_PREFIX'] > "" && substr($session['dbinfo']['DB_PREFIX'],-1)!="_")
-$session['dbinfo']['DB_PREFIX'] .= "_";
+if ($session['dbinfo']['DB_PREFIX'] > '' 
+	&& substr($session['dbinfo']['DB_PREFIX'], -1) != '_')
+	$session['dbinfo']['DB_PREFIX'] .= '_';
 
 $descriptors = descriptors($session['dbinfo']['DB_PREFIX']);
-$unique=0;
-$game=0;
-$missing=0;
-$conflict = array();
+$unique = 0;
+$game = 0;
+$missing = 0;
+$conflict = [];
+$link = mysqli_connect(
+	$session['dbinfo']['DB_HOST'],
+	$session['dbinfo']['DB_USER'],
+	$session['dbinfo']['DB_PASS']
+);
 
 mysqli_select_db($link, $session['dbinfo']['DB_NAME']);
 $result = mysqli_query($link, 'SHOW TABLES;');
@@ -25,17 +31,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 		}
 	}
 }
-$missing = count($descriptors)-$game;
-if ($missing*10 < $game){
-	//looks like an upgrade
-	$upgrade=true;
-}else{
-	$upgrade=false;
-}
-if (httpget("type")=="install") $upgrade=false;
-if (httpget("type")=="upgrade") $upgrade=true;
-$session['dbinfo']['upgrade']=$upgrade;
-	if ($upgrade){
+$missing = count($descriptors) - $game;
+$upgrade = (($missing * 10 < $game) ? true : false);
+if (httpget("type") == 'install') $upgrade = false;
+if (httpget("type") == 'upgrade') $upgrade = true;
+$session['dbinfo']['upgrade'] = $upgrade;
+	if ($upgrade) {
 	output("`@This looks like a game upgrade.");
 	output("`^If this is not an upgrade from a previous version of LoGD, <a href='installer.php?stage=5&type=install'>click here</a>.",true);
 	output("`2Otherwise, continue on to the next step.");

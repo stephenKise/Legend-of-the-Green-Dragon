@@ -1,15 +1,16 @@
 <?php
-require_once("lib/installer/installer_functions.php");
-if (array_key_exists('modules',$_POST)){
+require_once('lib/installer/installer_functions.php');
+if (array_key_exists('modules', $_POST)) {
 	$session['moduleoperations'] = $_POST['modules'];
 	$session['stagecompleted'] = $stage;
-	header("Location: installer.php?stage=".($stage+1));
+	header('Location: installer.php?stage=' . ($stage + 1));
 	exit();
-}elseif (array_key_exists('moduleoperations',$session) && is_array($session['moduleoperations'])){
-	$session['stagecompleted'] = $stage;
-}else{
-	$session['stagecompleted'] = $stage - 1;
 }
+elseif (array_key_exists('moduleoperations', $session)
+	&& is_array($session['moduleoperations']))
+	$session['stagecompleted'] = $stage;
+else
+	$session['stagecompleted'] = $stage - 1;
 output("`@`c`bManage Modules`b`c");
 output("Legend of the Green Dragon supports an extensive module system.");
 output("Modules are small self-contained files that perform a specific function or event within the game.");
@@ -17,39 +18,47 @@ output("For the most part, modules are independant of each other, meaning that o
 output("Not all modules are ideal for all sites, for example, there's a module called 'Multiple Cities,' which is intended only for large sites with many users online at the same time.");
 output("`n`n`^If you are not familiar with Legend of the Green Dragon, and how the game is played, it is probably wisest to choose the default set of modules to be installed.");
 output("`n`n`@There is an extensive community of users who write modules for LoGD at <a href='http://dragonprime.net/'>http://dragonprime.net/</a>.",true);
-$phpram = ini_get("memory_limit");
-if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememorylimit'] && !$session['dbinfo']['upgrade']) {// 12 MBytes
+$ramLimit = ini_get('memory_limit');
+if (return_bytes($ramLimit) < 12582912
+	&& $ramLimit != -1
+	&& !$session['overridememorylimit']
+	&& !$session['dbinfo']['upgrade']) {
 	// enter this ONLY if it's not an upgrade and if the limit is really too low
 	output("`n`n`\$Warning: Your PHP memory limit is set to a very low level.");
 	output("Smaller servers should not be affected by this during normal gameplay but for this installation step you should assign at least 12 Megabytes of RAM for your PHP process.");
 	output("For now we will skip this step, but before installing any module, make sure to increase you memory limit.");
 	output("`nYou can proceed at your own risk. Be aware that a blank screen indicates you *must* increase the memory limit.");
 	output("`n`nTo override click again on \"Set Up Modules\".");
-	$session['stagecompleted'] = "8";
+	$session['stagecompleted'] = 8;
 	$session['overridememorylimit'] = true;
 	$session['skipmodules'] = true;
-} else {
-	if (isset($session['overridememorylimit']) && $session['overridememorylimit']) {
+}
+else {
+	if (isset($session['overridememorylimit'])
+		&& $session['overridememorylimit']) {
 		output("`4`n`nYou have been warned... you are now working on your own risk.`n`n");
 		$session['skipmodules'] = false;
 	}
-	$submit = translate_inline("Save Module Settings");
-	$install = translate_inline("Select Recommended Modules");
-	$reset = translate_inline("Reset Values");
-	$all_modules = array();
-	$sql = "SELECT * FROM ".db_prefix("modules")." ORDER BY category,active DESC,formalname";
-	$result = @db_query($sql);
-	if ($result!==false){
-		while ($row = db_fetch_assoc($result)){
-			if (!array_key_exists($row['category'],$all_modules)){
-				$all_modules[$row['category']] = array();
+	$submit = translate_inline('Save Module Settings');
+	$install = translate_inline('Select Recommended Modules');
+	$reset = translate_inline('Reset Values');
+	$allMods = [];
+	$result = false;
+	if ($session['dbinfo']['upgrade']) {
+		$sql = "SELECT * FROM ".db_prefix("modules")." ORDER BY category,active DESC,formalname";
+		$result = @db_query($sql);
+	}
+	if ($result !== false) {
+		while ($row = db_fetch_assoc($result)) {
+			if (!array_key_exists($row['category'], $allMods)) {
+				$allMods[$row['category']] = [];
 			}
-			$row['installed']=true;
-			$all_modules[$row['category']][$row['modulename']] = $row;
+			$row['installed'] = true;
+			$allMods[$row['category']][$row['modulename']] = $row;
 		}
 	}
 	$install_status = get_module_install_status();
-		$uninstalled = $install_status['uninstalledmodules'];
+	$uninstalled = $install_status['uninstalledmodules'];
 	reset($uninstalled);
 	$invalidmodule = [
 		'version'=>'',
@@ -94,11 +103,11 @@ if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememory
 	if (count($allMods) == 0) {
 		$session['skipmodules'] = true;
 		$session['stagecompleted'] = $stage;
-		header("Location: installer.php?stage=".($stage+1));
+		header('Location: installer.php?stage=' . ($stage + 1));
 		exit();
 	}
 	output_notl("`0");
-	rawoutput("<form action='installer.php?stage=".$stage."' method='POST'>");
+	rawoutput("<form action='installer.php?stage=$stage' method='POST'>");
 	rawoutput("<input type='submit' value='$submit' class='button'>");
 	rawoutput("<input type='button' onClick='chooseRecommendedModules();' class='button' value='$install' class='button'>");
 	rawoutput("<input type='reset' value='$reset' class='button'><br>");
@@ -112,6 +121,7 @@ if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememory
 		reset($categoryItems);
 		foreach ($categoryItems as $modName => $modInfo) {
 			$x++;
+			$trColor = ($x % 2 ? 'trlight' : 'trdark'); 
 			//if we specified things in a previous hit on this page, let's update the modules array here as we go along.
 			$modInfo['realactive'] = $modInfo['active'];
 			$modInfo['realinstalled'] = $modInfo['installed'];
@@ -140,8 +150,8 @@ if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememory
 					}
 				}
 			}
-			rawoutput("<tr class='".($x%2?"trlight":"trdark")."'>");
-			if ($moduleinfo['realactive']){
+			rawoutput("<tr class='$trColor'>");
+			if ($modInfo['realactive']) {
 				$uninstallop = "uninstall";
 				$installop = "deactivate";
 				$activateop = "donothing";

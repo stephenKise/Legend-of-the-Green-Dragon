@@ -1,22 +1,20 @@
 <?php
-function create_db($dbname){
+function create_db(string $db = 'lotgd') {
+	global $mysqli_resource;
 	output("`n`2Attempting to create your database...`n");
-	$sql = "CREATE DATABASE $dbname";
-	mysql_query($sql);
-	$error = mysql_error();
-	if ($error == ""){
-		if (mysql_select_db($dbname)){
+	$sql = "CREATE DATABASE $db";
+	db_query($sql);
+	$error = db_error();
+	if ($error == '') {
+		if (mysqli_select_db($mysqli_resource, $db))
 			output("`@Success!`2  I was able to create the database and connect to it!`n");
-		}else{
-			output("`\$It seems I was not successful.`2  I didn't get any errors trying to create the database, but I was not able to connect to it.");
-			output("I'm not sure what would have caused this error, you might try asking around in <a href='http://lotgd.net/forum/' target='_blank'>the LotGD.net forums</a>.");
-		}
-	}else{
-		output("`\$It seems I was not successful.`2 ");
-		output("The error returned by the database server was:");
+		else
+			output("`\$Database connection error, please check MySQL server.");
+	}
+	else {
+		output("`\$Database error:`2 ");
 		rawoutput("<blockquote>$error</blockquote>");
 	}
-
 }
 
 $tipid=0;
@@ -32,8 +30,8 @@ function tip(){
 	$tipid++;
 }
 
-function descriptors($prefix=""){
-	require_once("lib/all_tables.php");
+function descriptors($prefix = '') {
+	require_once('lib/all_tables.php');
 	$array = get_all_tables();
 	$out = array();
 	foreach ($array as $key => $val) {
@@ -45,12 +43,12 @@ function descriptors($prefix=""){
 //This function is borrowed from the php manual.
 function return_bytes($val) {
 	$val = trim($val);
-	$last = strtolower($val{strlen($val)-1});
-	switch($last) {
+	$last = strtolower($val[strlen($val) - 1]);
+	switch ($last) {
 		// The 'G' modifier is available since PHP 5.1.0
 		case 'g':
 		$val *= 1024;
-		case 'm':
+		case 'M':
 		$val *= 1024;
 		case 'k':
 		$val *= 1024;

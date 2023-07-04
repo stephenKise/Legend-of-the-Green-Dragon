@@ -19,15 +19,16 @@ if (file_exists("dbconnect.php")){
 	."\$DB_DATACACHEPATH = '{$session['dbinfo']['DB_DATACACHEPATH']}';\n"
 	."?>\n";
 	$fp = @fopen("dbconnect.php","w+");
-	if ($fp){
-		if (fwrite($fp, $dbconnect)!==false){
+	if ($fp) {
+		$failure = false;
+		if (fwrite($fp, $dbconnect) !== false)
 			output("`n`@Success!`2  I was able to write your dbconnect.php file, you can continue on to the next step.");
-		}else{
-			$failure=true;
-		}
+		else
+			$failure = true;
 		fclose($fp);
-	}else{
-		$failure=true;
+	}
+	else {
+		$failure = true;
 	}
 	if ($failure){
 		output("`n`\$Unfortunately, I was not able to write your dbconnect.php file.");
@@ -46,10 +47,10 @@ if ($success && !$initial){
 	$sub = substr($version, 0, 5);
 	$sub = (int)str_replace(".", "", $sub);
 	if ($sub < 110) {
-		$sql = "SELECT setting, value FROM ".db_prefix("settings")." WHERE setting IN ('usedatacache', 'datacachepath')";
-		$result = db_query($sql);
+		$DB_DATACACHE = (string) $session['dbinfo']['DB_DATACACHEPATH'];
+		$DB_USEDATACACHE = (int) $session['dbinfo']['DB_USEDATACACHE'];
 		$fp = @fopen("dbconnect.php","r+");
-		if ($fp){
+		if ($fp) {
 			while(!feof($fp)) {
 				$buffer = fgets($fp, 4096);
 				if (strpos($buffer, "\$DB") !== false) {
@@ -57,14 +58,6 @@ if ($success && !$initial){
 				}
 			}
 			fclose($fp);
-		}
-		while ($row = db_fetch_assoc($result)) {
-			if ($row['setting'] == 'datacachepath') {
-				$DB_DATACACHEPATH = $row['value'];
-			}
-			if ($row['setting'] == 'usedatacache') {
-				$DB_USEDATACACHE = $row['value'];
-			}
 		}
 		$dbconnect =
 			"<?php\n"
@@ -75,20 +68,21 @@ if ($success && !$initial){
 			."\$DB_NAME = '{$DB_NAME}';\n"
 			."\$DB_PREFIX = '{$DB_PREFIX}';\n"
 			."\$DB_USEDATACACHE = ". ((int)$DB_USEDATACACHE).";\n"
-			."\$DB_DATACACHEPATH = '".addslashes($DB_DATACACHEPATH)."'';\n"
+			."\$DB_DATACACHEPATH = '".addslashes($DB_DATACACHEPATH)."';\n"
 			."?>\n";
 		// Check if the file is writeable for us. If yes, we will change the file and notice the admin
 		// if not, they have to change the file themselves...
 		$fp = @fopen("dbconnect.php","w+");
 		if ($fp){
-			if (fwrite($fp, $dbconnect)!==false){
+			$failure = false;
+			if (fwrite($fp, $dbconnect) !== false)
 				output("`n`@Success!`2  I was able to write your dbconnect.php file.");
-			}else{
-				$failure=true;
-			}
+			else
+				$failure = true;
 			fclose($fp);
-		}else{
-			$failure=true;
+		}
+		else {
+			$failure = true;
 		}
 		if ($failure) {
 			output("`2With this new version the settings for datacaching had to be moved to `idbconnect.php`i.");

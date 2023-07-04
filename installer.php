@@ -33,7 +33,7 @@ $stages=array(
 	"12. Done!",
 );
 
-$recommended_modules = array(
+$defaultMods = [
 	"abigail",
 	"breakin",
 	"calendar",
@@ -94,7 +94,7 @@ $recommended_modules = array(
 	"tutor",
 	"tynan",
 	"waterfall",
-);
+];
 
 $DB_USEDATACACHE=0; //Necessary
 

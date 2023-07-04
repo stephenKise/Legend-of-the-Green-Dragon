@@ -1,5 +1,5 @@
 <?php
-$default_settings = array(
+$defaultSettings = [
 	"transferperlevel"=>25,
 	"maxtransferout"=>25,
 	"charset"=>"iso-8859-1",
@@ -145,5 +145,5 @@ $default_settings = array(
 	"automaster"=>1,
 	"villagechance"=>0,
 	"enablecompanions"=>true,
-);
+];
 ?>
