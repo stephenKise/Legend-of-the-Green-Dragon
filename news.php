@@ -68,7 +68,7 @@ while ($row = db_fetch_assoc($result)) {
 	tlschema($row['tlschema']);
 	if ($row['arguments']>""){
 		$arguments = array();
-		$base_arguments = unserialize($row['arguments']);
+		$base_arguments = json_decode($row['arguments']);
 		array_push($arguments,$row['newstext']);
 		foreach ($base_arguments as $key => $val) {
 			array_push($arguments,$val);

@@ -135,7 +135,7 @@ function gametime(): int
     return $time;
 }
 
-function convertgametime(int $intime, bool $debug = false): int
+function convertgametime(int $inTime, bool $debug = false): int
 {
     $inTime -= getsetting('gameoffsetseconds',0);
     $epoch = strtotime(

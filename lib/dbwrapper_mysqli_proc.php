@@ -3,14 +3,18 @@
 // translator ready
 // mail ready
 
-function db_query($sql, $die=true){
- 	if (defined("DB_NODB") && !defined("LINK")) return array();
-	global $session,$dbinfo,$mysqli_resource;
+function db_query($sql, $die = true) {
+ 	if (defined('DB_NODB') && !defined('LINK')) return [];
+	global $session, $dbinfo, $mysqli_resource;
 	$dbinfo['queriesthishit']++;
 	// $fname = DBTYPE."_query";
 	$starttime = getmicrotime();
 	//$r = $fname($sql);
-	$r = mysqli_Query($mysqli_resource, $sql);
+	if (!$mysqli_resource) {
+		require_once('dbconnect.php');
+		db_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+	}
+	$r = mysqli_query($mysqli_resource, $sql);
 
 	if (!$r && $die === true) {
 	 	if (defined("IS_INSTALLER")){
@@ -35,7 +39,8 @@ function db_query($sql, $die=true){
 		debug("Slow Query (".round($endtime-$starttime,2)."s): ".(HTMLEntities($s, ENT_COMPAT, getsetting("charset", "ISO-8859-1")))."`n");
 	}
 	unset($dbinfo['affected_rows']);
-	$dbinfo['affected_rows']=db_affected_rows();
+	$dbinfo['affected_rows'] = db_affected_rows();
+	if (!isset($dbinfo['querytime'])) $dbinfo['querytime'] = 0;
 	$dbinfo['querytime'] += $endtime-$starttime;
 	return $r;
 }
@@ -51,6 +56,7 @@ function &db_query_cached($sql,$name,$duration=900){
 	//if (getsetting("usedatacache", 0) == 1) debug("DataCache: $name");
 	//standard is 15 minutes, als hooks don't need to be cached *that* often, normally you invalidate the cache properly
 	global $dbinfo;
+	if (defined('IS_INSTALLER')) return [];
 	$data = datacache($name,$duration);
 	if (is_array($data)){
 		reset($data);
@@ -124,10 +130,10 @@ function db_affected_rows($link=false){
 	return $r;
 }
 
-function db_pconnect($host,$user,$pass){
+function db_pconnect($host, $user, $pass, $database) {
   global $mysqli_resource;
 
-	$mysqli_resource = mysqli_connect($host, $user, $pass);
+	$mysqli_resource = mysqli_connect($host, $user, $pass, $database);
 
 	if($mysqli_resource) {
 	  return true;
@@ -137,10 +143,10 @@ function db_pconnect($host,$user,$pass){
 	}
 }
 
-function db_connect($host,$user,$pass){
+function db_connect($host, $user, $pass, $database) {
 	global $mysqli_resource;
 
-	$mysqli_resource = mysqli_connect($host, $user, $pass);
+	$mysqli_resource = mysqli_connect($host, $user, $pass, $database);
 
 	if($mysqli_resource) {
 	  return true;

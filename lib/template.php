@@ -33,18 +33,17 @@ function prepare_template($force=false){
 		define("TEMPLATE_IS_PREPARED",true);
 	}
 
- 	global $templatename, $templatemessage, $template, $session, $y, $z, $y2, $z2, $copyright, $lc, $x, $templatetags;
+ 	global $templatename, $templatemessage, $template, $session, $y, $z, $y2, $z2, $copyright, $lc, $x;
 	 if (!isset($_COOKIE['template'])) $_COOKIE['template']="";
 	$templatename="";
 	$templatemessage="";
 	if ($_COOKIE['template']!="")
 		$templatename=$_COOKIE['template'];
-	if ($templatename=="" || !file_exists("templates/$templatename"))
+	if ($templatename == '' || !file_exists("templates/$templatename"))
 		$templatename=getsetting("defaultskin", "jade.htm");
-	if ($templatename=="" || !file_exists("templates/$templatename"))
-		$templatename="jade.htm";
 	$template = loadtemplate($templatename);
-	if ($session['templatename'] == $templatename &&
+	if (isset($session['templatename']) &&
+			$session['templatename'] == $templatename &&
 			$session['templatemtime']==filemtime("templates/$templatename")){
 		//We do not have to check that the template is valid since it has
 		//not changed.
@@ -75,10 +74,15 @@ function prepare_template($force=false){
 	}else {
 		$y = 0;
 		$z = $y2^$z2;
-		if ($session['user']['loggedin'] && $x > ''){
+		if (isset($session['user']['loggedin']) && $session['user']['loggedin'] && $x > ''){
 			$$z = $x;
 		}
+		if (isset($$z)) {
 		$$z = $lc . $$z . "<br />";
+		}
+		else {
+			$$z = $lc . "<br />";
+		}
 	}
 
 }

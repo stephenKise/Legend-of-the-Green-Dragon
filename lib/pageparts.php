@@ -212,6 +212,13 @@ function page_footer($saveuser=true){
 		$already_registered_logdnet = true;
 	}
 
+	$donationName = getSessionUser('login');
+	$donationPath = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	$donationItem = htmlentities(
+		"{$donationName}:{$donationPath}",
+		ENT_COMPAT,
+		getsetting('charset', 'UTF-8')
+	);
 	if (getsetting("logdnet",0) && $session['user']['loggedin'] && !$already_registered_logdnet){
 		//account counting, just for my own records, I don't use this in the calculation for server order.
 		$sql = "SELECT count(*) AS c FROM " . db_prefix("accounts");
@@ -244,56 +251,60 @@ function page_footer($saveuser=true){
 		$v = rawurlencode($v);
 		$u = rawurlencode($u);
 		$paypalstr .= "<script language='JavaScript' src='images/logdnet.php?op=register&c=$c&l=$l&v=$v&a=$a&d=$d&e=$e&u=$u'></script>";
-	}else{
-		$paypalstr .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="logd@mightye.org">
-<input type="hidden" name="item_name" value="Legend of the Green Dragon Author Donation from '.full_sanitize($session['user']['name']).'">
-<input type="hidden" name="item_number" value="'.htmlentities($session['user']['login'].":".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")).'">
-<input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="notify_url" value="http://lotgd.net/payment.php">
-<input type="hidden" name="cn" value="Your Character Name">
-<input type="hidden" name="cs" value="1">
-<input type="hidden" name="currency_code" value="USD">
-<input type="hidden" name="tax" value="0">
-<input type="image" src="images/paypal1.gif" border="0" name="submit" alt="Donate!">
-</form>';
+	}
+	else {
+		$paypalstr .= 
+			"<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank'>" .
+			"<input type='hidden' name='cmd' value='_xclick'>" .
+			"<input type='hidden' name='business' value='logd@mightye.org'>" .
+			"<input type='hidden' name='item_name' value='Donation from {$donationName}'>" .
+			"<input type='hidden' name='item_number' value='{$donationItem}'>" .
+			"<input type='hidden' name='no_shipping' value='1'>" .
+			"<input type='hidden' name='notify_url' value='http://lotgd.net/payment.php'>" .
+			"<input type='hidden' name='cn' value='{$donationName}'>" .
+			"<input type='hidden' name='cs' value='1'>" .
+			"<input type='hidden' name='currency_code' value='USD'>" .
+			"<input type='hidden' name='tax' value='0'>" .
+			"<input type='image' src='images/paypal1.gif' border='0' name='submit' alt='Donate!'>" .
+			"</form>";
 	}
 	// DP Donation button
 	$paypalstr .= '</td><td>';
-	$paypalstr .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="derbugmeister@shaw.ca">
-<input type="hidden" name="item_name" value="Legend of the Green Dragon DP Donation from '.full_sanitize($session['user']['name']).'">
-<input type="hidden" name="item_number" value="'.htmlentities($session['user']['login'].":".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")).'">
-<input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="notify_url" value="http://dragonprimelogd.net/payment.php">
-<input type="hidden" name="cn" value="Your Character Name">
-<input type="hidden" name="cs" value="1">
-<input type="hidden" name="currency_code" value="USD">
-<input type="hidden" name="tax" value="0">
-<input type="image" src="images/paypal3.gif" border="0" name="submit" alt="Donate!">
-</form>';
-	$paysite = getsetting("paypalemail", "");
-	if ($paysite != "") {
-		$paypalstr .= '</td></tr><tr><td colspan=\'2\' align=\'center\'>';
-		$paypalstr .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="'.$paysite.'">
-<input type="hidden" name="item_name" value="'.getsetting("paypaltext","Legend of the Green Dragon Site Donation from").' '.full_sanitize($session['user']['name']).'">
-<input type="hidden" name="item_number" value="'.htmlentities($session['user']['login'].":".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], ENT_COMPAT, getsetting("charset", "ISO-8859-1")).'">
-<input type="hidden" name="no_shipping" value="1">';
-		if (file_exists("payment.php")) {
-			$paypalstr .= '<input type="hidden" name="notify_url" value="http://'.$_SERVER["HTTP_HOST"].dirname($_SERVER['REQUEST_URI']).'/payment.php">';
+	$paypalstr .= "<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank'>" .
+		"<input type='hidden' name='cmd' value='_xclick'>" .
+		"<input type='hidden' name='business' value='derbugmeister@shaw.ca'>" .
+		"<input type='hidden' name='item_name' value='Donation from {$donationName}''>" .
+		"<input type='hidden' name='item_number' value='{$donationItem}'>" .
+		"<input type='hidden' name='no_shipping' value='1'>" .
+		"<input type='hidden' name='notify_url' value='http://dragonprimelogd.net/payment.php'>" .
+		"<input type='hidden' name='cn' value='{$donationName}'>" .
+		"<input type='hidden' name='cs' value='1'>" .
+		"<input type='hidden' name='currency_code' value='USD'>" .
+		"<input type='hidden' name='tax' value='0'>" .
+		"<input type='image' src='images/paypal3.gif' border='0' name='submit' alt='Donate!'>" .
+		"</form>";
+	$paysite = getsetting('paypalemail', '');
+	if ($paysite != '') {
+		$paypalstr .= "</td></tr><tr><td colspan='2' align='center'>";
+		$paypalstr .= "<form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_blank'>" .
+			"<input type='hidden' name='cmd' value='_xclick'>" .
+			"<input type='hidden' name='business' value='{$paysite}'>" .
+			"<input type='hidden' name='item_name' value='Donation from {$donationName}'>" .
+			"<input type='hidden' name='item_number' value='{$donationItem}'>" .
+			"<input type='hidden' name='no_shipping' value='1'>";
+		if (file_exists('payment.php')) {
+			$paypalstr .= 
+				"<input type='hidden' name='notify_url' value='http://{$_SERVER["HTTP_HOST"]}" . 
+					dirname($_SERVER['REQUEST_URI']) . "/payment.php'>";
 		}
-		$paypalstr .= '<input type="hidden" name="cn" value="Your Character Name">
-<input type="hidden" name="cs" value="1">
-<input type="hidden" name="currency_code" value="'.$currency.'">
-<input type="hidden" name="lc" value="'.getsetting("paypalcountry-code","US").'">
-<input type="hidden" name="bn" value="PP-DonationsBF">
-<input type="hidden" name="tax" value="0">
-<input type="image" src="images/paypal2.gif" border="0" name="submit" alt="Donate!">
-</form>';
+		$paypalstr .= "<input type='hidden' name='cn' value='{$donationName}'>" .
+			"<input type='hidden' name='cs' value='1'>" .
+			"<input type='hidden' name='currency_code' value='{$currency}'>" .
+			"<input type='hidden' name='lc' value='US'>" .
+			"<input type='hidden' name='bn' value='PP-DonationsBF'>" .
+			"<input type='hidden' name='tax' value='0'>" .
+			"<input type='image' src='images/paypal2.gif' border='0' name='submit' alt='Donate!'>" .
+			"</form>";
 	}
 	$paypalstr .= '</td></tr></table>';
 	$footer=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$footer);
@@ -305,7 +316,10 @@ function page_footer($saveuser=true){
 	//NOTICE |
 
 	//output the nav
+	if (isset($$z))
 	$footer = str_replace("{".($z)."}",$$z,$footer);
+	else
+		$footer = str_replace("{{$z}}", '', $footer);
 	$header=str_replace("{nav}",$builtnavs,$header);
 	$footer=str_replace("{nav}",$builtnavs,$footer);
 	//output the motd
@@ -362,10 +376,24 @@ function page_footer($saveuser=true){
 	//output version
 	$footer=str_replace("{version}", "Version: $logd_version", $footer);
 	//output page generation time
-	$gentime = getmicrotime()-$pagestarttime;
-	$session['user']['gentime']+=$gentime;
+	$genTime = round(getmicrotime()-$pagestarttime, 3);
+	if (!getSessionUser('gentime')) {
+		$session['user']['gentimecount'] = 1;
+		$session['user']['gentime'] = 0;
+		$session['user']['gensize'] = 0;
+	}
+	$session['user']['gentime'] += $genTime;
 	$session['user']['gentimecount']++;
-	$footer=str_replace("{pagegen}","Page gen: ".round($gentime,3)."s / ".$dbinfo['queriesthishit']." queries (".round($dbinfo['querytime'],3)."s), Ave: ".round($session['user']['gentime']/$session['user']['gentimecount'],3)."s - ".round($session['user']['gentime'],3)."/".round($session['user']['gentimecount'],3)."",$footer);
+	$queryTime = 0;
+	$genTime = round($session['user']['gentime'], 3);
+	$genCount = round($session['user']['gentimecount'], 3);
+	if (isset($dbinfo['querytime'])) {
+		$queryTime = round($dbinfo['querytime'], 3);
+	}
+	$averageTime = round($genTime / $genCount, 3);
+	$avgLoad = "Ave: {$averageTime}s - {$genTime}/ {$genCount}";
+	$pageGen = "Page gen: {$genTime}s/{$dbinfo['queriesthishit']} queries ({$queryTime}s),";
+	$footer=str_replace('{pagegen}', "{$pageGen} {$avgLoad}", $footer);
 
 	tlschema();
 
@@ -802,8 +830,8 @@ function maillink(){
 	$result = db_query_cached($sql,"mail-{$session['user']['acctid']}",86400);
 	$row = db_fetch_assoc($result);
 	db_free_result($result);
-	$row['seencount']=(int)$row['seencount'];
-	$row['notseen']=(int)$row['notseen'];
+	$row['seencount'] = isset($row['seencount']) ? (int) $row['seencount'] : 0;
+	$row['notseen']=isset($row['notseen']) ? (int) $row['notseen'] : 0;
 	if ($row['notseen']>0){
 		return sprintf("<a href='mail.php' target='_blank' onClick=\"".popup("mail.php").";return false;\" class='hotmotd'>".translate_inline("Ye Olde Mail: %s new, %s old", 'common')."</a>",$row['notseen'],$row['seencount']);
 	}else{

@@ -27,6 +27,7 @@ function textme_getmoduleinfo()
         ],
     ];
     $i = 0;
+    $string = '';
     foreach (textme_getcarriers() as $carrier => $email) {
         $i++;
         $string .= "$email, $carrier";

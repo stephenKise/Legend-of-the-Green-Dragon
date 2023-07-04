@@ -35,7 +35,11 @@ function savesetting(string $settingname, $value)
 
 function loadsettings()
 {
-    global $settings;
+    global $settings, $mysqli_resource;
+    if (!file_exists('dbconnect.php')
+        || $mysqli_resource === null
+        || defined('IS_INSTALLER')) 
+        return;
     if (!is_array($settings)) {
         $settings = datacache('game-settings');
         if (!is_array($settings)) {
@@ -60,6 +64,7 @@ function clearsettings()
 
 function getsetting(string $settingname, $default)
 {
+    if (!file_exists('dbconnect.php')) return $default;
     global $settings, $DB_USEDATACACHE, $DB_DATACACHEPATH;
     if ($settingname == 'usedatacache') {
         return $DB_USEDATACACHE;

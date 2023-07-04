@@ -462,7 +462,7 @@ return array(
 			'default'=>'0.00'
 			),
 		'processdate'=>array(
-			'name'=>'processdate', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
+			'name'=>'processdate', 'type'=>'datetime', 'default'=> null
 			),
 		'key-PRIMARY'=>array(
 			'name'=>'PRIMARY',
@@ -584,7 +584,7 @@ return array(
 		'postdate'=>array(
 			'name'=>'postdate',
 			'type'=>'datetime',
-			'default'=>'0000-00-00 00:00:00'
+			'default'=> null
 			),
 		'key-PRIMARY'=>array(
 			'name'=>'PRIMARY',
@@ -666,7 +666,7 @@ return array(
 			'name'=>'id', 'type'=>'int(11) unsigned', 'extra'=>'auto_increment'
 			),
 		'date'=>array(
-			'name'=>'date', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
+			'name'=>'date', 'type'=>'datetime', 'default'=> null
 			),
 		'actor'=>array(
 			'name'=>'actor', 'type'=>'int(11) unsigned', 'null'=>'1'
@@ -703,7 +703,7 @@ return array(
 			'extra'=>'auto_increment'
 			),
 		'date'=>array(
-			'name'=>'date', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
+			'name'=>'date', 'type'=>'datetime', 'default'=> null
 			),
 		'post'=>array(
 			'name'=>'post', 'type'=>'tinytext'
@@ -755,7 +755,7 @@ return array(
 		'date'=>array(
 			'name'=>'date',
 			'type'=>'datetime',
-			'default'=>'0000-00-00 00:00:00',
+			'default'=> null,
 			),
 		'who'=>array(
 			'name'=>'who',
@@ -774,7 +774,7 @@ return array(
 			'columns'=>'category,date',
 			),
 		),
-	'logdnetbans'=>array(
+	'lotgdbans'=>array(
 		'banid'=>array('name'=>'banid','type'=>'int(11) unsigned','extra'=>'auto_increment'),
 		'bantype'=>array('name'=>'bantype','type'=>'varchar(20)'),
 		'banvalue'=>array('name'=>'banvalue','type'=>'varchar(255)'),
@@ -798,7 +798,7 @@ return array(
 		'lastupdate'=>array(
 			'name'=>'lastupdate',
 			'type'=>'datetime',
-			'default'=>'0000-00-00 00:00:00'
+			'default'=> null
 			),
 		'version'=>array(
 			'name'=>'version', 'type'=>'varchar(255)', 'default'=>'Unknown'
@@ -809,7 +809,7 @@ return array(
 		'lastping'=>array(
 			'name'=>'lastping',
 			'type'=>'datetime',
-			'default'=>'0000-00-00 00:00:00'
+			'default'=> null
 			),
 		'recentips'=>array(
 			'name'=>'recentips',
@@ -852,7 +852,7 @@ return array(
 			'name'=>'body', 'type'=>'text'
 			),
 		'sent'=>array(
-			'name'=>'sent', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
+			'name'=>'sent', 'type'=>'datetime', 'default'=> null
 			),
 		'seen'=>array(
 			'name'=>'seen', 'type'=>'tinyint(1)', 'default'=>'0'
@@ -927,7 +927,7 @@ return array(
 			'name'=>'moderator', 'type'=>'int(11) unsigned', 'default'=>'0'
 			),
 		'moddate'=>array(
-			'name'=>'moddate', 'type'=>'datetime', 'default'=>'0000-00-00 00:00:00'
+			'name'=>'moddate', 'type'=>'datetime', 'default'=> null
 			),
 		'key-PRIMARY'=>array(
 			'name'=>'PRIMARY',
@@ -1068,7 +1068,7 @@ return array(
 		'installdate'=>array(
 			'name'=>'installdate',
 			'type'=>'datetime',
-			'default'=>'0000-00-00 00:00:00'
+			'default'=> null
 			),
 		'installedby'=>array(
 			'name'=>'installedby', 'type'=>'varchar(50)'
@@ -1076,7 +1076,7 @@ return array(
 		'filemoddate'=>array(
 			'name'=>'filemoddate',
 			'type'=>'datetime',
-			'default'=>'0000-00-00 00:00:00'
+			'default'=> null
 			),
 		'type'=>array(
 			'name'=>'type', 'type'=>'tinyint(4)', 'default'=>'0'

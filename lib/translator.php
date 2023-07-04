@@ -151,7 +151,8 @@ function tl($in){
 	return tlbutton_clear().$out;
 }
 
-function translate_loadnamespace($namespace,$language=false){
+function translate_loadnamespace($namespace, $language = false) {
+	if (defined('IS_INSTALLER')) return [];
 	if ($language===false) $language = LANGUAGE;
 	$page = translator_page($namespace);
 	$uri = translator_uri($namespace);
@@ -164,7 +165,7 @@ function translate_loadnamespace($namespace,$language=false){
 		FROM ".db_prefix("translations")."
 		WHERE language='$language'
 			AND $where";
-/*	debug(nl2br(htmlentities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")))); */
+	/*	debug(nl2br(htmlentities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")))); */
 	if (!getsetting("cachetranslations",0)) {
 		$result = db_query($sql);
 	} else {

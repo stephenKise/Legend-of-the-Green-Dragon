@@ -52,6 +52,8 @@ require_once("lib/modules.php");
 require_once("lib/http.php");
 require_once("lib/e_rand.php");
 require_once("lib/buffs.php");
+require_once("lib/template.php");
+require_once("lib/settings.php");
 require_once("lib/pageparts.php");
 require_once("lib/output.php");
 require_once("lib/tempstat.php");
@@ -75,8 +77,6 @@ if(!defined("ALLOW_ANONYMOUS")) define("ALLOW_ANONYMOUS",false);
 
 //Initialize variables required for this page
 
-require_once("lib/template.php");
-require_once("lib/settings.php");
 require_once("lib/redirect.php");
 require_once("lib/censor.php");
 require_once("lib/saveuser.php");
@@ -100,7 +100,7 @@ require_once('lib/session.php');
 ob_start();
 if (file_exists("dbconnect.php")){
 	require_once("dbconnect.php");
-	$link = db_connect($DB_HOST, $DB_USER, $DB_PASS);
+	$link = db_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 }else{
 	if (!defined("IS_INSTALLER")){
 	 	if (!defined("DB_NODB")) define("DB_NODB",true);
@@ -247,7 +247,7 @@ if (!isset($nokeeprestore[$SCRIPT_NAME]) || !$nokeeprestore[$SCRIPT_NAME]) {
 }else{
 
 }
-if ($logd_version != getsetting("installer_version","-1") && !defined("IS_INSTALLER")){
+if ($logd_version != getsetting('installer_version', '-1') && !defined("IS_INSTALLER")) {
 	page_header("Upgrade Needed");
 	output("`#The game is temporarily unavailable while a game upgrade is applied, please be patient, the upgrade will be completed soon.");
 	output("In order to perform the upgrade, an admin will have to run through the installer.");
@@ -373,9 +373,11 @@ unset($temp_comp);
 
 $beta = getsetting("beta", 0);
 if (!$beta && getsetting("betaperplayer", 1) == 1)
-	$beta = $session['user']['beta'];
+	$beta = getSessionUser('beta');
 
-$sql = "SELECT * FROM " . db_prefix("clans") . " WHERE clanid='{$session['user']['clanid']}'";
+$clansPrefix = (string) db_prefix('clans');
+$clanId = (int) getSessionUser('clanid');
+$sql = "SELECT * FROM {$clansPrefix} WHERE clanid='{$clanId}'";
 $result = db_query_cached($sql, "clandata-{$session['user']['clanid']}", 3600);
 if (db_num_rows($result)>0){
 	$claninfo = db_fetch_assoc($result);
@@ -384,9 +386,9 @@ if (db_num_rows($result)>0){
 	$session['user']['clanid']=0;
 	$session['user']['clanrank']=0;
 }
-if ($session['user']['superuser'] & SU_MEGAUSER)
+if (getSessionSuperUser() & SU_MEGAUSER)
 	$session['user']['superuser'] =
-		$session['user']['superuser'] | SU_EDIT_USERS;
+		getSessionSuperUser() | SU_EDIT_USERS;
 
 translator_setup();
 //set up the error handler after the intial setup (since it does require a

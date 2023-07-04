@@ -396,6 +396,12 @@ function mass_module_prepare($hooknames){
  * @return array The args modified by the event handlers
  */
 $currenthook = "";
+function modulehook(
+	$hookname,
+	$args = false,
+	$allowinactive = false,
+	$only = false
+) {
 	if (!file_exists('dbconnect.php')) return $args;
 	global $navsection, $mostrecentmodule;
 	global $blocked_modules, $block_all_modules, $unblocked_modules;
@@ -1394,12 +1400,16 @@ function module_condition($condition) {
 	return (bool)$result;
 }
 
-function get_module_install_status(){
+function get_module_install_status() {
 	// Collect the names of all installed modules.
-	$seenmodules = array();
-	$seencats = array();
-	$sql = "SELECT modulename,category FROM " . db_prefix("modules");
-	$result = @db_query($sql);
+	global $session;
+	$seenmodules = [];
+	$seencats = [];
+	$result = false;
+	if (defined('IS_INSTALLER') && $session['dbinfo']['upgrade']) {
+		$sql = "SELECT modulename,category FROM " . db_prefix("modules");
+		$result = @db_query($sql);
+	}
 	if ($result !== false){
 		while ($row = db_fetch_assoc($result)) {
 			$seenmodules[$row['modulename'].".php"] = true;

@@ -13,96 +13,107 @@
 //
 // There's no support for foreign keys that INNODB offers.  Sorry.
 
-function synctable($tablename,$descriptor,$nodrop=false){
+function synctable(string $tableName, $descriptor, $nodrop = false) {
 	//table names should be db_prefix'd before they get in to
 	//this function.
-	if (!db_table_exists($tablename)){
+	global $session;
+	require_once('dbconnect.php');
+	global $DB_NAME;
+	$database = ($DB_NAME > '' ? $DB_NAME : $session['dbinfo']['DB_NAME']);
+	unset($DB_NAME);
+	$sql = db_query("SHOW TABLES LIKE '$tableName';");
+	// $row = db_num_rows($sql);
+	// var_dump($row);
+	if (db_num_rows($sql) < 1) {
+		unset($sql);
+		// if (!db_table_exists($tableName)) {
 		//the table doesn't exist, so we create it and are done.
 		reset($descriptor);
-		$sql = table_create_from_descriptor($tablename,$descriptor);
+		$sql = table_create_from_descriptor($tableName, $descriptor);
 		debug($sql);
 		if(!db_query($sql)) {
 			output("`\$Error:`^ %s`n", db_error());
 			rawoutput("<pre>".htmlentities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."</pre>");
-		} else {
-			output("`^Table `#%s`^ created.`n", $tablename);
 		}
-	}else{
+		else
+			output("`^Table `#%s`^ created.`n", $tableName);
+	}
+	else {
 		//the table exists, so we need to compare it against the descriptor.
-		$existing = table_create_descriptor($tablename);
+		$existing = table_create_descriptor($tableName);
 		reset($descriptor);
 		$changes = [];
 		foreach ($descriptor as $key => $val) {
 			if ($key == 'RequireMyISAM') continue;
 			$val['type'] = descriptor_sanitize_type($val['type']);
 			if (!isset($val['name'])) {
-				if (($val['type']=="key" ||
-							$val['type']=="unique key" ||
-							$val['type']=="primary key")){
-					if (substr($key,0,4)=="key-"){
-						$val['name']=substr($key,4);
-					}else{
-						debug("<b>Warning</b>: the descriptor for <b>$tablename</b> includes a {$val['type']} which isn't named correctly.  It should be named key-$key. In your code, it should look something like this (the important change is bolded):<br> \"<b>key-$key</b>\"=>array(\"type\"=>\"{$val['type']}\",\"columns\"=>\"{$val['columns']}\")<br> The consequence of this is that your keys will be destroyed and recreated each time the table is synchronized until this is addressed.");
-						$val['name']=$key;
+				if (($val['type'] == 'key' ||
+							$val['type'] == 'unique key' ||
+							$val['type'] == 'primary key')) {
+					if (substr($key, 0, 4) == 'key-')
+						$val['name'] = substr($key, 4);
+					else {
+						debug(
+							"<b>Warning</b>: <b>$tableName</b> descriptor includes a " .
+							"{$val['type']} which isn't named correctly."
+						);
+						$val['name'] = $key;
 					}
-				}else{
-					$val['name']=$key;
 				}
-			}else{
-				if ($val['type']=="key" ||
-						$val['type']=="unique key" ||
-						$val['type']=="primary key"){
+				else
+					$val['name'] = $key;
+			}
+			else {
+				if ($val['type'] == 'key' ||
+						$val['type'] == 'unique key' ||
+						$val['type'] == 'primary key')
 					$key = "key-".$val['name'];
-				}else{
+				else
 					$key = $val['name'];
 				}
-			}
 			$newsql = descriptor_createsql($val);
-			if (!isset($existing[$key])){
-				//this is a new column.
-				array_push($changes,"ADD $newsql");
-			}else{
+			if (!isset($existing[$key]))
+				array_push($changes, "ADD $newsql");
+			else {
 				//this is an existing column, let's make sure the
 				//descriptors match.
 				$oldsql = descriptor_createsql($existing[$key]);
-				if ($oldsql != $newsql){
+				if ($oldsql != $newsql) {
 					//this descriptor line has changed.  Change the
 					//table to suit.
-					debug("Old: $oldsql<br>New:$newsql");
-					if ($existing[$key]['type']=="key" ||
-							$existing[$key]['type']=="unique key"){
-						array_push($changes,
-								"DROP KEY {$existing[$key]['name']}");
-						array_push($changes,"ADD $newsql");
-					}elseif ($existing[$key]['type']=="primary key"){
-						array_push($changes,"DROP PRIMARY KEY");
-						array_push($changes,"ADD $newsql");
-					}else{
-						array_push($changes,
-								"CHANGE {$existing[$key]['name']} $newsql");
+					if ($existing[$key]['type'] == 'key' ||
+							$existing[$key]['type'] == 'unique key') {
+						array_push($changes, "DROP KEY {$existing[$key]['name']}");
+						array_push($changes, "ADD $newsql");
 					}
+					elseif ($existing[$key]['type'] == 'primary key') {
+						array_push($changes,'DROP PRIMARY KEY');
+						array_push($changes,"ADD $newsql");
+					}
+					else
+						array_push($changes, "CHANGE {$existing[$key]['name']} $newsql");
 				}//end if
 			}//end if
 			unset($existing[$key]);
 		}//end while
 		//drop no longer needed columns
-		if (!$nodrop){
+		if (!$nodrop) {
 			reset($existing);
 			foreach ($existing as $key => $val) {
 				//This column no longer exists.
-				if ($val['type']=="key" || $val['type']=="unique key"){
+				if ($val['type'] == 'key' || $val['type'] == 'unique key')
 					$sql = "DROP KEY {$val['name']}";
-				}elseif ($val['type']=="primary key"){
-					$sql = "DROP PRIMARY KEY";
-				}else{
+				elseif ($val['type'] == 'primary key')
+					$sql = 'DROP PRIMARY KEY';
+				else
 					$sql = "DROP {$val['name']}";
-				}
-				array_push($changes,$sql);
+				array_push($changes, $sql);
 			}//end while
 		}
-		if (count($changes)>0) {
+		if (count($changes) > 0) {
+			$allChanges = join(", \n", $changes);
 			//we have changes to do!  Woohoo!
-			$sql = "ALTER TABLE $tablename \n".join(",\n",$changes);
+			$sql = "ALTER TABLE $tableName \n$allChanges";
 			debug(nl2br($sql));
 			db_query($sql);
 			return count($changes);
@@ -150,16 +161,17 @@ function table_create_from_descriptor($tablename,$descriptor){
 		}
 		if ($i>0) $sql.=",\n";
 		$sql .= descriptor_createsql($val);
+		
 		$i++;
 	}
 	$sql .= ") engine=$type";
 	return $sql;
 }
 
-function table_create_descriptor($tablename){
+function table_create_descriptor($tablename) {
 	//this function assumes that $tablename is already passed
 	//through db_prefix.
-	$descriptor = array();
+	$descriptor = [];
 
 	//fetch column desc's
 	$sql = "DESCRIBE $tablename";
@@ -205,7 +217,13 @@ function table_create_descriptor($tablename){
 	return $descriptor;
 }
 
-function descriptor_createsql($input){
+function descriptor_createsql($input) {
+	$setDefault = '';
+	$default = isset($input['default']) ? $input['default'] : '';
+	if ($default == 'null' || $default === null)
+		$setDefault = ' DEFAULT NULL';
+	elseif ($default > '')
+		$setDefault = " DEFAULT '{$default}'";
 	$input['type'] = descriptor_sanitize_type($input['type']);
 	if ($input['type']=="key" || $input['type']=='unique key'){
 		//this is a standard index
@@ -239,8 +257,7 @@ function descriptor_createsql($input){
 		$return = $input['name']." "
 			.$input['type']
 			.(isset($input['null']) && $input['null']?"":" NOT NULL")
-			.(isset($input['default']) &&
-					$input['default']>""?" default '{$input['default']}'":"")
+			.$setDefault
 			." ".$input['extra'];
 	}
 	return $return;
