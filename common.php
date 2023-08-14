@@ -376,19 +376,21 @@ if (!$beta && getsetting("betaperplayer", 1) == 1)
 	$beta = getSessionUser('beta');
 
 $clansPrefix = (string) db_prefix('clans');
-$clanId = (int) getSessionUser('clanid');
-$sql = "SELECT * FROM {$clansPrefix} WHERE clanid='{$clanId}'";
-$result = db_query_cached($sql, "clandata-{$session['user']['clanid']}", 3600);
-if (db_num_rows($result)>0){
-	$claninfo = db_fetch_assoc($result);
-}else{
-	$claninfo = array();
-	$session['user']['clanid']=0;
-	$session['user']['clanrank']=0;
+if (getSessionUser('loggedin')) {
+	$clanId = (int) getSessionUser('clanid') ?: 0;
+	$sql = "SELECT * FROM {$clansPrefix} WHERE clanid='{$clanId}'";
+	$result = db_query_cached($sql, "clandata-{$session['user']['clanid']}", 3600);
+	if (db_num_rows($result)>0){
+		$claninfo = db_fetch_assoc($result);
+	}else{
+		$claninfo = array();
+		$session['user']['clanid']=0;
+		$session['user']['clanrank']=0;
+	}
+	if (getSessionSuperUser() & SU_MEGAUSER)
+		$session['user']['superuser'] =
+			getSessionSuperUser() | SU_EDIT_USERS;
 }
-if (getSessionSuperUser() & SU_MEGAUSER)
-	$session['user']['superuser'] =
-		getSessionSuperUser() | SU_EDIT_USERS;
 
 translator_setup();
 //set up the error handler after the intial setup (since it does require a
