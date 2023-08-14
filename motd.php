@@ -112,12 +112,8 @@ if ($op=="") {
     commentdisplay("`n`@Commentary:`0`n", "motd");
 }
 
-$session['needtoviewmotd']=false;
-
-$sql = "SELECT motddate FROM " . db_prefix("motd") ." ORDER BY motditem DESC LIMIT 1";
-$result = db_query_cached($sql, "motddate");
-$row = db_fetch_assoc($result);
-$session['user']['lastmotd']=$row['motddate'];
+$session['needtoviewmotd'] = false;
+$session['user']['lastmotd'] = date('Y-m-d H:i:s');
 
 popup_footer();
 ?>
