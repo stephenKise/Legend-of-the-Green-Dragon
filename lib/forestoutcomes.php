@@ -160,7 +160,7 @@ function forestdefeat($enemies,$where="in the forest"){
             $taunt
         )
     );
-    $session['user']['alive']=false;
+    $session['user']['alive'] = 0;
     debuglog("lost gold when they were slain $where",false,false,"forestlose",-$session['user']['gold']);
     $session['user']['gold']=0;
     $session['user']['hitpoints']=0;
