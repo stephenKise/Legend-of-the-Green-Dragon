@@ -12,6 +12,9 @@ function saveuser(){
 		// are undone.
 		restore_buff_fields();
 
+		if (!getSessionUser('alive')) {
+			$session['user']['alive'] = 0;
+		}
 		$session['user']['allowednavs']=serialize($session['allowednavs']);
 		$session['user']['bufflist']=serialize($session['bufflist']);
 		if (isset($companions) && is_array($companions)) $session['user']['companions']=serialize($companions);
