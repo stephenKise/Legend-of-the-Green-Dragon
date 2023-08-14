@@ -118,7 +118,7 @@ function restore_buff_fields(){
 	}//end if
 
 	//restore temp stats
-	if (!is_array($session['bufflist'])) $session['bufflist'] = array();
+	if (!is_array(getSession('bufflist'))) $session['bufflist'] = array();
 	reset($session['bufflist']);
 	foreach ($session['bufflist'] as $buffName => $buff) {
 		if (array_key_exists("tempstats_calculated",$buff) && $buff['tempstats_calculated']){
