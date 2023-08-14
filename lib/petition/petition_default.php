@@ -3,6 +3,9 @@ tlschema('petition');
 popup_header('Petition for Help');
 $post = httpallpost();
 $petitions = db_prefix('petitions');
+$hidden = getSessionUser('loggedin') ? 'hidden' : 'text';
+$emailAddress = getSessionUser('emailaddress') ?: '';
+$userName = getSessionUser('name') ?: '';
 if (!$session['user']['loggedin']) {
     $session['user']['lastip'] = $_SERVER['REMOTE_ADDR'];
 }
@@ -10,11 +13,11 @@ $sessionJson = json_encode($session, JSON_PRETTY_PRINT);
 $petitionHeader = "`^Please make sure to read the `b`4FAQ`b`^ before sending in a petition. Most common answers can be found there and will save both you and the administration time!";
 $petitionForm = "
     <form action='petition.php' method='POST'>
-    <label for='name'>Username: {$session['user']['name']}</label>
-    <input type='" . ($session['user']['loggedin'] ? 'hidden' : 'text') . "' name='name' value=\"{$session['user']['name']}\" />
+    <label for='name'>Username: {$userName}</label>
+    <input type='{$hidden}' name='name' value=\"{$userName}\" />
     <br />
-    <label for='emailaddress'>Email: {$session['user']['emailaddress']}</label>
-    <input type='" . ($session['user']['loggedin'] ? 'hidden' : 'email') . "' name='emailaddress' value='{$session['user']['emailaddress']}' />
+    <label for='emailaddress'>Email: {$emailAddress}</label>
+    <input type='{$hidden}' name='emailaddress' value='{$emailAddress}' />
     <br />
     <label for='body'>Reason for contacting us:</label>
     <br />
