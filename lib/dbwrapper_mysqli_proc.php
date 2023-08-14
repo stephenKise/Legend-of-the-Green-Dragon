@@ -181,7 +181,7 @@ function db_free_result($result){
 function db_table_exists($tablename){
   global $mysqli_resource;
  	if (defined("DB_NODB") && !defined("LINK")) return false;
-	$exists = $mysqli_resource->Query("SELECT 1 FROM `$tablename` LIMIT 0");
+	$exists = $mysqli_resource->Query("SHOW TABLES LIKE '$tablename'");
 	if ($exists) return true;
 	return false;
 }
