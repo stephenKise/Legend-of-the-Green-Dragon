@@ -17,7 +17,12 @@ function redirect($location,$reason=false){
 		$session['output'].=translate_inline("<br><br>If you cannot leave this page, notify the staff via <a href='petition.php'>petition</a> and tell them where this happened and what you did. Thanks.","badnav");
 	}
 	restore_buff_fields();
-	$session['debug'].="Redirected to $location from $REQUEST_URI.  $reason<br>";
+	if (isset($session['debug'])) {
+		$session['debug'] .= "Redirected to $location from $REQUEST_URI.  $reason<br>";
+	}
+	else {
+		$session['debug'] = "Redirected to $location from $REQUEST_URI.  $reason<br>";
+	}
 	saveuser();
 	@header("Location: $location");
 	//echo "<html><head><meta http-equiv='refresh' content='0;url=$location'></head></html>";
