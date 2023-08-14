@@ -733,7 +733,7 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 		$thisnav.=tlbutton_pop().templatereplace("navhelp",array("text"=>appoencode($text,$priv)));
 	} elseif ($link == "!!!addraw!!!") {
 		$thisnav .= $text;
-
+	}
 	if (!getSession('counter'))
 		$session['counter'] = 0;
 	if ($text != "" && $link != '') {
@@ -855,8 +855,6 @@ function private_addnav($text,$link=false,$priv=false,$pop=false,$popsize="500x3
 			$sublink = substr($link, 0, $pos);
 			$session['allowednavs'][$sublink.$extra]=true;
 		}
-
-	}
 	if ($unschema) tlschema();
 	$nav .= $thisnav;
 	return $thisnav;
