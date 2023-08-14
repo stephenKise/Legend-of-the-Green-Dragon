@@ -643,6 +643,7 @@ function buildnavs(){
 			$sublinks = "";
 			foreach ($val as $k => $v) {
 				if (is_array($v) && count($v)>0){
+					unset($v['translate']);
 					$sublinks .=   call_user_func_array("private_addnav",$v);
 				}//end if
 			}//end while
