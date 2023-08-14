@@ -76,14 +76,13 @@ foreach ($modules as $key => $module) {
 
 $install_status = get_module_install_status();
 $uninstmodules = $install_status['uninstalledmodules'];
-$seencats = $install_status['installedcategories'];
-$ucount = $install_status['uninstcount'];
-
-ksort($seencats);
-addnav(sprintf(" ?Uninstalled - (%s modules)", $ucount), "modules.php");
-reset($seencats);
-foreach ($seencats as $cat=>$count) {
-	addnav(sprintf(" ?%s - (%s modules)", $cat, $count), "modules.php?cat=$cat");
+$allModules = array_shift($install_status['installedmodules']);
+$ucount = $install_status['uninstalledcount'];
+$uninstalledNav = sprintf("Uninstalled: %s", $ucount);
+addnav($uninstalledNav, 'modules.php');
+foreach ($install_status['installedmodules'] as $cat => $mods) {
+	$nav = sprintf("%s: %s", $cat, count($mods));
+	addnav($nav, "modules.php?cat=$cat");
 }
 
 $cat = httpget('cat');
