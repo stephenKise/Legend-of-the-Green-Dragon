@@ -5,6 +5,7 @@
 require_once("common.php");
 require_once("lib/http.php");
 require_once("lib/sanitize.php");
+require_once('lib/constants.php');
 check_su_access(SU_MANAGE_MODULES);
 tlschema("modulemanage");
 
