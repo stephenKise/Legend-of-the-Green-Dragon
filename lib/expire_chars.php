@@ -42,7 +42,7 @@ if ($lastexpire < $needtoexpire){
 	$msg = "[{$dk0ct}] with 0 dk avg lvl [".round($dk0lvl/max(1,$dk0ct),2)."]\n";
 	$msg .= "[{$dk1ct}] with 1 dk avg lvl [".round($dk1lvl/max(1,$dk1ct),2)."]\n";
 	$msg .= "Avg DK: [".round($dks/max(1,count($acctids)),2)."]\n";
-	$msg .= "Accounts: ".join($pinfo,", ");
+	$msg .= "Accounts: ".join(", ", $pinfo);
 	require_once("lib/gamelog.php");
 	gamelog("Deleted ".count($acctids)." accounts:\n$msg","char expiration");
 
@@ -51,7 +51,7 @@ if ($lastexpire < $needtoexpire){
 	// above are the ones deleted here.
 	if (count($acctids)) {
 		$sql = "DELETE FROM " . db_prefix("accounts") .
-			" WHERE acctid IN (".join($acctids,",").")";
+			" WHERE acctid IN (".join(",", $acctids).")";
 		db_query($sql);
 	}
 
