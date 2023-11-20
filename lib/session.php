@@ -1,4 +1,4 @@
-<?
+<?php
 
 function getSession($valueName) {
   global $session;
