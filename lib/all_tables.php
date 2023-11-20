@@ -32,7 +32,7 @@ return array(
 			'name'=>'specialty', 'type'=>'varchar(20)', 'default' => 'Undecided',
 			),
 		'experience'=>array(
-			'name'=>'experience', 'type'=>'int(11) unsigned', 'default' => 0
+			'name'=>'experience', 'type'=>'int(11) unsigned', 'default' => '0'
 			),
 		'gold'=>array(
 			'name'=>'gold', 'type'=>'int(11) unsigned', 'default'=>'0'
