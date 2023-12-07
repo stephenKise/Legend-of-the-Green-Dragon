@@ -13,12 +13,16 @@ Before you install, it is best to have an understanding of what a linux server i
 # Install database, using your {user} and {password}.
 mysql -u {user} -p{password} -e 'CREATE DATABASE LOTGD;'
 
-# Clone LotGD
+# Clone LotGD to /var/www
 cd /var/www
-git clone git@github.com:stephenKise/Legend-of-the-Green-Dragon.git
+git clone git@github.com:DragonPrime/Legend-of-the-Green-Dragon.git .
 
 # Update the composer dependencies
 composer update
+
+# Disable NO_ZERO_DATE and NO_ZERO_IN_DATE in MySQL for legacy compatibility, and restart service
+echo 'sql_mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"' | sudo tee -a /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo service mysql restart
 
 # Navigate to /installer.php in your browser.
 ```
