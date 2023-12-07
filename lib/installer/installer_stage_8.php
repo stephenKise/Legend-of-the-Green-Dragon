@@ -57,9 +57,7 @@ else {
 			$allMods[$row['category']][$row['modulename']] = $row;
 		}
 	}
-	$install_status = get_module_install_status();
-	$uninstalled = $install_status['uninstalledmodules'];
-	reset($uninstalled);
+	$uninstalled = [];
 	$invalidmodule = [
 		'version'=>'',
 		'author'=>'',
