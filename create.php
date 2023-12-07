@@ -201,10 +201,6 @@ if (getsetting("allowcreation",1)==0){
 						$row = db_fetch_assoc($result);
 						$args = httpallpost();
 						$args['acctid'] = $row['acctid'];
-						//insert output
-						$sql_output = "INSERT INTO " . db_prefix("accounts_output") . " VALUES ({$row['acctid']},'');";
-						db_query($sql_output);
-						//end
 						modulehook("process-create", $args);
 						if ($emailverification!=""){
 							$subj = translate_mail("LoGD Account Verification",0);

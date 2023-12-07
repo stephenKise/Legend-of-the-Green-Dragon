@@ -21,11 +21,9 @@ if ($session['user']['loggedin'] && $session['loggedin']){
 			substr($key,0,8)=="mail.php"
 		) unset($session['allowednavs'][$key]);
 	}
-	$sql="SELECT output FROM ".db_prefix("accounts_output")." WHERE acctid={$session['user']['acctid']};";
-	$result=db_query($sql);
-	$row=db_fetch_assoc($result);
+	$accOutput = file_get_contents("accounts-output/{$session['user']['acctid']}.html");
 	if (!is_array($session['allowednavs']) ||
-			count($session['allowednavs'])==0 || $row['output']=="") {
+			count($session['allowednavs']) == 0 || $accOutput == "") {
 		$session['allowednavs']=array();
 		page_header("Your Navs Are Corrupted");
 		if ($session['user']['alive']) {
@@ -38,7 +36,7 @@ if ($session['user']['loggedin'] && $session['loggedin']){
 		}
 		page_footer();
 	}
-	echo $row['output'];
+	echo $accOutput;
 	$session['debug']="";
 	$session['user']['allowednavs']=$session['allowednavs'];
 	saveuser();

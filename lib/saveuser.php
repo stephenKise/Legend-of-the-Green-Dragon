@@ -6,6 +6,7 @@
 function saveuser(){
 	global $session,$dbqueriesthishit,$baseaccount,$companions;
 	if (defined("NO_SAVE_USER")) return false;
+	$acctId = getSessionUser('acctid');
 
 	if (getSession('loggedin') && getSessionUser('acctid') != '') {
 		// Any time we go to save a user, make SURE that any tempstat changes
@@ -34,12 +35,7 @@ function saveuser(){
 			" WHERE acctid = ".$session['user']['acctid'];
 		db_query($sql);
 		if (isset($session['output']) && $session['output']) {
-			$sql_output="UPDATE " . db_prefix("accounts_output") . " SET output='".addslashes($session['output'])."' WHERE acctid={$session['user']['acctid']};";
-			$result=db_query($sql_output);
-			if (db_affected_rows($result)<1) {
-				$sql_output="REPLACE INTO " . db_prefix("accounts_output") . " VALUES ({$session['user']['acctid']},'".addslashes($session['output'])."');";
-				db_query($sql_output);
-			}
+			file_put_contents("accounts-output/$acctId.html", $session['output']);
 		}
 		unset($session['bufflist']);
 		$session['user'] = array(

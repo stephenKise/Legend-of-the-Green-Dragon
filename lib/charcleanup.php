@@ -15,12 +15,10 @@ function char_cleanup(int $id, int $type): bool
         return false;
     }
     $accounts = db_prefix('accounts');
-    $accountsOutput = db_prefix('accounts_output');
     $commentary = db_prefix('commentary');
     $mail = db_prefix('mail');
     $news = db_prefix('news');
     $clans = db_prefix('clans');
-    db_query("DELETE FROM $accountsOutput WHERE acctid = '$id'");
     db_query("DELETE FROM $commentary WHERE author = '$id'");
     db_query("DELETE FROM $mail WHERE msgto = '$id' OR msgfrom = '$id'");
     db_query("DELETE FROM $news WHERE accountid = '$id'");

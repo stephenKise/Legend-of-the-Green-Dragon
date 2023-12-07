@@ -336,20 +336,6 @@ return array(
 			'name'=>'emailvalidation', 'type'=>'key', 'columns'=>'emailvalidation'
 			),
 		),
-	'accounts_output'=>array(
-		'acctid'=>array(
-			'name'=>'acctid', 'type'=>'int(11) unsigned'
-			),
-		'output'=>array(
-			'name'=>'output', 'type'=>'mediumtext'
-			),
-		'key-PRIMARY'=>array(
-			'name'=>'PRIMARY',
-			'type'=>'primary key',
-			'unique'=>'1',
-			'columns'=>'acctid'
-			),
-		),
 	'companions'=>array(
 		'companionid'=>array(
 			'name'=>'companionid', 'type'=>'int(11) unsigned', 'extra'=>'auto_increment',

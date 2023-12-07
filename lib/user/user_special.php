@@ -8,8 +8,7 @@ if (httppost("newday") !=""){
 }elseif(httppost("fixnavs")!=""){
 	$sql = "UPDATE " . db_prefix("accounts") . " SET allowednavs='', restorepage='', specialinc='' WHERE acctid='$userid'";
 	db_query($sql);
-	$sql = "DELETE FROM ".db_prefix("accounts_output")." WHERE acctid='$userid';";
-	db_query($sql);
+	unlink("accounts-output/$userid.html");
 } elseif(httppost("clearvalidation")!=""){
 	$sql = "UPDATE " . db_prefix("accounts") . " SET emailvalidation='' WHERE acctid='$userid'";
 	db_query($sql);
