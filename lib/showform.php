@@ -229,7 +229,12 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 				}
 				$isEnabled = ((int) $disablemask & (int) $currentValue);
 				if (!$isEnabled) continue;
-				$isChecked = (int) $row[$key] & (int) $currentValue ? 'checked' : '';
+				if (!key_exists($key, $row)) {
+					$isChecked = '';
+				}
+				else {
+					$isChecked = (int) $row[$key] & (int) $currentValue ? 'checked' : '';
+				}
 				rawoutput(
 					"<input type='checkbox'
 						name='{$keyout}[{$v}]'
