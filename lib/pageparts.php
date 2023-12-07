@@ -36,7 +36,7 @@ function page_header(){
 	if ($script) {
 		if (!array_key_exists($script,$runheaders))
 			$runheaders[$script] = false;
-		if (!$runheaders[$script]) {
+		if (!$runheaders[$script] && (!defined('IS_INSTALLER') || !IS_INSTALLER)) {
 			modulehook("everyheader", array('script'=>$script));
 			if ($session['user']['loggedin']) {
 				modulehook("everyheader-loggedin", array('script'=>$script));
@@ -89,7 +89,9 @@ function page_footer($saveuser=true){
 	//page footer module hooks
 	$script = substr($SCRIPT_NAME,0,strpos($SCRIPT_NAME,"."));
 	$replacementbits = array();
-	$replacementbits = modulehook("footer-$script",$replacementbits);
+	if (file_exists('dbconnect.php') && (!defined('IS_INSTALLER') || !IS_INSTALLER)) {
+		$replacementbits = modulehook("footer-$script",$replacementbits);
+	}
 	if ($script == "runmodule" && (($module = httpget('module'))) > "") {
 		// This modulehook allows you to hook directly into any module without
 		// the need to hook into footer-runmodule and then checking for the
@@ -101,7 +103,9 @@ function page_footer($saveuser=true){
 	// Problem is 'script' is a valid replacement token, so.. use an
 	// invalid one which we can then blow away.
 	$replacementbits['__scriptfile__'] = $script;
-	$replacementbits = modulehook("everyfooter",$replacementbits);
+	if (file_exists('dbconnect.php') && (!defined('IS_INSTALLER') || !IS_INSTALLER)) {
+		$replacementbits = modulehook("everyfooter",$replacementbits);
+	}
 	if (getSessionUser('loggedin')) {
 		$replacementbits = modulehook("everyfooter-loggedin", $replacementbits);
 	}
@@ -751,7 +755,11 @@ function charstats(){
 			$onlinecount = 0;
 			// If a module wants to do it's own display of the online chars,
 			// let it.
-			$list = modulehook("onlinecharlist", []);
+			if (file_exists('dbconnect.php') && (!defined('IS_INSTALLER') || !IS_INSTALLER)) {
+				$list = modulehook("onlinecharlist", []);	
+			} else {
+				$list = [];
+			}
 			if (isset($list['handled']) && $list['handled']) {
 				$onlinecount = $list['count'];
 				$ret = $list['list'];
@@ -812,8 +820,10 @@ function loadtemplate($templatename){
 		$fieldname=substr($val,0,strpos($val,"-->"));
 		if ($fieldname!=""){
 			$template[$fieldname]=substr($val,strpos($val,"-->")+3);
-			modulehook("template-{$fieldname}",
+			if (file_exists('dbconnect.php') && (!defined('IS_INSTALLER') || !IS_INSTALLER)) {
+				modulehook("template-{$fieldname}",
 					array("content"=>$template[$fieldname]));
+			}
 		}
 	}
 	return $template;
