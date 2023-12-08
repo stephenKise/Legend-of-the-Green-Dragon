@@ -133,11 +133,6 @@ unset($DB_NAME);
 if (isset($link) && $link===false){
  	if (!defined("IS_INSTALLER")){
 		echo $out;
-		// Ignore this bit.  It's only really for Eric's server
-		if (file_exists("lib/smsnotify.php")) {
-			$smsmessage = "No DB Server: " . db_error();
-			require_once("lib/smsnotify.php");
-		}
 		// And tell the user it died.  No translation here, we need the DB for
 		// translation.
 	 	if (!defined("DB_NODB")) define("DB_NODB",true);
