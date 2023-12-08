@@ -74,7 +74,6 @@ if (!($session['user']['loggedin'] && $session['user']['superuser'] & SU_VIEW_SO
 		"remotequery.php"=>"X", // hide completely
 		"lib/datatable.php"=>"X", // hide completely
 		"lib/dbremote.php"=>"X", //hide completely
-		"lib/smsnotify.php"=>"X", //hide completely
 		"modules/battlearena.php"=>"X", // not for dist
 		"modules/blog.php"=>"X", // not for dist
 		"modules/clues.php"=>"X", // hidden
