@@ -912,4 +912,21 @@ function clearoutput(){
 	$nav="";
 }
 
-?>
+// Checks the session and accounts-output backup for any differences.
+function isNavigationInOutput(array $session): bool {
+    [
+        'allowednavs' => $allowedNavs,
+        'user' => ['acctid' => $acctId]
+    ] = $session;
+    unset($allowedNavs['']);
+    $output = file_get_contents("accounts-output/{$acctId}.html");
+    foreach ($allowedNavs as $nav => $allowed) {
+        if (strlen($nav) !== 0) {
+            continue;
+        }
+        if (strpos($output, $nav) == false) {
+            return false;
+        }
+    }
+    return true;
+}
