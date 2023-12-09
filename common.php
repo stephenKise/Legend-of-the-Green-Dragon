@@ -180,7 +180,7 @@ if (strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds") > $session['lasthit
 	translator_setup();
 	$session['message'].=translate_inline("`nYour session has expired!`n","common");
 }
-$session['lasthit']=strtotime("now");
+$session['lasthit'] = date('Y-m-d H:i:s', strtotime('now'));
 mass_module_prepare([
 	'template-header',
 	'template-footer',

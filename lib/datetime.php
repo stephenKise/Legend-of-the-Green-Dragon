@@ -110,6 +110,9 @@ function checkday(bool $force = true): bool
 function is_new_day(float $now = 0): bool
 {
     global $session;
+    if (!getSession('loggedin')) {
+        return false;
+    }
     if ($session['user']['lasthit'] == '0000-00-00 00:00:00') {
         return true;
     }

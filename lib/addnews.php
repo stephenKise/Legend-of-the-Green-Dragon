@@ -19,6 +19,7 @@ function addnews(string $text = '', array $options = [])
     foreach (['date', 'hide'] as $key) {
         unset($options[$key]);
     }
+    $text = addslashes($text);
     $newsArgs = json_encode($options);
     db_query(
         "INSERT INTO $news

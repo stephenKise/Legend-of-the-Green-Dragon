@@ -173,12 +173,13 @@ function forestdefeat($enemies,$where="in the forest"){
 
 function buffbadguy($badguy){
     global $session;
+    $dragonPoints = getSessionUser('dragonpoints') ?: [];
     static $dk = false; // This will save us a lot of trouble when going through
                         // this function more than once...
     if ($dk === false) {
         //make badguys get harder as you advance in dragon kills.
         $dk = 0;
-        foreach ($session[['user']['dragonpoints']] as $key => $val) {
+        foreach ($dragonPoints as $key => $val) {
             if ($val=="at" || $val=="de") $dk++;
         }
         $dk += (int)(($session['user']['maxhitpoints']-($session['user']['level']*10))/5);
