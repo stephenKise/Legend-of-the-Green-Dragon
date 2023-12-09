@@ -238,22 +238,6 @@ if ($session['user']['superuser'] & SU_INFINITE_DAYS){
   addnav("/?New Day","newday.php");
 }
 tlschema();
-//let users try to cheat, we protect against this and will know if they try.
-addnav("","superuser.php");
-addnav("","user.php");
-addnav("","taunt.php");
-addnav("","creatures.php");
-addnav("","configuration.php");
-addnav("","badword.php");
-addnav("","armoreditor.php");
-addnav("","bios.php");
-addnav("","badword.php");
-addnav("","donators.php");
-addnav("","referers.php");
-addnav("","retitle.php");
-addnav("","stats.php");
-addnav("","viewpetition.php");
-addnav("","weaponeditor.php");
 
 if (!$skipvillagedesc) {
 	modulehook("collapse{", array("name"=>"villagedesc-".$session['user']['location']));
