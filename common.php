@@ -80,7 +80,6 @@ if(!defined("ALLOW_ANONYMOUS")) define("ALLOW_ANONYMOUS",false);
 require_once("lib/redirect.php");
 require_once("lib/censor.php");
 require_once("lib/saveuser.php");
-require_once("lib/arrayutil.php");
 require_once("lib/addnews.php");
 require_once('lib/villagenav.php');
 require_once("lib/sql.php");

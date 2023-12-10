@@ -176,7 +176,7 @@ function apply_companion($name,$companion,$ignorelimit=false){
 			$companion['ignorelimit'] = true;
 		}
 		$companions[$name] = $companion;
-		$session['user']['companions'] = createstring($companions);
+		$session['user']['companions'] = serialize($companions);
 		return true; // success!
 	} else {
 		debug("Failed to add companion due to restrictions regarding the maximum amount of companions allowed.");

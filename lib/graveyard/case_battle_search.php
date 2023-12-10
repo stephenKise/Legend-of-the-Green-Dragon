@@ -36,7 +36,7 @@ if ($session['user']['gravefights']<=0){
 		$badguy['creaturelevel'] = $level;
 		$attackstack['enemies'][0] = $badguy;
 		$attackstack['options']['type'] = 'graveyard';
-		$session['user']['badguy']=createstring($attackstack);
+		$session['user']['badguy'] = serialize($attackstack);
 	}
 }
 ?>

@@ -107,7 +107,7 @@ if (db_num_rows($result) > 0 && $session['user']['level'] <= 14){
                 $master['creaturehealth']+=$hpflux;
                 $attackstack['enemies'][0] = $master;
                 $attackstack['options']['type'] = 'train';
-                $session['user']['badguy']=createstring($attackstack);
+                $session['user']['badguy'] = serialize($attackstack);
 
                 $battle=true;
                 if ($victory) {

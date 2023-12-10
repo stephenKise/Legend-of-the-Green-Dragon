@@ -61,7 +61,7 @@ if ($op==""){
 
     $badguy = modulehook("buffdragon", $badguy);
 
-    $session['user']['badguy']=createstring($badguy);
+    $session['user']['badguy']=serialize($badguy);
     $battle=true;
 }elseif($op=="prologue1"){
     output("`@Victory!`n`n");

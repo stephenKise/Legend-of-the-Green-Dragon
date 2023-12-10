@@ -267,7 +267,7 @@ if ($op=="search"){
 					"type"=>"forest"
 				)
 			);
-			$session['user']['badguy']=createstring($attackstack);
+			$session['user']['badguy'] = serialize($attackstack);
 			// If someone for any reason wanted to add a nav where the user cannot choose the number of rounds anymore
 			// because they are already set in the nav itself, we need this here.
 			// It will not break anything else. I hope.
