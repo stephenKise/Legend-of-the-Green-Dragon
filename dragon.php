@@ -228,7 +228,7 @@ if ($op==""){
 
     output("`n`nYou wake up in the midst of some trees.  Nearby you hear the sounds of a village.");
     output("Dimly you remember that you are a new warrior, and something of a dangerous Green Dragon that is plaguing the area.  You decide you would like to earn a name for yourself by perhaps some day confronting this vile creature.");
-
+    $session['user']['lasthit'] = date('Y-m-d H:i:s', strtotime('-1 day'));
     // allow explanative text as well.
     modulehook("dragonkilltext");
 
