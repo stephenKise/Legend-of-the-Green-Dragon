@@ -46,9 +46,10 @@ if (empty($post)) {
 }
 else {
     $ip = substr($session['user']['lastip'], 0, -2);
+    $lgi = isset($_COOKIE['lgi']) ? addslashes($_COOKIE['lgi']) : '';
     $sql = db_query(
         "SELECT count(petitionid) AS count FROM $petitions
-        WHERE (ip LIKE '$ip%' OR id = '" . addslashes($_COOKIE['lgi']) . "')
+        WHERE (ip LIKE '$ip%' OR id = '$lgi')
         AND date > '" . date('Y-m-d H:i:s', strtotime('-1 day')) . "'
         AND status != '0'"
     );
@@ -65,11 +66,21 @@ else {
         $post = modulehook('addpetition', $post);
         if ($post['cancelpetition'] == true) {
             output($post['cancelreason']);
-        }
-        else {
+        } else {
+            $post['body'] = addslashes($post['body']);
+            $lgi = isset($_COOKIE['lgi']) ? addslashes($_COOKIE['lgi']) : '';
             db_query(
-                "INSERT INTO $petitions (author, date, body, pageinfo, ip, id)
-                VALUES ('{$session['user']['acctid']}', '$date', '" . addslashes($post['body']) . "', '" . addslashes($sessionJson) . "', '$ip', '" . addslashes($_COOKIE['lgi']) . "')"
+                "INSERT INTO $petitions (author, date, body, pageinfo, ip, id, closedate)
+                VALUES (
+                    '{$session['user']['acctid']}',
+                    '$date',
+                    '" . addslashes($post['body']) . "',
+                    '" . addslashes($sessionJson) . "',
+                    '$ip',
+                    '$lgi',
+                    '0000-00-00 00:00:000'
+                )"
+
             );
             invalidatedatacache('petition_counts');
             output("`@Your petition has been sent!`n");

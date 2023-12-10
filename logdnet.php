@@ -220,12 +220,10 @@ if ($op==""){
 	$i = 0;
 	foreach ($servers as $key => $val) {
 		$row=unserialize($val);
-
-		// If we aren't given an address, continue on.
-		if (substr($row['address'],0,7)!="http://" &&
-				substr($row['address'],0,8) != "https://") {
-			continue;
-		}
+        // If we aren't given an address, continue on.
+        if (!$row['address']) {
+            break;
+        }
 
 		// Give undescribed servers a boring descriptionn
 		if (trim($row['description'])=="")

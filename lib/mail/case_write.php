@@ -219,10 +219,10 @@ rawoutput(
             var len = box.value.length;
             var msg = '';
             if (len <= maxlen) {
-                msg = '$usize1' + (maxlen - len) + '$usize2';
+                msg = '$uSize1' + (maxlen - len) + '$uSize2';
             }
             else {
-                msg = '$osize1' + (len - maxlen) + '$osize2';
+                msg = '$oSize1' + (len - maxlen) + '$oSize2';
             }
             document.getElementById('sizemsg').innerHTML = msg;
         }
