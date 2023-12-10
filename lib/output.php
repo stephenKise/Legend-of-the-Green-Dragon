@@ -920,11 +920,11 @@ function isNavigationInOutput(array $session): bool {
     ] = $session;
     unset($allowedNavs['']);
     $output = file_get_contents("accounts-output/{$acctId}.html");
-    foreach ($allowedNavs as $nav => $allowed) {
-        if (strlen($nav) !== 0) {
-            continue;
+    foreach (array_keys($allowedNavs) as $nav) {
+        if (strlen($nav) === 0) {
+            break;
         }
-        if (strpos($output, $nav) == false) {
+        if (strpos($output, strtok($nav, '?')) === false) {
             return false;
         }
     }

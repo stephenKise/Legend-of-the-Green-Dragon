@@ -37,6 +37,7 @@ function saveuser(){
 		if (isset($session['output']) && $session['output']) {
 			file_put_contents("accounts-output/$acctId.html", $session['output']);
 		}
+        unset($session['output']);
 		unset($session['bufflist']);
 		$session['user'] = array(
 			"acctid"=>$session['user']['acctid'],
