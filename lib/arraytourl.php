@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
+
 /**
  * URL <-> array functions
  * 
@@ -20,35 +18,37 @@
  * @param array $array The array to turn into an URL
  * @return string The URL
  */
-function arraytourl($array){
-	//takes an array and encodes it in key=val&key=val form.
-	$url="";
-	$i=0;
-	foreach($array as $key=>$val){
-		if ($i>0) $url.="&";
+function arraytourl(array $array): string
+{
+	$url = "";
+	$i = 0;
+	foreach ($array as $key => $val) {
+        $encodedKey = rawurlencode($key);
+        $encodedVal = rawurlencode($val);
+		if ($i > 0) $url .= "&";
 		$i++;
-		$url.=rawurlencode($key)."=".rawurlencode($val);
+		$url .= "{$encodedKey}={$encodedVal}";
 	}
 	return $url;
 }
 /**
- * Takes an array and returns its arguments in an array
+ * Takes a url and returns its arguments in an array
  *
  * @param string $url The URL
  * @return array The arguments from the URL
  */
-function urltoarray($url){
-	//takes a URL and returns its arguments in array form.
-	if (strpos($url,"?")!==false){
-		$url = substr($array,strpos($url,"?")+1);
-	}
-	$a = explode("&",$url);
-	$array = array();
-	foreach($a as $val){
-		$b = explode("=",$val);
-		$array[urldecode($b[0])] = urldecode($b[1]);
+function urltoarray(string $url): array
+{
+    $array = [];
+    // No arguments in url, return empty array
+	if (strpos($url, '?') === false) {
+        return $array;
+    }
+	$url = substr($url, strpos($url, '?') + 1);
+	$requestParams = explode('&', $url);
+	foreach ($requestParams as $param) {
+		[$key, $val] = explode('=', $param);
+		$array[urldecode($key)] = urldecode($val);
 	}
 	return $array;
 }
-
-?>
