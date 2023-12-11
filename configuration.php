@@ -217,7 +217,7 @@ if ($op == "") {
 		"emailpetitions"=>"Should submitted petitions be emailed to Admin Email address?,bool",
 		"Enter languages here like this: `i(shortname 2 chars) comma (readable name of the language)`i and continue as long as you wish,note",
 		"serverlanguages"=>"Languages available on this server",
-		"defaultlanguage"=>"Default Language,enum,".getsetting("serverlanguages","en,English,fr,Fran�ais,dk,Danish,de,Deutsch,es,Espa�ol,it,Italian"),
+		"defaultlanguage"=>"Default Language,enum,".getsetting("serverlanguages","en,English,fr,Français,dk,Danish,de,Deutsch,es,Español,it,Italian"),
 		"edittitles"=>"Should DK titles be editable in user editor,bool",
 		"motditems"=>"How many items should be shown on the motdlist,int",
 
