@@ -59,7 +59,6 @@ output("Now I'm going to insert default settings that you don't have.");
 rawoutput("<div style='width: 100%; height: 150px; max-height: 150px; overflow: auto;'>");
 foreach ($defaultSettings as $setting => $value) {
 	if(!isset($settings[$setting]) && getsetting($setting, $value) == $value) {
-		$value  = ($value === true ? 'true' : 'false');
 		output_notl("Setting $setting to default value of $value`n");
 	}
 }
