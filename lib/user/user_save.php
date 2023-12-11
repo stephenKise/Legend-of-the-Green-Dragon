@@ -4,7 +4,7 @@ $updates=0;
 $oldvalues = stripslashes(httppost('oldvalues'));
 $oldvalues = unserialize($oldvalues);
 // Handle recombining the old name
-$otitle = $oldvalues['title'];
+$otitle = isset($oldvalues['title']) ? $oldvalues['title'] : '';
 if ($oldvalues['ctitle']) $otitle = $oldvalues['ctitle'];
 $oldvalues['name'] = $otitle . ' ' . $oldvalues['name'];
 	$post = httpallpost();
@@ -121,7 +121,9 @@ foreach ($post as $key => $val) {
 			}
 		}elseif ($key=="oldvalues"){
 			//donothing.
-		}elseif ($oldvalues[$key]!=stripslashes($val) && isset($oldvalues[$key])){
+		} elseif (
+            isset($oldvalues[$key]) && $oldvalues[$key]!=stripslashes($val)
+        ){
 			$sql.="$key = \"$val\",";
 			$updates++;
 			output("%s has changed to %s.`n", $key, stripslashes($val));

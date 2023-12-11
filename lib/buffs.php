@@ -7,7 +7,7 @@ $buffreplacements = array();
 $debuggedbuffs = array();
 function calculate_buff_fields(){
 	global $session, $badguy, $buffreplacements, $debuggedbuffs;
-	if (!$session['bufflist']) return;
+	if (!isset($session['bufflist']) || !$session['bufflist']) return;
 
     $buffList = getSession('bufflist');
 	//run temp stats

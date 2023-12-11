@@ -221,19 +221,17 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 			$info = array_slice($info, 2);
 			$disablemask = array_shift($info);
 			rawoutput("<input type='hidden' name='$keyout"."[0]' value='1'>", true);
-			(int) $currentValue = 0;
 			foreach ($info as $k => $v) { 
-				if ($k % 2 == 0) {
-					$currentValue = (int) $v;
-					continue;
-				}
-				$isEnabled = ((int) $disablemask & (int) $currentValue);
+                if ($k % 2 !== 0) {
+                    continue;
+                }
+                $label = $info[$k + 1];
+				$isEnabled = ((int) $disablemask & (int) $v);
 				if (!$isEnabled) continue;
 				if (!key_exists($key, $row)) {
-					$isChecked = '';
-				}
-				else {
-					$isChecked = (int) $row[$key] & (int) $currentValue ? 'checked' : '';
+				 	$isChecked = '';
+				} else {
+					$isChecked = (int) $row[$key] & (int) $v ? 'checked' : '';
 				}
 				rawoutput(
 					"<input type='checkbox'
@@ -242,8 +240,8 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 						value='1'
 					/>"
 				);
-				if (!$pretrans) $v = translate_inline($v);
-				output_notl("%s`n", $v, true);
+				if (!$pretrans) $label = translate_inline($label);
+				output_notl("%s`n", $label, true);
 			}
 			break;
 		case "datelength":
