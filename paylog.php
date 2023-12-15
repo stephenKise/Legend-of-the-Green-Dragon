@@ -28,6 +28,7 @@ page_header("Payment Log");
 require_once("lib/superusernav.php");
 superusernav();
 
+$paylogTable = db_prefix('paylog');
 $op = httpget('op');
 if ($op==""){
 	$sql = "SELECT info,txnid FROM ".db_prefix("paylog")." WHERE processdate='0000-00-00'";
@@ -37,7 +38,9 @@ if ($op==""){
 		$sql = "UPDATE ".db_prefix('paylog')." SET processdate='".date("Y-m-d H:i:s",strtotime($info['payment_date']))."' WHERE txnid='".addslashes($row['txnid'])."'";
 		db_query($sql);
 	}
-	$sql = "SELECT substring(processdate,1,7) AS month, sum(amount)-sum(txfee) AS profit FROM ".db_prefix('paylog')." GROUP BY month DESC";
+	$sql = "SELECT substring(processdate, 1, 7) AS month, sum(amount) - sum(txfee) AS profit
+        FROM {$paylogTable}
+        GROUP BY month";
 	$result = db_query($sql);
 	addnav("Months");
 	while ($row = db_fetch_assoc($result)){
