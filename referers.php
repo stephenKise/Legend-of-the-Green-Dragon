@@ -8,6 +8,7 @@ tlschema("referers");
 
 check_su_access(SU_EDIT_CONFIG);
 
+$referers = db_prefix('referers');
 $expire = getsetting("expirecontent",180);
 if($expire > 0) $sql = "DELETE FROM " . db_prefix("referers") . " WHERE last<'".date("Y-m-d H:i:s",strtotime("-".$expire." days"))."'";
 db_query($sql);
@@ -25,11 +26,12 @@ if ($op=="rebuild"){
 		db_query($sql);
 	}
 }
+$sort = httpget('sort');
+$order = $sort ? str_replace('+', ' ', $sort) : 'count';
 require_once("lib/superusernav.php");
 superusernav();
 addnav("Referer Options");
 addnav("",$_SERVER['REQUEST_URI']);
-$sort = httpget('sort');
 addnav("Refresh","referers.php?sort=".URLEncode($sort)."");
 addnav("C?Sort by Count","referers.php?sort=count".($sort=="count DESC"?"":"+DESC"));
 addnav("U?Sort by URL","referers.php?sort=uri".($sort=="uri"?"+DESC":""));
@@ -38,9 +40,10 @@ addnav("T?Sort by Time","referers.php?sort=last".($sort=="last DESC"?"":"+DESC")
 addnav("Rebuild Sites","referers.php?op=rebuild");
 
 page_header("Referers");
-$order = "count DESC";
-if ($sort!="") $order=$sort;
-$sql = "SELECT SUM(count) AS count, MAX(last) AS last,site FROM " . db_prefix("referers") . " GROUP BY site ORDER BY $order LIMIT 100";
+$group = str_replace('DESC', '', $order);
+$sql = "SELECT SUM(count) AS count, count, last, MAX(last) AS last, site FROM {$referers}
+    GROUP BY count, last, uri, site
+    ORDER BY {$order}";
 $count = translate_inline("Count");
 $last = translate_inline("Last");
 $dest = translate_inline("Destination");
