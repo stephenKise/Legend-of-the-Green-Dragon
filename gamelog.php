@@ -4,6 +4,7 @@ global $REQUEST_URI;
 $cleanURI = array_shift(explode('&c', $REQUEST_URI));
 $cleanURI = array_shift(explode('?c', $cleanURI));
 $offset = httpget('offset');
+$category = httpget('category');
 $gamelog = db_prefix('gamelog');
 $accounts = db_prefix('accounts');
 check_su_access(SU_EDIT_CONFIG);
@@ -24,7 +25,6 @@ $sql = db_query(
     FROM $gamelog AS g LEFT JOIN $accounts AS a ON g.who = a.acctid 
     WHERE date > '" . date('Y-m-d', strtotime($start)) . "'
     AND date < '" . date('Y-m-d H:i:s', strtotime($end)) . "'
-    $extra
     ORDER BY date+0 DESC"
 );
 $grouped = db_query(
@@ -41,28 +41,25 @@ if ($offset != '' && $offset != 0) {
 }
 if ($category > "") addnav("View all", "gamelog.php");
 if (db_num_rows($grouped) > 0) {
-    addnav(
-        appoencode("Entries"),
-        true,
-        true
-    );
+    addnav('Entries');
 }
 while ($row = db_fetch_assoc($grouped)) {
     addnav(
         [
-            appoencode("`n`<`i%s`i (%s)`<"),
+            appoencode("`<`i%s`i (%s)`<"),
             ucfirst($row['category']),
             $row['count']
         ],
-        true,
+        '',
         true
     );
 }
+$dateSeperator = '';
 while ($row = db_fetch_assoc($sql)) {
     $dom = date("D, M d",strtotime($row['date']));
-    if ($odate != $dom){
+    if ($dateSeperator != $dom){
         output_notl("`n`b`@%s`0`b`n", $dom);
-        $odate = $dom;
+        $dateSeperator = $dom;
     }
     output_notl(
         "`2[`)%s`2] `0`Q%s `@%s`n`0",
