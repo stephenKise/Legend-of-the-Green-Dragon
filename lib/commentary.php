@@ -151,8 +151,11 @@ function injectcommentary($section, $talkline, $comment, $schema=false) {
 			$result = db_query($sql);
 			$row = db_fetch_assoc($result);
 			db_free_result($result);
-			if ($row['comment']!=stripslashes($commentary) ||
-					$row['author']!=$session['user']['acctid']){
+			if ((isset($row['comment'])
+                && $row['comment'] != stripslashes($commentary))
+                || (isset($row['author'])
+                && $row['author'] != $session['user']['acctid'])
+            ){
 				injectrawcomment($section, $session['user']['acctid'],
 						$commentary);
 				$session['user']['laston']=date("Y-m-d H:i:s");
