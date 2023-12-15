@@ -13,7 +13,8 @@ page_header("Taunt Editor");
 require_once("lib/superusernav.php");
 superusernav();
 $op = httpget('op');
-$tauntid = httpget('tauntid');
+$tauntid = (int) httpget('tauntid');
+$tauntTable = db_prefix('taunts');
 if ($op=="edit"){
 	addnav("Taunts");
 	addnav("Return to the taunt editor","taunt.php");
@@ -50,12 +51,16 @@ if ($op=="edit"){
 	db_query($sql);
 	$op = "";
 	httpset("op", "");
-}else if($op=="save"){
-	$taunt = httppost('taunt');
-	if ($tauntid!=""){
-		$sql = "UPDATE " . db_prefix("taunts") . " SET taunt=\"$taunt\",editor=\"".addslashes($session['user']['login'])."\" WHERE tauntid=\"$tauntid\"";
-	}else{
-		$sql = "INSERT INTO " . db_prefix("taunts") . " (taunt,editor) VALUES (\"$taunt\",\"".addslashes($session['user']['login'])."\")";
+} else if($op == 'save') {
+	$taunt = addslashes(httppost('taunt'));
+    $userLogin = addslashes($session['user']['login']);
+	if ($tauntid != '') {
+		$sql = "UPDATE {$tauntTable}
+            SET taunt = '{$taunt}', editor = '{$userLogin}'
+            WHERE tauntid = {$tauntid}";
+	} else {
+		$sql = "INSERT INTO {$tauntTable} (taunt, editor)
+            VALUES ('{$taunt}', '{$userLogin}')";
 	}
 	db_query($sql);
 	$op = "";
