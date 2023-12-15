@@ -69,10 +69,10 @@ if ($op=="deactivate"){
 	$session['user']['hashorse'] = $id;
 	// changed to make use of the cached query
 	$sql = "SELECT * FROM ".db_prefix("mounts")." WHERE mountid='$id'";
-	$result = db_query_cached($sql, "mountdata-$id", 3600);
+	$result = db_query($sql);
 	$row = db_fetch_assoc($result);
-	$buff = unserialize($row['mountbuff']);
-	if ($buff['schema'] == "") $buff['schema'] = "mounts";
+	$buff = isset($row['mountbuff']) ? unserialize($row['mountbuff']) : [];
+	if (!isset($buff['schema'])) $buff['schema'] = "mounts";
 	apply_buff("mount",$buff);
 	$op="";
 	httpset("op", "");
