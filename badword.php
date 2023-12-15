@@ -54,7 +54,7 @@ rawoutput("<input name='word'><input type='submit' class='button' value='$remove
 $sql = "SELECT * FROM ".db_prefix("nastywords")." WHERE type='good'";
 $result = db_query($sql);
 $row = db_fetch_assoc($result);
-$words = explode(" ",$row['words']);
+$words = isset($row['words']) ? explode(" ",$row['words']) : [];
 if ($op=="addgood"){
 
 	$newregexp = stripslashes(httppost('word'));
