@@ -22,7 +22,7 @@ $defeat = false;
 
 output("`b`cBluspring's Warrior Training`c`b");
 
-$mid = httpget("master");
+$mid = (int) httpget("master");
 if ($mid) {
     $sql = "SELECT * FROM " . db_prefix("masters") . " WHERE creatureid=$mid";
 } else {
@@ -30,11 +30,12 @@ if ($mid) {
     $res = db_query($sql);
     $row = db_fetch_assoc($res);
     $l = $row['level'];
-
-    $sql = "SELECT * FROM " . db_prefix("masters") . " WHERE creaturelevel=$l ORDER BY RAND(".e_rand().") LIMIT 1";
+    
+    $sql = "SELECT * FROM " . db_prefix("masters") . " WHERE creaturelevel=$l ORDER BY RAND() LIMIT 1";
 }
-
-$result = db_query($sql);
+if (isset($l) || $mid > 0) {
+    $result = db_query($sql);
+}
 if (db_num_rows($result) > 0 && $session['user']['level'] <= 14){
     $master = db_fetch_assoc($result);
     $mid = $master['creatureid'];
