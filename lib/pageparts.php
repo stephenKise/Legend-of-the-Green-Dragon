@@ -636,7 +636,7 @@ function charstats(){
 				$def *= $val['defmod'];
 			}
 			// Short circuit if the name is blank
-			if ($val['name'] > "" || $session['user']['superuser'] & SU_DEBUG_OUTPUT){
+			if (isset($val['name']) || $session['user']['superuser'] & SU_DEBUG_OUTPUT){
 				tlschema($val['schema']);
 				if ($val['name']=="")
 					$val['name'] = "DEBUG: {$key}";
