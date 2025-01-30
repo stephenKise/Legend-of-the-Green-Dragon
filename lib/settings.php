@@ -36,10 +36,9 @@ function savesetting(string $settingname, $value)
 function loadsettings()
 {
     global $settings, $mysqli_resource;
-    if (!file_exists('dbconnect.php')
-        || $mysqli_resource === null
-        || (defined('IS_INSTALLER') && IS_INSTALLER)) 
-        return;
+    if (!file_exists('dbconnect.php')) return;
+    if ($mysqli_resource === null) return;
+    if (defined('IS_INSTALLER') && IS_INSTALLER) return;
     if (!is_array($settings)) {
         $settings = datacache('game-settings');
         if (!is_array($settings)) {

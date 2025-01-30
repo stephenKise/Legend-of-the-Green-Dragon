@@ -94,19 +94,18 @@ require_once('lib/session.php');
 ob_start();
 if (file_exists("dbconnect.php")){
 	require_once("dbconnect.php");
+    define('IS_INSTALLER', false);
 	$link = db_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-}else{
-	if (!defined("IS_INSTALLER")){
-	 	if (!defined("DB_NODB")) define("DB_NODB",true);
-	 	page_header("The game has not yet been installed");
-		output("`#Welcome to `@Legend of the Green Dragon`#, a game by Eric Stevens & JT Traub.`n`n");
-		output("You must run the game's installer, and follow its instructions in order to set up LoGD.  You can go to the installer <a href='installer.php'>here</a>.",true);
-		output("`n`nIf you're not sure why you're seeing this message, it's because this game is not properly configured right now. ");
-		output("If you've previously been running the game here, chances are that you lost a file called '`%dbconnect.php`#' from your site.");
-		output("If that's the case, no worries, we can get you back up and running in no time, and the installer can help!");
-		addnav("Game Installer","installer.php");
-		page_footer();
-	}
+} else if (!defined("IS_INSTALLER")) {
+ 	if (!defined("DB_NODB")) define("DB_NODB",true);
+ 	page_header("The game has not yet been installed");
+	output("`#Welcome to `@Legend of the Green Dragon`#, a game by Eric Stevens & JT Traub.`n`n");
+	output("You must run the game's installer, and follow its instructions in order to set up LoGD.  You can go to the installer <a href='installer.php'>here</a>.",true);
+	output("`n`nIf you're not sure why you're seeing this message, it's because this game is not properly configured right now. ");
+	output("If you've previously been running the game here, chances are that you lost a file called '`%dbconnect.php`#' from your site.");
+	output("If that's the case, no worries, we can get you back up and running in no time, and the installer can help!");
+	addnav("Game Installer","installer.php");
+	page_footer();
 }
 // If you are running a server that has high overhead to *connect* to your
 // database (such as a high latency network connection to mysql),

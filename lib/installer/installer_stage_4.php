@@ -11,6 +11,16 @@ if (httppostisset('DB_HOST')) {
 output("`@`c`bTesting the Database Connection`b`c`2");
 output("Trying to establish a connection with the database:`n");
 ob_start();
+$dbconnect =
+	"<?php\n"
+	."//This file automatically created by installer.php on ".date("M d, Y h:i a")."\n"
+	."\$DB_HOST = '{$session['dbinfo']['DB_HOST']}';\n"
+	."\$DB_USER = '{$session['dbinfo']['DB_USER']}';\n"
+	."\$DB_PASS = '{$session['dbinfo']['DB_PASS']}';\n"
+	."\$DB_NAME = '{$session['dbinfo']['DB_NAME']}';\n"
+	."\$DB_USEDATACACHE = ". ((int)$session['dbinfo']['DB_USEDATACACHE']) .";\n"
+	."\$DB_DATACACHEPATH = '{$session['dbinfo']['DB_DATACACHEPATH']}';\n"
+	."?>\n";
 $link = db_connect(
 	$session['dbinfo']['DB_HOST'],
 	$session['dbinfo']['DB_USER'],

@@ -4,7 +4,15 @@
 // mail ready
 
 function db_query($sql, $die = true) {
- 	if (defined('DB_NODB') && !defined('LINK')) return [];
+    if (!defined('DB_NODB') && !defined('LINK')) return [];
+    $bt = debug_backtrace();
+    $isTableDescriptor = str_contains($bt[0]['file'], 'tabledescriptor');
+    $isInstaller = str_contains($bt[0]['file'], 'installer_stage');
+    if (defined("IS_INSTALLER")
+        && IS_INSTALLER !== false 
+        && !$isTableDescriptor
+        && !$isInstaller
+    ) return [];
 	global $session, $dbinfo, $mysqli_resource;
 	$dbinfo['queriesthishit']++;
 	// $fname = DBTYPE."_query";
