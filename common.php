@@ -158,9 +158,6 @@ else {
 	define("DB_CHOSEN",true);
 }
 
-if ($logd_version == getsetting("installer_version","-1")) {
-	define("IS_INSTALLER", false);
-}
 	if (defined('IS_INSTALLER') == false) {
 header("Content-Type: text/html; charset=".getsetting('charset','ISO-8859-1'));
 
