@@ -64,7 +64,7 @@ function &db_query_cached($sql,$name,$duration=900){
 	//if (getsetting("usedatacache", 0) == 1) debug("DataCache: $name");
 	//standard is 15 minutes, als hooks don't need to be cached *that* often, normally you invalidate the cache properly
 	global $dbinfo;
-	if (defined('IS_INSTALLER')) return [];
+	if (defined('IS_INSTALLER') && IS_INSTALLER === true) return [];
 	$data = datacache($name,$duration);
 	if (is_array($data)){
 		reset($data);
