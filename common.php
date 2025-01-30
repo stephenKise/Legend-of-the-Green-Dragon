@@ -265,6 +265,7 @@ else if (isset($_COOKIE['lgi'])) {
 	$session['user']['uniqueid'] = $_COOKIE['lgi'];
 }
 else {
+    $_COOKIE['lgi'] = $u;
 	$session['user']['uniqueid'] = $u; 
 }
 $url = "http://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
