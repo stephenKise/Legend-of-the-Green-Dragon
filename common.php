@@ -61,11 +61,6 @@ require_once("lib/su_access.php");
 require_once("lib/datetime.php");
 require_once("lib/translator.php");
 
-if(!function_exists("file_get_contents")) {
-     function file_get_contents($file) {
-          return join("", file($file));
-     }
-}
 
 //mt_srand(make_seed());
 $pagestarttime = getmicrotime();
