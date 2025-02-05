@@ -1,24 +1,36 @@
 <?php
-require_once("lib/arraytourl.php");
+
+require_once('lib/arraytourl.php');
 require_once('lib/modules/bootstrap.php');
 
-function module_editor_navs($like, $linkprefix)
+/**
+ * Adds navigation for modules with like-value infokeys.
+ * @param string $like The key to search for.
+ * @param string $linkPrefix Base uri to navigate to.
+ * @return void
+ */
+function module_editor_navs(string $like = '', string $linkPrefix = ''): void
 {
 	$modules = db_prefix('modules');
-	$sql = "SELECT formalname,modulename,active,category 
-					FROM " . db_prefix("modules") . " WHERE infokeys LIKE '%|$like|%' ORDER BY category,formalname";
-	$result = db_query($sql);
-	$curcat = "";
+	$result = db_query(
+        "SELECT formalname, modulename, active, category 
+        FROM $modules
+        WHERE infokeys LIKE '%|$like|%'
+        ORDER BY category, formalname"
+    );
+	$currentCategory = '';
 	while($row = db_fetch_assoc($result)) {
-		if ($curcat != $row['category']) {
-			$curcat = $row['category'];
-			addnav(sprintf("%s Modules",$curcat));
+		if ($currentCategory != $row['category']) {
+			$currentCategory = $row['category'];
+			addnav(sprintf("%s Modules", $currentCategory));
 		}
 		//I really think we should give keyboard shortcuts even if they're
 		//susceptible to change (which only happens here when the admin changes
 		//modules around).  This annoys me every single time I come in to this page.
-		addnav_notl(($row['active'] ? "" : "`)") . $row['formalname']."`0",
-		$linkprefix . $row['modulename']);
+		addnav_notl(
+            ($row['active'] ? "" : "`)") . $row['formalname']."`0",
+    		$linkPrefix . $row['modulename']
+        );
 	}
 }
 
@@ -31,10 +43,10 @@ function module_editor_navs($like, $linkprefix)
  * @see module_sem_release()
  * @return void
  */
-function module_sem_acquire()
+function module_sem_acquire(): void
 {
-	$sql = "LOCK TABLES " . db_prefix("module_settings") . " WRITE";
-	db_query($sql);
+    $moduleSettings = db_prefix('module_settings');
+	db_query("LOCK TABLES $moduleSettings WRITE");
 }
 
 /**
@@ -45,12 +57,9 @@ function module_sem_acquire()
  * needed to prevent blocking other database operations.
  *
  * @see module_sem_release()
- *  @return void
+ * @return void
  */
-function module_sem_release()
+function module_sem_release(): void
 {
-	$sql = "UNLOCK TABLES";
-	db_query($sql);
+	db_query("UNLOCK TABLES");
 }
-
-?>
