@@ -625,9 +625,6 @@ return array(
 		'creatureaiscript'=>array(
 			'name'=>'creatureaiscript', 'type'=>'text', 'null'=>'1'
 			),
-		'oldcreatureexp'=>array(
-			'name'=>'oldcreatureexp', 'type'=>'int(11)', 'null'=>'1'
-			),
 		'createdby'=>array(
 			'name'=>'createdby', 'type'=>'varchar(50)', 'null'=>'1'
 			),
