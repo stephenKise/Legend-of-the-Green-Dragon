@@ -62,46 +62,35 @@ function creature_attack(int $level): int
     return $attack;
 }
 
+// Not sure if this was intended, but defense only is ever 1 or 2.
+// Seems as if it was meant to increase by 1/2 per level.
+// @TODO: Design a better algorithm for defense.  
 function creature_defense(int $level): int
 {
     $defense = 0;
     switch ($level) {
+        case 1:
+        case 3:
+        case 5:
+        case 6:
+        case 8:
+        case 10:
+        case 11:
+        case 13:
+        case 15:
+        case 16:
         case 18:
             $defense++;
+            break;
+        case 2:
+        case 4:
+        case 7:
+        case 9:
+        case 12:
+        case 14:
         case 17:
             $defense += 2;
-        case 16:
-            $defense++;
-        case 15:
-            $defense++;
-        case 14:
-            $defense += 2;
-        case 13:
-            $defense++;
-        case 12:
-            $defense += 2;
-        case 11:
-            $defense++;
-        case 10:
-            $defense++;
-        case 9:
-            $defense += 2;
-        case 8:
-            $defense++;
-        case 7:
-            $defense += 2;
-        case 6:
-            $defense++;
-        case 5:
-            $defense++;
-        case 4:
-            $defense += 2;
-        case 3:
-            $defense++;
-        case 2:
-            $defense += 2;
-        case 1:
-            $defense++;
+            break;
     }
     return $defense;
 }
@@ -113,33 +102,33 @@ function creature_exp(int $level): int
         case 2:
         case 3:
             $exp = $level * 10 + 4;
-        break;
+            break;
         case 4:
         case 5:
             $exp = $level * 10 + 5;
-        break;
+            break;
         case 6:
         case 7:
             $exp = $level * 11;
-        break;
+            break;
         case 8:
         case 9:
             $exp = $level * 12 - 7;
-        break;
+            break;
         case 10:
         case 11:
         case 12:
             $exp = round(13.5 * $level - 21.17);
-        break;
+            break;
         case 13:
         case 14:
         case 15:
         case 16:
             $exp = round(0.5 * ($level ** 2) + 2.5 * $level + 39);
-        break;
+            break;
         default:
             $exp = 0;
-        break;
+            break;
     }
     return intval($exp);
 }
