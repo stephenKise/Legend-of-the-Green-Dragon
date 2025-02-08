@@ -1,7 +1,5 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
+
 //This is a data caching library intended to lighten the load on lotgd.net
 //use of this library is not recommended for most installations as it raises
 //the issue of some race conditions which are mitigated on high volume
@@ -11,133 +9,88 @@
 //basically the idea behind this library is to provide a non-blocking
 //storage mechanism for non-critical data.
 
-$datacache = array();
-$datacachefilepath = "";
-$checkedforolddatacaches = false;
-define("DATACACHE_FILENAME_PREFIX","datacache_");
+$datacache = [];
+$datacachefilepath = '';
+define("DATACACHE_FILENAME_PREFIX", "cache_");
 
-function datacache($name,$duration=60){
+function datacache(string $name, $duration = 60): bool|array
+{
 	if (!file_exists('dbconnect.php')) return false;
 	global $datacache;
-	if (getsetting("usedatacache",0)){
-		if (isset($datacache[$name])){
-			// we've already loaded this data cache this page hit and we
-			// can simply return it.
-			return $datacache[$name];
-		}else{
-			//we haven't loaded this data cache this page hit.
-			$fullname = makecachetempname($name);
-			if (file_exists($fullname) &&
-					filemtime($fullname) > strtotime("-$duration seconds")){
-				//the cache file *does* exist, and is not overly old.
-				$fullfile = @file_get_contents($fullname);
-				if ($fullfile > ""){
-					$datacache[$name] = @unserialize($fullfile);
-					return $datacache[$name];
-				}else{
-					return false;
-				}
-			}
-		}
+    // @TODO: Remove the usedatacache setting.
+	if (isset($datacache[$name])) {
+		return $datacache[$name];
+	} 
+	$fileName = makecachetempname($name);
+	if (
+        file_exists($fileName)
+        && filemtime($fileName) > strtotime("-$duration seconds")
+    ) {
+		$file = @file_get_contents($fileName);
+        if ($file === "") return false;
+		$datacache[$name] = @unserialize($file);
+		return $datacache[$name];
 	}
-	// The field didn't exist, or it was too old.
 	return false;
 }
 
 //do NOT send simply a false value in to array or it will bork datacache in to
 //thinking that no data is cached or we are outside of the cache period.
-function updatedatacache($name,$data){
+function updatedatacache(string $name, array $data): bool
+{
 	if (!file_exists('dbconnect.php')) return false;
 	global $datacache;
-	if (getsetting("usedatacache",0)){
-		$fullname = makecachetempname($name);
-		$datacache[$name] = $data; //serialize($array);
-		$fp = fopen($fullname,"w");
-		if ($fp){
-			if (!fwrite($fp,serialize($data))){
-			}else{
-			}
-			fclose($fp);
-		}else{
-		}
-		return true;
-	}
-	//debug($datacache);
-	return false;
+	$fileName = makecachetempname($name);
+	$datacache[$name] = $data;
+	$file = fopen($fileName, 'w');
+	if (!$file) return false;
+    $written = fwrite($file, serialize($data));
+	fclose($file);
+	return $written !== false;
 }
 
 //we want to be able to invalidate data caches when we know we've done
 //something which would change the data.
-function invalidatedatacache($name,$full=false){
+function invalidatedatacache(string $name): bool
+{
 	if (!file_exists('dbconnect.php')) return false;
 	global $datacache;
-	if (getsetting("usedatacache",0)){
-		if(!$full) $fullname = makecachetempname($name);
-		else $fullname = $name;
-		if (file_exists($fullname)) @unlink($fullname);
-		unset($datacache[$name]);
-	}
+	$fileName = makecachetempname($name);
+	if (!file_exists($fileName)) return false;
+    @unlink($fileName);
+	unset($datacache[$name]);
+    return true;
 }
 
 
 //Invalidates *all* caches, which contain $name at the beginning of their filename.
-function massinvalidate($name) {
+function massinvalidate(string $name): bool
+{
 	if (!file_exists('dbconnect.php')) return false;
-	if (getsetting("usedatacache",0)){
-		$name = DATACACHE_FILENAME_PREFIX.$name;
-		global $datacachefilepath;
-		if ($datacachefilepath=="")
-			$datacachefilepath = getsetting("datacachepath","/tmp");
-		$dir = @dir($datacachefilepath);
-		if(is_object($dir)) {
-			while(false !== ($file = $dir->read())) {
-				if (strpos($file, $name) !== false) {
-					invalidatedatacache($dir->path."/".$file,true);
-				}
-			}
-			$dir->close();
+	$fileName = DATACACHE_FILENAME_PREFIX . $name;
+    // @TODO: Change this name of this setting.
+	$path = getsetting('datacachepath', '/cache');
+	$dir = @dir($path);
+    if (!$dir) return false;
+	while(false !== ($file = $dir->read())) {
+		if (strpos($file, $name) !== false) {
+			invalidatedatacache(str_replace(DATACACHE_FILENAME_PREFIX, '', $file));
 		}
 	}
+	$dir->close();
+    return true;
 }
 
 
-function makecachetempname($name){
+function makecachetempname(string $name): bool|string
+{
 	if (!file_exists('dbconnect.php')) return false;
-	//one place to sanitize names for data caches.
-	global $datacache, $datacachefilepath,$checkedforolddatacaches;
-	if ($datacachefilepath=="")
-		$datacachefilepath = getsetting("datacachepath","/tmp");
-	//let's make sure that someone can't trick us in to
-	$name = DATACACHE_FILENAME_PREFIX.preg_replace("'[^A-Za-z0-9.-]'","",$name);
-	$fullname = $datacachefilepath."/".$name;
-	//clean out double slashes (this also blocks file wrappers woot)
-	$fullname = preg_replace("'//'","/",$fullname);
-	$fullname = preg_replace("'\\\\'","\\",$fullname);
-
-
-	if ($checkedforolddatacaches==false){
-		$checkedforolddatacaches=true;
-		// we want this to be 1 in 100 chance per page hit, not per data
-		// cache call.
-		// Once a hundred page hits, we want to clean out old caches.
-//		if (mt_rand(1,100)<2){
-//			$handle = opendir($datacachefilepath);
-//			while (($file = readdir($handle)) !== false) {
-//				if (substr($file,0,strlen(DATACACHE_FILENAME_PREFIX)) ==
-//						DATACACHE_FILENAME_PREFIX){
-//					$fn = $datacachefilepath."/".$file;
-//					$fn = preg_replace("'//'","/",$fn);
-//					$fn = preg_replace("'\\\\'","\\",$fn);
-//					if (is_file($fn) &&
-//							filemtime($fn) < strtotime("-24 hours")){
-//						unlink($fn);
-//					}else{
-//					}
-//				}
-//			}
-//		}
-	}
-	return $fullname;
+    // @TODO: Change this name of this setting.
+	$path = getsetting('datacachepath', '/cache');
+    $name = preg_replace("'[^A-Za-z0-9.-]'", "", $name);
+	$name = DATACACHE_FILENAME_PREFIX . $name;
+    $filePath = "$path/$name";
+	$filePath = preg_replace("'//'","/", $filePath);
+	$filePath = preg_replace("'\\\\'","\\", $filePath);
+	return $filePath;
 }
-
-?>
