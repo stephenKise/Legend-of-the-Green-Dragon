@@ -1,8 +1,4 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-
 // **** NOTICE ****
 // This series of scripts (collectively known as Legend of the Green Dragon
 // or LotGD) is copyright as per below.
@@ -87,6 +83,7 @@ session_start();
 $session = [];
 $session =& $_SESSION['session'];
 require_once('lib/session.php');
+php_generic_environment();
 
 // lets us provide output in dbconnect.php that only appears if there's a
 // problem connecting to the database server.  Useful for migration moves
@@ -198,7 +195,6 @@ mass_module_prepare([
 	}
 $cp = $copyright;
 $l = $license;
-php_generic_environment();
 do_forced_nav(ALLOW_ANONYMOUS,OVERRIDE_FORCED_NAV);
 
 $script = substr($SCRIPT_NAME,0,strrpos($SCRIPT_NAME,"."));
