@@ -64,13 +64,15 @@ else {
         $post['cancelpetition'] = false;
         $post['cancelreason'] = '';
         $post = modulehook('addpetition', $post);
+        $closingDate = date('Y-m-d H:i:s', strtotime('+40 days'));
         if ($post['cancelpetition'] == true) {
             output($post['cancelreason']);
         } else {
             $post['body'] = addslashes($post['body']);
             $lgi = isset($_COOKIE['lgi']) ? addslashes($_COOKIE['lgi']) : '';
             db_query(
-                "INSERT INTO $petitions (author, date, body, pageinfo, ip, id, closedate)
+                "INSERT INTO $petitions (`author`, `date`, `body`, `pageinfo`,
+                `ip`, `id`, `closedate`)
                 VALUES (
                     '{$session['user']['acctid']}',
                     '$date',
@@ -78,7 +80,7 @@ else {
                     '" . addslashes($sessionJson) . "',
                     '$ip',
                     '$lgi',
-                    '0000-00-00 00:00:000'
+                    '$closingDate'
                 )"
 
             );
