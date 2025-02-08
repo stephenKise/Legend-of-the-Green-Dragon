@@ -1,18 +1,21 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
-function safeescape($input){
-	$prevchar="";
-	$out="";
-	for ($x=0;$x<strlen($input);$x++){
-		$char = substr($input,$x,1);
-		if (($char=="'" || $char=='"') && $prevchar!="\\"){
-			$char="\\$char";
+
+/**
+ * Ensures an input string has a escaped apostrophe and quote characters
+ * @param string $input Input to sanitize
+ * @return string Formatted string with escaped marks
+ */
+function safeescape(string $input): string
+{
+	$prevChar = '';
+	$safeString = '';
+	for ($x = 0; $x < strlen($input); $x++) {
+		$char = substr($input, $x, 1);
+		if (($char == "'" || $char == '"') && $prevChar != "\\") {
+			$char = "\\$char";
 		}
-		$out.=$char;
-		$prevchar=$char;
+		$safeString .= $char;
+		$prevChar = $char;
 	}
-	return $out;
+	return $safeString;
 }
-?>
