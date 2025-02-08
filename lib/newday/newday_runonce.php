@@ -9,7 +9,7 @@
 
 	//Moved from lib/datacache.php
 	if (getsetting("usedatacache",0)){
-		$handle = opendir($datacachefilepath);
+		$handle = opendir(getsetting('datacachepath', '/cache'));
 		while (($file = readdir($handle)) !== false) {
 			if (substr($file,0,strlen(DATACACHE_FILENAME_PREFIX)) ==
 					DATACACHE_FILENAME_PREFIX){
