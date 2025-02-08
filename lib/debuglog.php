@@ -1,44 +1,41 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-function debuglog($message,$target=false,$user=false,$field=false,$value=false,$consolidate=true){
-	if ($target===false) $target=0;
-	static $needsdebuglogdelete = true;
-	global $session;
-	$args = func_get_args();
-	if ($user === false) $user = $session['user']['acctid'];
-	$corevalue = $value;
-	$id=0;
-	if ($field !== false && $value !==false && $consolidate){
-		$sql = "SELECT * FROM ".db_prefix("debuglog")." WHERE actor=$user AND field='$field' AND date>'".date("Y-m-d 00:00:00")."'";
-		$result = db_query($sql);
-		if (db_num_rows($result)>0){
-			$row = db_fetch_assoc($result);
-			$value = $row['value']+$value;
-			$message = $row['message'];
-			$id = $row['id'];
-		}
-	}
-	if ($corevalue!==false) $message.=" ($corevalue)";
-	if ($field===false) $field="";
-	if ($value===false) $value=0;
-	if ($id > 0){
-		$sql = "UPDATE ".db_prefix("debuglog")."
-			SET
-				date='".date("Y-m-d H:i:s")."',
-				actor='$user',
-				target='$target',
-				message='".addslashes($message)."',
-				field='$field',
-				value='$value'
-			WHERE
-				id=$id
-				";
-	}else{
-		$sql = "INSERT INTO " . db_prefix("debuglog") . " (id,date,actor,target,message,field,value) VALUES($id,'".date("Y-m-d H:i:s")."',$user,$target,'".addslashes($message)."','$field','$value')";
-	}
-	db_query($sql);
-}
 
-?>
+/**
+ * Inserts a message into the debug log. 
+ * 
+ * @todo Restructure this table to accept serialized data
+ * @todo Reduce the amount of arguments
+ * @param string $message Debugging message to display
+ * @param bool|int $target Account ID of targeted log
+ * @param bool|int $actor Account ID of the user who triggered a debuglog
+ * @param bool|string $field Tag for this debug message
+ * @param bool|float $value Weighted value for the message
+ * @return void
+ */
+function debuglog(
+    string $message,
+    bool|int $target = false, 
+    bool|int $actor = false,
+    bool|string $field = false,
+    bool|float $value = false
+): void
+{
+    if ($actor === false) {
+        global $session;
+        $actor = $session['user']['acctid'];
+    }
+	if ($field === false) $field = '';
+    if ($target === false) $target = 0;
+	if ($value === false) {
+        $value = 0;
+    } else {
+        $message .= " ($value)";
+    }
+    $date = date('Y-m-d H:i:s');
+    $debugLog = db_prefix('debuglog');
+    $message = addslashes($message);
+	db_query(
+        "INSERT INTO $debugLog (date, actor, target, message, field, value)
+        VALUES('$date', $actor, $target, '$message', '$field', '$value')"
+    );
+}
