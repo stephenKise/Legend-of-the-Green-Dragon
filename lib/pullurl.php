@@ -66,7 +66,7 @@ function _sock($url)
 		if ($buf == "\r\n" && $skip) { $skip = 0; continue; }
 		if (!$skip) $done[] = $buf;
 	}
-	$info = stream_get_meta_data($fp);
+	$info = stream_get_meta_data($f);
 	fclose($f);
 	if ($info['timed_out']) {
 		debug("Call to $url timed out!");
