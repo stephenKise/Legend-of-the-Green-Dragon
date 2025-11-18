@@ -343,12 +343,29 @@ function page_footer($saveuser=true){
 	$header=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$header);
 	$footer=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$footer);
 	if (getSessionSuperUser() & SU_EDIT_PETITIONS){
-		$sql = "SELECT count(petitionid) AS c,status FROM " . db_prefix("petitions") . " GROUP BY status";
-		$result = db_query_cached($sql,"petition_counts");
-		$petitions=array(0=>0,1=>0,2=>0,3=>0,4=>0,5=>0,6=>0,7=>0);
-		while ($row = db_fetch_assoc($result)) {
-			$petitions[(int)$row['status']] = $row['c'];
-		}
+        $sql = "SELECT 
+                    SUM(status = 0) AS s0,
+                    SUM(status = 1) AS s1,
+                    SUM(status = 2) AS s2,
+                    SUM(status = 3) AS s3,
+                    SUM(status = 4) AS s4,
+                    SUM(status = 5) AS s5,
+                    SUM(status = 6) AS s6,
+                    SUM(status = 7) AS s7
+                FROM " . db_prefix('petitions');
+        $result = db_query_cached($sql, 'petition_counts', 3600); // cache 1 hour
+        $row = db_fetch_assoc($result);
+
+        $petitions = [
+            0 => (int)($row['s0'] ?? 0),
+            1 => (int)($row['s1'] ?? 0),
+            2 => (int)($row['s2'] ?? 0),
+            3 => (int)($row['s3'] ?? 0),
+            4 => (int)($row['s4'] ?? 0),
+            5 => (int)($row['s5'] ?? 0),
+            6 => (int)($row['s6'] ?? 0),
+            7 => (int)($row['s7'] ?? 0),
+        ];
 		$pet = translate_inline("`0`bPetitions:`b");
 		$ued = translate_inline("`0`bUser Editor`b");
 		db_free_result($result);
