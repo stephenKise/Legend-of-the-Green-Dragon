@@ -106,7 +106,7 @@ if (getsetting("allowcreation",1)==0){
 }else{
 	if ($op=="create"){
 		$emailverification="";
-		$shortname = sanitize_name(getsetting("spaceinname", 0), httppost('name'));
+		$shortname = sanitize_name(getsetting("spaceinname", false), httppost('name'));
 
 		if (soap($shortname)!=$shortname){
 			output("`\$Error`^: Bad language was found in your name, please consider revising it.`n");
