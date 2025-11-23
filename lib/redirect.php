@@ -1,34 +1,31 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-function redirect($location,$reason=false){
-	global $session,$REQUEST_URI;
-	// This function is deliberately not localized.  It is meant as error
-	// handling.
-	if (!getSession('debug'))
-		$session['message'] = '';
-	if (strpos($location,"badnav.php")===false) {
-		//deliberately html in translations so admins can personalize this, also in once scheme
-		$session['allowednavs']=array();
-		addnav("",$location);
-		$session['output']=
-			"<a href=\"".HTMLEntities($location, ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\">".translate_inline("Click here.","badnav")."</a>";
-		$session['output'].=translate_inline("<br><br>If you cannot leave this page, notify the staff via <a href='petition.php'>petition</a> and tell them where this happened and what you did. Thanks.","badnav");
+
+function redirect(string $location, string $reason = ''): void
+{
+	global $session, $REQUEST_URI;
+	if (!getSession('debug')) $session['message'] = '';
+	if (strpos($location, 'badnav.php') === false) {
+		$charset = getsetting('charset', 'UTF-8');
+		$target = htmlentities($location, ENT_COMPAT, $charset);
+		$label = translate_inline('Click here.', 'badnav');
+		$session['allowednavs'] = [];
+		addnav('', $location);
+		$session['output'] = "<a href=\"$target\">$label</a><br /><br />";
+		$session['output'] .= translate_inline(
+            "If you cannot leave this page, notify the staff via
+            <a href='petition.php'>petition</a>.
+            Tell them where this happened and what you did. Thanks.",
+            "badnav"
+        );
 	}
 	restore_buff_fields();
 	if (isset($session['debug'])) {
-		$session['debug'] .= "Redirected to $location from $REQUEST_URI.  $reason<br>";
+		$session['debug'] .= "Redirected to $location from $REQUEST_URI. $reason<br>";
 	}
 	else {
-		$session['debug'] = "Redirected to $location from $REQUEST_URI.  $reason<br>";
+		$session['debug'] = "Redirected to $location from $REQUEST_URI. $reason<br>";
 	}
 	saveuser();
 	@header("Location: $location");
-	//echo "<html><head><meta http-equiv='refresh' content='0;url=$location'></head></html>";
-	//echo "<a href='$location'>$location</a><br><br>";
-	//echo $location;
-	//echo $session['debug'];
 	exit();
 }
-?>
