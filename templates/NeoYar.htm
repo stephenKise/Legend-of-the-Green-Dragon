@@ -1,0 +1,84 @@
+<!--!popuphead--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<link href="templates/NeoYar.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+<body id="popup">
+	<div id="header">
+		<h1 id="heading" style="visibility:visible">
+			<span class="cap">L</span>o<span id="dragon"><span class="cap">G</span><span class="cap">D</span></span>
+		</h1>
+		<h1 id="pagetitle">{title}</h1>
+	</div>
+	<div id="main">
+<!--!popupfoot-->
+	</div>
+	<div id="page-foot">
+		<div id="attr">{copyright}Template by Caretaker, based on design by Chris Yarbrough</div>
+	</div>
+</body>
+</html>
+<!--!header--><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<link href="templates/NeoYar.css" rel="stylesheet" type="text/css">
+{headscript}{script}
+</head>
+<body>
+	<div id="header">
+		<h1 id="heading">
+			<span class="cap">L</span>egend of the <span id="dragon"><span class="cap">G</span>reen <span class="cap">D</span>ragon</span>
+		</h1>
+		<h1 id="pagetitle">{title}</h1>
+		<div id="headnav">{motd} &#8226; {mail} &#8226; {petition} {petitiondisplay}</div>
+	</div>
+	<div id="main">
+		<div id="statbox">
+			<div id="navad">{navad}</div>
+			<div id="stats">{stats}</div>
+			{paypal}
+		</div>
+		<div id="content">
+			<div>{headerad}{bodyad}</div>
+<!--!footer-->
+		</div>
+		<div id="leftnav">
+			<div class="nav"><ul>{nav}</ul><div id="vertical-ad">{verticalad}</div></div>
+		</div>
+	</div>
+	<div id="page-foot">
+		<div id="attr">{copyright}Template by Caretaker, based on design by Chris Yarbrough ({pagegen})</div>
+		<div id="src-ver"><p>{source}</p><p>{version}</p></div>
+	</div>
+</body>
+</html>
+<!--!statstart-->
+<table class="charinfo">
+<!--!stathead-->
+<tr><th class="charhead" colspan="2">{title}</th></tr>
+<!--!statrow-->
+<tr><td class="charinfo">{title}</td><td class="charinfo">{value}</td></tr>
+<!--!statbuff-->
+<tr><th class="charhead" colspan="2">{title}</th></tr><tr><td class="charinfo" colspan="2">{value}</td></tr>
+<!--!statend-->
+</table>
+<!--!navhead-->
+<li><h3 class="navhead">&#8212;{title}&#8212;</h3></li><!--!navitem-->
+<li><a href="{link}"{accesskey} class="nav" {popup}>{text}</a></li><!--!navhelp-->
+<li class="navhelp">{text}</li><!--!petitioncount-->&#8226; {petitioncount}
+<!--!adwrapper-->
+{content}
+<!--!login-->
+<div><img src="images/logindragon.gif" alt="Login Dragon"></div>
+<div>
+	<label for="name">{username}:<br><input name="name" id="name" accesskey="u" size="10"></label><label for="password">{password}:<br><input name="password" id="password" accesskey="p" type="password" size="10"></label>
+</div>
+<div><input type="submit" value="{button}" class="button"></div>
+<!--!loginfull-->
+<div><img src="images/logindragon.gif" alt="Login Dragon"></div>
+<p class="colLtRed">Server Full!</p>

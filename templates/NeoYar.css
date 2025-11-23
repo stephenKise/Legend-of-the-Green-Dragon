@@ -1,0 +1,119 @@
+/* CSS Document */
+@font-face{font-family:oe;src:url("NeoYar/old-english-five.regular.ttf")}
+@font-face{font-family:oefb;src:url("NeoYar/KJV1611.otf")}
+html{background:#000;color:#CCC}
+body{background:#352D20}
+#header{width:100%;clear:both;background:#000;padding:0;margin:0;margin-bottom:1.2em;border-top:#000 solid 2px;line-height:1.6}
+#header h1, #header h2{font-size-adjust:.7}
+#heading{font-size:2em;font-weight:bold;margin-block-start:.67em;margin-block-end:.67em;text-align:right;background:#339;color:#fb0;border-top:#fc0 solid 2px;border-bottom:#000 solid 1px;font-weight:normal;padding:0 3pt 17pt 3pt;margin-top:20pt;margin-bottom:-50pt;margin-left:auto;line-height:.25;text-shadow:#900 0 0 10px}
+#dragon{color:#6c3;text-shadow:#900 0 0 10px}
+.cap{font-size:180%}
+#pagetitle, #heading{font-family:"Old English Text MT","Old English Text",OldEnglish,"Old English","EnglishTowne","Collins OE Demo","Euclid Fraktur",oe,oefb,serif}
+#pagetitle{margin-block-start:.83em;margin-block-end:.83em;font-size:20px;color:#FFF;line-height:2;padding-bottom:0;margin-bottom:-7pt}
+#headnav{padding-top:2pt}
+#popup #pagetitle{padding-bottom:1.1ex}
+#pagetitle, #headnav{margin-left:3pt}
+td,th,caption,.button,label, #headnav, #leftnav, #statbox, #page-foot{font-family:Verdana,Arial,Helvetica,sans-serif;font-size:smaller}
+label{color:#FF0;display:inline-block;padding:.5ex}
+#main{margin:0;margin-top:-17pt;padding:1ex;padding-top:17pt;border-top:#339 solid 6px}
+#content{float:right;width:70%;margin-bottom:1em;padding-bottom:1em;overflow:auto}
+.nav{background:#003;border:1px solid #000;width:94%;margin:auto;display:block;text-align:center}
+#statbox{text-align:center;width:13%;float:right;padding:3pt;overflow:auto}
+#stats, .nav ul{border:#6b563f solid;border:11px 0;border-image:url("NeoYar/scroll.gif") 11 0;border-image-width:auto 0 auto 0;border-image-outset:3;clear:both}
+#stats{background:#030;margin:7px 8px 3ex 1ex;padding:8px 1px;overflow:auto}
+table{margin:auto;overflow:auto}
+table.charinfo{border:none;border-spacing:0;border-collapse:collapse;width:100%}
+.charinfo table{margin:0}
+td.charinfo{border-top-width:1px;border-top-style:solid;border-top-color:#009900;border-right-style:none;border-bottom-style:none;border-left-style:none}
+.charhead{background:#009900;border:none;color:#FF0}
+caption{white-space:nowrap;font-size:10px}
+#leftnav{float:left;clear:left;width:13%;background:#433828;text-align:center;margin-top:-17pt;margin-right:1em;padding-top:25pt;padding-bottom:2ex}
+#vertical-ad{margin-top:2em;float:right;position:relative;left:-50%}
+div.nav{border:none;text-align:center;margin:auto;margin-bottom:1ex;padding:0}
+.nav ul{padding:0;margin:0;list-style-type:none}
+.navhead{text-decoration:none;width:98%;height:auto;padding:1px;line-height:18px;background:#009;font-weight:bold;color:#FF0;cursor:default;text-align:center;margin:auto;font-size:smaller}
+.navhi{color:#0F0;text-decoration:underline}
+a{color:#09F;text-decoration:none}
+a.nav,.navhelp{height:auto;text-align:left;text-decoration:none;background:#003;padding:1px;border:1px solid #003;margin:auto;width:98%}
+a.nav:hover{background:#003366;border-top:1px solid #0364A3;border-left:1px solid #0364A3;border-bottom:1px solid #000;border-right:1px solid #000}
+input,.input{background:#433828;border:1px solid #806B4D;color:#CCC;margin:1px}
+.button{font-size:12px;color:#F8DB83;background:#6b563f;border:1px solid;border-top:#947356;border-left:#947356;border-right:#403225;border-bottom:#403225}
+select{background:#433828;border:1px solid #806B4D;color:#CCC}
+a.motd{text-decoration:none;color:#F90}
+a.motd:hover,a.hotmotd{font-weight:bold}
+a.t{width:7px;height:7px;border:1px dotted #00F;background:#99F;color:#FFF;font-size:7px;text-decoration:none;padding-left:1px;padding-right:1px}
+a.thot{width:7px;height:7px;border:1px dotted #F00;background:#F99;color:#FFF;font-size:7px;text-decoration:none;padding-left:1px;padding-right:1px}
+#page-foot, #attr, #src-ver{background:#000}
+#page-foot{border-top:#fc0 solid 2px;padding-top:1ex;clear:both;width:100%}
+#page-foot img{padding-right:.8ex}
+#attr{float:left;width:70%}
+#src-ver{float:right;text-align:right}
+#src-ver p{padding:0;margin:0}
+div.debug{background:#FFF;color:#000;border:1px dotted #000;width:auto;height:auto;font-size:10px}
+.colDkBlue{color:#0000B0}
+.colDkGreen{color:#00B000}
+.colDkCyan{color:#00B0B0}
+.colDkRed{color:#B00000}
+.colDkMagenta{color:#B000CC}
+.colDkYellow{color:#B0B000}
+.colDkWhite{color:#B0B0B0}
+.colLtBlue{color:#00F}
+.colLtGreen{color:#0F0}
+.colLtCyan{color:#00FFFF}
+.colLtRed{color:#F00}
+.colLtMagenta{color:#FF00FF}
+.colLtYellow{color:#FF0}
+.colLtWhite{color:#FFF}
+.colLtBlack{color:#999999}
+.colDkOrange{color:#994400}
+.colLtOrange{color:#F90}
+.colBlue{color:#0070FF}
+.colLime{color:#DDFFBB}
+.colBlack{color:#000}
+.colRose{color:#EEBBEE}
+.colBlueViolet{color:#9A5BEE}
+.coliceviolet{color:#AABBEE}
+.colLtBrown{color:#F8DB83}
+.colDkBrown{color:#6b563f}
+.colXLtGreen{color:#aaff99}
+.colAttention{background:#0F0;color:#F00}
+.colWhiteBlack{background:#FFF;color:#000}
+.colBack{background:#00FFFF;color:#000}
+.colLtLinkBlue{color:#09F}
+.colDkLinkBlue{color:#006BB3}
+.colDkRust{color:#8D6060}
+.colLtRust{color:#B07878}
+.colMdBlue{color:#0000F0}
+.colMdGrey{color:#DDDDDD}
+.colbeige{color:#F5F5DC}
+.colkhaki{color:#F0E68C}
+.coldarkkhaki{color:#BDB76B}
+.colaquamarine{color:#7FFFD4}
+.coldarkseagreen{color:#8FBC8F}
+.collightsalmon{color:#FFA07A}
+.colsalmon{color:#FA8072}
+.colwheat{color:#F5DEB3}
+.coltan{color:#D2B48C}
+.colburlywood{color:#DEB887}
+.trhead{background:#990000;color:#FFF}
+.trlight{background:#330000}
+.trhilight{background:#550000}
+.trdark{background:#000}
+form{overflow:auto}
+#navad{text-align:center;margin:0 auto;padding:0;float:right;position:relative;left:-50%}
+#navad iframe,#vertical-ad iframe{position:relative;left:50%;padding-bottom:1em}
+#content iframe{padding:0 1ex 1ex 0}
+@media (max-width:84em){#statbox{float:left;margin-left:-1ex}
+#stats{margin:7px 7px 3ex 8px}
+#content{width:84%;float:right}
+}
+@media (max-width:760px){#statbox{width:96%;float:none;margin:auto}
+#stats{margin:7px 6px 3ex 6px}
+#leftnav{width:100%;float:none;margin-top:auto;margin-bottom:-1ex}
+#attr{display:block;font-size:smaller}
+#content{float:none}
+#content, #attr{width:100%}
+}
+@media (max-width:549px){textarea,input{width:99%}
+input[type=radio],input[type=checkbox],.button{width:auto}
+}
