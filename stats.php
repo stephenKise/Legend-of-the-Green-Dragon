@@ -51,7 +51,7 @@ if ($op=="stats" || $op==""){
 		output_notl("`@{$row['referer']}`0");
 		rawoutput("</td><td>");
 		output_notl("`^{$row['c']}:`0  ");
-		$sql = "SELECT name,refererawarded FROM " . db_prefix("accounts") . " WHERE referer = ${row['acctid']} ORDER BY acctid ASC";
+		$sql = "SELECT name,refererawarded FROM " . db_prefix("accounts") . " WHERE referer = {$row['acctid']} ORDER BY acctid ASC";
 		$res2 = db_query($sql);
 		$number2=db_num_rows($res2);
 		for ($j = 0; $j < $number2; $j++) {
