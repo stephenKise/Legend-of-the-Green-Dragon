@@ -87,7 +87,7 @@ function makecachetempname(string $name): bool|string
 	if (!file_exists('dbconnect.php')) return false;
     // @TODO: Change this name of this setting.
 	$path = getsetting('datacachepath', '/cache');
-    $name = preg_replace("'[^A-Za-z0-9.-]'", "", $name);
+    $name = preg_replace("'[^A-Za-z0-9_:.-]'", "", $name);
 	$name = DATACACHE_FILENAME_PREFIX . $name;
     $filePath = "$path/$name";
 	$filePath = preg_replace("'//'","/", $filePath);
