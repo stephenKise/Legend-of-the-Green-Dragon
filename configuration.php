@@ -301,8 +301,8 @@ if ($op == "") {
 
 		"Clans,title",
 		"allowclans"=>"Enable Clan System?,bool",
-		"goldtostartclan"=>"Gold to start a clan,int",
-		"gemstostartclan"=>"Gems to start a clan,int",
+		"clan_gold_req"=>"Gold to start a clan,int",
+		"clan_gems_req"=>"Gems to start a clan,int",
 		"officermoderate"=>"Can clan officers who are also moderators moderate their own clan even if they cannot moderate all clans?,bool",
 
 		"New Days,title",
