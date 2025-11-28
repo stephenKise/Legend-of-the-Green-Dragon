@@ -168,3 +168,6 @@ Changes from 1.1.0 to 1.1.1
 [UPDATE] - prizemount payments are now cumulative
 [UPDATE/FIX] - pvpblock now checks bands are valid
 [UPDATE] - source.php now displays files by folders, decreasing clutter
+
+From 1.1.2 to Current
+[UPDATE] modulehook 'pvpwarning' default argument name changed from 'dokill' to 'isImmune'
