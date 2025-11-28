@@ -39,8 +39,13 @@ function char_cleanup(int $id, int $type): bool
         );
         if (db_num_rows($sql)) {
             $row = db_fetch_assoc($sql);
+            $acctId = (int) $row['acctid'];
             if ($row['clanrank'] != $leader) {
-                db_query("UPDATE $accounts SET clanrank = '$leader' WHERE acctid = {$row['acctid']}");
+                db_query(
+                    "UPDATE $accounts
+                    SET clanrank = '$leader'
+                    WHERE acctid = $acctId"
+                );
             }
         }
         else {
