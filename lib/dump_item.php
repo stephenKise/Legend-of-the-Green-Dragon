@@ -1,15 +1,16 @@
 <?php
-// addnews ready
-// translator ready
-// mail ready
-function dump_item($item){
-	$out = "";
+
+function dump_item(array|string $item): string
+{
+	$out = '';
 	if (is_array($item)) $temp = $item;
 	else $temp = @unserialize($item);
 	if (is_array($temp)) {
-		$out .= "array(" . count($temp) . ") {<div style='padding-left: 20pt;'>";
+        $length = count($temp);
+		$out .= "array($length) {<div style='padding-left: 20pt;'>";
 		foreach ($temp as $key => $val) {
-			$out .= "'$key' = '" . dump_item($val) . "'`n";
+            $dump = dump_item($val);
+			$out .= "'$key' = '$dump'`n";
 		}
 		$out .= "</div>}";
 	} else {
@@ -18,26 +19,26 @@ function dump_item($item){
 	return $out;
 }
 
-function dump_item_ascode($item,$indent="\t"){
-	$out = "";
+function dump_item_ascode(array|string $item): string
+{
+	$out = '';
 	if (is_array($item)) $temp = $item;
 	else $temp = @unserialize($item);
 	if (is_array($temp)) {
-		$out .= "array(\n$indent";
-		$row = array();
+		$out .= "array(\n\t";
+		$row = [];
 		foreach ($temp as $key => $val) {
-			array_push($row,"'$key'=&gt;" . dump_item_ascode($val,$indent."\t"));
+			array_push($row, "'$key'=&gt;" . dump_item_ascode($val));
 		}
-		if (strlen(join(", ",$row)) > 80){
-		 	$out .= join(",\n$indent",$row);
+		if (strlen(join(", ", $row)) > 80){
+		 	$out .= join(",\n\t", $row);
 		}else{
-		 	$out .= join(", ",$row);
+		 	$out .= join(", ", $row);
 		}
-		$out .= "\n$indent)";
+		$out .= "\n\t)";
 	} else {
-		$out .= "'".htmlentities(addslashes($item), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."'";
+        $item = htmlent(addslashes($item));
+		$out .= "'$item'";
 	}
 	return $out;
 }
-
-?>
