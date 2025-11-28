@@ -30,24 +30,14 @@ function logd_error_handler($errno, $errstr, $errfile, $errline){
 		output("PHP Warning: \"%s\"`nin `b%s`b at `b%s`b.`n",$errstr,$errfile,$errline,true);
 		tlschema();
 		$backtrace = show_backtrace();
-		rawoutput($backtrace);
-		if (getsetting("notify_on_warn",0) > ""){
-			//$args = func_get_args();
-			//call_user_func_array("logd_error_notify",$args);
-			logd_error_notify($errno, $errstr, $errfile, $errline, $backtrace);
-		}
+        rawoutput($backtrace);
 		break;
 	case E_ERROR:
 	case E_USER_ERROR:
 		require_once("lib/show_backtrace.php");
 		echo sprintf("PHP ERROR: \"%s\"<br>in <b>%s</b> at <b>%s</b>.<br>",$errstr,$errfile,$errline);
 		$backtrace = show_backtrace();
-		echo $backtrace;
-		if (getsetting("notify_on_error",0) > ""){
-			//$args = func_get_args();
-			//call_user_func_array("logd_error_notify",$args);
-			logd_error_notify($errno, $errstr, $errfile, $errline, $backtrace);
-		}
+		echo "<pre>$backtrace</pre>";
 		die();
 		break;
 	}
