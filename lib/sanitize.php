@@ -1,51 +1,66 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
 
-function sanitize($in){
-    $out = preg_replace("/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/", "", $in);
-    return $out;
+function sanitize(string $in): array|string|null
+{
+    return preg_replace(
+        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/",
+        "",
+        $in
+    );
 }
 
-function newline_sanitize($in){
-    $out = preg_replace("/`n/", "", $in);
-    return $out;
+function newline_sanitize(string $in): array|string|null
+{
+    return preg_replace("/`n/", "", $in);
 }
 
-function color_sanitize($in){
-    $out = preg_replace("/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/", "", $in);
-    return $out;
+function color_sanitize(string $in): array|string|null
+{
+    return preg_replace(
+        "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/",
+        "",
+        $in
+    );
 }
 
-function comment_sanitize($in) {
-    // to keep the regexp from boinging this, we need to make sure
-    // that we're not replacing in with the ` mark.
-    $out=preg_replace("/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/", chr(1).chr(1), $in);
-    $out = str_replace(chr(1),"`",$out);
-    return $out;
-}
-
-function logdnet_sanitize($in)
+function comment_sanitize(string $in): array|string
 {
     // to keep the regexp from boinging this, we need to make sure
     // that we're not replacing in with the ` mark.
-    $out=preg_replace("/[`](?=[^1234567890!@#\$%^&)Qqbi])/", chr(1).chr(1), $in);
+    $out = preg_replace(
+        "/[`](?=[^1234567890!@#\$%^&)~QqRVvGgTteEjJlLxXyYkKpPmM?*Aa])/",
+        chr(1).chr(1),
+        $in
+    );
+    $out = str_replace(chr(1), "`", $out);
+    return $out;
+}
+
+function logdnet_sanitize(string $in): array|string
+{
+    // to keep the regexp from boinging this, we need to make sure
+    // that we're not replacing in with the ` mark.
+    $out = preg_replace(
+        "/[`](?=[^1234567890!@#\$%^&)Qqbi])/",
+        chr(1).chr(1),
+        $in
+    );
     $out = str_replace(chr(1),"`",$out);
     return $out;
 }
 
-function full_sanitize($in) {
-    $out = preg_replace("/[`]./", "", $in);
-    return $out;
+function full_sanitize(string $in): array|string|null
+{
+    return preg_replace("/[`]./", "", $in);
 }
 
-function cmd_sanitize($in) {
-    $out = preg_replace("'[&?]c=[[:digit:]-]+'", "", $in);
-    return $out;
+function cmd_sanitize(string $in): array|string|null
+{
+    return preg_replace("'[&?]c=[[:digit:]-]+'", "", $in);
 }
 
-function comscroll_sanitize($in) {
+function comscroll_sanitize(string $in): string
+{
     $out = preg_replace("'&c(omscroll)?=([[:digit:]]|-)*'", "", $in);
     $out = preg_replace("'\\?c(omscroll)?=([[:digit:]]|-)*'", "?", $out);
     $out = preg_replace("'&(refresh|comment)=1'", "", $out);
@@ -53,19 +68,21 @@ function comscroll_sanitize($in) {
     return $out;
 }
 
-function prevent_colors($in) {
-    $out = str_replace("`", "&#0096;", $in);
-    return $out;
+function prevent_colors(string $in): array|string
+{
+    return str_replace("`", "&#0096;", $in);
 }
 
-function translator_uri($in){
+function translator_uri(string $in): array|string|null
+{
     $uri = comscroll_sanitize($in);
     $uri = cmd_sanitize($uri);
     if (substr($uri,-1)=="?") $uri = substr($uri,0,-1);
     return $uri;
 }
 
-function translator_page($in){
+function translator_page($in): string
+{
     $page = $in;
     if (strpos($page,"?")!==false) $page=substr($page,0,strpos($page,"?"));
     //if ($page=="runmodule.php" && 0){
@@ -77,7 +94,8 @@ function translator_page($in){
     return $page;
 }
 
-function modulename_sanitize($in){
+function modulename_sanitize(string $in): array|string|null
+{
     return preg_replace("'[^0-9A-Za-z_]'","",$in);
 }
 
@@ -137,6 +155,9 @@ function sanitize_html($str)
  */
 function htmlent(string $string): string
 {
-    $string = htmlentities($string, ENT_COMPAT, getsetting('charset', 'ISO-8859-1'));
-    return $string;
+    return htmlentities(
+        $string,
+        ENT_COMPAT,
+        getsetting('charset', 'UTF-8')
+    );
 }
