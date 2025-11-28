@@ -782,27 +782,27 @@ function charstats(){
 				$ret = $list['list'];
 			}
 			else {
-				$loginTimeout = getsetting('LOGINTIMEOUT', 900);
-				$timeoutString = date(
-					'Y-m-d H:i:s', strtotime("-$loginTimeout seconds")
-				);
+                $loginTimeout = getsetting('LOGINTIMEOUT', 900);
+                $timeoutString = date(
+                	'Y-m-d H:i:s', strtotime("-$loginTimeout seconds")
+                );
 				$accounts = db_prefix('accounts');
 				$sql =
-					"SELECT loggedin, login FROM $accounts WHERE locked = 0 AND loggedin = 1
+					"SELECT name FROM $accounts WHERE locked = 0 AND loggedin = 1
 					AND laston > '$timeoutString' ORDER BY level DESC";
-				if (file_exists('dbconnect.php') && !defined('IS_INSTALLER')) {
-				$result = db_query($sql);
+				if (file_exists('dbconnect.php') && IS_INSTALLER == false) {
+				    $result = db_query_cached($sql, 'online_characters', 600);
 					$ret .= appoencode(
 						sprintf(
 							translate_inline("`bOnline Characters (%s players):`b`n"),
 							db_num_rows($result)
 						)
 					);
-				while ($row = db_fetch_assoc($result)) {
-						$ret .= appoencode("`^{$row['name']}`n");
-					$onlinecount++;
-				}
-				db_free_result($result);
+					foreach ($result as $row => $data) {
+						$ret .= appoencode("`^{$data['name']}`n");
+						$onlinecount++;
+					}
+				    db_free_result($result);
 				}
 				if ($onlinecount == 0)
 					$ret .= appoencode(translate_inline("`iNone`i"));
