@@ -14,7 +14,7 @@ $op = httpget('op');
 $module=httpget('module');
 if ($op=="save"){
 	include_once("lib/gamelog.php");
-	//loadsettings();
+	loadsettings();
 	if ((int)httppost('blockdupemail') == 1 &&
 			(int)httppost('requirevalidemail') != 1) {
 		httppostset('requirevalidemail', "1");
@@ -207,7 +207,7 @@ if ($op == "") {
                 reltime($x), date("h:i a", $x),date("H:i",$i));
 		$enum.=",$i,$str";
 	}
-	rawoutput(tlbutton_clear());
+// 	rawoutput(tlbutton_clear());
 	$setup = array(
 		"Game Setup,title",
 		"loginbanner"=>"Login Banner (under login prompt: 255 chars)",
@@ -306,7 +306,7 @@ if ($op == "") {
 		"officermoderate"=>"Can clan officers who are also moderators moderate their own clan even if they cannot moderate all clans?,bool",
 
 		"New Days,title",
-		"daysperday"=>"Game days per calendar day,range,1,6,1",
+		"daysperday"=>"Game days per calendar day,int,1",
 		"specialtybonus"=>"Extra daily uses in specialty area,range,0,5,1",
 		"newdaycron"=>"Let the newday-runonce run via a cronjob,bool",
 		"The directory is necessary! Do not forget to set the correct one in cron.php in your main game folder!!! ONLY experienced admins should use cron jobbing here,note",
@@ -323,6 +323,7 @@ if ($op == "") {
 		"disablebonuses"=>"Should monsters which get buffed with extra HP/Att/Def get a gold+exp bonus?,bool",
 		"forestexploss"=>"What percentage of experience should be lost?,range,10,100,1",
 
+		//@TODO: Modularize this
 		"Multiple Enemies,title",
 		"multifightdk"=>"Multiple monsters will attack players above which amount of dragonkills?,range,8,50,1",
 		"multichance"=>"The chance for an attack from multiple enemies is,range,0,100,1",
@@ -343,6 +344,7 @@ if ($op == "") {
 		"Stables,title",
 		"allowfeed"=>"Does Merick have feed onhand for creatures,bool",
 
+		// @TODO: Modularize this
 		"Companions/Mercenaries,title",
 		"enablecompanions"=>"Enable the usage of companions,bool",
 		"companionsallowed"=>"How many companions are allowed per player,int",
