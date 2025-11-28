@@ -60,3 +60,4 @@ Vagrantfile
 vendor/*
 composer.json
 .php-cs-fixer.cache
+settings.json
