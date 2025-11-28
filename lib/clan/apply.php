@@ -30,7 +30,7 @@ if ($to > 0) {
 
     invalidatedatacache("clan_members:$to");
     $clansPrefix = db_prefix('clans');
-    $selectedClanQuery = db_query_cached(
+    $selectedClanQuery = db_query(
         "SELECT clanname AS name,
          clanshort AS tag,
          clandesc AS description,
@@ -40,13 +40,11 @@ if ($to > 0) {
          motdauthor,
          customsay
          FROM $clansPrefix
-         WHERE clanid = '$to'",
-        "clan_data:$clanId",
-        3600
+         WHERE clanid = '$to'"
     );
 	$row = db_fetch_assoc($selectedClanQuery);
 
-	if (array_key_exists('description', $row) && nltoappon($row['description']) != '') {
+	if (nltoappon($row['description']) != '') {
 		$subject = translate('Clan Application Reminder');
 		$mail = translate(
             "`&Did you remember to read the description of the Clan of your

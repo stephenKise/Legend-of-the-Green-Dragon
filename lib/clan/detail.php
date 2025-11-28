@@ -106,7 +106,7 @@ $clanRanks = translate_inline($moduleArgs['ranks']);
 $totalDks = 0;
 $memberRows = [];
 $accountsPrefix = db_prefix('accounts');
-$clanMembersQuery = db_query_cached(
+$clanMembers = db_query_cached(
     "SELECT acctid, name, login, clanrank, clanjoindate, dragonkills
      FROM $accountsPrefix
      WHERE clanid = $targetId
@@ -114,7 +114,6 @@ $clanMembersQuery = db_query_cached(
     "clan_members:$targetId",
     60 * 60 * 24
 );
-$clanMembers = db_fetch_assoc($clanMembersQuery);
 
 foreach ($clanMembers as $key => $clanMember) {
     $exitLoop = false;
