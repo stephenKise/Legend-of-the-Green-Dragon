@@ -851,7 +851,6 @@ $sql_upgrade_statements = array(
 "1.1.0 Dragonprime Edition"=>array(
 "UPDATE " . db_prefix("accounts") . " SET clanrank = clanrank * 10",
 "INSERT INTO " . db_prefix("settings") . " VALUES ('newdaycron', '0')",
-"INSERT INTO " . db_prefix("settings") . " VALUES ('charset', 'ISO-8859-1')",
 "INSERT INTO " . db_prefix("settings") . " VALUES ('allowspecialswitch', '1')",
 ),
 "1.1.1 Dragonprime Edition"=>array(
@@ -873,8 +872,6 @@ $sql_upgrade_statements = array(
 "INSERT INTO " . db_prefix("companions") . " (`companionid`, `name`, `category`, `description`, `attack`, `attackperlevel`, `defense`, `defenseperlevel`, `maxhitpoints`, `maxhitpointsperlevel`, `abilities`, `cannotdie`, `cannotbehealed`, `companionlocation`, `companionactive`, `companioncostdks`, `companioncostgems`, `companioncostgold`, `jointext`, `dyingtext`, `allowinshades`, `allowinpvp`, `allowintrain`) VALUES (2, 'Florenz', 'Healer', 'With a slight build, Florenz is better suited as a healer than a fighter.', 1, 1, 5, 5, 15, 10, 'a:4:{s:4:\"heal\";s:1:\"2\";s:5:\"magic\";s:1:\"0\";s:5:\"fight\";b:0;s:6:\"defend\";b:0;}', 0, 0, '".getsetting("villagename", LOCATION_FIELDS)."', 1, 0, 3, 1000, 'Thank ye for thy faith in my skills.  I shall endeavour to keep ye away from Ramius'' claws.', 'O Discordia!', 1, 0, 0)",
 ),
 "1.1.2 Dragonprime Edition"=>array(
-  "INSERT INTO $settings VALUES ('installer_version', '1.1.2 Dragonprime Edition');",
   "UPDATE $settings SET value = 'UTF-8' WHERE setting = 'charset';",
 ),
 );
-?>
