@@ -1,45 +1,74 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-require_once("common.php");
-require_once("lib/systemmail.php");
-require_once("lib/sanitize.php");
-require_once("lib/http.php");
-require_once("lib/villagenav.php");
 
-tlschema("bank");
+// This is a very old part of the game that could be modularized.
+// The game added settings later in development to keep gold and gems on-hand
+// after slaying the Green Dragon. Gems - by default - are not storeable in 
+// the bank. But this feature is a most commonly installed module. 
+// @TODO: Modularize this section of the game.
+require_once('common.php');
+require_once('lib/systemmail.php');
+require_once('lib/sanitize.php');
+require_once('lib/http.php');
+require_once('lib/villagenav.php');
 
-page_header("Ye Olde Bank");
+tlschema('bank');
+
+page_header('Ye Olde Bank');
 output("`^`c`bYe Olde Bank`b`c");
 $op = httpget('op');
-if ($op==""){
-  checkday();
-  output("`6As you approach the pair of impressive carved rock crystal doors, they part to allow you entrance into the bank.");
-  output("You find yourself standing in a room of exquisitely vaulted ceilings of carved stone.");
-  output("Light filters through tall windows in shafts of soft radiance.");
-  output("About you, clerks are bustling back and forth.");
-  output("The sounds of gold being counted can be heard, though the treasure is nowhere to be seen.`n`n");
-  output("You walk up to a counter of jet black marble.`n`n");
-  output("`@Elessa`6, a petite woman in an immaculately tailored business dress, greets you from behind reading spectacles with polished silver frames.`n`n");
-  output("`6\"`5Greetings, my good lady,`6\" you greet her, \"`5Might I inquire as to my balance this fine day?`6\"`n`n");
-  output("`@Elessa`6 blinks for a moment and then smiles, \"`@Hmm, `&%s`@, let's see.....`6\" she mutters as she scans down a page in her ledger.",$session['user']['name']);
-	if ($session['user']['goldinbank']>=0){
-		output("`6\"`@Aah, yes, here we are.  You have `^%s gold`@ in our prestigious bank.  Is there anything else I can do for you?`6\"",$session['user']['goldinbank']);
-	}else{
-		output("`6\"`@Aah, yes, here we are.  You have a `&debt`@ of `^%s gold`@ in our prestigious bank.  Is there anything else I can do for you?`6\"",abs($session['user']['goldinbank']));
-	}
-}elseif($op=="transfer"){
+if ($op == '') {
+    checkday();
+    output(
+        "`6As you approach the pair of impressive carved rock crystal doors,
+        they part to allow you entrance into the bank. You find yourself standing
+        in a room of exquisitely vaulted ceilings of carved stone. Light filters
+        through tall windows in shafts of soft radiance. About you, clerks are
+        bustling back and forth. The sounds of gold being counted can be heard,
+        though the treasure is nowhere to be seen.`n`n
+
+        You walk up to a counter of jet black marble.`n`n
+
+        `@Elessa`6, a petite woman in an immaculately tailored business dress,
+        greets you from behind reading spectacles with polished silver frames.`n`n
+
+        `6\"`5Greetings, my good lady,`6\" you greet her, \"`5Might I inquire
+        as to my balance this fine day?`6\"`n`n
+
+        `@Elessa`6 blinks for a moment and then smiles, \"`@Hmm, `&%s`@, let's
+        see...`6\" she mutters as she scans down a page in her ledger.",
+        $session['user']['name']
+    );
+    // output("Light filters through tall windows in shafts of soft radiance.");
+    // output("About you, clerks are bustling back and forth.");
+    // output("The sounds of gold being counted can be heard, though the treasure is nowhere to be seen.`n`n");
+    // output("");
+    // output("");
+    // output("");
+    // output(" let's see.....",$session['user']['name']);
+    if ($session['user']['goldinbank'] >=0) {
+    	output(
+            "`6\"`@Aah, yes, here we are.  You have `^%s gold`@ in our prestigious
+            bank. Is there anything else I can do for you?`6\"",
+            $session['user']['goldinbank']
+        );
+    } else {
+    	output(
+            "`6\"`@Aah, yes, here we are.  You have a `\$debt`@ of `^%s gold`@
+            in our prestigious bank. Is there anything else I can do for you?`6\"",
+            abs($session['user']['goldinbank'])
+        );
+    }
+} elseif ($op == "transfer") {
 	output("`6`bTransfer Money`b:`n");
-	if ($session['user']['goldinbank']>=0){
+	if ($session['user']['goldinbank'] >= 0) {
 		output("`@Elessa`6 tells you, \"`@Just so that you are fully aware of our policies, you may only transfer `^%s`@ gold per the recipient's level.",getsetting("transferperlevel",25));
-		$maxout = $session['user']['level']*getsetting("maxtransferout",25);
-		output("Similarly, you may transfer no more than `^%s`@ gold total during the day.`6\"`n",$maxout);
+		$maxout = $session['user']['level'] * getsetting('maxtransferout', 25);
+		output("Similarly, you may transfer no more than `^%s`@ gold total during the day.`6\"`n", $maxout);
 		if ($session['user']['amountouttoday'] > 0) {
 			output("`6She scans her ledgers briefly, \"`@For your knowledge, you have already transferred `^%s`@ gold today.`6\"`n",$session['user']['amountouttoday']);
 		}
 		output_notl("`n");
-		$preview = translate_inline("Preview Transfer");
+		$preview = translate_inline('Preview Transfer');
 		rawoutput("<form action='bank.php?op=transfer2' method='POST'>");
 		output("Transfer how much: ");
 		rawoutput("<input name='amount' id='amount' width='5'>");
@@ -49,18 +78,18 @@ if ($op==""){
 		output(" (partial names are ok, you will be asked to confirm the transaction before it occurs).`n");
 		rawoutput("<input type='submit' class='button' value='$preview'></form>");
 		rawoutput("<script language='javascript'>document.getElementById('amount').focus();</script>");
-		addnav("","bank.php?op=transfer2");
-	}else{
+		addnav("", "bank.php?op=transfer2");
+	} else {
 		output("`@Elessa`6 tells you that she refuses to transfer money for someone who is in debt.");
 	}
-}elseif($op=="transfer2"){
+} elseif ($op == "transfer2") {
 	output("`6`bConfirm Transfer`b:`n");
 	$string="%";
 	$to = httppost('to');
-	for ($x=0;$x<strlen($to);$x++){
-		$string .= substr($to,$x,1)."%";
+	for ($x = 0; $x < strlen($to); $x++) {
+		$string .= substr($to, $x, 1) . "%";
 	}
-	$sql = "SELECT name,login FROM " . db_prefix("accounts") . " WHERE name LIKE '".addslashes($string)."' AND locked=0 ORDER by login='$to' DESC, name='$to' DESC, login";
+	$sql = "SELECT name, login FROM " . db_prefix("accounts") . " WHERE name LIKE '".addslashes($string)."' AND locked=0 ORDER by login='$to' DESC, name='$to' DESC, login";
 	$result = db_query($sql);
 	$amt = abs((int)httppost('amount'));
 	if (db_num_rows($result)==1){
@@ -185,18 +214,36 @@ if ($op==""){
 	rawoutput("</form>");
 	rawoutput("<script language='javascript'>document.getElementById('input').focus();</script>");
 	addnav("","bank.php?op=withdrawfinish");
-}elseif($op=="withdraw"){
-	$withdraw = translate_inline("Withdraw");
-	$balance = translate_inline("`@Elessa`6 scans through her ledger, \"`@You have a balance of `^%s`@ gold in the bank.`6\"`n");
-	$debt = translate_inline("`@Elessa`6 scans through her ledger, \"`@You have a `\$debt`@ of `^%s`@ gold in the bank.`6\"`n");
+} elseif ($op == 'withdraw') {
+	$withdraw = translate_inline('Withdraw');
+	$balance = translate_inline(
+        "`@Elessa`6 scans her ledger, \"`@Your balance is `^%s`@ gold.`6\"`n"
+    );
+	$debt = translate_inline(
+        "`@Elessa`6 scans her ledger, \"`@Your `\$debt`@ is `^%s`@ gold.`6\"`n"
+    );
 	rawoutput("<form action='bank.php?op=withdrawfinish' method='POST'>");
-	output_notl($session['user']['goldinbank']>=0?$balance:$debt,abs($session['user']['goldinbank']));
-	output("`6\"`@How much would you like to withdraw `&%s`@?`6\"`n`n",$session['user']['name']);
-	rawoutput("<input id='input' name='amount' width=5 > <input type='submit' class='button' value='$withdraw'>");
-	output("`n`iEnter 0 or nothing to withdraw it all`i");
+	output_notl(
+        $session['user']['goldinbank'] >= 0 ? $balance : $debt,
+        abs($session['user']['goldinbank'])
+    );
+	output(
+        "`6\"`@How much would you like to withdraw `&%s`@?`6\"`n`n",
+        $session['user']['name']
+    );
+	rawoutput(
+        "<input id='input' name='amount' width=5 >
+        <input type='submit' class='button' value='$withdraw'>
+        <br />"
+    );
+	output("`iEnter 0 or nothing to withdraw it all`i");
 	rawoutput("</form>");
-	rawoutput("<script language='javascript'>document.getElementById('input').focus();</script>");
-	addnav("","bank.php?op=withdrawfinish");
+	rawoutput(
+        "<script language='javascript'>
+            document.getElementById('input').focus();
+        </script>"
+    );
+	addnav('','bank.php?op=withdrawfinish');
 }elseif($op=="withdrawfinish"){
 	$amount=abs((int)httppost('amount'));
 	if ($amount==0){
