@@ -60,6 +60,7 @@ if ($name!=""){
 				if (!is_array($session['user']['dragonpoints'])) $session['user']['dragonpoints']=array();
 				invalidatedatacache("charlisthomepage");
 				invalidatedatacache("list.php-warsonline");
+                invalidatedatacache('list_characters_online');
 				$session['user']['laston'] = date("Y-m-d H:i:s");
 
 				// Handle the change in number of users online
@@ -82,7 +83,7 @@ if ($name!=""){
 				}
 
 				db_query("UPDATE " . db_prefix("accounts") . " SET loggedin=".true.", laston='".date("Y-m-d H:i:s")."' WHERE acctid = ".$session['user']['acctid']);
-
+				invalidatedatacache("online_characters");
 				$session['user']['loggedin']=true;
 				$location = $session['user']['location'];
 				if ($session['user']['location']==$iname)
@@ -163,7 +164,9 @@ if ($name!=""){
 		$sql = "UPDATE " . db_prefix("accounts") . " SET loggedin=0,restorepage='{$session['user']['restorepage']}' WHERE acctid = ".$session['user']['acctid'];
 		db_query($sql);
 		invalidatedatacache("charlisthomepage");
+		invalidatedatacache("online_characters");
 		invalidatedatacache("list.php-warsonline");
+        invalidatedatacache('list_characters_online');
 
 		// Handle the change in number of users online
 		translator_check_collect_texts();

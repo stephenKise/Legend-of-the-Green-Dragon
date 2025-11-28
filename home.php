@@ -62,7 +62,7 @@ addnav("New to LoGD?");
 addnav("Create a character","create.php");
 addnav("Game Functions");
 addnav("Forgotten Password","create.php?op=forgot");
-addnav("List Warriors","list.php");
+addnav('List Characters', 'list.php');
 addnav("Daily News", "news.php");
 addnav("Other Info");
 addnav("About LoGD","about.php");
