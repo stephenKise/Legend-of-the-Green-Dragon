@@ -154,7 +154,7 @@ function applebob_run()
             else {
                 addnav(
                     ['Try your luck (`^%s gold`0)', $cost],
-                    'runmodule.php?module=applebob&bob=bob'
+                    'runmodule.php?module=applebob&op=bob'
                 );
             }
             villagenav();
