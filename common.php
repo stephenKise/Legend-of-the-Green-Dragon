@@ -355,15 +355,21 @@ if (!$beta && getsetting("betaperplayer", 1) == 1)
 $clansPrefix = (string) db_prefix('clans');
 if (getSessionUser('loggedin')) {
 	$clanId = (int) getSessionUser('clanid') ?: 0;
-	$sql = "SELECT * FROM {$clansPrefix} WHERE clanid='{$clanId}'";
-	$result = db_query_cached($sql, "clandata-{$session['user']['clanid']}", 3600);
-	if (db_num_rows($result)>0){
-		$claninfo = db_fetch_assoc($result);
-	}else{
-		$claninfo = array();
-		$session['user']['clanid']=0;
-		$session['user']['clanrank']=0;
-	}
+    $selectedClanQuery = db_query_cached(
+        "SELECT clanname AS name,
+         clanshort AS tag,
+         clandesc AS description,
+         clanmotd AS motd,
+         clanid AS id,
+         descauthor,
+         motdauthor,
+         customsay
+         FROM $clansPrefix
+         WHERE clanid = '$clanId'",
+        "clan_data:$clanId",
+        3600
+    );
+    $clanData = db_fetch_assoc($selectedClanQuery);
 	if (getSessionSuperUser() & SU_MEGAUSER)
 		$session['user']['superuser'] =
 			getSessionSuperUser() | SU_EDIT_USERS;

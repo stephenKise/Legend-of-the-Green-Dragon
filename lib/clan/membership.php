@@ -88,7 +88,7 @@ if ($remove > 0) {
          WHERE acctid = $remove AND clanrank <= $userClanRank"
      );
 	debuglog(
-        "$userName removed player {$row['login']} from {$claninfo['clanname']}.",
+        "$userName removed player {$row['login']} from {$clanData['name']}.",
         $remove
     );
 }
