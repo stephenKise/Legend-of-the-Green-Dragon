@@ -10,22 +10,31 @@ tlschema("bio");
 check_su_access(SU_EDIT_COMMENTS);
 
 $op = httpget('op');
-$userid = httpget('userid');
+$userId = httpget('userid');
+$accountsPrefix = db_prefix('accounts');
 if ($op=="block"){
-	$sql = "UPDATE " . db_prefix("accounts") . " SET bio='`iBlocked for inappropriate usage`i',biotime='9999-12-31 23:59:59' WHERE acctid='$userid'";
-	$subj = array("Your bio has been blocked");
-	$msg = array("The system administrators have decided that your bio entry is inappropriate, so it has been blocked.`n`nIf you wish to appeal this decision, you may do so with the petition link.");
-	systemmail($userid, $subj, $msg);
+	$sql = "UPDATE $accountsPrefix
+        SET biotime = NULL
+        WHERE acctid='$userId'";
+	$subj = "Your bio has been blocked";
+	$msg = "Your bio entry has been blocked by administrators. You can appeal via 'Petition for Help'.";
+	systemmail($userId, $subj, $msg);
 	db_query($sql);
 }
 if ($op=="unblock"){
-	$sql = "UPDATE " . db_prefix("accounts") . " SET bio='',biotime='0000-00-00 00:00:00' WHERE acctid='$userid'";
-	$subj = array("Your bio has been unblocked");
-	$msg = array("The system administrators have decided to unblock your bio.  You can once again enter a bio entry.");
-	systemmail($userid,$subj,$msg);
+	$sql = "UPDATE $accountsPrefix
+        SET biotime = NOW()
+        WHERE acctid='$userId'";
+	$subj = "Your bio has been unblocked";
+	$msg = "The system administrators unblocked your bio. You can update it in your Preferences.";
+	systemmail($userId, $subj, $msg);
 	db_query($sql);
 }
-$sql = "SELECT name,acctid,bio,biotime FROM " . db_prefix("accounts") . " WHERE biotime<'9999-12-31' AND bio>'' ORDER BY biotime DESC LIMIT 100";
+$sql = "SELECT name, acctid, bio, biotime
+    FROM $accountsPrefix 
+    WHERE biotime IS NOT NULL
+    ORDER BY biotime DESC
+    LIMIT 100";
 $result = db_query($sql);
 page_header("User Bios");
 $block = translate_inline("Block");
@@ -49,7 +58,12 @@ if ($session['user']['superuser'] & SU_EDIT_COMMENTS)
 	addnav("Return to Comment Moderation","moderate.php");
 
 addnav("Refresh","bios.php");
-$sql = "SELECT name,acctid,bio,biotime FROM " . db_prefix("accounts") . " WHERE biotime>'9000-01-01' AND bio>'' ORDER BY biotime DESC LIMIT 100";
+$sql = "SELECT name, acctid, bio, biotime
+    FROM $accountsPrefix
+    WHERE biotime IS NULL
+    AND bio <> 'I am new here.'
+    ORDER BY biotime DESC
+    LIMIT 100";
 $result = db_query($sql);
 output("`n`n`b`&Blocked Bios:`0`b`n");
 $unblock = translate_inline("Unblock");

@@ -35,7 +35,7 @@ $clansPrefix = db_prefix('clans');
 $result = db_query(
     "SELECT login, name, level, sex, title, specialty, hashorse, acctid,
         resurrections, bio, dragonkills, race, clanname, clanshort, clanrank,
-        $accountsPrefix.clanid, laston, loggedin
+        $accountsPrefix.clanid, laston, loggedin, biotime
     FROM $accountsPrefix
     LEFT JOIN $clansPrefix
     ON $accountsPrefix.clanid = $clansPrefix.clanid
@@ -150,7 +150,7 @@ output("`^Creature: `@%s`0`n", $mountData['mountname']);
 modulehook('biostat', $target);
 if ($target['dragonkills'] > 0)
     output("`^Dragon Kills: `@%s`n", $target['dragonkills']);
-if ($target['bio'] > '')
+if ($target['biotime'] != null)
     output("`^Bio: `@`n%s`n", soap($target['bio']));
 
 modulehook('bioinfo', $target);
