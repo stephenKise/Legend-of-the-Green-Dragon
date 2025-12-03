@@ -181,7 +181,10 @@ rawoutput(
     </tr>"
 );
 
+$rowCount = 0;
 foreach ($result as $row) {
+    $rowClass = $rowCount % 2 ? 'trdark' : 'trlight';
+    $rowCount++;
     $rawLogin = rawurlencode($row['login']);
     $mailLink = "mail.php?op=write&to=$rawLogin";
     $mailString = "<a
@@ -213,7 +216,7 @@ foreach ($result as $row) {
                 <td>%s</td>
                 <td>%s</td>
             </tr>",
-            $i % 2 ? 'trdark' : 'trlight',
+            $rowClass,
             $aliveStatus,
             $row['level'],
             $session['user']['loggedin'] !== false ? $mailString : '',
