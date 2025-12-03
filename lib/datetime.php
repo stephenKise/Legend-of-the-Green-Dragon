@@ -113,7 +113,7 @@ function is_new_day(float $now = 0): bool
     if (!getSession('loggedin')) {
         return false;
     }
-    if ($session['user']['lasthit'] == '0000-00-00 00:00:00') {
+    if ($session['user']['lasthit'] == NULL) {
         return true;
     }
     $gameTime = gmdate('Y-m-d', gametime());
