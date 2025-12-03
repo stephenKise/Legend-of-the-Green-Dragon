@@ -9,7 +9,7 @@ function addgems_getmoduleinfo()
         'category' => 'General',
         'download' => 'core_module',
         'settings' => [
-            'how_many' => 'Amount of gems to give the players, int| 2',
+            'how_many' => 'Amount of gems to give the players at the start of each new day, int| 2',
             'message' => 'What should the message be?, text| Thank you for playing Legend of the Green Dragon! You have earned two gems for this game day!',
         ],
     ];
