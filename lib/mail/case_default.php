@@ -24,12 +24,14 @@ if ($db_num_rows>0){
 				$row['name']=$row['msgfrom'];
 			}
 			// Only translate the subject if it's an array, ie, it came from the game.
-			$row_subject = @unserialize($row['subject']);
-			if ($row_subject !== false) {
-				$row['subject'] = call_user_func_array("sprintf_translate", $row_subject);
-			} else {
-         			$row['subject'] = translate_inline($row['subject']);
-        		}
+			if (is_serialized($row['subject'])) {
+				$row_subject = @unserialize($row['subject']);
+				if ($row_subject !== false) {
+					$row['subject'] = sprintf_translate($row_subject);
+				} else {
+					$row['subject'] = translate_inline($row['subject']);
+				}
+			}
 		}
 		// In one line so the Translator doesn't screw the Html up
 		output_notl("<a href='mail.php?op=read&id={$row['messageid']}'>".((trim($row['subject']))?$row['subject']:$no_subject)."</a>", true);
