@@ -24,7 +24,7 @@ output("`&<h3>Armor for %s Dragon Kills</h3>`0",$armorlevel,true);
 $armorarray=array(
 	"Armor,title",
 	"armorid"=>"Armor ID,hidden",
-	"armorname"=>"Armor Name",
+	"armorname"=>"Armor Name, text",
 	"defense"=>"Defense,range,1,15,1");
 $op = httpget('op');
 $id = httpget('id');
