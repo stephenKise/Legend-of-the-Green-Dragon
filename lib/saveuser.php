@@ -16,6 +16,15 @@ function saveuser(){
 		if (!getSessionUser('alive')) {
 			$session['user']['alive'] = 0;
 		}
+		if (getSessionUser('lasthit') == NULL) {
+			$session['user']['lasthit'] = date('Y-m-d H:i:s');
+		}
+		if (getSessionUser('laston') == NULL) {
+			$session['user']['laston'] = date('Y-m-d H:i:s');
+		}
+		if (getSessionUser('clanjoindate') == NULL) {
+			$session['user']['clanjoindate'] = date('Y-m-d H:i:s');
+		}
 		$session['user']['allowednavs']=serialize($session['allowednavs']);
 		$session['user']['bufflist']=serialize($session['bufflist']);
 		if (isset($companions) && is_array($companions)) $session['user']['companions']=serialize($companions);
