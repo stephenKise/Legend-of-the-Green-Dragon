@@ -4,7 +4,7 @@ function dump_item(array|string $item): string
 {
 	$out = '';
 	if (is_array($item)) $temp = $item;
-	else $temp = @unserialize($item);
+	else $temp = is_serialized($item) ? @unserialize($item) : $item;
 	if (is_array($temp)) {
         $length = count($temp);
 		$out .= "array($length) {<div style='padding-left: 20pt;'>";
