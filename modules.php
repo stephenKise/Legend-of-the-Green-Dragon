@@ -223,6 +223,7 @@ if ($op==""){
 				"invalid"=>true,
 			);
 			foreach($uninstmodules as $key=>$shortname) {
+                if (!file_exists("modules/$shortname.php")) continue;
 				//test if the file is a valid module or a lib file/whatever that got in, maybe even malcode that does not have module form
 				$shortnamelower = strtolower($shortname);
 				$file = strtolower(file_get_contents("modules/$shortname.php"));
