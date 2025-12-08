@@ -34,6 +34,7 @@ function viewcommentaryargs_dohook($hook, $args)
             $currentCommentaryArea = $args['section'];
             break;
         case 'viewcommentary':
+            global $mysqli_resource;
             $accounts = db_prefix('accounts');
             $commentary = db_prefix('commentary');
             preg_match("/bio.php\?char=(.*)&ret/", $args['commentline'], $matches);
@@ -53,13 +54,14 @@ function viewcommentaryargs_dohook($hook, $args)
             $temp = str_replace(':', '', $temp);
             $temp = str_replace('</a>', '', $temp);
             $temp = full_sanitize($temp);
-            $temp = addslashes(implode('%', str_split(trim($temp))));
+            $temp = mysqli_real_escape_string($mysqli_resource, $temp);
             $sql = db_query(
                 "SELECT commentid, comment, postdate FROM $commentary
                 WHERE comment LIKE '%$temp%'
                 AND section = '$currentCommentaryArea'"
             );
             $row = db_fetch_assoc($sql);
+            if (empty($row)) break;
             $args = [
                 'commentline' => $args['commentline'],
                 'section' => $currentCommentaryArea,
