@@ -18,7 +18,9 @@ global $companions,$companion,$newcompanions,$count,$defended,$needtostopfightin
 tlschema("battle");
 
 $newcompanions = array();
-$attackstack = @unserialize($session['user']['badguy']);
+$attackstack = is_serialized($session['user']['badguy']) ?
+    @unserialize($session['user']['badguy']):
+    [];
 if (isset($attackstack['enemies'])) $enemies = $attackstack['enemies'];
 if (isset($attackstack['options'])) $options = $attackstack['options'];
 

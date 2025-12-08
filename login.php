@@ -37,8 +37,9 @@ if ($name!=""){
 		$result = db_query($sql);
 		if (db_num_rows($result)==1){
 			$session['user']=db_fetch_assoc($result);
-			$companions = @unserialize($session['user']['companions']);
-			if (!is_array($companions)) $companions = array();
+			$companions = is_serialized($session['user']['companions']) ?
+                @unserialize($session['user']['companions']) :
+                [];
 			$baseaccount = $session['user'];
 			checkban($session['user']['login'], true); 
 			modulehook("check-login");

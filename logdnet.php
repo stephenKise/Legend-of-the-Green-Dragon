@@ -219,6 +219,8 @@ if ($op==""){
 	if (!$servers) $servers = array();
 	$i = 0;
 	foreach ($servers as $key => $val) {
+        $row = is_serialized($val) ? unserialize($val) : [];
+        if (empty($row)) break;
 		$row=unserialize($val);
         // If we aren't given an address, continue on.
         if (!$row['address']) {

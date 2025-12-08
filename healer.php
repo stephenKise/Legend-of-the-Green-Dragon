@@ -9,7 +9,9 @@ require_once("lib/villagenav.php");
 
 tlschema("healer");
 
-$config = unserialize($session['user']['donationconfig']);
+$config = is_serialized($session['user']['donationconfig']) ?
+    unserialize($session['user']['donationconfig']) :
+    [];
 
 $return = httpget("return");
 $returnline = $return>""?"&return=$return":"";
