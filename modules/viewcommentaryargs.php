@@ -18,6 +18,7 @@ function viewcommentaryargs_install()
 {
     module_addhook('blockcommentarea');
     module_addhook_priority('viewcommentary', '1');
+    module_addhook('specialtynames');
     return true;
 }
 
@@ -32,6 +33,14 @@ function viewcommentaryargs_dohook($hook, $args)
     switch ($hook) {
         case 'blockcommentarea':
             $currentCommentaryArea = $args['section'];
+            break;
+        case 'specialtynames':
+            if (httpget('op') == 'save') {
+                var_dump('invalidating commentary-author_name cache');
+                $acctId = (int) httpget('userid');
+                var_dump($acctId);
+                invalidatedatacache("commentary-author_name-$acctId");
+            }
             break;
         case 'viewcommentary':
             global $mysqli_resource;
