@@ -5,7 +5,7 @@ $oldvalues = stripslashes(httppost('oldvalues'));
 $oldvalues = unserialize($oldvalues);
 // Handle recombining the old name
 $otitle = isset($oldvalues['title']) ? $oldvalues['title'] : '';
-if ($oldvalues['ctitle']) $otitle = $oldvalues['ctitle'];
+if (isset($oldvalues['ctitle'])) $otitle = $oldvalues['ctitle'];
 $oldvalues['name'] = $otitle . ' ' . $oldvalues['name'];
 	$post = httpallpost();
 reset($post);
@@ -92,7 +92,11 @@ foreach ($post as $key => $val) {
 			if ($session['user']['acctid']==$userid) {
 				$session['user']['title'] = $tmp;
 			}
-		} elseif ($key=="ctitle" && stripslashes($val)!=$oldvalues[$key]) {
+		} else if (
+            isset($oldvalues['ctitle']) &&
+            $key == "ctitle" &&
+            stripslashes($val) != $oldvalues[$key]
+        ) {
 			$updates++;
 			$tmp = sanitize_colorname(true, stripslashes($val), true);
 			$tmp = preg_replace("/[`][cHw]/", "", $tmp);
@@ -140,8 +144,9 @@ $sql = "UPDATE " . db_prefix("accounts") . " SET " . $sql . " WHERE acctid=\"$us
 if ($petition!="")
 	addnav("","viewpetition.php?op=view&id=$petition");
 addnav("","user.php");
-	if ($updates>0){
+if ($updates>0){
 	db_query($sql);
+    invalidatedatacache('list_characters_online');
 	debug("Updated $updates fields in the user record with:\n$sql");
 	output("%s fields in the user's record were updated.", $updates);
 }else{
