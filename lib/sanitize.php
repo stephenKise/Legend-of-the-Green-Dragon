@@ -167,6 +167,8 @@ function is_serialized($value, &$result = null): bool
 	if (!is_string($value)) {
 		return false;
 	}
+    if ($value === '')
+        return false;
 
 	if ($value === 'b:0;') {
 		$result = false;
