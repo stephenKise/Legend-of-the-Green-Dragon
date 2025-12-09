@@ -158,13 +158,13 @@ if ($op==""){
 			output($texts['payweapon'],$session['user']['weapon'],$row['weaponname']);
 			tlschema();
 			debuglog("spent " . ($row['value']-$tradeinvalue) . " gold on the " . $row['weaponname'] . " weapon");
-			$session['user']['gold']-=$row['value'];
+			$session['user']['gold'] -= (int) $row['value'];
 			$session['user']['weapon'] = $row['weaponname'];
-			$session['user']['gold']+=$tradeinvalue;
-			$session['user']['attack']-=$session['user']['weapondmg'];
-			$session['user']['weapondmg'] = $row['damage'];
-			$session['user']['attack']+=$session['user']['weapondmg'];
-			$session['user']['weaponvalue'] = $row['value'];
+			$session['user']['gold'] += (int) $tradeinvalue;
+			$session['user']['attack'] -= (int)$session['user']['weapondmg'];
+			$session['user']['weapondmg'] = (int) $row['damage'];
+			$session['user']['attack'] += (int) $session['user']['weapondmg'];
+			$session['user']['weaponvalue'] = (int) $row['value'];
 			villagenav();
 		}
 	}
