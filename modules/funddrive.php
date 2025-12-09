@@ -43,7 +43,10 @@ function funddrive_dohook($hook, $args)
             break;
         case 'everyfooter';
             $settings = get_all_module_settings();
-            if (!is_array($args['paypal'])) {
+            if (
+                !array_key_exists('paypal', $args) ||
+                !is_array($args['paypal'])
+            ) {
                 $args['paypal'] = [];
             }
             $percent = round($settings['base'] / $settings['goal'], 2)*100;
