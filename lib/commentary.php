@@ -501,6 +501,9 @@ function viewcommentary($section,$message="Interject your own commentary?",$limi
 	$next = translate_inline("Next &gt;");
 	$lastu = translate_inline("Last Page &gt;&gt;");
 	if ($rowcount>=$limit || $cid>0){
+        if ($session['user']['recentcomments'] == null) {
+            $session['user']['recentcomments'] = date('Y-m-d H:i:s', strtotime("-1 day"));
+        }
 		$sql = "SELECT count(commentid) AS c FROM " . db_prefix("commentary") . " WHERE section='$section' AND postdate > '{$session['user']['recentcomments']}'";
 		$r = db_query($sql);
 		$val = db_fetch_assoc($r);
