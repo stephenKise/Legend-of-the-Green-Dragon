@@ -57,7 +57,7 @@ function change_player_ctitle($nctitle,$old=false) {
 		if ($old == false) {
 			$nctitle = $session['user']['title'];
 		} else {
-			$nctitle = $old['title'];
+			$nctitle = isset($old['title']) ? $old['title'] : '';
 		}
 	}
 	$newname = get_player_basename($old) . "`0";
@@ -72,7 +72,7 @@ function change_player_title($ntitle, $old=false) {
 	if ($old===false) {
 		$ctitle = $session['user']['ctitle'];
 	} else {
-		$ctitle = $old['ctitle'];
+		$ctitle = isset($old['ctitle']) ? $old['ctitle'] : '';
 	}
 
 	$newname = get_player_basename($old) . "`0";
