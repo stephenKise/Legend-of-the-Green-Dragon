@@ -78,6 +78,7 @@ require_once("lib/mounts.php");
 require_once("lib/debuglog.php");
 require_once("lib/forcednavigation.php");
 require_once("lib/php_generic_environment.php");
+require_once('lib/checkban.php');
 
 session_start();
 $session = [];
@@ -354,6 +355,7 @@ if (!$beta && getsetting("betaperplayer", 1) == 1)
 
 $clansPrefix = (string) db_prefix('clans');
 if (getSessionUser('loggedin')) {
+    checkban(getSessionUser('login'));
 	$clanId = (int) getSessionUser('clanid') ?: 0;
     $selectedClanQuery = db_query_cached(
         "SELECT clanname AS name,

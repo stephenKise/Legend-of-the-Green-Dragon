@@ -1,15 +1,13 @@
 <?php
 $subop = httpget("subop");
 $none = translate_inline('NONE');
+$accountsPrefix = db_prefix('accounts');
+$bansPrefix = db_prefix('bans');
 if ($subop=="xml"){
 	header("Content-Type: text/xml");
-	$sql = "SELECT DISTINCT " . db_prefix("accounts") . ".name FROM " . db_prefix("bans") . ", " . db_prefix("accounts") . " WHERE (ipfilter='".addslashes(httpget("ip"))."' AND " .
-		db_prefix("bans") . ".uniqueid='" .
-		addslashes(httpget("id"))."') AND ((substring(" .
-		db_prefix("accounts") . ".lastip,1,length(ipfilter))=ipfilter " .
-		"AND ipfilter<>'') OR (" .  db_prefix("bans") . ".uniqueid=" .
-		db_prefix("accounts") . ".uniqueid AND " .
-		db_prefix("bans") . ".uniqueid<>''))";
+	$sql = "SELECT DISTINCT $accountsPrefix.name FROM $bansPrefix, $accountsPrefix WHERE (ipfilter='" .addslashes(httpget("ip"))."' AND $bansPrefix.uniqueid='" .
+		addslashes(httpget("id"))."') AND ((substring($accountsPrefix.lastip,1,length(ipfilter))=ipfilter " .
+		"AND ipfilter<>'') OR ($bansPrefix.uniqueid=$accountsPrefix.uniqueid AND $bansPrefix.uniqueid<>''))";
 	$r = db_query($sql);
 	echo "<xml>";
 	$number=db_num_rows($r);
@@ -24,17 +22,16 @@ if ($subop=="xml"){
 	echo "</xml>";
 	exit();
 }
-	db_query("DELETE FROM " . db_prefix("bans") . " WHERE banexpire < \"".date("Y-m-d")."\" AND banexpire>'0000-00-00'");
 $duration =  httpget("duration");
 if ($duration=="") {
-	$since = " WHERE banexpire <= '".date("Y-m-d H:i:s",strtotime("+2 weeks"))."' AND banexpire > '0000-00-00'";
+	$since = " WHERE banexpire <= '".date("Y-m-d H:i:s",strtotime("+2 weeks"))."'";
 		output("`bShowing bans that will expire within 2 weeks.`b`n`n");
 }else{
 	if ($duration=="forever") {
 		$since="";
 		output("`bShowing all bans`b`n`n");
 	}else{
-		$since = " WHERE banexpire <= '".date("Y-m-d H:i:s",strtotime("+".$duration))."' AND banexpire > '0000-00-00'";
+		$since = " WHERE banexpire <= '".date("Y-m-d H:i:s",strtotime("+".$duration))."'";
 		output("`bShowing bans that will expire within %s.`b`n`n",$duration);
 	}
 }
@@ -52,7 +49,7 @@ addnav("1 year","user.php?op=removeban&duration=1+year");
 addnav("2 years","user.php?op=removeban&duration=2+years");
 addnav("4 years","user.php?op=removeban&duration=4+years");
 addnav("Forever","user.php?op=removeban&duration=forever");
-$sql = "SELECT * FROM " . db_prefix("bans") . " $since ORDER BY banexpire";
+$sql = "SELECT * FROM $bansPrefix $since ORDER BY banexpire";
 $result = db_query($sql);
 rawoutput("<script language='JavaScript'>
 function getUserInfo(ip,id,divid){

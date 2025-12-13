@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-function checkban(string $login, bool $connect = false): bool
+function checkban(string $login): bool
 {
     global $session;
     $accounts = db_prefix('accounts');
@@ -13,56 +13,61 @@ function checkban(string $login, bool $connect = false): bool
         WHERE login = '$login'"
     );
     $row = db_fetch_assoc($sql);
-    if (!!isset($row['banoverride']) || (isset($row['superuser'])
-        && ($row['superuser'] &~ SU_DOESNT_GIVE_GROTTO))
-        ) {
+    if (isset($row['banoverride']) && $row['banoverride'] > 0) {
         return false;
     }
     db_free_result($sql);
-    if (isset($row['lastip']))
+
+    if (isset($row['lastip'])) {
         $ipFilter = "(ipfilter = '{$row['lastip']}'
-            OR ipfilter = '{$_SERVER['REMOTE_ADDR']}')";
-    else
+        OR ipfilter = '{$_SERVER['REMOTE_ADDR']}')";
+    }
+    else {
         $ipFilter = "(ipfilter = '{$_SERVER['REMOTE_ADDR']}')";
-    if (isset($row['uniqueid']))
+    }
+
+    if (isset($row['uniqueid'])) {
         $idFilter = "(uniqueid = '{$row['uniqueid']}'
-            OR uniqueid = '$uniqueId')";
-    else
+        OR uniqueid = '$uniqueId')";
+    }
+    else {
         $idFilter = "(uniqueid = '$uniqueId')";
+    }
+
     $sql = db_query(
         "SELECT * FROM $bans
         WHERE ($ipFilter OR $idFilter)
-        AND (banexpire = NULL OR banexpire >= '$today')"
+        AND (banexpire IS NULL OR banexpire >= '$today')"
     );
-    if (db_num_rows($sql) > 0) {
-        if ($connect) {
-            $session = [];
-            tlschema('ban');
-            $session['message'] .= translate_inline('`n`4You fall under a ban currently in place on this website:');
-            while ($row = db_fetch_assoc($sql)) {
-                $session['message'] .= "`n{$row['banreason']}`n";
-                if ($row['banexpire'] == '0000-00-00') {
-                    $session['message'] .= translate_inline("`\$This ban is permanent!`0");
-                }
-                else {
-                    $session['message'] .= sprintf_translate(
-                        "`^This ban will be removed `\$after`^ %s.`0",
-                        date("M d, Y", strtotime($row['banexpire']))
-                    );
-                }
-                db_query(
-                    "UPDATE $bans
-                    SET lasthit = '$today 00:00:00'
-                    WHERE ipfilter = '{$row['ipfilter']}'
-                    AND uniqueid = '{$row['uniqueid']}'
-                    "
-                );
-            }
-            $session['message'] .= translate_inline("`n`4If you wish, you may appeal your ban with the petition link.");
-            tlschema();
-            header('Location: home.php');
-        }
-        return true;
+    if (db_num_rows($sql) === 0) {
+        db_free_result($sql);
+        return false;
     }
-    return false;
+
+    $session = [];
+    tlschema('ban');
+    $session['message'] .= translate_inline('`n`4You fall under a ban currently in place on this website:');
+    while ($row = db_fetch_assoc($sql)) {
+        $session['message'] .= "`n{$row['banreason']}`n";
+        if ($row['banexpire'] == null) {
+            $session['message'] .= translate_inline("`\$This ban is permanent!`0");
+        }
+        else {
+            $session['message'] .= sprintf_translate(
+                "`^This ban will be removed `\$after`^ %s.`0",
+                date("M d, Y", strtotime($row['banexpire']))
+            );
+        }
+        db_query(
+            "UPDATE $bans
+            SET lasthit = '$today'
+            WHERE ipfilter = '{$row['ipfilter']}'
+            AND uniqueid = '{$row['uniqueid']}'
+            "
+        );
+    }
+    $session['message'] .= translate_inline("`n`4If you wish, you may appeal your ban with the petition link.");
+    tlschema();
+    header('Location: home.php');
+    return true;
 }
