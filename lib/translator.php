@@ -152,7 +152,7 @@ function tl($in){
 }
 
 function translate_loadnamespace($namespace, $language = false) {
-	if (defined('IS_INSTALLER')) return [];
+    if (defined('IS_INSTALLER') && IS_INSTALLER === 1) return [];
 	if ($language===false) $language = LANGUAGE;
 	$page = translator_page($namespace);
 	$uri = translator_uri($namespace);
@@ -166,10 +166,11 @@ function translate_loadnamespace($namespace, $language = false) {
 		WHERE language='$language'
 			AND $where";
 	/*	debug(nl2br(htmlentities($sql, ENT_COMPAT, getsetting("charset", "ISO-8859-1")))); */
-	if (!getsetting("cachetranslations",0)) {
+	if (getsetting('cachetranslations', 0) == 0) {
 		$result = db_query($sql);
-	} else {
-		$result = db_query_cached($sql,"translations-".$namespace."-".$language,600);
+	}
+    else {
+		$result = db_query_cached($sql, "translations-$namespace-$language", 600);
 		//store it for 10 Minutes, normally you don't need to refresh this often
 	}
 	$out = array();
