@@ -278,24 +278,30 @@ function showform($layout,$row,$nosave=false,$keypref=false){
 		    // FALLTHROUGH
 		case "enum":
 			reset($info);
-			// list($k,$v)=each($info);
-			// list($k,$v)=each($info);
+            $label = array_shift($info);
+            $enum = array_shift($info);
 			$select="";
-			$select.=("<select name='$keyout'>");
+			$select.= "<select name='$keyout'>";
+            $i = 0;
 			foreach ($info as $k => $v) {
-				$optval = $v;
-				// list($k,$v)=each($info);
-				$optdis = current($info);
-				if (!$pretrans) {
-					$optdis = translate_inline($optdis);
-				}
-				$selected = 0;
-				if (isset($row[$key]) && $row[$key] == $optval)
-					$selected = 1;
-
-				$select.=("<option value='$optval'".($selected?" selected":"").">".HTMLEntities("$optdis", ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."</option>");
+                $i++;
+                if ($i % 2 === 0) {
+                    continue;
+                }
+                $optionValue = $v;
+                $optionDisplay = $info[$k + 1];
+                if (!$pretrans) {
+                    $optionDisplay = translate_inline($optionDisplay);
+                }
+                $selected = 0;
+                if (isset($row[$key]) && $row[$key] == $optionValue) {
+                    $selected = 1;
+                }
+                $isSelected = $selected ? ' selected' : '';
+                $selectLabel = HTMLEntities($optionDisplay, ENT_COMPAT, getsetting('charset', 'ISO-8859-1'));
+                $select .= ("<option value='$optionValue' $isSelected> $selectLabel </option>");
 			}
-			$select.="</select>";
+			$select .= "</select>";
 			rawoutput($select);
 			break;
 		case "password":
