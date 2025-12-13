@@ -143,9 +143,14 @@ if ($name!=""){
 								//delete old messages that
 								$sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgto={$row2['acctid']} AND msgfrom=0 AND subject = '".serialize($subj)."' AND seen=0";
 								db_query($sql);
-								if (db_affected_rows()>0) $noemail = true; else $noemail = false;
-								$msg = translate_mail(array("This message is generated as a result of one or more of the accounts having been a superuser account.  Log Follows:`n`n%s",$alert),0);
-								systemmail($row2['acctid'],$subj,$msg,0,$noemail);
+								$msg = translate_mail(
+                                    [
+                                        "This message is generated as a result of one or more of the accounts having been a superuser account.  Log Follows:`n`n%s",
+                                        $alert
+                                    ],
+                                    0
+                                );
+								systemmail($row2['acctid'], $subj, $msg, 0);
 							}//end for
 						}//end if($su)
 					}//end if($c>=10)
