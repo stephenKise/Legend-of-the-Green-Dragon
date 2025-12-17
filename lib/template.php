@@ -39,8 +39,10 @@ function prepare_template($force=false){
 	$templatemessage="";
 	if ($_COOKIE['template']!="")
 		$templatename=$_COOKIE['template'];
-	if ($templatename == '' || !file_exists("templates/$templatename"))
-		$templatename=getsetting("defaultskin", "jade.htm");
+	if ($templatename == '' || !file_exists("templates/$templatename")) {
+		$templatename=getsetting('defaultskin', 'jade.htm');
+        setcookie('template', $templatename, time()+31536000, '/');
+    }
 	$template = loadtemplate($templatename);
 	if (isset($session['templatename']) &&
 			$session['templatename'] == $templatename &&
