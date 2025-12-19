@@ -83,7 +83,7 @@ function page_footer($saveuser=true){
 	global $output,$nestedtags,$header,$nav,$session,$REMOTE_ADDR,
 		$REQUEST_URI,$pagestarttime,$quickkeys,$template,$y2,$z2,
 		$logd_version,$copyright,$SCRIPT_NAME,$nopopups, $footer,
-		$dbinfo;
+		$dbinfo,$lc;
 	$z = $y2^$z2;
 	$footer = $template['footer'];
 	//page footer module hooks
@@ -224,6 +224,7 @@ function page_footer($saveuser=true){
 		getsetting('charset', 'UTF-8')
 	);
 	if (getsetting("logdnet",0) && $session['user']['loggedin'] && !$already_registered_logdnet){
+        // TODO: Move to cleanup, or a cronjob. Lags load times on pages ranomly.
 		//account counting, just for my own records, I don't use this in the calculation for server order.
 		$sql = "SELECT count(*) AS c FROM " . db_prefix("accounts");
 		$result = db_query_cached($sql,"acctcount",600);
@@ -415,6 +416,7 @@ function page_footer($saveuser=true){
 	$avgLoad = "Ave: {$averageTime}s - {$genTime}/ {$genCount}";
 	$pageGen = "Page gen: {$genTime}s/{$dbinfo['queriesthishit']} queries ({$queryTime}s),";
 	$footer=str_replace('{pagegen}', "{$pageGen} {$avgLoad}", $footer);
+    $footer=str_replace('{copyright}', "$copyright <br/> $lc", $footer);
 
 	tlschema();
 
@@ -485,9 +487,6 @@ function popup_footer(){
 		$header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
 		$footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
 	}
-
-	$z = $y2^$z2;
-	$footer = str_replace("{".($z)."}",$$z, $footer);
 
 	//clean up spare {fields}s from header and footer (in case they're not used)
 	$footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
@@ -630,7 +629,7 @@ function charstats(){
 
 	wipe_charstats();
 
-	$u =& getSession('user');
+	$u = getSession('user');
 
 	if (getSession('loggedin')) {
 		$u['hitpoints']=round($u['hitpoints'],0);
