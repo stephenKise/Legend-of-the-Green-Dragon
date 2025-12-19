@@ -316,7 +316,9 @@ prepare_template();
 
 if (!getSessionUser('hashorse')) $session['user']['hashorse']=0;
 $playermount = getmount($session['user']['hashorse']);
-$temp_comp = @unserialize($session['user']['companions']);
+$temp_comp = isset($session['user']['companions']) ?
+    @unserialize($session['user']['companions']) :
+    [];
 $companions = array();
 if(is_array($temp_comp)) {
 	foreach ($temp_comp as $name => $companion) {
