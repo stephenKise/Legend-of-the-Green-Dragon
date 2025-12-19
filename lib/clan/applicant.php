@@ -26,8 +26,7 @@ output('`b`c`&Clan Halls`c`b');
 if ($currentClanId > 0 && httpget('op') === false) {
     // applied for membership to a clan
     output(
-        "`7You approach `%%s`7 who smiles at you, but lets you know that
-         your application to `^%s`7 hasn't been accepted yet.",
+        "clan.awaiting_approval",
         $registrar,
         $clanData['name']
     );
@@ -52,35 +51,16 @@ switch (httpget('op')) {
 		$session['user']['clanrank'] = CLAN_APPLICANT;
 		$session['user']['clanjoindate'] = null;
 		output(
-            "`7You tell `%%s`7 that you're not interested in joining %s. ",
+            "clan.withdraw_application",
             $registrar,
             $clanData['clanname']
-        );
-		output(
-            "She reaches into her desk, withdraws your application, and
-             tears it up. \"`5You wouldn't have been happy there anyhow, I
-             don't think,`7\" as she tosses the shreds in her trash can."
         );
         addnav('List Clans', 'clan.php?op=list');
 		addnav('Create a new Clan', 'clan.php?op=new');
         break;
     default:
-    	output(
-            "`7You stand in the center of a great marble lobby filled with pillars.
-             All around the walls of the lobby are various doors which lead to
-             various clan halls. The doors each possess a variety of intricate
-             mechanisms which are obviously elaborate locks designed to be opened
-             only by those who have been educated on how to operate them. Nearby,
-             you watch another warrior glance about nervously to make sure no one
-             is watching before touching various levers and knobs on the door. With
-             a large metallic \"chunk\" the lock on the door disengages, and the
-             door swings silently open, admitting the warrior before slamming shut.
-             `n`n"
-        );
         output(
-            "In the center of the lobby sits a highly polished desk, behind which
-             sits `%%s`7, the clan registrar. She can take your filing for a new
-             clan, or accept your application to an existing clan.`n`n",
+            "clan.introduction",
             $registrar
         );
         addnav('List Clans', 'clan.php?op=list');

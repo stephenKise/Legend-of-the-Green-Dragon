@@ -56,12 +56,11 @@ function editClanNameForm(int $clanId): void
     $clan = db_fetch_assoc($clanQuery);
     $clanName = htmlent($clan['name']);
     $clanTag = htmlent($clan['tag']);
-    $formTemplate = file_get_contents('lib/clan/templates/SuperuserRenamingForm.php');
-    $toggleMsg = translate_inline('[Toggle Clan Name/Tag Editor]');
-	addnav('', "clan.php?op=detail&clan=$clanId");
+    $formTemplate = loadTranslation('clan.superuser_rename_form');
 	rawoutput(
-        sprintf($formTemplate, $clanId, $clanName, $clanTag, $toggleMsg)
+        sprintf($formTemplate, $clanId, $clanName, $clanTag)
     );
+    addnav('' , "clan.php?detail=$clanId");
 }
 
 /**
@@ -77,7 +76,7 @@ function createClanForm(string $name = '', string $tag = ''): void
     $clanName = htmlent($cleanName);
     $cleanTag = stripslashes($tag);
     $clanTag = htmlent($cleanTag);
-    $template = file_get_contents('lib/clan/templates/CreateClanForm.php');
+    $template = loadTranslation('clan.create_form');
     addnav('', 'clan.php?op=new&apply=1');
     output($template, $clanName, $clanTag, true);
 }

@@ -79,6 +79,8 @@ require_once("lib/debuglog.php");
 require_once("lib/forcednavigation.php");
 require_once("lib/php_generic_environment.php");
 require_once('lib/checkban.php');
+require_once('lib/translations.php');
+require_once('vendor/autoload.php');
 
 session_start();
 $session = [];

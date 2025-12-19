@@ -103,8 +103,8 @@ function injectrawcomment($section, $author, $comment)
 }
 
 function injectcommentary($section, $talkline, $comment, $schema=false) {
-	global $session,$doublepost, $translation_namespace;
-	if ($schema===false) $schema=$translation_namespace;
+	global $session,$doublepost, $i18nNamespace;
+	if ($schema===false) $schema=$i18nNamespace;
 	// Make the comment pristine so that we match on it correctly.
 	$comment = stripslashes($comment);
 	tlschema("commentary");
@@ -178,7 +178,7 @@ function commentdisplay($intro, $section, $message="Interject your own commentar
 }
 
 function viewcommentary($section,$message="Interject your own commentary?",$limit=10,$talkline="says",$schema=false) {
- 	global $session,$REQUEST_URI,$doublepost, $translation_namespace;
+ 	global $session,$REQUEST_URI,$doublepost, $i18nNamespace;
 	global $emptypost;
 
 	rawoutput("<a name='$section'></a>");
@@ -188,7 +188,7 @@ function viewcommentary($section,$message="Interject your own commentary?",$limi
 		return;
 
 	if ($schema === false)
-		$schema=$translation_namespace;
+		$schema=$i18nNamespace;
 	tlschema("commentary");
 
 	$nobios = array("motd.php"=>true);
@@ -570,8 +570,8 @@ function viewcommentary($section,$message="Interject your own commentary?",$limi
 
 function talkform($section,$talkline,$limit=10,$schema=false){
 	require_once("lib/forms.php");
-	global $REQUEST_URI,$session,$translation_namespace;
-	if ($schema===false) $schema=$translation_namespace;
+	global $REQUEST_URI,$session,$i18nNamespace;
+	if ($schema===false) $schema=$i18nNamespace;
 	tlschema("commentary");
 
 	$jump = false;

@@ -1,0 +1,71 @@
+# This file could probably be renamed to pageparts.yaml in the future
+# or add labels (gold_stat_label: "Gold") to make it more generic.
+gold: |
+  `^Gold
+gems: |
+  `%Gems
+clan_tag_start: |
+  <
+clan_tag_end: |
+  >
+turns: |
+  `^Turns
+dragon: |
+  `@Green Dragon
+title: |
+  `&Legend of the Green Dragon`0
+title_clean: Legend of the Green Dragon
+hitpoints: |
+  `^Hit Points
+attacks: |
+  `^Attack
+defense: |
+  `^Defense
+favor: |
+  `$Favor
+soulpoints: |
+  `$Soul Points
+torments: |
+  `$Torments
+psyche: |
+  `$Psyche
+spirit: |
+  `$Spirit
+race: |
+  `^Race
+exp: |
+  `^Experience
+level: |
+  `^Level
+experience: |
+  `^Experience
+weapon: |
+  `^Weapon
+armor: |
+  `^Armor
+creature: |
+  `^Creature
+vital_stat_label: Vital Info
+equipment_stat_label: Equipment
+companion_stat_label: Companions
+personal_stat_label: Personal Info
+buffs_stat_label: Buffs
+navs:
+  home: Home
+  village: Village
+  forest: Forest
+  inn: Inn
+  arena: Arena
+  guild: Guild
+  clan: Clan
+  hall_of_fame: Hall of Fame
+  news: News
+  faq: FAQ
+  logout: Log Out
+yes: Yes
+no: No
+ok: OK
+submit: Submit
+cancel: Cancel
+confirm: Confirm
+choose: Choose

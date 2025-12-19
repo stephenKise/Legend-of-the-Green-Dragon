@@ -53,11 +53,14 @@ function output_notl($indata){
 	//pop true off the end if we have it
 	$last = array_pop($args);
 	if ($last!==true){
-		array_push($args,$last);
+        array_push($args,$last);
 		$priv = false;
 	}else{
-		$priv = true;
+        $priv = true;
 	}
+    if (isset($args[0]) && isTranslateKey($args[0])) {
+        $priv = false;
+    }
 	$out = $indata;
 	$args[0]=&$out;
 	//apply variables
@@ -76,6 +79,20 @@ function output_notl($indata){
 }
 
 /**
+ * Checks if a given string is a translation key
+ * @param mixed $str String to check for translation keys (ex: 'home.title')
+ * @return bool
+ */
+function isTranslateKey($str) {
+    return (
+        is_string($str) &&
+        strpos($str, ' ') === false &&
+        strpos($str, '<') === false && 
+        preg_match('/^[a-z_\-\.]+$/', $str)
+    );
+}
+
+/**
  * Outputs a translated, color/style encoded string to the browser.
  *
  * @param string|array What to output. If an array is passed then the format used by sprintf is assumed
@@ -88,6 +105,16 @@ function output(){
 
 	if ($block_new_output) return;
 	$args = func_get_args();
+    if (isTranslateKey($args[0])) {
+        // Assume it's a key like 'home.title'
+        $args[0] = nl2br($args[0]);
+        $translated = loadTranslation($args[0]);
+        if ($translated !== $args[0]) { // If we found a translation
+            $args[0] = $translated;
+        }
+        call_user_func_array('output_notl', $args);
+        return;
+    }
 	if (is_array($args[0])) $args = $args[0];
 	if (is_bool($args[0]) && array_shift($args)) {
 		$schema= array_shift($args);
@@ -418,8 +445,8 @@ function set_block_new_navs($block)
  */
 function addnavheader($text, $collapse=true,$translate=TRUE)
 {
-	global $navsection,$navbysection,$translation_namespace;
-	global $navschema,$navnocollapse, $block_new_navs,$notranslate;
+	global $navsection, $navbysection, $i18nNamespace;
+	global $navschema, $navnocollapse, $block_new_navs, $notranslate;
 
 	if ($block_new_navs) return;
 
@@ -428,8 +455,8 @@ function addnavheader($text, $collapse=true,$translate=TRUE)
 	}
 	$navsection=$text;
 	if (!array_key_exists($text,$navschema))
-		$navschema[$text] = $translation_namespace;
-	//So we can place sections with out adding navs to them.
+		$navschema[$text]  =  $i18nNamespace;
+	//So we  can place sections wit h out adding navs to them.
 	if (!isset($navbysection[$navsection]))
 		$navbysection[$navsection] = array();
 	if ($collapse === false) {
@@ -492,7 +519,7 @@ function addnav(
 	$popsize = "500x300"
 )
 {
-	global $navsection,$navbysection,$translation_namespace,$navschema;
+	global $navsection, $navbysection, $i18nNamespace, $navschema;
 	global $block_new_navs;
 
 	if ($block_new_navs)
@@ -516,7 +543,7 @@ function addnav(
 		$label = $label[0];
 	
 	if (!array_key_exists($label, $navschema))
-		$navschema[$label] = $translation_namespace;
+		$navschema[$label]  =   $i18nNamespace;
 	
 	array_push(
 		$navbysection[$navsection],

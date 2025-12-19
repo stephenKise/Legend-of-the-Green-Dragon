@@ -49,7 +49,10 @@ if (file_exists("paylog.php")  &&
 	addnav("Payment Log","paylog.php");
 }
 if ($session['user']['superuser'] & SU_RAW_SQL) addnav("Q?Run Raw SQL", "rawsql.php");
-if ($session['user']['superuser'] & SU_IS_TRANSLATOR) addnav("U?Untranslated Texts", "untranslated.php");
+if ($session['user']['superuser'] & SU_IS_TRANSLATOR) {
+    addnav('T?Translation Editor', 'translations.php');
+    addnav("U?Untranslated Texts", "untranslated.php");
+}
 
 addnav("Editors");
 if ($session['user']['superuser'] & SU_EDIT_USERS) addnav("User Editor","user.php");

@@ -19,17 +19,13 @@ $result = db_query(
      GROUP BY $clansPrefix.clanid
      ORDER BY member_count DESC"
  );
+ $clanRows = [];
 
 if (db_num_rows($result) > 0) {
-	output(
-        "`7You ask %s`7 for the clan listings. She points you toward a marquee
-         board near the entrance of the lobby that lists the clans.`0`n`n",
-        $registrar
-    );
+	output("clan.list_clans", $registrar);
 	$v = 0;
-	$memb_n = translate_inline('`7(`@%s`7 members)`0');
-	$memb_1 = translate_inline('`7(`$%s`7 member)`0');
-	rawoutput('<table cellspacing="0" cellpadding="2" align="left">');
+	$memb_n = loadTranslation('clan.list_members');
+	$memb_1 = loadTranslation('clan.list_member');
 	while ($row = db_fetch_assoc($result)) {    
         $trClass = $v % 2 ? 'trlight' : 'trdark';
 		if ($row['member_count'] == 0) {
@@ -37,34 +33,31 @@ if (db_num_rows($result) > 0) {
                 "DELETE FROM $clansPrefix WHERE clanid = {$row['id']}"
             );
 		} else {
-			rawoutput(sprintf_translate('<tr class="%s"><td>', $trClass));
 			if ($row['member_count'] == 1) {
 				$memb = sprintf($memb_1, $row['member_count']);
 			} else {
 				$memb = sprintf($memb_n, $row['member_count']);
 			}
-			output_notl(
-                '• `2&lt;`7%s`2&gt; <a href="clan.php?detail=%s">%s</a> %s`n',
+			$clanRow = sprintf(
+                loadTranslation('clan.list_row'),
+                $trClass,
 				$row['tag'],
 				$row['id'],
 				htmlent($row['name']),
-				$memb,
-                true
+				$memb
             );
-			rawoutput('</td></tr>');
+            array_push($clanRows, $clanRow);
 			addnav('', "clan.php?detail={$row['id']}");
 			$v++;
 		}
 	}
-	rawoutput('</table>');
+	output(
+        loadTranslation('clan.list_template', [join($clanRows)]),
+        true
+    );
 	addnav('Return to the Lobby','clan.php');
 } else {
-	output(
-        "`7You ask %s`7 for the clan listings. She stares at you blankly for a
-         few moments, then says, \"`5Sorry pal, no one has had enough gumption
-         to start up a clan yet.  Maybe that should be you, eh?`7\"",
-        $registrar
-    );
+	output("clan.list_clans_empty", $registrar);
 	addnav('Apply for a New Clan', 'clan.php?op=new');
 	addnav('Return to the Lobby', 'clan.php');
 }

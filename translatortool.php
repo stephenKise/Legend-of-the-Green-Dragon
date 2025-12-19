@@ -24,7 +24,7 @@ if ($op==""){
 	$saveclose = htmlentities(translate_inline("Save & Close"), ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
 	$savenotclose = htmlentities(translate_inline("Save No Close"), ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
 	rawoutput("<form action='translatortool.php?op=save' method='POST'>");
-	rawoutput("$namespace <input name='uri' value=\"".htmlentities(stripslashes($uri), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\" readonly><br/>");
+	rawoutput("$namespace <input type='hidden' name='uri' value=\"".htmlentities(stripslashes($uri), ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\" readonly><br/>");
 	rawoutput("$texta<br>");
 	rawoutput("<textarea name='text' cols='60' rows='5' readonly>".htmlentities($text, ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."</textarea><br/>");
 	rawoutput("$translation<br>");
@@ -34,9 +34,14 @@ if ($op==""){
 	rawoutput("</form>");
 	popup_footer();
 }elseif ($_GET['op']=='save'){
+    global $language, $mysqli_resource;
 	$uri = httppost('uri');
 	$text = httppost('text');
 	$trans = httppost('trans');
+    $text = mysqli_real_escape_string($mysqli_resource, $text);
+    $trans = mysqli_real_escape_string($mysqli_resource, $trans);
+    $uri = mysqli_real_escape_string($mysqli_resource, $uri);
+    var_dump($text);
 
 	$page = $uri;
 	if (strpos($page,"?")!==false) $page = substr($page,0,strpos($page,"?"));
@@ -48,7 +53,7 @@ if ($op==""){
 	}
 	$sql .= "
 		FROM ".db_prefix("translations")."
-		WHERE language='".LANGUAGE."'
+		WHERE language='$language'
 			AND intext='$text'
 			AND (uri='$page' OR uri='$uri')";
 	if ($trans>""){
@@ -56,10 +61,9 @@ if ($op==""){
 		invalidatedatacache("translations-".$uri."-".$language);
 		//invalidatedatacache("translations-".$namespace."-".$language);
 		if (db_num_rows($result)==0){
-			$sql = "INSERT INTO ".db_prefix("translations")." (language,uri,intext,outtext,author,version) VALUES ('".LANGUAGE."','$uri','$text','$trans','{$session['user']['login']}','$logd_version ')";
+			$sql = "INSERT INTO ".db_prefix("translations")." (language,uri,intext,outtext,author,version) VALUES ('$language','$uri','$text','$trans','{$session['user']['login']}','$logd_version ')";
 			$sql1 = "DELETE FROM " . db_prefix("untranslated") .
-				" WHERE intext='$text' AND language='" . LANGUAGE .
-				"' AND namespace='$url'";
+				" WHERE intext='$text' AND language='$language' AND namespace='$url'";
 			db_query($sql1);
 		}elseif(db_num_rows($result)==1){
 			$row = db_fetch_assoc($result);
@@ -67,8 +71,8 @@ if ($op==""){
 			if ($row['intext'] == $text){
 				$sql = "UPDATE ".db_prefix("translations")." SET author='{$session['user']['login']}', version='$logd_version', uri='$uri', outtext='$trans' WHERE tid={$row['tid']}";
 			}else{
-				$sql = "INSERT INTO " . db_prefix("translations") . " (language,uri,intext,outtext,author,version) VALUES ('" . LANGUAGE . "','$uri','$text','$trans','{$session['user']['login']}','$logd_version ')";
-				$sql1 = "DELETE FROM " . db_prefix("untranslated") . " WHERE intext='$text' AND language='" . LANGUAGE . "' AND namespace='$url'";
+				$sql = "INSERT INTO " . db_prefix("translations") . " (language,uri,intext,outtext,author,version) VALUES ('$language','$uri','$text','$trans','{$session['user']['login']}','$logd_version ')";
+				$sql1 = "DELETE FROM " . db_prefix("untranslated") . " WHERE intext='$text' AND language='$language' AND namespace='$url'";
 				db_query($sql1);
 			}
 		}elseif(db_num_rows($result)>1){
@@ -84,7 +88,7 @@ if ($op==""){
 	}
 	db_query($sql);
 	if (httppost("savenotclose")>""){
-		header("Location: translatortool.php?op=list&u=$page");
+		// header("Location: translatortool.php?op=list&u=$page");
 		exit();
 	}else{
 		popup_header("Updated");
@@ -92,8 +96,9 @@ if ($op==""){
 		popup_footer();
 	}
 }elseif($op=="list"){
+    global $language;
 	popup_header("Translation List");
-	$sql = "SELECT uri,count(*) AS c FROM " . db_prefix("translations") . " WHERE language='".LANGUAGE."' GROUP BY uri ORDER BY uri ASC";
+	$sql = "SELECT uri,count(*) AS c FROM " . db_prefix("translations") . " WHERE language='$language' GROUP BY uri ORDER BY uri ASC";
 	$result = db_query($sql);
 	rawoutput("<form action='translatortool.php' method='GET'>");
 	rawoutput("<input type='hidden' name='op' value='list'>");
@@ -114,7 +119,7 @@ if ($op==""){
 	$norows = translate_inline("No rows found");
 	rawoutput("<table border='0' cellpadding='2' cellspacing='0'>");
 	rawoutput("<tr class='trhead'><td>$ops</td><td>$from</td><td>$to</td><td>$version</td><td>$author</td></tr>");
-	$sql = "SELECT * FROM " . db_prefix("translations") . " WHERE language='".LANGUAGE."' AND uri='".httpget("u")."'";
+	$sql = "SELECT * FROM " . db_prefix("translations") . " WHERE language='$language' AND uri='".httpget("u")."'";
 	$result = db_query($sql);
 	if (db_num_rows($result)>0){
 		$i=0;

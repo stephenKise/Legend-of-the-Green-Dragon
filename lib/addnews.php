@@ -10,7 +10,7 @@ declare(strict_types=1);
  */
 function addnews(string $text = '', array $options = [])
 {
-    global $translation_namespace, $session;
+    global $i18nNamespace, $session;
     $options = modulehook('addnews', $options);
     $news = db_prefix('news');
     $date = $options['date'] ?? date('Y-m-d');
@@ -25,6 +25,6 @@ function addnews(string $text = '', array $options = [])
         "INSERT INTO $news
         (newstext, newsdate, accountid, tlschema, arguments)
         VALUES
-        ('$text', '$date', '$acctid', '$translation_namespace', '$newsArgs')"
+        ('$text', '$date', '$acctid', '$i18nNamespace', '$newsArgs')"
     );
 }

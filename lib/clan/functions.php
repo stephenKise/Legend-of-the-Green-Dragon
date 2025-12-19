@@ -53,8 +53,8 @@ function clan_previousrank(array $ranks, int $current): int
 function clanHeader(): void
 {
     require_once('lib/villagenav.php');
-    page_header('Clan Halls');
+    page_header(loadTranslation('clan.title'));
     villagenav();
-    addnav('Clan Options');
-    output('`b`c`&Clan Halls`c`b');
+    addnav(loadTranslation('clan.nav_options_header'));
+    output('clan.header');
 }

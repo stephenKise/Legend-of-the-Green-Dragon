@@ -7,7 +7,7 @@ page_header('Clan Information');
 $currentClanId = $session['user']['clanid'];
 $targetId = (int) httpget('detail');
 $returnLink = urlencode($_SERVER['REQUEST_URI']);
-$detailTemplate = file_get_contents('lib/clan/templates/ClanDetailsTable.php');
+$detailTemplate = loadTranslation('clan.detail_list_template');
 $clansPrefix = db_prefix('clans');
 // @todo Reformat the schema for clans, keys be renamed and not prefixed
 // @todo Add a 'description_blocked' field for the Clans table
@@ -66,14 +66,14 @@ if (
     if (httppost('toggle_block') > '') {
         if ($clanDescAuthor == 0) {
             $newAuthor = $session['user']['acctid'];
-            output('`$Unblocking Clan description.`0`n');
+            output('clan.unblock_description');
         } else {
             $newAuthor = 0;
-            output('`$Blocking Clan description.`0`n');
+            output('clan.block_description');
         }
         $additionalStmt = ", descauthor = $newAuthor";
     } else {
-        output('`QUpdating clan names.`0`n');
+        output('clan.update_name');
     }
 	db_query(
         "UPDATE $clansPrefix
@@ -89,20 +89,16 @@ output('`@About `^%s`@:`0`n', $clanName);
 if ($clanDescAuthor != 0) output_notl(nltoappon($clanDesc));
 if ( nltoappon($clanDesc) != '' ) output('`n`n');
 
-output(
-    '`0This is the current clan membership of `^%s `2<`7%s`2>:`n',
-    $clanName,
-    $clanTag
-);
+output('clan.current_members', $clanName, $clanTag);
 $clanRanks = [
-    CLAN_APPLICANT => '`!Applicant`0',
-    CLAN_MEMBER => '`#Member`0',
-    CLAN_OFFICER => '`^Officer`0',
-    CLAN_LEADER => '`&Leader`0', 
-    CLAN_FOUNDER => '`$Founder`0'
+    CLAN_APPLICANT => loadTranslation('clan.rank_applicant'),
+    CLAN_MEMBER => loadTranslation('clan.rank_member'),
+    CLAN_OFFICER => loadTranslation('clan.rank_officer'),
+    CLAN_LEADER => loadTranslation('clan.rank_leader'), 
+    CLAN_FOUNDER => loadTranslation('clan.rank_founder')
 ];
 $moduleArgs = modulehook('clanranks', ['ranks' => $clanRanks, 'clanid' => $targetId]);
-$clanRanks = translate_inline($moduleArgs['ranks']);
+$clanRanks = $moduleArgs['ranks'];
 $totalDks = 0;
 $memberRows = [];
 $accountsPrefix = db_prefix('accounts');
@@ -125,12 +121,12 @@ foreach ($clanMembers as $key => $clanMember) {
     $bioUri = 'bio.php?char=' . $clanMember['acctid'] . '&ret=' . $returnLink;
     $bioLink = "<a href='$bioUri'>$targetName</a>";
     $currentRow = sprintf(
-        '<tr class="%s"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+        loadTranslation('clan.detail_list_row'),
         count($memberRows) % 2 ? 'trlight' : 'trdark',
         $clanRanks[$clanMember['clanrank']],
         $bioLink,
         $clanMember['dragonkills'],
-        $clanMember['clanjoindate']
+        date('m-d-Y', strtotime($clanMember['clanjoindate']))
     );
     array_push($memberRows, $currentRow);
 	addnav('', $bioUri);
@@ -138,6 +134,6 @@ foreach ($clanMembers as $key => $clanMember) {
 }
 
 output(sprintf($detailTemplate, join($memberRows)), true);
-output('`^This Clan has a total of `$%s`^ dragon kills.`0`n', $totalDks);
+output('clan.total_dks', $totalDks);
 
 page_footer();

@@ -30,7 +30,7 @@ switch (httpget('op')) {
         break;
     case 'withdrawconfirm':
         page_header('Clan Withdrawal');
-        output('Are you sure you want to withdraw from your clan?');
+        output('clan.withdraw_confirmation');
         addnav('Withdraw?');
         addnav('No', 'clan.php');
         addnav('!?Yes', 'clan.php?op=withdraw');

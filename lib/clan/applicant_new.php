@@ -15,31 +15,17 @@ if ($apply == 1) {
 }
 
 output(
-    "`7You approach %s`7 and inquire about starting a new Clan. She tells you
-     that there are three requirements to starting a Clan. You Clan must have a
-     name no longer than 50 characters, an abbreviated name no longer than 5
-     characters, and pay a fee of `@%s `^gold `7and `@%s `%gems`7.`n`n",
+    "clan.create_clan_requirements",
     $registrar,
     $requiredGold,
     $requiredGems
 );
 addnav('Return to the Lobby', 'clan.php');
 
-// @todo: Create some workaround in the future so that all output() functions are preloaded
-// in the database or filesystem.
-// This seems to be here originally so that admins can translate easier.
-$improperFundsMsg = translate_inline(
-    "\"`5Since you do not have proper payment, I cannot allow you to
-     establish a Clan here,`7\" she says.`n`n"
-);
-$clanFormMsg = translate_inline(
-    "\"`5If you're ok with these requirements, please fill the following
-     form,`7\" she says, handing you a sheet of paper.`n`n"
-);
 if ($userGold < $requiredGold || $userGems < $requiredGems) {
-	output_notl($improperFundsMsg);
+	output('clan.creation_improper_funds');
 } else {
-	output_notl($clanFormMsg);
+	output('clan.creation_form_instructions');
     createClanForm();
 }
 page_footer();

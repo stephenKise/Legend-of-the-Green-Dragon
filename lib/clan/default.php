@@ -32,11 +32,7 @@ $clanData = db_fetch_assoc($selectedClanQuery);
 page_header(full_sanitize("Clan Hall of $clanName"));
 
 modulehook('collapse{', ['name'=>'clan_entry']);
-output(
-    "Having pressed the secret levers and turned the secret knobs on the lock
-     of the door to your clan's hall, you gain entrance and chat with your clan
-     mates.`n`n"
-);
+output('clan.hall_default');
 modulehook('}collapse');
 
 $accountsPrefix = db_prefix('accounts');
@@ -47,10 +43,7 @@ if ($clanMotdAuthorId > 0 && $clanMotd > '') {
         60 * 60 * 24
     );
     $row = db_fetch_assoc($result);
-	rawoutput('<div style="margin-left: 15px; padding-left: 15px;">');
-	output('`b`&Current MoTD:`b `#by %s`0`n', $row['name']);
-	output_notl(nltoappon($clanMotd));
-	rawoutput('</div><br />');
+    output('clan.hall_current_motd', $row['name'], nltoappon($clanMotd), true);
 }
 
 commentdisplay(
@@ -70,9 +63,8 @@ if ($clanDescAuthorId > 0 && $clanDesc > '') {
     );
     $row = db_fetch_assoc($result);
     $clanDescAuthor = $row['name'];
+    output('clan.hall_description', $clanDescAuthor, nltoappon($clanDesc), true);
     modulehook('collapse{', ['name'=>'clan_description']);
-    output('`n`n`&`bCurrent Description:`b `#by %s`0`n', $clanDescAuthor);
-    output_notl(nltoappon($clanDesc));
     modulehook('}collapse');
 }
 

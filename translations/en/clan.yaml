@@ -1,0 +1,251 @@
+application_sent: |
+  `%%s`7 accepts your application, files it in her out box, and folds her hands 
+  on the desk, staring at you. You stand there staring blankly back at her for a 
+  few minutes before she suggests that perhaps you'd like to take a seat in the 
+  waiting area.
+mail_officer_subject: |
+  `@New Clan Applicant`0
+mail_officer_body: |
+  `^You have a new Clan applicant! `&%s`^ has completed a membership
+  application for your Clan!
+applicant_reminder_subject: |
+  `@Clan Application Reminder`0
+applicant_reminder_body: | 
+  `&Did you remember to read the description of the Clan of your
+  choice before applying? Note that some clans may have requirements
+  that you have to fulfill before you can become a member. If you
+  are not accepted into the clan of your choice anytime soon, it may
+  be because you have not fulfilled these requirements.  For your
+  convenience, the description of the clan you are applying to is
+  reproduced below.`n`n`c`#%s`@<`^%s`@>`0`c`n%s
+application_unknown: |
+  `7You ask %s`7 for a clan membership application form. She opens a drawer in 
+  her desk and pulls out a form.  It contains only two lines: Name and Clan 
+  Name. You furrow your brow, not sure if you really like having to deal with 
+  all this red tape, and get set to concentrate really hard in order to complete 
+  the form. Noticing your attempt to write on the form with your %s, %s`7 
+  claims the form back from you, writes %s`7 on the first line, and asks you 
+  the name of the clan that you'd like to join:`n`n
+application_error: |
+  `7You ask %s`7 for a clan membership application form. She opens a drawer in
+apply_list_template: |
+  <table cellspacing="0" cellpadding="2" align="left">
+      %s
+  </table>
+apply_list_row: |
+  <tr class='%s'>
+      <td>
+        • `2&lt;`7%s`2&gt; <a href="clan.php?detail=%s">%s</a> %s`n
+      </td>
+  </tr>
+apply_no_clans_created: |
+  `7You ask %s`7 for the clan listings. She stares at you blankly for a
+  few moments, then says, "`5Sorry pal, no one has had enough gumption
+  to start up a clan yet.  Maybe that should be you, eh?`7"
+creation_form: |
+  <div class='clan_create form'>
+      <form action='clan.php?op=new&apply=1' method='POST'>
+          `b`c`@New Clan Creation Form`0`c`b
+          <label for='clan_name'>Clan Name:</label>
+          <input name='clan_name' maxlength='50' value='%s' /><br />
+          <label for='clan_tag'>Clan Tag:</label>
+          <input name='clan_tag' maxlength='50' size='5' value='%s'/>
+          <div class='note'>
+              Note, color codes are prohibited in Clan names and tags.
+              The Clan name is shown throughout areas of the game world.
+              The Clan tag is displayed alongside members' names in several of the game.
+          </div>
+          <input type='submit' class='button' value='Apply'>
+      </form>
+  </div>
+
+  <style>
+      .clan_create > .form {
+          margin-left: 10px;
+          margin-right: 10px;
+      }
+  </style>
+withdraw_confirmation: |
+  Are you sure you want to withdraw from your clan?
+list_template: |
+  <table cellspacing="0" cellpadding="2" align="left">
+      %s
+  </table>
+list_row: |
+  <tr class='%s'>
+      <td>
+        • `2&lt;`7%s`2&gt; <a href="clan.php?detail=%s">%s</a> %s`n
+      </td>
+  </tr>
+list_member: |
+  `7(`Q%s`7 member)`0
+list_members: |
+  `7(`@%s`7 members)`0
+list_clans: |
+  `7You ask %s`7 for the clan listings. She points you toward a marquee
+  board near the entrance of the lobby that lists the clans.`0`n`n
+list_clans_empty: |
+  `7You ask %s`7 for the clan listings. She stares at you blankly for a
+  few moments, then says, "`5Sorry pal, no one has had enough gumption
+  to start up a clan yet.  Maybe that should be you, eh?`7"
+create_clan_requirements: |
+  `7You approach %s`7 and inquire about starting a new Clan. She tells you
+  that there are three requirements to starting a Clan. You Clan must have a
+  name no longer than 50 characters, an abbreviated name no longer than 5
+  characters, and pay a fee of `@%s `^{{common.gold}} `7and `@%s `%gems`7.`n`n
+creation_improper_funds: |
+  "`5Since you do not have proper payment, I cannot allow you to
+  establish a Clan here,`7" she says.`n`n
+creation_form_instructions: |
+  "`5If you're ok with these requirements, please fill the following
+  form,`7" she says, handing you a sheet of paper.`n`n
+error_improper_name: |
+  %s`7 looks over your form but quickly informs you that your clan
+  name must consist only of letters, spaces, apostrophes, or
+  dashes. Also, your short name can consist only of letters. She
+  hands you a blank form.
+error_name_too_long: |
+  %s`7 looks over your form but quickly stops to remind you, "`5A
+  name no longer than 50 characters, and an abbreviate name no
+  longer than 5 characters. Here is another blank form to try
+  again.`7"
+error_name_taken: |
+  %s`7 looks over your form but informs you that the desired Clan
+  name or tag is already taken, and hands you a blank form.
+creation_approved: | 
+  %s`7 looks over your form, and finding that everything seems to be in
+  order, she takes your fees, stamps the form "`$APPROVED`7" and
+  files it in a drawer.`n`n Congratulations, you've created a new clan
+  named `^%s`7!
+hall_default: |
+  Having pressed the secret levers and turned the secret knobs on the lock
+  of the door to your clan's hall, you gain entrance and chat with your clan
+  mates.`n`n
+hall_description: |
+  `n`n`&`bCurrent Description:`b `#by %s`0`n%s
+hall_current_motd: |
+  <div style="margin-left: 15px; padding-left: 15px;">
+  `b`&Current MoTD:`b `#by %s`0`n
+  %s
+  </div><br />
+block_description: |
+  `$Blocking Clan description.`0`n
+unblock_description: |
+  `$Unblocking Clan description.`0`n
+update_name: |
+  `QUpdating clan names.`0`n
+current_members: |
+  `0This is the current clan membership of `^%s `2<`7%s`2>:`n
+total_dks: |
+  `^This Clan has a total of `$%s`^ dragon kills.`0`n
+rank_applicant: |
+  `!Applicant`0
+rank_member: |
+  `#Member`0
+rank_officer: |
+  `&Officer`0
+rank_leader: |
+  `^Leader`0
+rank_founder: |
+  `$Founder`0
+detail_list_row: |
+  <tr class='%s'><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
+detail_list_template: |
+  <table class='table list clan player_list' cellpadding='2' cellspacing='0'>
+      <tr class='trhead heading'>
+          <td>Rank</td>
+          <td>Name</td>
+          <td>Dragon Kills</td>
+          <td>Join Date</td>
+      </tr>
+      %s
+  </table>
+awaiting_approval: |
+  `7You approach %s`7 who smiles at you, but lets you know that
+  your application to `^%s`7 hasn't been accepted yet.
+withdraw_application: |
+  `7You tell `%%s`7 that you're not interested in joining %s.
+  She reaches into her desk, withdraws your application, and
+  tears it up. "`5You wouldn't have been happy there anyhow, I
+  don't think,`7" as she tosses the shreds in her trash can.
+introduction: |
+  `7You stand in the center of a great marble lobby filled with pillars.
+  All around the walls of the lobby are various doors which lead to
+  various clan halls. The doors each possess a variety of intricate
+  mechanisms which are obviously elaborate locks designed to be opened
+  only by those who have been educated on how to operate them. Nearby,
+  you watch another warrior glance about nervously to make sure no one
+  is watching before touching various levers and knobs on the door. With
+  a large metallic "chunk" the lock on the door disengages, and the
+  door swings silently open, admitting the warrior before slamming shut.
+  `n`n
+  In the center of the lobby sits a highly polished desk, behind which
+  sits `%%s`7, the clan registrar. She can take your filing for a new
+  clan, or accept your application to an existing clan.`n`n
+superuser_rename_form: |
+  <div id='superuser_renaming_form' style='display: none;'>
+      <h3>Superuser Renaming:</h3>
+      <form action='clan.php?detail=%s' method='POST'>
+          <label for='clan_name'>Long Name:</label>
+          <input name='clan_name' value='%s' maxlength=50 /><br />
+          <label for='clan_tag'>Short Name:</label>
+          <input name='clan_tag' value='%s' maxlength=5 /><br />
+          <input type='submit' class='button superuser' value='Save' />
+          <input type='submit' name='toggle_block' class='button superuser'
+              value='Block/Unblock description' />
+      </form>
+  </div>
+  <script language='JavaScript'>
+      var form = document.getElementById('superuser_renaming_form')
+      toggleForm = () => {
+          console.log('flip')
+          form.style.display = form.style.display === 'none' ? 'block' : 'none'
+      }
+  </script>
+  <a id='toggle_form_display' onclick='toggleForm()'>
+    [Toggle Clan Name/Tag Editor]
+  </a>
+  <br />
+title: Clan Halls
+nav_options_header: Clan Optionssss
+header: |
+  `b`c`&Clan Halls`c`b
+
+members_list_rank_header: |
+  `$Rank
+members_list_name_header: Name
+members_list_level_header: Level
+members_list_dk_header: DKs
+members_list_joindate_header: Join Date
+members_list_laston_header: Last On
+members_list_operations_header: Operations
+members_list_operation_promote: Promote
+members_list_operation_demote: Demote
+members_list_operation_remove: Remove From Clan
+members_list_operation_step_down: Step Down
+members_list_confirm_remove: Are you sure you wish to remove this member?
+members_list_operations_column: |
+  <td>%s</td>
+members_list_template: |
+  <table border='0' cellpadding='2' cellspacing='0'>
+    <tr class='trhead'>
+      <td>%s</td>
+      <td>%s</td>
+      <td>%s</td>
+      <td>%s</td>
+      <td>%s</td>
+      <td>%s</td>
+      %s
+      %s
+    </tr>
+  </table>
+members_list_row: |
+  <tr class='%s'>
+      <td>%s</td>
+      <td><a href='%s'>%s</a></td>
+      <td>%s</td>
+      <td>%s</td>
+      <td>%s</td>
+      <td>%s</td>
+      %s
+  </tr>

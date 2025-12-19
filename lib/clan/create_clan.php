@@ -4,24 +4,24 @@ require_once 'lib/clan/func.php';
 
 
 ['clan_name' => $submittedName,'clan_tag' => $submittedTag] = httpallpost();
-$errorMsgs = [
-    translate_inline(
-        "%s`7 looks over your form but quickly informs you that your clan
-         name must consist only of letters, spaces, apostrophes, or
-         dashes. Also, your short name can consist only of letters. She
-         hands you a blank form."
-    ),
-    translate_inline(
-        "%s`7 looks over your form but quickly stops to remind you, \"`5A
-         name no longer than 50 characters, and an abbreviate name no
-         longer than 5 characters. Here is another blank form to try
-         again.`7\""
-    ),
-    translate_inline(
-        "%s`7 looks over your form but informs you that the desired Clan
-         name or tag is already taken, and hands you a blank form."
-    ),
-];
+// $errorMsgs = [
+//     translate_inline(
+//         "%s`7 looks over your form but quickly informs you that your clan
+//          name must consist only of letters, spaces, apostrophes, or
+//          dashes. Also, your short name can consist only of letters. She
+//          hands you a blank form."
+//     ),
+//     translate_inline(
+//         "%s`7 looks over your form but quickly stops to remind you, \"`5A
+//          name no longer than 50 characters, and an abbreviate name no
+//          longer than 5 characters. Here is another blank form to try
+//          again.`7\""
+//     ),
+//     translate_inline(
+//         "%s`7 looks over your form but informs you that the desired Clan
+//          name or tag is already taken, and hands you a blank form."
+//     ),
+// ];
 
 $clanName = stripslashes($submittedName);
 $clanName = full_sanitize($clanName);
@@ -35,7 +35,7 @@ httppostset('clan_tag', $clanTag);
 
 // Name/tag has special characters, require a clean name/tag
 if ($clanName != $submittedName || $clanTag != $submittedTag) {
-    output_notl($errorMsgs[0], $registrar);
+    output_notl('clan.error_improper_name', $registrar);
     createClanForm($clanName, $clanTag);
     addnav('Return to the Lobby', 'clan.php');
     page_footer();
@@ -48,7 +48,7 @@ if (
     || strlen($clanTag) < 1
     || strlen($clanTag) > 5
 ) {
-    output_notl($errorMsgs[1], $registrar);
+    output_notl('clan.error_name_too_long', $registrar);
     createClanForm($clanName, $clanTag);
     addnav('Return to the Lobby', 'clan.php');
     page_footer();
@@ -61,7 +61,7 @@ $result = db_query(
     OR clanshort = '$clanTag'"
 );
 if (db_num_rows($result) > 0) {
-    output_notl($errorMsgs[2], $registrar);
+    output_notl('clan.error_name_taken', $registrar);
     createClanForm($clanName, $clanTag);
     addnav('Return to the Lobby', 'clan.php');
     page_footer();
@@ -99,10 +99,7 @@ $session['user']['clanjoindate'] = date('Y-m-d H:i:s');
 $session['user']['gold'] -= $requiredGold;
 $session['user']['gems'] -= $requiredGems;
 output(
-    "%s`7 looks over your form, and finding that everything seems to be in
-    order, she takes your fees, stamps the form \"`\$APPROVED`7\" and
-    files it in a drawer.`n`n Congratulations, you've created a new clan
-    named `^%s`7!",
+    "clan.creation_approved",
     $registrar,
     stripslashes($clanName)
 );

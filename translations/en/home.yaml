@@ -1,0 +1,72 @@
+description: |
+  `cWelcome to the Legend of the Green Dragon, a text-based roleplay game created by Eric Stevens based on Legend of the Red Dragon.`c
+time: |
+  `c`^The current time in %s is `%%s`@.`0`c
+newday_time: |
+  `c`^Next new game day in: `$%s (real time)`0`c
+newest_player: |
+  `c`^The newest resident of the realm is: `&%s`0`c
+banner: |
+  `c`&`b*BETA*`b`$ This is a BETA of this website, things are likely to
+  change now and again, as it is under active development *BETA*`c
+game_version: |
+  `cGame server running version: `@%s`0`c
+skin_select: |
+  <form action='home.php' method='POST'>
+    <label for='skinselect'>`&Select your preferred skin:`0</label>
+    <select name='skinselect' id='skinselect'>
+      %s
+    </select>
+    <input type='submit' value='{{common.choose}}'>
+  </form>
+login_form: |
+  `cEnter your name and password to enter the realm.`n
+  <form action='login.php' method='POST' onSubmit="md5pass();">
+    %s
+  </form>`c
+login_form_javascript: |
+  <script type="text/javascript" src="lib/md5.js"></script>
+  <script type="text/javascript">
+    function md5pass() {
+      var passbox = document.getElementById('password');
+      if (passbox.value.substring(0, 5) != '!md5!') {
+        passbox.value = '!md5!' + hex_md5(passbox.value);
+      }
+    }
+  </script>
+server_full: |
+  `$`bServer full!`b`n`^Please wait until some users have logged out.`n`n`0
+login_username: |
+  Username
+login_password: |
+  Password
+login_submit: |
+  Log in
+timeout: |
+  Your session has timed out, you must log in again.`n
+no_cookie: |
+  It appears that you may be blocking cookies from this site. At least session cookies must be enabled in order to use this site.`n
+navs:
+  create: |
+    Create Character
+  forgot: |
+    Forgot Password
+  list_characters: |
+    List Characters
+  news: |
+    Daily News
+  about: |
+    About LotGD
+  setup_info: |
+    Game Setup Info
+  lotgdnet: |
+    LotGD Network
+
+nav_headers:
+  new: |
+    New to LotGD?
+  about_game: |
+    Game Functions
+  info: |
+    Other Information    
+

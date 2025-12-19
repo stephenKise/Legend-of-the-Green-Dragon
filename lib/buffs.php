@@ -135,10 +135,10 @@ function restore_buff_fields(){
 }//end function
 
 function apply_buff($name,$buff){
-	global $session,$buffreplacements, $translation_namespace;
+	global $session,$buffreplacements, $i18nNamespace;
 
 	if (!isset($buff['schema']) || $buff['schema'] == "") {
-		$buff['schema'] = $translation_namespace;
+		$buff['schema'] = $i18nNamespace;
 	}
 
 	if (isset($buffreplacements[$name])) unset($buffreplacements[$name]);

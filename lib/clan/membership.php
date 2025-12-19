@@ -94,48 +94,41 @@ if ($remove > 0) {
 }
 
 $clanRanks = [
-    CLAN_APPLICANT => '`!Applicant`0',
-    CLAN_MEMBER => '`#Member`0',
-    CLAN_OFFICER => '`^Officer`0',
-    CLAN_LEADER => '`&Leader`0', 
-    CLAN_FOUNDER => '`$Founder`0'
+    CLAN_APPLICANT => loadTranslation('clan.rank_applicant'),
+    CLAN_MEMBER => loadTranslation('clan.rank_member'),
+    CLAN_OFFICER => loadTranslation('clan.rank_officer'),
+    CLAN_LEADER => loadTranslation('clan.rank_leader'), 
+    CLAN_FOUNDER => loadTranslation('clan.rank_founder'),
 ];
 $moduleArgs = modulehook(
     'clanranks',
     ['ranks' => $clanRanks, 'clanid' => $clanId]
 );
-$clanRanks = translate_inline($moduleArgs['ranks']);
+$clanRanks = $moduleArgs['ranks'];
 
-$rank = translate_inline('Rank');
-$name = translate_inline('Name');
-$level = translate_inline('Level');
-$dragonKills = translate_inline('Dragon Kills');
-$joinDate = translate_inline('Join Date');
-$lastOn = translate_inline('Last On');
+$rank = loadTranslation('clan.members_list_rank_header');
+$name = loadTranslation('clan.members_list_name_header');
+$level = loadTranslation('clan.members_list_level_header');
+$dragonKills = loadTranslation('clan.members_list_dk_header');
+$joinDate = loadTranslation('clan.members_list_joindate_header');
+$lastOn = loadTranslation('clan.members_list_laston_header');
 $operations = translate_inline('Operations');
 $operationsColumn = ($userClanRank >= CLAN_OFFICER)
-    ? "<td>$operations</td>"
+    ? sprintf(
+        loadTranslation('clan.members_list_operations_column'),
+        loadTranslation('clan.members_list_operations_header')
+    )
     : '';
-$promote = translate_inline('Promote');
-$demote = translate_inline('Demote');
-$stepDown = translate_inline('`$Step down as founder');
-$removeMember = translate_inline('Remove From Clan');
-$confirmRemove = translate_inline('Are you sure you wish to remove this member?');
+$promote = loadTranslation('clan.members_list_operation_promote');
+$demote = loadTranslation('clan.members_list_operation_demote');
+$stepDown = loadTranslation('clan.members_list_operation_step_down');
+$removeMember = loadTranslation('clan.members_list_operation_remove');
+$confirmRemove = loadTranslation('clan.members_list_confirm_remove');
 // @todo: Remove additional attributes, suggest a class for each table individually
-rawoutput(
-    "<table border='0' cellpadding='2' cellspacing='0'>
-     <tr class='trhead'>
-      <td>$rank</td>
-      <td>$name</td>
-      <td>$level</td>
-      <td>$dragonKills</td>
-      <td>$joinDate</td>
-      <td>$lastOn</td>
-      $operationsColumn
-     </tr>"
-);
+
 $i = 0;
 $totalDks = 0;
+$members = [];
 $result = db_query(
     "SELECT name, login, acctid, clanrank, laston, clanjoindate, dragonkills, level
      FROM $accountsPrefix
@@ -161,28 +154,18 @@ while ($row = db_fetch_assoc($result)) {
     $targetUri = urlencode($_SERVER['REQUEST_URI']);
     $bioLink = "bio.php?char=$targetId&ret=$targetUri";
     addnav('', $bioLink);
-	output_notl(
-        "<tr class='$rowHighlight'>
-            <td>`#$targetClanRank`0</td>
-            <td><a href='$bioLink'>`&$targetName`0</a></td>
-            <td align='center'>`^$targetLevel`0</td>
-            <td align='center'>`\$$targetDks`0</td>
-            <td>`3$targetJoinDate`0</td>
-            <td>`#$targetLastOn`0</td>",
-        true
-    );
+    $operationStr = '';
 	if ($userClanRank >= CLAN_OFFICER) {
         $encodedLogin = rawurlencode($targetLogin);
         $encodedName = rawurlencode($targetName);
         $previousRank = clan_previousrank($clanRanks, $targetRank);
-		rawoutput('<td>');
 		if ($row['clanrank'] < $userClanRank && $row['clanrank'] < CLAN_FOUNDER) {
             $nextRank = clan_nextrank($clanRanks, $targetRank);
             $promoteUri = "clan.php?op=membership&setrank=$nextRank&who=$encodedLogin&whoname=$encodedName&whoacctid=$targetId";
-			rawoutput("[ <a href='$promoteUri'>$promote</a> | ");
+			$operationStr .= "<td>[ <a href='$promoteUri'>$promote</a> | ";
 			addnav('', $promoteUri);
 		} else {
-			output_notl("[ `)$promote`0 | ");
+			$operationStr .= "<td>[ `)$promote`0 | ";
 		}
 		if (
             $row['clanrank'] <= $session['user']['clanrank']
@@ -191,7 +174,7 @@ while ($row = db_fetch_assoc($result)) {
             && $previousRank > 0
         ) {
             $demoteUri = "clan.php?op=membership&setrank=$previousRank&whoacctid=$targetId";
-			rawoutput("<a href='$demoteUri'>$demote</a> | ");
+			$operationStr .= "<a href='$demoteUri'>$demote</a> | ";
 			addnav('', $demoteUri);
 		} elseif (
             $row['clanrank'] == CLAN_FOUNDER
@@ -199,27 +182,52 @@ while ($row = db_fetch_assoc($result)) {
             && $row['login'] == $session['user']['login']
         ) {
             $stepDownUri = "clan.php?op=membership&setrank=$previousRank&whoacctid=$targetId";
-			output_notl("<a href='$stepDownUri'>$stepDown</a> | ",true);
+			$operationStr .= "<a href='$stepDownUri'>$stepDown</a> | ";
 			addnav('', $stepDownUri);
 		} else {
-			output_notl("`)$demote`0 | ");
+			$operationStr .= "`)$demote`0 | ";
 		}
 		if ($row['clanrank'] <= $session['user']['clanrank'] && $row['login']!=$session['user']['login']) {
             $removeUri = "clan.php?op=membership&remove=$targetId";
-			rawoutput(
-                "<a href='$removeUri' onClick=\"return confirm('$confirmRemove');\">
-                 $removeMember
-                 </a> ]"
-            );
+			$operationStr .= "<a 
+                href='$removeUri'
+                onClick=\"return confirm('$confirmRemove');\"
+                >
+                $removeMember
+                </a> ]</td>";
 			addnav('', $removeUri);
 		} else {
-			output_notl("`)$removeMember`0 ]");
+			$operationStr .= "`)$removeMember`0 ]</td>";
 		}
-		rawoutput('</td>');
 	}
-	rawoutput('</tr>');
+	$member = sprintf(
+        loadTranslation('clan.members_list_row'),
+        $rowHighlight,
+        $targetClanRank,
+        $bioLink,
+        $targetName,
+        $targetLevel,
+        $targetDks,
+        date('m-d-Y', strtotime($targetJoinDate)),
+        date('m-d-Y', strtotime($targetLastOn)),
+        $operationStr
+    );
+    array_push($members, $member);
 }
-rawoutput('</table>');
+output_notl(
+    sprintf(
+        loadTranslation('clan.members_list_template'),
+        $rank,
+        $name,
+        $level,
+        $dragonKills,
+        $joinDate,
+        $lastOn,
+        $operationsColumn,
+        implode($members),
+    ),
+    true
+);
 output('`n`n`^This clan has a total of `$%s`^ Dragon kills.', $totalDks);
 
 page_footer();
