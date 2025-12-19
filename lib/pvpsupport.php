@@ -113,7 +113,7 @@ function pvpvictory($badguy, $killedloc, $options)
 	} else {
 		$msg = "`2While you were in %s, `^%s`2 initiated an attack on you with her `^%s`2, and defeated you!`n`nYou noticed she had an initial hp of `^%s`2 and just before you died she had `^%s`2 remaining.`n`nAs a result, you lost `\$%s%%`2 of your experience (approximately %s points), and `^%s`2 gold.`n%s`nDon't you think it's time for some revenge?`n`n`b`7Technical Notes:`b`nAlthough you might not have been in %s`7 when you got this message, you were in %s`7 when the fight was started, which was at %s according to the server (the fight lasted about %s).";
 	}
-	$mailmessage = array($msg,
+	$mailmessage = sprintf($msg,
 			$killedloc, $session['user']['name'],
 			$session['user']['weapon'], $badguy['playerstarthp'],
 			$session['user']['hitpoints'], getsetting("pvpdeflose", 5),
@@ -123,7 +123,7 @@ function pvpvictory($badguy, $killedloc, $options)
 			reltime((int)$badguy['fightstartdate']));
 
 	systemmail($badguy['acctid'],
-			array("`2You were killed while in %s`2", $killedloc),
+			sprintf("`2You were killed while in %s`2", $killedloc),
 			$mailmessage);
 	// /\- Gunnar Kreitz
 
@@ -175,8 +175,8 @@ function pvpdefeat($badguy, $killedloc, $taunt, $options)
 	}
 	$msg .= "!`n%s`n`0";
 	systemmail($badguy['acctid'],
-			array("`2You were successful while you were in %s`2", $killedloc),
-			array($msg, $session['user']['name'], $killedloc, $wonexp,
+			sprintf("`2You were successful while you were in %s`2", $killedloc),
+			sprintf($msg, $session['user']['name'], $killedloc, $wonexp,
 				$winamount, $args['pvpmsgadd']));
 
 	if ($row['level'] >= $badguy['creaturelevel']) {
