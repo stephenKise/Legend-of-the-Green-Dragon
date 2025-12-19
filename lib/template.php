@@ -73,18 +73,6 @@ function prepare_template($force=false){
 	if ($templatemessage!=""){
 		echo "<b>You have one or more errors in your template page!</b><br>".nl2br($templatemessage);
 		$template=loadtemplate("jade.htm");
-	}else {
-		$y = 0;
-		$z = $y2^$z2;
-		if (isset($session['user']['loggedin']) && $session['user']['loggedin'] && $x > ''){
-			$$z = $x;
-		}
-		if (isset($$z)) {
-		$$z = $lc . $$z . "<br />";
-		}
-		else {
-			$$z = $lc . "<br />";
-		}
 	}
 
 }
