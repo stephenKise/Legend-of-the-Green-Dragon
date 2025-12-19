@@ -480,9 +480,9 @@ function formatChatString(string $formattedComment,  array $row): array
             'id' => $row['commentid'],
             'posted' => $row['postdate'],
             'rawComment' => $row['comment'],
-            'formattedComment' => appoencode("<div class='jQuery-message'>
-                    $edit $formattedComment
-                </div>")
+            'formattedComment' => appoencode(
+                "<div class='jQuery-message'>$formattedComment</div>"
+            )
         ]
     );
 }
