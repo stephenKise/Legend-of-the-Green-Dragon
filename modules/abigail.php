@@ -94,6 +94,7 @@ function abigail_runevent($type, $link)
     $cost = get_module_setting('cost');
     $trinket = get_module_pref('trinket');
     $op = httpget('op');
+    $returnNav = loadTranslation('common.navs.return_to', ['whence you came']);
     switch ($op) {
         case 'leave':
             $session['user']['specialinc'] = '';
@@ -101,7 +102,7 @@ function abigail_runevent($type, $link)
                 "`5Not having any gems to buy a gift for `^%s`5, you wander sadly away.`n`n`0",
                 $partner
             );
-            addnav('Return to whence you came', $link);
+            addnav($returnNav, $link);
             break;
         case 'nope':
             $session['user']['specialinc'] = '';
@@ -110,7 +111,7 @@ function abigail_runevent($type, $link)
                 $trinket,
                 $partner
             );
-            addnav('Return to whence you came', $link);
+            addnav($returnNav, $link);
             break;
         case 'shout':
             $session['user']['specialinc'] = '';
@@ -149,7 +150,7 @@ function abigail_runevent($type, $link)
                     set_module_pref('liked', -1);
                 }
             }
-            addnav('Return to whence you came', $link);
+            addnav($returnNav, $link);
             break;
         default:
             $session['user']['specialinc'] = '';
