@@ -31,6 +31,9 @@ git clone git@github.com:stephenKise/Legend-of-the-Green-Dragon.git /var/www/htm
 # Create a cache directory, name it whatever you wish.
 cd /var/www/html/lotgd.io && mkdir cache 
 
+# Install Composer dependencies
+composer install
+
 # Ensure the proper read/write permissions are set to the cache folder
 sudo chown -R www-data:www-data ./cache/
 
