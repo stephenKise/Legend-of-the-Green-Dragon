@@ -45,6 +45,10 @@ armor: |
   `^Armor
 creature: |
   `^Creature
+names:
+  banker: |
+    `@Elessa
+  
 vital_stat_label: Vital Info
 equipment_stat_label: Equipment
 companion_stat_label: Companions
@@ -52,7 +56,6 @@ personal_stat_label: Personal Info
 buffs_stat_label: Buffs
 navs:
   home: Home
-  village: Village
   forest: Forest
   inn: Inn
   arena: Arena
@@ -62,6 +65,15 @@ navs:
   news: News
   faq: FAQ
   logout: Log Out
+  daily_news: R?Return to Daily News
+  village: R?Return to Village 
+  mundane: R?Return to the Mundane
+  grotto: R?Return to the Grotto
+  graveyard: R?Return to the Graveyard
+  shades: R?Return to the Shades
+  return_to: R?Return to %s
+nav_headers:
+  navigation: Navigation
 yes: Yes
 no: No
 ok: OK

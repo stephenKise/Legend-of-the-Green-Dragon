@@ -50,7 +50,7 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
     if ($session['user']['alive']){
         villagenav();
     }else{
-        addnav("Return to the news","news.php");
+        addnav('common.navs.daily_news', 'news.php');
     }
 
 

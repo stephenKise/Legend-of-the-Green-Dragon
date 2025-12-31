@@ -37,9 +37,7 @@ case "run":
 			output("`)You have `\$LOST `^%s`) favor with `\$%s`).",$favor,$deathoverlord);
 			$session['user']['deathpower']-=$favor;
 		}
-		tlschema("nav");
-		addnav("G?Return to the Graveyard","graveyard.php");
-		tlschema();
+		addnav('common.navs.graveyard', 'graveyard.php');
 	} else {
 		output("`)As you try to flee, you are summoned back to the fight!`n`n");
 		$battle=true;
@@ -96,9 +94,7 @@ if ($battle){
 			output("`b`&You have been defeated by `%%s`&!!!`n", $badguy['creaturename']);
 			output("You may not torment any more souls today.");
 			$session['user']['gravefights']=0;
-			tlschema("nav");
-			addnav("G?Return to the Graveyard","graveyard.php");
-			tlschema();
+			addnav('common.navs.graveyard', 'graveyard.php');
 		}else{
 			require_once("lib/fightnav.php");
 			fightnav(false, true, "graveyard.php");

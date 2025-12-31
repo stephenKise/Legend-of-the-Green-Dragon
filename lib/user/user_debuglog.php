@@ -1,7 +1,7 @@
 <?php
 if ($petition !=""){
 	addnav("Navigation");
-	addnav("Return to the petition","viewpetition.php?op=view&id=$petition");
+	addnav(loadTranslation('common.navs.return_to', ['the Petition']), "viewpetition.php?op=view&id=$petition");
 }
 $debuglog = db_prefix('debuglog');
 $accounts = db_prefix('accounts');

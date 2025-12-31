@@ -1,4 +1,7 @@
 <?php
+
+require_once('lib/translations.php');
+
 /**
  * Library Functions for page output.
  *		translator ready
@@ -76,20 +79,6 @@ function output_notl($indata){
 	//apply to the page.
 	$output.=tlbutton_pop().$out;
 	$output.="\n";
-}
-
-/**
- * Checks if a given string is a translation key
- * @param mixed $str String to check for translation keys (ex: 'home.title')
- * @return bool
- */
-function isTranslateKey($str) {
-    return (
-        is_string($str) &&
-        strpos($str, ' ') === false &&
-        strpos($str, '<') === false && 
-        preg_match('/^[a-z_\-\.]+$/', $str)
-    );
 }
 
 /**
@@ -449,7 +438,9 @@ function addnavheader($text, $collapse=true,$translate=TRUE)
 	global $navschema, $navnocollapse, $block_new_navs, $notranslate;
 
 	if ($block_new_navs) return;
-
+    if (isTranslateKey($text)) {
+        $text = loadTranslation($text);
+    }
 	if (is_array($text)){
 		$text = "!array!".serialize($text);
 	}
@@ -525,6 +516,9 @@ function addnav(
 	if ($block_new_navs)
 		return;
 
+    if (isTranslateKey($text)) {
+        $text = loadTranslation($text);
+    }
 	if ($link === false) {
 		
 		if ($text !== '') return addnavheader($text);

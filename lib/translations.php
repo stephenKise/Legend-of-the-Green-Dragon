@@ -276,3 +276,18 @@ function invalidateTranslationCache(): void
     $TRANSLATION_CACHE = [];
     $TRANSLATION_RESOLVING = [];
 }
+
+
+/**
+ * Checks if a given string is a translation key
+ * @param mixed $str String to check for translation keys (ex: 'home.title')
+ * @return bool
+ */
+function isTranslateKey($str) {
+    return (
+        is_string($str) &&
+        strpos($str, ' ') === false &&
+        strpos($str, '<') === false && 
+        preg_match('/^[a-z_\-\.]+$/', $str)
+    );
+}

@@ -1,21 +1,18 @@
 <?php
-// translator ready
-// addnews ready
-// mail ready
-function villagenav($extra=false)
+
+function villagenav(bool $extra = false)
 {
 	global $session;
-	$loc = $session['user']['location'];
-	if ($extra === false) $extra="";
-	$args = modulehook("villagenav");
+	$location = $session['user']['location'];
+	if ($extra === false) $extra = '';
+	$args = modulehook('villagenav');
 	if (array_key_exists('handled', $args) && $args['handled']) return;
-	tlschema("nav");
 	if ($session['user']['alive']) {
-		addnav(sprintf_translate("V?Return to %s", $loc), "village.php$extra");
+		addnav(
+            loadTranslation('common.navs.return_to', [$location]),
+            "village.php$extra"
+        );
 	} else {
-		// user is dead
-		addnav("S?Return to the Shades","shades.php");
+		addnav('common.navs.shades', 'shades.php');
 	}
-	tlschema();
 }
-?>

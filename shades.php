@@ -26,7 +26,7 @@ addnav("Log out","login.php?op=logout");
 addnav("Places");
 addnav("The Graveyard","graveyard.php");
 
-addnav("Return to the news","news.php");
+addnav('common.navs.daily_news', 'news.php');
 
 tlschema("nav");
 

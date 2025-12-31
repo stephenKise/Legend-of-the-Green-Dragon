@@ -1,4 +1,7 @@
 <?php
+
+require_once('lib/translations.php');
+
 /**
  * Library (supporting) functions for page output
  *		addnews ready
@@ -48,16 +51,22 @@ function page_header(){
 
 	$arguments = func_get_args();
 	if (!$arguments || count($arguments) == 0) {
-		$arguments = array("Legend of the Green Dragon");
+		$arguments = [loadTranslation('common.title')];
 	}
-	$title = call_user_func_array("sprintf_translate", $arguments);
-	$title = holidayize($title,'title');
+    $title = array_shift($arguments);
+    if (isTranslateKey($title)) {
+        $title = loadTranslation($title, $arguments);
+    }
+    else {
+        $title = vsprintf($title, $arguments);
+    }
+	$title = holidayize($title, 'title');
 	$title = sanitize($title);
 	calculate_buff_fields();
 
 	$header = $template['header'];
-	$header=str_replace("{title}",$title,$header);
-	$header.=tlbutton_pop();
+	$header = str_replace('{title}', $title, $header);
+	$header.= tlbutton_pop();
 }
 
 /**
