@@ -148,6 +148,8 @@ rank_leader: |
   `^Leader`0
 rank_founder: |
   `$Founder`0
+detail_header: |
+  Clan membership for %s &lt;%s&gt;
 detail_list_row: |
   <tr class='%s'><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>
 detail_list_template: |

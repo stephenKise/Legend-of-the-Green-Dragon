@@ -41,7 +41,7 @@ addnav('List Clans', 'clan.php?op=list');
 addnav('Return to the Lobby', 'clan.php');
 
 page_header(
-    'Clan membership for %s &lt;%s&gt;',
+    'clan.detail_header',
     full_sanitize($clanName),
     full_sanitize($clanTag)
 );
