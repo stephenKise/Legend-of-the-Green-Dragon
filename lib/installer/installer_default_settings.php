@@ -1,12 +1,6 @@
 <?php
 $defaultSettings = [
-	"transferperlevel"=>25,
-	"maxtransferout"=>25,
 	"charset"=>"iso-8859-1",
-	"transferreceive"=>3,
-	"borrowperlevel"=>20,
-	"allowgoldtransfer"=>0,
-	"mintransferlev"=>3,
 	"instantexp"=>false,
 	"allowclans"=>false,
 	"LOGINTIMEOUT"=>900,
@@ -78,7 +72,6 @@ $defaultSettings = [
 	"suicidedk"=>10,
 	"dropmingold"=>0,
 	"forestgemchance"=>25,
-	"instantexp"=>false,
 	"addexp"=>5,
 	"forestexploss"=>10,
 	"disablebonuses"=>1,

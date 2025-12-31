@@ -32,14 +32,6 @@ $setup = array(
 	"daysperday"=>"Game days per calendar day,viewonly",
 	"specialtybonus"=>"Extra daily uses in specialty area,viewonly",
 
-	"Bank settings,title",
-	"borrowperlevel"=>"Max amount player can borrow per level,viewonly",
-	"allowgoldtransfer"=>"Are players allowed to transfer gold,viewonly",
-	"transferperlevel"=>"Max amount player can transfer per level of recipient (if transfers are enabled),viewonly",
-	"mintransferlev"=>"Minimum level a player has to be before they can transfer gold (if transfers are enabled),viewonly",
-	"transferreceive"=>"Total transfers a player can receive in one play day (if transfers are enabled),viewonly",
-	"maxtransferout"=>"Max amount total a player can transfer to others per level (if transfers are enabled),viewonly",
-
 	"Forest,title",
 	"turns"=>"Forest Fights per day,viewonly",
 	"dropmingold"=>"Forest Creatures always drop at least 1/4 of possible gold,viewonly",

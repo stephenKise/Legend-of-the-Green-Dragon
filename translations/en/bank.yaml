@@ -1,0 +1,80 @@
+title: Ye Olde Bank
+header: |
+  `^`c`bYe Olde Bank`b`0`c
+default: |
+  `6As you approach the pair of impressive carved rock crystal doors,
+  they part to allow you entrance into the bank. You find yourself standing
+  in a room of exquisitely vaulted ceilings of carved stone. Light filters
+  through tall windows in shafts of soft radiance. About you, clerks are
+  bustling back and forth. The sounds of gold being counted can be heard,
+  though the treasure is nowhere to be seen.`n`n
+
+  You walk up to a counter of jet black marble.`n`n
+
+  {{common.names.banker}}`6, a petite woman in an immaculately tailored business dress,
+  greets you from behind reading spectacles with polished silver frames.`n`n
+
+  `6"`5Greetings, my good lady,`6" you greet her, "`5Might I inquire
+  as to my balance this fine day?`6"`n`n
+
+  {{common.names.banker}}`6 blinks for a moment and then smiles, "`@Hmm, `&%s`@, let's
+  see...`6" she mutters as she scans down a page in her ledger.`0
+balance_positive: |
+  `6"`@Aah, yes, here we are. You have `^%s gold`@ in our prestigious
+  bank. Is there anything else I can do for you?`6"
+balance_negative: |
+  `6"`@Aah, yes, here we are.  You have a `$debt`@ of `^%s gold`@
+  in our prestigious bank. Is there anything else I can do for you?`6"
+current_balance: |
+  {{common.names.banker}}`6 says, "`@You have a balance of `^%s`@ {{common.gold}}`@ in the bank.`6"`0`n
+current_debt: |
+  {{common.names.banker}}`6 says, "`@You have a `$debt`@ of `^%s`@ {{common.gold}}`@ to the bank.`6"`0`n
+current_on_hand: |
+  `6Searching through all your pockets and pouches, you calculate that you currently have `^%s`6 {{common.gold}}`6 on hand.`n
+deposit_request: |
+  `^Deposit how much?`0
+payoff_debt: |
+  {{common.names.banker}}`6 records your deposit of `^%s {{common.gold}}`6 in her ledger. "`@Thank you, `&%s`@.  You now have a debt of `$%s`@ {{common.gold}}`@ to the bank and `^%s`@ {{common.gold}}`@ in hand.`6"
+deposited_gold: |
+  {{common.names.banker}}`6 records your deposit of `^%s {{common.gold}}`6 in her ledger. "`@Thank you, `&%s`@.  You now have a balance of `^%s`@ {{common.gold}}`@ in the bank and `^%s`@ {{common.gold}}`@ in hand.`6"
+withdrew_gold: |
+  {{common.names.banker}}`6 records your withdrawal of `^%s `6{{common.gold}}`6 in her ledger. "`@Thank you, `&%s`@.  You now have a balance of `^%s`@ {{common.gold}}`@ in the bank and `^%s`@ {{common.gold}}`@ in hand.`6"
+buttons:
+  deposit: Deposit
+  withdraw: Withdraw
+forms: 
+  deposit: |
+    <form action='bank.php?op=depositfinish' method='POST' class = 'bank-deposit'>
+      <label for='amount'>`^Amount to deposit`0</label>
+      <input type = 'number' id = 'input' name = 'amount' width = 5 >
+      <br>
+      <input type = 'submit' class = 'button' value = '{{bank.buttons.deposit}}'>
+    </form>
+    `n`2`iEnter 0 or nothing to deposit it all`i`0
+    <script language = 'javascript'>
+      document.getElementById('input').focus();
+    </script>
+  withdraw: |
+    <form action = 'bank.php?op=withdrawfinish' method = 'POST' class = 'bank-withdraw'>
+      <label for = 'amount'>`^Amount to withdraw`0</label>
+      <input type = 'number' id = 'input' name = 'amount' width=5 >
+      <br>
+      <input type = 'submit' class = 'button' value = '{{bank.buttons.withdraw}}'>
+    </form>
+    `n`2`iEnter 0 or nothing to withdraw it all`i`0
+    <script language = 'javascript'>
+      document.getElementById('input').focus();
+    </script>
+navs:
+  withdraw: |
+    W?Withdraw
+  deposit: |
+    D?Deposit
+  transfer: |
+    T?Transfer {{common.gold}}
+  debt: |
+    D?Pay off Debt
+  borrow: |
+    B?Borrow {{common.gold}}
+nav_headers:
+  main: Money

@@ -356,12 +356,6 @@ if ($op == "") {
 		"maxinterest"=>"Max Interest Rate (%),range,5,10,1",
 		"mininterest"=>"Min Interest Rate (%),range,0,5,1",
 		"maxgoldforinterest"=>"Over what amount of gold does the bank cease paying interest? (0 for unlimited),int",
-		"borrowperlevel"=>"Max player can borrow per level (val * level for max),range5,200,5",
-		"allowgoldtransfer"=>"Allow players to transfer gold,bool",
-		"transferperlevel"=>"Max player can receive from a transfer (val * level),range,5,100,5",
-		"mintransferlev"=>"Min level a player (0 DK's) needs to transfer gold,range,1,5,1",
-		"transferreceive"=>"Total transfers a player can receive in one day,range,0,5,1",
-		"maxtransferout"=>"Amount player can transfer to others (val * level),range,5,100,5",
 		"innfee"=>"Fee for express inn payment (x or x%),int",
 
 		"Mail Settings,title",
