@@ -24,7 +24,7 @@ $runheaders = array();
  *		header-{scriptname}
  */
 function page_header(){
-	global $header,$SCRIPT_NAME,$session,$template, $runheaders, $nopopups;
+	global $header,$SCRIPT_NAME,$session,$template, $runheaders, $nopopups, $i18nNamespace;
 	$nopopups["login.php"]=1;
 	$nopopups["motd.php"]=1;
 	$nopopups["index.php"]=1;
@@ -51,12 +51,17 @@ function page_header(){
 
 	$arguments = func_get_args();
 	if (!$arguments || count($arguments) == 0) {
-		$arguments = [loadTranslation('common.title')];
+		$arguments = ['common.title'];
 	}
     $title = array_shift($arguments);
+	$title = str_replace('`%', '`%%`', $title);
     if (isTranslateKey($title)) {
         $title = loadTranslation($title, $arguments);
     }
+	else if (hasTranslateKey($title)) {
+		$title = handleSubtranslations($title, $i18nNamespace ?? 'common');
+		$title = vsprintf($title, $arguments);
+	}
     else {
         $title = vsprintf($title, $arguments);
     }
@@ -526,18 +531,22 @@ function wipe_charstats(){
  * @param string $label The label to use
  * @param mixed $value (optional) value to display
  */
-function addcharstat($label, $value=false) {
+function addcharstat(string $label, string|int|bool $value = false): void
+{
 	global $charstat_info, $last_charstat_label;
+    if (isTranslateKey($label)) {
+        $label = loadTranslation($label);
+    }
 	if ($value === false) {
-		if (!isset($charstat_info[$label]))
-			$charstat_info[$label] = array();
-		$last_charstat_label=$label;
-	} else {
-		if ($last_charstat_label=="") {
-			$last_charstat_label = "Other Info";
+		if (!isset($charstat_info[$label])) $charstat_info[$label] = [];
+		$last_charstat_label = $label;
+	}
+    else {
+		if ($last_charstat_label == '') {
+			$last_charstat_label = 'Other Info';
 			addcharstat($last_charstat_label);
 		}
-		$charstat_info[$last_charstat_label][$label]=$value;
+		$charstat_info[$last_charstat_label][$label] = $value;
 	}
 }
 
@@ -639,13 +648,12 @@ function charstats(){
 	wipe_charstats();
 
 	$u = getSession('user');
-
 	if (getSession('loggedin')) {
 		$u['hitpoints']=round($u['hitpoints'],0);
 		$u['experience']=round($u['experience'],0);
 		$u['maxhitpoints']=round($u['maxhitpoints'],0);
 		$spirits=array(-6=>"Resurrected",-2=>"Very Low",-1=>"Low","0"=>"Normal",1=>"High",2=>"Very High");
-		if ($u['alive']){ }else{ $spirits[(int)$u['spirits']] = "DEAD"; }
+		if (!$u['alive']) $spirits[(int)$u['spirits']] = "DEAD";
 		//calculate_buff_fields();
 		reset($session['bufflist']);
 		$atk=$u['attack'];
@@ -753,11 +761,11 @@ function charstats(){
 		}
 		addcharstat("Personal Info");
 		if ($u['alive']) {
-			addcharstat("Gold", $u['gold'].check_temp_stat("gold",1));
+			addcharstat('common.gold', $u['gold'].check_temp_stat("gold",1));
 		} else {
 			addcharstat("Favor", $u['deathpower'].check_temp_stat("deathpower",1));
 		}
-		addcharstat("Gems", $u['gems'].check_temp_stat("gems",1));
+		addcharstat('common.gems', $u['gems'].check_temp_stat("gems",1));
 		addcharstat("Experience", $u['experience'].check_temp_stat("experience",1));
 		addcharstat("Equipment Info");
 		addcharstat("Weapon", $u['weapon']);

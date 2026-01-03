@@ -291,3 +291,10 @@ function isTranslateKey($str) {
         preg_match('/^[a-z_\-\.]+$/', $str)
     );
 }
+
+function hasTranslateKey($str): bool {
+    return (
+        is_string($str) &&
+        preg_match('/\{\{[a-z_\-\.]+\}\}/', $str)
+    );
+}

@@ -5,7 +5,7 @@ function sanitize(string $in): array|string|null
     return preg_replace(
         "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*AabicnHw]/",
         "",
-        $in
+        sanitizeTranslateKeys($in)
     );
 }
 
@@ -19,7 +19,7 @@ function color_sanitize(string $in): array|string|null
     return preg_replace(
         "/[`][1234567890!@#\$%^&)~QqRVvGgTtjJeElLxXyYkKpPmM?*Aabi]/",
         "",
-        $in
+        sanitizeTranslateKeys($in)
     );
 }
 
@@ -51,7 +51,7 @@ function logdnet_sanitize(string $in): array|string
 
 function full_sanitize(string $in): array|string|null
 {
-    return preg_replace("/[`]./", "", $in);
+    return preg_replace("/[`]./", "", sanitizeTranslateKeys($in));
 }
 
 function cmd_sanitize(string $in): array|string|null
@@ -228,4 +228,17 @@ function is_serialized($value, &$result = null): bool
 		return false;
 	}
 	return true;
+}
+
+/**
+ * Strips out translation key patterns from a string.
+ *
+ * @param string $in The string to sanitize
+ * @return string The sanitized string
+ */
+function sanitizeTranslateKeys(string $in): string
+{
+    // Remove {{...}} patterns
+    // We use a non-greedy match for the content between braces
+    return preg_replace('/\{\{.*?\}\}/', '', $in);
 }

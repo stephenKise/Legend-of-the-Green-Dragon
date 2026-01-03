@@ -88,19 +88,33 @@ function output_notl($indata){
  *
  * @see output_notl
  *
+ * @global string $block_new_output
+ * @global string $i18nNamespace
  */
 function output(){
-	global $block_new_output;
+	global $block_new_output, $i18nNamespace;
 
 	if ($block_new_output) return;
 	$args = func_get_args();
+    
+    $isTranslation = false;
+
     if (isTranslateKey($args[0])) {
         // Assume it's a key like 'home.title'
         $args[0] = nl2br($args[0]);
         $translated = loadTranslation($args[0]);
         if ($translated !== $args[0]) { // If we found a translation
             $args[0] = $translated;
+            $isTranslation = true;
         }
+        
+        if ($isTranslation) {
+             $last = end($args);
+             if ($last !== true) {
+                 $args[] = true;
+             }
+        }
+        
         call_user_func_array('output_notl', $args);
         return;
     }
@@ -111,6 +125,19 @@ function output(){
 	} else {
 		$args[0] = translate($args[0]);
 	}
+
+    if (hasTranslateKey($args[0])) {
+        $args[0] = handleSubtranslations($args[0], $i18nNamespace ?? 'core');
+        $isTranslation = true;
+    }
+
+    if ($isTranslation) {
+         $last = end($args);
+         if ($last !== true) {
+             $args[] = true;
+         }
+    }
+
 	call_user_func_array("output_notl",$args);
 }
 
@@ -438,12 +465,16 @@ function addnavheader($text, $collapse=true,$translate=TRUE)
 	global $navschema, $navnocollapse, $block_new_navs, $notranslate;
 
 	if ($block_new_navs) return;
-    if (isTranslateKey($text)) {
-        $text = loadTranslation($text);
-    }
 	if (is_array($text)){
 		$text = "!array!".serialize($text);
 	}
+    if (isTranslateKey($text)) {
+        $text = loadTranslation($text);
+    }
+    
+    if (hasTranslateKey($text)) {
+        $text = handleSubtranslations($text, $i18nNamespace ?? 'core');
+    }
 	$navsection=$text;
 	if (!array_key_exists($text,$navschema))
 		$navschema[$text]  =  $i18nNamespace;
@@ -519,13 +550,15 @@ function addnav(
     if (isTranslateKey($text)) {
         $text = loadTranslation($text);
     }
+    if (hasTranslateKey($text)) {
+        $text = handleSubtranslations($text, $i18nNamespace ?? 'core');
+    }
 	if ($link === false) {
-		
 		if ($text !== '') return addnavheader($text);
 		return;
 	}
-
 	$args = func_get_args();
+
 	if ($text === '')
 		return call_user_func_array('private_addnav', $args);
 
@@ -606,7 +639,8 @@ function count_viable_navs($section)
  *
  * @return bool
  */
-function checknavs() {
+function checknavs(): bool
+{
 	global $navbysection, $session;
 
 	// If we already have navs entered (because someone stuck raw links in)
