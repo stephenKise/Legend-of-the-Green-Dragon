@@ -164,9 +164,21 @@ function city_creator_array_check($city=FALSE)
 	{
 		if( is_array($value) )
 		{
+            // Check if array is indexed (numeric keys)
+            $is_indexed = (array_keys($value) === range(0, count($value) - 1));
+            
 			foreach( $value as $key2  =>  $value2 )
 			{
-				$city[$key.$key2] = ( is_string($value2) ) ? stripslashes($value2) : (int)$value2;
+                if ($is_indexed && is_string($value2)) {
+                    // It's a list of strings (e.g. ['weapons.php', 'armor.php'])
+                    // Convert to key-based boolean format for the form
+                    // weapons.php -> weapons_php
+                    $new_key = str_replace('.', '_', $value2);
+                    $city[$key.$new_key] = 1;
+                } else {
+                    // Standard associative array or mixed
+                    $city[$key.$key2] = ( is_string($value2) ) ? stripslashes($value2) : (int)$value2;
+                }
 			}
 			unset($city[$key]);
 		}
