@@ -75,15 +75,15 @@ function substitute_array($string, $extra=false, $extrarep=false){
 		);
 	$replace = array(
 		$session['user']['weapon'],
-		$badguy['creatureweapon'],
+		$badguy['creatureweapon'] ?? '',
 		$session['user']['armor'],
-		$badguy['creaturename'],
+		$badguy['creaturename'] ?? '',
 		"`^".$session['user']['name']."`^",
-		$badguy['creaturename'],
+		$badguy['creaturename'] ?? '',
 		"`^".$session['user']['name']."`^",
 		$session['user']['weapon'],
 		$session['user']['armor'],
-		$badguy['creatureweapon'],
+		$badguy['creatureweapon'] ?? '',
 		);
 
 	if ($extra !== false && $extrarep !== false) {
