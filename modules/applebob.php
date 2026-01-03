@@ -2,6 +2,7 @@
 
 function applebob_getmoduleinfo()
 {
+    $location = getsetting('villagename', LOCATION_FIELDS);
     $info = [
         'name' => 'Sichae\'s Apple Bobbing',
         'author' => 'Chris Vorndran & Shannon Brown',
@@ -11,7 +12,7 @@ function applebob_getmoduleinfo()
         'settings' => [
             'allowed' => 'How many apples may the player eat?, int| 3',
             'cost' => 'Price to play?, int| 2',
-            'location' => 'Where does the stand appear?, location| ' . getsetting('villagename', LOCATION_FIELDS),
+            'location' => "Where does the stand appear?, location| {$location}",
         ],
         'prefs' => [
             'ate_today' => 'How much has the user ate today?, int| 0',
@@ -32,19 +33,17 @@ function applebob_uninstall()
     return true;
 }
 
-function applebob_dohook($hook, $args)
+function applebob_dohook(string $hook, array $args): array
 {
     switch($hook){
-        case "newday":
+        case 'newday':
             set_module_pref('ate_today', 0);
             break;
-        case "village":
+        case 'village':
             global $session;
             if ($session['user']['location'] == get_module_setting('location')) {
-            tlschema($args['schemas']['marketnav']);
-            addnav($args['marketnav']);
-            tlschema();
-            addnav('A?Sichae\'s Apple Bobbing','runmodule.php?module=applebob');
+                addnav($args['nav_headers']['market']);
+                addnav('A?Sichae\'s Apple Bobbing', 'runmodule.php?module=applebob');
             }
             break;
     }
