@@ -26,7 +26,7 @@ if ($op == "fleedragon") {
 	$session['user']['location'] = $vname;
 }
 
-page_header(array("%s",sanitize($iname)));
+page_header(sanitize($iname));
 $skipinndesc = handle_event("inn");
 
 if (!$skipinndesc) {
