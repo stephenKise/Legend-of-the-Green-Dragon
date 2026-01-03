@@ -1,38 +1,53 @@
 <?php
 
-function module_events($eventtype, $basechance, $baseLink = false) {
-	if ($baseLink === false){
-		global $PHP_SELF;
-		$baseLink = substr($PHP_SELF,strrpos($PHP_SELF,"/")+1)."?";
-	}else{
-		//debug("Base link was specified as $baseLink");
-		//debug(debug_backtrace());
+/**
+ * Provides a hook for events to be fired.
+ * @param string $eventType Type of the event (ex: 'village', 'forest')
+ * @param int $baseChance Base chance of a given event type to fire (ex: 'villagechance' setting)
+ * @param string|bool $baseLink Base uri the event displays as
+ * @return bool Truthy value on whether an event was fired
+ */
+function module_events(string $eventType, int $baseChance, string|bool $baseLink = false): bool
+{
+    global $PHP_SELF;
+	if ($baseLink === false) {
+		$baseLink = substr($PHP_SELF, strrpos($PHP_SELF, '/') + 1) . '?';
 	}
-	if (e_rand(1, 100) <= $basechance) {
-		global $PHP_SELF;
-		$events = module_collect_events($eventtype);
-		$chance = r_rand(1, 100);
-		reset($events);
-		$sum = 0;
-		foreach($events as $event) {
-			if ($event['rawchance'] == 0) {
-				continue;
-			}
-			if ($chance > $sum && $chance <= $sum + $event['normchance']) {
-				$_POST['i_am_a_hack'] = 'true';
-				tlschema("events");
-				output("`^`c`bSomething Special!`c`b`0");
-				tlschema();
-				$op = httpget('op');
-				httpset('op', "");
-				module_do_event($eventtype, $event['modulename'], false, $baseLink);
-				httpset('op', $op);
-				return 1;
-			}
-			$sum += $event['normchance'];
+    $diceRoll = e_rand(1, 100);
+
+    // Quickly skip events, base chance for event not met
+    if ($diceRoll > $baseChance) return false;
+
+	$events = module_collect_events($eventType);
+	$moduleChance = r_rand(1, 100);
+
+    // Shuffle possible events to prevent repeatability/predicatability
+    shuffle($events);
+	reset($events);
+	$totalChance = 0;
+	foreach($events as $event) {
+        // Skip events that shouldn't fire
+		if ($event['rawchance'] == 0) {
+			continue;
 		}
+        // Give an additional roll to check if 
+		if (
+            $moduleChance > $totalChance &&
+            $moduleChance <= $totalChance + $event['normchance']
+        ) {
+			$_POST['i_am_a_hack'] = 'true';
+			output('common.headers.events');
+			$op = httpget('op');
+			httpset('op', '');
+			module_do_event($eventType, $event['modulename'], false, $baseLink);
+			httpset('op', $op);
+			return true;
+		}
+
+        // Increase chance of another module's event being fired
+		$totalChance += $event['normchance'];
 	}
-	return 0;
+    return false;
 }
 
 function module_do_event($type, $module, $allowinactive=false, $baseLink=false)
@@ -173,12 +188,26 @@ function module_collect_events($type, $allowinactive=false)
 	return modulehook("collect-events", $events);
 }
 
-function module_addeventhook($type, $chance){
-	global $mostrecentmodule;
-	debug("Adding an event hook on $type events for $mostrecentmodule");
-	$sql = "DELETE FROM " . db_prefix("module_event_hooks") . " WHERE modulename='$mostrecentmodule' AND event_type='$type'";
-	db_query($sql);
-	$sql = "INSERT INTO " . db_prefix("module_event_hooks") . " (event_type,modulename,event_chance) VALUES ('$type', '$mostrecentmodule','".addslashes($chance)."')";
-	db_query($sql);
-	invalidatedatacache("event-".$type);
+/**
+ * Creates a new module event hook for a given event hook
+ * 
+ * @param string $type Type of event the module takes place (ex: 'village', 'forest')
+ * @param string $chance Returnable absolute percent chance of an event occurring (ex: return 100;, return 25;)
+ * @return void
+ */
+function module_addeventhook(string $type, string $chance): void
+{
+	global $mostrecentmodule, $mysqli_resource;
+    $chance = mysqli_real_escape_string($mysqli_resource, $chance);
+    $eventsTable = db_prefix('module_event_hooks');
+    db_query(
+        "DELETE FROM $eventsTable
+        WHERE modulename = '$mostrecentmodule'
+        AND event_type = '$type';"
+    );
+    db_query(
+        "INSERT INTO $eventsTable (event_type, modulename, event_chance)
+        VALUES ('$type', '$mostrecentmodule', '$chance');"
+    );
+	invalidatedatacache("events-{$type}");
 }

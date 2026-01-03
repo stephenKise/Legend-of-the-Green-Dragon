@@ -1,26 +1,27 @@
-# This file could probably be renamed to pageparts.yaml in the future
-# or add labels (gold_stat_label: "Gold") to make it more generic.
+# Move some of these to a stats array
 gold: |
   `^Gold
+gold_clean: gold
 gems: |
   `%Gems
+gems_clean: gems
 clan_tag_start: |
   <
 clan_tag_end: |
   >
 turns: |
-  `^Turns
+  `&Turns
 dragon: |
   `@Green Dragon
 title: |
-  `&Legend of the Green Dragon`0
+  `@The Legend of the Green Dragon`0
 title_clean: Legend of the Green Dragon
 hitpoints: |
-  `^Hit Points
+  `&Hit Points
 attacks: |
-  `^Attack
+  `&Attack
 defense: |
-  `^Defense
+  `&Defense
 favor: |
   `$Favor
 soulpoints: |
@@ -32,28 +33,51 @@ psyche: |
 spirit: |
   `$Spirit
 race: |
-  `^Race
-exp: |
-  `^Experience
+  `&Race
 level: |
-  `^Level
+  `&Level
 experience: |
-  `^Experience
+  `&Experience
 weapon: |
-  `^Weapon
+  `&Weapon
 armor: |
-  `^Armor
+  `&Armor
 creature: |
-  `^Creature
+  `&Creature
+name: |
+  `&Name
+
+barkeep: |
+  `tCedrik
+
 names:
   banker: |
     `@Elessa
-  
+  inn: |
+    The Boar's Head Inn
+  stablehand: |
+    `6Merick
+
+
+headers:
+  events: |
+    `^`c`bSomething Special!`c`b`0
+
+stat_headers:
+  vital: Vital Info
+  equipment: Equipment
+  companions: Companions
+  personal: Personal Info
+  buffs: Buffs
+  other: Other Info
+
+# Move to a stats array
 vital_stat_label: Vital Info
 equipment_stat_label: Equipment
 companion_stat_label: Companions
 personal_stat_label: Personal Info
 buffs_stat_label: Buffs
+
 navs:
   home: Home
   forest: Forest
@@ -72,8 +96,12 @@ navs:
   graveyard: R?Return to the Graveyard
   shades: R?Return to the Shades
   return_to: R?Return to %s
+
 nav_headers:
   navigation: Navigation
+  other: Other
+
+# Move to a buttons array
 yes: Yes
 no: No
 ok: OK
@@ -81,3 +109,8 @@ submit: Submit
 cancel: Cancel
 confirm: Confirm
 choose: Choose
+edit: Edit
+
+
+
+
