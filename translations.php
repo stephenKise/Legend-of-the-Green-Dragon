@@ -74,9 +74,23 @@ $languages = array_filter(scandir("translations"), fn($d) => $d !== '.' && $d !=
 foreach ($languages as $lang) {
     $dir = "translations/$lang";
     if (!is_dir($dir)) continue;
-    $yamls = array_filter(scandir($dir), fn($f) => substr($f, -5) === '.yaml');
-    foreach ($yamls as $yaml) {
-        $files[$yaml] = "$lang → " . str_replace('.yaml', '', $yaml);
+    
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
+    foreach ($iterator as $fileInfo) {
+        if ($fileInfo->isFile() && $fileInfo->getExtension() === 'yaml') {
+            // Get relative path from translations/$lang/
+            // getPathname returns e.g. translations/en/modules/foo.yaml
+            // We want modules/foo.yaml if inside subdir, or foo.yaml if at root
+            $fullPath = $fileInfo->getPathname();
+            // normalized path in case of windows/unix separator diffs, though usually fine
+            $relativePath = str_replace($dir . DIRECTORY_SEPARATOR, '', $fullPath);
+            // Fallback if generic replace failed (e.g. slight mismatch in separators)
+             if ($relativePath === $fullPath) {
+                $relativePath = substr($fullPath, strlen($dir) + 1);
+            }
+            
+            $files[$relativePath] = "$lang → " . str_replace('.yaml', '', $relativePath);
+        }
     }
 }
 
