@@ -1,0 +1,117 @@
+travel_warning: |
+  `%Travelling the world can be a dangerous occupation. Although other 
+  villages might offer things not found in your current one, getting from 
+  village to village is no easy task, and might subject you to various 
+  dangerous creatures or brigands. Be sure you're willing to take on the 
+  adventure before you set out, as not everyone arrives at their destination 
+  intact. Also, pay attention to the signs, some roads are safer than others.`n
+cannot_travel: |
+  `nYou don't feel as if you could face the prospect of walking to another 
+  city today, it's far too exhausting.`n
+sober_up: |
+  `&Facing your bloodthirsty opponent, the adrenaline rush helps to sober you up slightly.
+flee: |
+  `n`2You set off running through the forest at a breakneck pace heading back the way you came.`n`n
+cowardice_forest: |
+  In your terror, you lose your way and become lost, losing time for a forest fight.`n`n
+cowardice_travel: |
+  In your terror, you lose your way and become lost, losing precious travel time.`n`n
+fled_to: |
+  After running for what seems like hours, you finally arrive back at %s.
+fight_aborted: |
+  A divine light ends the fight and you return to the road.
+waylaid_victory: |
+  This fight would have yielded an extra turn except it was during travel.
+waylaid_defeat: |
+  travelling to %s
+
+errors: 
+  no_turns: |
+    `n`2Hey, looks like you managed to travel with out having any forest fights. How'd you swing that?
+
+debug:
+  lost_travel: |
+    Lost a travel because of being truant from master.
+  lost_forest: |
+    Lost a forest fight because of being truant from master.
+  no_turns: |
+    Travelled without having any forest fights, how'd they swing that?
+master_found_forest: |
+  `n`n`^Startled to find your master in `Q%s`^, your heart skips a beat, costing a forest fight from shock.
+master_found_travel: |
+  `n`n`%Surprised at finding your master in `Q%s`%, you feel a little less inclined to be gallivanting around the countryside today.
+validation_error: |
+  Danger chance must be equal to or greater than the safe chance.
+
+headers:
+  event: Something Special
+  travel: Travel
+  escape: Escape
+  waylaid: You've been waylaid!
+
+nav_headers:
+  forget: Foreget about it
+  travel: Travel
+
+navs:
+  continue: Continue
+  enter: Enter %s
+  continue_journey: Continue Journey
+
+stats:
+  home_village: Home Village
+  free_travel: Free Travel
+
+
+faq:
+  header: Multiple Villages Questions
+  return_link: <a href='petition.php?op=faq'>Return to Contents</a>
+  link: |
+    &#149;<a href='runmodule.php?module=cities&op=faq'>
+      `@Frequently Asked Questions on Multiple Villages`0
+    </a>
+    <br />
+  content: |
+    `n`n`c`bQuestions about the multiple village system`b`c`n
+    `^1. Why, oh why did you activate such a (choose one [wondrous, horrible]) feature?`n
+    `@For kicks, of course. We like to mess with your head.`n
+    But seriously, have you looked at the user list?  On lotgd.net, we've 
+    got over 6,000 people cramming themselves into the Village Square and 
+    trying to get their voices heard! Too much! Too much!`n
+    In the interests of sanity, we've made more chat boards. And in the 
+    interests of game continuity, we've put them into separate villages 
+    with many cool new features.`n`n
+    If you are a smaller server, this might not be right for you, but we 
+    think it works okay there too.`n`n
+    `^2. How do I go to other villages?`n
+    `@Walk, skate, take the bus...`n
+    Or press the Travel link (in the City Gates or Village Gates category) 
+    in the navigation bar.`n`n
+    `^3. How does travelling work?`n
+    `@Pretty well, actually. Thanks for asking.`n
+    You get some number of  free travels per day (%s on this server) in 
+    which you can travel to any other village you want.
+    Also, it is possible for the admin to give additional free travels 
+    with some mounts.
+    After that, you use up one forest fight per travel.
+    After that...well, we hope you like where you end up.
+    Since all major economic transactions come through `Q%s`@ (the capital 
+    of the region), the roads to and from there have been fortified to 
+    protect against monsters from wandering onto them.
+    That was a while back though, and the precautions are no longer perfect.`n
+    Travel between the other villages have no such precautions.`n
+    In either case, you might want to heal yourself before travelling. 
+    You have been warned.`n`n
+    `^4. Where's (the Inn, the forest, my training master, etc.)?`n
+    `@Look around. Do you see it? No? Then it's not here.`n
+    The problem's usually:`n
+    a) It's actually there, you just missed it the first time around.`n
+    b) It's in another village, try travelling.`n
+    c) It's not on this server, check out the modules installed on this 
+    server in the About link on the login page.`n
+    d) Are you sure you didn't just see that feature in a dream?`n`n
+    `^5. I've used up my free travels and forest fights. How do I travel now?`n
+    `@We hope you like where you've ended up, because you're stuck there until 
+    the next new day.`n`n
+    `^6. Can I pay for more travels?`n
+    `@Maybe, check out the Hunter's Lodge.
