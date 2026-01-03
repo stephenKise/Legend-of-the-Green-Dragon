@@ -1,0 +1,39 @@
+
+headers:
+  uninstall: |
+    `c`b`Q'city_creator' Module Uninstalled`0`b`c
+  install: |
+    `c`b`QInstalling 'city_creator' Module.`0`b`c`n
+  update: | 
+    `c`b`QUpdating 'city_creator' Module.`0`b`c`n
+
+titles:
+  creator: Village Creator
+
+debug:
+  block_modules: Blocking module %s
+  unblock_modules: Unblocking module %s
+  block_nav: |
+    Blocking nav: %s
+  block_nav_partial: |
+    Blocking partial nav: %s
+  block_nav_core: |
+    Blocking core nav: %s
+
+installed: |
+  `n`3The capital city has been added to the city creator table. It may require slight editing.`0`n
+
+nav_headers:
+  creators: Creators
+  editors: Editors
+  travel_safe: Safer Travel
+  travel_dangerous: More Dangerous Travel
+  travel_superuser: Superuser Travel
+
+
+navs:
+  creator: Village Creator
+  add_village: Add a Village
+  go_to: |
+    %s?Go to %s
+  
