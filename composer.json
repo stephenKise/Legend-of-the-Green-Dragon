@@ -1,5 +1,6 @@
 {
     "require": {
-        "symfony/yaml": "^8.0"
+        "symfony/yaml": "^8.0",
+        "symfony/filesystem": "^8.0"
     }
 }
