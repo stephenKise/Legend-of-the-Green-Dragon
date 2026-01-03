@@ -1,0 +1,59 @@
+new_character_is_user: |
+  `@You're`2 the newest member of the village. As such, you wander around, gaping at the sights, and generally looking lost.`n
+new_character: |
+  `2Wandering near the inn is `&%s`2, looking completely lost.`n
+description: |
+  `@`c`b%s Square`b`c`0
+  `2The village of `@%s`2 hustles and bustles. No one really notices that you're standing there.
+  You see various shops and businesses along main street. There is a curious looking rock to one side.
+  On every side the village is surrounded by deep dark forest.`n`n
+clock: |
+  The clock on {{common.names.inn}} reads `^%s`@.`n
+talk: |
+  `n`%`@Nearby some villagers talk:`n
+location_clean: village
+location: |
+  `@Degolburg`0
+title: |
+  %s Square
+inn_name: |
+  {{common.names.inn}}
+
+commentary:
+  says: says
+  section: village
+
+nav_headers:
+  gate: City Gates
+  fight: Blades Boulevard
+  market: Market Street
+  tavern: Tavern Street
+  info: Info
+  other: Other
+  superuser: Superuser
+
+navs:
+  forest: F?Forest
+  pvp: S?Slay Other Players
+  logout: Q?`%Quit`0 to the fields
+  mercenary: Mercenary Camp
+  armor: Pegasus Armor
+  weapons: MightyE's Weaponry
+  train: u?Bluspring's Warrior Training
+  lodge: J?JCP's Hunter Lodge
+  bank: B?Ye Olde Bank
+  gypsy: Z?Ze Gypsy Tent
+  inn: I?{{common.names.inn}}
+  stables: Merick's Stables
+  gardens: G?The Gardens
+  clan: C?Clan Halls
+  rock: R?Curious Looking Rock
+  faq: ??F.A.Q. (?) (`b start here`b)
+  news: N?Daily News
+  list: L?List Warriors
+  hof: o?Hall o' Fame
+  preferences: |
+    *?Prefences (*)
+  new_day: +?New Day (+)
+  superuser: X?`bSuperuser Grotto`b (x)
+  moderate: -?Moderation (-)
