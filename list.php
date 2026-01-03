@@ -93,7 +93,7 @@ if ($page == '' && $op == '') {
 		AND loggedin = 1
 		AND laston > '$loginTimeoutString'
 		ORDER BY level DESC, dragonkills DESC, login ASC";
-	$result = db_query_cached($sql, 'list_characters_online');
+	$result = db_query_cached($sql, 'list_characters_online', 60);
 }
 else if ($op=='clan') {
 	$title = translate_inline('Clan Members Online');
