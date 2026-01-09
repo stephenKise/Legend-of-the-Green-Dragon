@@ -432,6 +432,20 @@ function page_footer($saveuser=true){
 	$footer=str_replace('{pagegen}', "{$pageGen} {$avgLoad}", $footer);
     $footer=str_replace('{copyright}', "$copyright <br/> $lc", $footer);
 
+    if (count($TRANSLATION_CACHE) > 0) {
+        $translationNamespaces = array_keys($TRANSLATION_CACHE[getLanguage()]);
+        if ($session['user']['superuser'] & SU_IS_TRANSLATOR) {
+            output('`n`bEditable Translations:`b`n');
+            foreach ($translationNamespaces as $namespace) {
+                $encodedNamespace = urlencode($namespace);
+                $link = "translations.php?op=edit&namespace={$encodedNamespace}&popup=1";
+                $pop = popup($link);
+                addnav('', $link);
+                output_notl("<a href='$link' onclick=\"$pop;return false;\">$namespace</a>`n", true);
+            }
+        }
+    }
+    
 	tlschema();
 
 	//clean up spare {fields}s from header and footer (in case they're not used)
