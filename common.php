@@ -157,45 +157,45 @@ else {
 	define("DB_CHOSEN",true);
 }
 
-	if (defined('IS_INSTALLER') == false) {
-header("Content-Type: text/html; charset=".getsetting('charset','ISO-8859-1'));
+if (defined('IS_INSTALLER') == false) {
+    header("Content-Type: text/html; charset=".getsetting('charset','ISO-8859-1'));
 
-if (strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds") > $session['lasthit'] && $session['lasthit']>0 && $session['loggedin']){
-	// force the abandoning of the session when the user should have been
-	// sent to the fields.
-	$session=array();
-	// technically we should be able to translate this, but for now,
-	// ignore it.
-	// 1.1.1 now should be a good time to get it on with it, added tl-inline
-	translator_setup();
-	$session['message'].=translate_inline("`nYour session has expired!`n","common");
+    if (strtotime("-".getsetting("LOGINTIMEOUT",900)." seconds") > $session['lasthit'] && $session['lasthit']>0 && $session['loggedin']){
+    	// force the abandoning of the session when the user should have been
+    	// sent to the fields.
+    	$session=array();
+    	// technically we should be able to translate this, but for now,
+    	// ignore it.
+    	// 1.1.1 now should be a good time to get it on with it, added tl-inline
+    	translator_setup();
+    	$session['message'].=translate_inline("`nYour session has expired!`n","common");
+    }
+    $session['lasthit'] = date('Y-m-d H:i:s');
+    mass_module_prepare([
+    	'template-header',
+    	'template-footer',
+    	'template-statstart',
+    	'template-stathead',
+    	'template-statrow',
+    	'template-statbuff',
+    	'template-statend',
+    	'template-navhead',
+    	'template-navitem',
+    	'template-petitioncount',
+    	'template-adwrapper',
+    	'template-login',
+    	'template-loginfull',
+    	'everyhit',
+    			(isset($script) ? "header-$script" : ''),
+    			(isset($script) ? "footer-$script" : ''),
+    	'holiday',
+    	'collapse{',
+    	'collapse-nav{',
+    	'}collapse-nav',
+    	'}collapse',
+    	'charstats'
+    ]);
 }
-$session['lasthit'] = date('Y-m-d H:i:s');
-mass_module_prepare([
-	'template-header',
-	'template-footer',
-	'template-statstart',
-	'template-stathead',
-	'template-statrow',
-	'template-statbuff',
-	'template-statend',
-	'template-navhead',
-	'template-navitem',
-	'template-petitioncount',
-	'template-adwrapper',
-	'template-login',
-	'template-loginfull',
-	'everyhit',
-			(isset($script) ? "header-$script" : ''),
-			(isset($script) ? "footer-$script" : ''),
-	'holiday',
-	'collapse{',
-	'collapse-nav{',
-	'}collapse-nav',
-	'}collapse',
-	'charstats'
-]);
-	}
 $cp = $copyright;
 $l = $license;
 do_forced_nav(ALLOW_ANONYMOUS,OVERRIDE_FORCED_NAV);
