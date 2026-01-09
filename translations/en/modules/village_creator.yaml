@@ -1,11 +1,11 @@
 
 headers:
   uninstall: |
-    `c`b`Q'city_creator' Module Uninstalled`0`b`c
+    `c`b`Q'villageCreator' Module Uninstalled`0`b`c
   install: |
-    `c`b`QInstalling 'city_creator' Module.`0`b`c`n
+    `c`b`QInstalling 'villageCreator' Module.`0`b`c`n
   update: | 
-    `c`b`QUpdating 'city_creator' Module.`0`b`c`n
+    `c`b`QUpdating 'villageCreator' Module.`0`b`c`n
 
 titles:
   creator: Village Creator
@@ -21,7 +21,7 @@ debug:
     Blocking core nav: %s
 
 installed: |
-  `n`3The capital city has been added to the city creator table. It may require slight editing.`0`n
+  `n`3The capital village has been added to the village creator table. It may require slight editing.`0`n
 
 nav_headers:
   creators: Creators
@@ -29,11 +29,102 @@ nav_headers:
   travel_safe: Safer Travel
   travel_dangerous: More Dangerous Travel
   travel_superuser: Superuser Travel
+  menu: Menu
 
 
 navs:
   creator: Village Creator
-  add_village: Add a Village
   go_to: |
     %s?Go to %s
   
+  back: Back to Village Creator
+
+index:
+  table: |
+    <table border="0" cellpadding="2" cellspacing="1" bgcolor="#999999" align="center">
+     <tr class="trhead">
+       <td>%s</td>
+       <td align="center">%s</td>
+       <td align="center">%s</td>
+       <td align="center">%s</td>
+       <td align="center">%s</td>
+       <td align="center">%s</td>
+     </tr>
+     %s
+    </table>
+  row: |
+    <tr class="%s">
+      <td align="center" nowrap="nowrap">[ <a href="%s">Edit</a> | %s | %s ]</td>
+      <td align="center">%s</td>
+      <td align="center">%s</td>
+      <td align="center">%s</td>
+      <td align="center">%s</td>
+      <td align="center">%s</td>
+    </tr>
+  ops: Ops
+  id: <a href="%s&sortby=id&order=%s">Village ID</a>
+  name: <a href="%s&sortby=name&order=%s">Village Name</a>
+  travel: Travel To
+  requirements: Requirements
+  author: Author
+  edit: Edit
+  delete: <a href="%s">Del</a>
+  activate: <a href="%s">Activate</a>
+  deactivate: <a href="%s">Deactivate</a>
+  visit: <a href="%s">Visit</a>
+  confirm_uninstall: 'This village was installed by another module, to remove it please uninstall the module!'
+  confirm_delete: 'Are you sure you wish to delete this village? Any object prefs will also be deleted!'
+  no_villages: '`n`3There are no villages installed, how about adding a few?`n`n'
+  delete_success: '`n`@Village successfully deleted.`0`n`n'
+  delete_fail: '`n`$Village `#%s `$was not deleted because: `&%s`$, deactivated instead.`0`n`n'
+  activated: '`n`2Village `#%s `2has been `@Activated`2.`0`n`n'
+  deactivated: '`n`2Village `#%s `2has been `@Deactivated`2.`0`n`n'
+
+form:
+  village_details: Village Details
+  village_text: Village Text
+  block_modules: Block Modules
+  block_navs: Block Navs
+  generate_new: Generate New Village
+  village_text_settings: Village Text Settings
+  add_new: Add as new?
+  active: Village is Active?
+  id: "Village ID:"
+  module: "Module:"
+  author: " Author:"
+  name: "Name:"
+  note_name: "`^No colours or any sort of tags in the village name."
+  type: "Type (Village, Town, City, etc):"
+  note_type: "`^No colours or any sort of tags in the type name."
+  chat: Chat disabled in this Village?
+  travel: "Travel:"
+  note_travel: "`^Note: Set to Off to disable normal travel to this village."
+  note_text_editor: |
+    `^The texts for this village should be edited using the `QTranslation Editor`^ (requires superuser access) or by manually editing the YAML file in: `&translations/en/modules/village_%s.yaml`^.`n`n`QThe previous specific text sections have been removed in favor of the unified YAML configuration.
+  mods_all: "Block all modules:"
+  mods_other: "List of modules to block or unblock:"
+  note_mods: |
+    `^If you're blocking all modules then enter the module names above which you want to unblock. For example unblock the 'villages' module if you want travel to work.`n`nIf you're *not* blocking all modules then enter the module names above which you do want to block.`n`n`#Separate the names with a comma!
+  navs_note: "`^Enter the filenames of scripts to block. Separate by commas. Include .php extension."
+  navs_label: "Blocked Navs:"
+  yaml_title: "Title:"
+  yaml_desc: "Description:"
+  yaml_inn: "Inn Name:"
+  yaml_clock: "Clock Text:"
+  yaml_talk: "Talk Header:"
+  yaml_new_char_others: "New Char (Others):"
+  yaml_new_char_self: "New Char (Self):"
+
+messages:
+  update_success: '`@Village was successfully updated!`n'
+  update_no_change: '`$Village was not updated as nothing was changed!`n'
+  create_success: '`@Village was successfully created!`n'
+  create_fail: '`$Village creation failed!`n'
+  module_change: '`7Module: `&%s `7Setting: `&%s `7Value changed.`n'
+  gen_error_name: "`$Error: Name cannot be empty and must contain valid characters.`0`n"
+  gen_success: "`@Village generated successfully!`0`n"
+  gen_details: "`2Created village '%s' and config file '%s'.`0`n"
+  gen_hint: "`^You can edit the translations for this village in the `iTranslation Editor`i (requires superuser access).`0`n"
+  gen_save_fail: "`$Error: Failed to save config file.`0`n"
+  gen_yaml_fail: "`$Error: Failed to generate YAML content: %s`0`n"
+  menu: Menu
