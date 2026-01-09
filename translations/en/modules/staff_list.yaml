@@ -1,0 +1,30 @@
+
+header: "`c`@`bStaff List`b`c"
+title: "Staff List"
+blurb: "`c`^Please use the Petition for Help link to contact staff.`c`n"
+no_staff: |
+  `@`cThis server appears to not have any staff.
+  Most likely, no one has been added to the list yet.`c
+online: "`#(Online)`0"
+staff_row: |
+  <tr class='%s'>
+    <td>%s</td>
+    <td>%s</td>
+  </tr>
+staff_table: |
+  <center>
+    <table class='staff-list' border='0px' cellpadding='2' cellspacing='1'>
+      <tr class='trhead'>
+        <td>Name</td>
+        <td>Description</td>
+      </tr>
+      %s
+    </table>
+  </center>
+bio_link: |
+  <a href='bio.php?char=%s&ret=%s'>%s</a>
+bio_uri: "bio.php?char=%s&ret=%s"
+row_light: 'trlight'
+row_dark: 'trdark'
+navs:
+  staff_list: "Staff List"

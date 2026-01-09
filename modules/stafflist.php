@@ -1,7 +1,5 @@
 <?php
-// addnews ready
-// mail ready
-// translator ready
+
 /*
 Staff List
 File: stafflist.php
@@ -23,149 +21,161 @@ Query optimization and such, with help from Kendaer and MightyE
 v1.2
 Added feature to show if staff is online (suggested by Anyanka of Central)
 */
-require_once("lib/villagenav.php");
 
-function stafflist_getmoduleinfo(){
-	$info = array(
-		"name"=>"Staff List",
-		"version"=>"1.2",
-		"author"=>"`\$Red Yates, little addition by Haku",
-		"allowanonymous"=>true,
-		"category"=>"Administrative",
-		"download"=>"core_module",
-		"settings"=>array(
-			"Staff List Settings, title",
-			"biolink"=>"Link staff names to their bios,bool|1",
-			"showdesc"=>"Show staff member description fields,bool|1",
-			"showrang"=>"Show staff member rang fields,bool|1",
-			"showon"=>"Show if staff member is online,bool|1",
-			"blurb"=>"Blurb to be displayed below the staff list,textarea|",
-		),
-		"prefs"=>array(
-			"Staff List User Preferences, title",
-			"rank"=>"Arbitrary ranking number (higher means higher on list),int|0",
-			"desc"=>"Description to be put in the staff list|I work here?",
-			"rang"=>"Rang to be put in the staff list|please choose one",
-		),
-	);
+require_once('lib/villagenav.php');
+
+function stafflist_getmoduleinfo(): array
+{
+	$info = [
+		'name' => 'Staff List',
+		'version' => '1.2',
+		'author' => '`$Red Yates, little addition by Haku',
+		'allowanonymous' => true,
+		'category' => 'Administrative',
+		'download' => 'core_module',
+		'settings' => [
+			'Staff List Settings, title',
+			'bio_link' => 'Link staff names to their bios, bool| 1',
+			'show_online' => 'Show if staff member is online, bool| 1',
+			'You can edit the text below the staff list in the Translation Editor, note',
+		],
+		'prefs' => [
+			'Staff List User Preferences, title',
+			'rank' => 'Arbitrary ranking number (higher means higher on list),int|0',
+			'desc' => 'Description to be put in the staff list|I work here?',
+		],
+	];
 	return $info;
 }
 
-function stafflist_install(){
-	module_addhook("village");
-	module_addhook("about");
-	module_addhook("validatesettings");
-	module_addhook("player-login");
-	module_addhook("player-logout");
+function stafflist_install(): bool
+{
+	module_addhook('village');
+	module_addhook('about');
+	module_addhook('player-login');
+	module_addhook('player-logout');
+    module_addhook('validateprefs');
 	return true;
 }
 
-function stafflist_uninstall(){
+function stafflist_uninstall(): bool
+{
 	return true;
 }
 
-function stafflist_dohook($hookname, $args){
+function stafflist_dohook(string $hookname, array $args): array
+{
 	global $session;
-	switch ($hookname){
-	case "player-login":
-	case "player-logout":
-		// Invalidate the staff list when someone on staff logs in or out
-		if (get_module_pref("rank")) {
-			invalidatedatacache("stafflist");
-		}
-		break;
-
-	case "validatesettings":
-		require_once("lib/nltoappon.php");
-		$args['blurb'] = nltoappon($args['blurb']);
-		break;
-	case "village":
-		tlschema($args['schemas']['infonav']);
-		addnav($args["infonav"]);
-		tlschema();
-		addnav("Staff List","runmodule.php?module=stafflist&from=village");
-		break;
-	case "about":
-		addnav("Staff List","runmodule.php?module=stafflist&from=about");
-		break;
+	switch ($hookname) {
+        case 'validateprefs':
+            if (httpget('module') == 'stafflist') {
+                invalidatedatacache('staff_list');
+            }
+            break;
+    	case 'player-login':
+    	case 'player-logout':
+    		// Invalidate the staff list when someone on staff logs in or out
+    		if (get_module_pref('rank') > 0) {
+    			invalidatedatacache('staff_list');
+    		}
+    		break;
+    	case 'village':
+    		addnav($args['nav_headers']['info']);
+    		addnav(
+                'staff_list.navs.staff_list', 
+                'runmodule.php?module=stafflist&from=village'
+            );
+    		break;
+    	case 'about':
+    		addnav(
+                'staff_list.navs.staff_list', 
+                'runmodule.php?module=stafflist&from=about'
+            );
+    		break;
 	}
 	return $args;
 }
 
 function stafflist_run(){
-	page_header("Staff List");
-	global $session;
+	page_header('staff_list.title');
+    $accountsTable = db_prefix('accounts');
+    $prefsTable = db_prefix('module_userprefs');
 	
-	$from=httpget('from');
-	if ($from=="about"){
-		addnav("Return whence you came","about.php");
-	}elseif ($from=="village"){
+	$from = httpget('from');
+	if ($from == 'about') {
+		addnav(
+            loadTranslation('common.return_to', ['whence you came']), 
+            'about.php'
+        );
+	} else if ($from == 'village') {
 		villagenav();
 	}
 		
-	$biolink=get_module_setting("biolink");
-      $sql = "SELECT p1.userid, (p1.value+0) AS staff_rank, p2.value AS descr , p3.value AS rang , u.name, u.login, u.sex, u.laston, u.loggedin FROM ".db_prefix("accounts")." as u, ".db_prefix("module_userprefs")." as p1, ".db_prefix("module_userprefs")." as p2, ".db_prefix("module_userprefs")." as p3 WHERE (p1.value+0) > 0 AND p1.modulename='stafflist' AND p1.setting='rank' AND p1.userid=u.acctid AND p2.modulename='stafflist' AND p2.setting='desc' AND p2.userid=u.acctid AND p3.modulename='stafflist' AND p3.setting='rang' AND p3.userid=u.acctid ORDER BY staff_rank DESC, u.acctid ASC";
-	$result = db_query_cached($sql, "stafflist", 600);
+    $sql = "SELECT p1.userid, (p1.value + 0) AS staff_rank, p2.value AS description,
+        u.name, u.login, u.sex, u.laston, u.loggedin 
+        FROM $accountsTable as u, $prefsTable as p1, $prefsTable as p2
+        WHERE (p1.value + 0) > 0
+        AND p1.modulename = 'stafflist'
+        AND p1.setting = 'rank'
+        AND p1.userid = u.acctid
+        AND p2.modulename = 'stafflist'
+        AND p2.setting = 'desc'
+        AND p2.userid = u.acctid
+        ORDER BY staff_rank DESC, u.acctid ASC";
+	$result = db_query_cached($sql, 'staff_list', 600);
 	$count = db_num_rows($result);
 	
-	output("`c`b`@Staff List`0`b`c`n`n");
-	
-	if ($count>0){
-		$hname = translate_inline("Name");
-		$hsex = translate_inline("Sex");
-		$hdesc = translate_inline("Description");
-		$hon = translate_inline("Online");
-		$hrang = translate_inline("Rang");
-		$showdesc=get_module_setting("showdesc");
-		$showon=get_module_setting("showon");
-		$showrang=get_module_setting("showrang");
-
-		rawoutput("<center>");
-		rawoutput("<table border='0' cellpadding='2' cellspacing='1' bgcolor='#999999'>");
-		rawoutput("<tr class='trhead'><td>$hname</td><td>$hsex</td>");
-		if ($showdesc) rawoutput("<td>$hdesc</td>");
-		if ($showon) rawoutput("<td>$hon</td>");
-		if ($showrang) rawoutput("<td>$hrang</td>");
-		rawoutput("</tr>");
-		for($i=0;$i<$count;$i++){
-			$row = db_fetch_assoc($result);
-			rawoutput("<tr class='".($i%2?"trdark":"trlight")."'><td>");
-			if ($session['user']['loggedin'] && $biolink) {
-				$link = "bio.php?char=".rawurlencode($row['login'])."&ret=".urlencode($_SERVER['REQUEST_URI']);
-				rawoutput("<a href='$link'>");
-				addnav("","$link");
-			}
-			output_notl("`&%s`0", $row['name']);
-			if ($session['user']['loggedin'] && $biolink) rawoutput("</a>");
-			rawoutput("</td><td>");
-			$sex = translate_inline($row['sex']?"`%Female`0":"`!Male`0");
-			output_notl("%s", $sex);
-			if ($showdesc){				
-				rawoutput("</td><td>");
-				output_notl("`#%s`0", $row['descr']);
-			}
-			if ($showon) {
-				rawoutput("</td><td align='center'>");
-				$loggedin=(date("U") - strtotime($row['laston']) <
-						getsetting("LOGINTIMEOUT",900) && $row['loggedin']);
-				$on=translate_inline($loggedin?"`@Yes`0":"`\$No`0");
-				output_notl("%s",$on);
-		      }
-              	if ($showrang){				
-				rawoutput("</td><td>");
-				output_notl("`#%s`0", $row['rang']);
-			}
-			rawoutput("</td></tr>");
-		}
-		rawoutput("</table>");
-		rawoutput("</center>");
-	}else{
-		output("`c`@This server appears to not have any staff.");
-		output("Most likely, no one has been added to this list yet.`c");		
+	output('staff_list.header');
+    if ($count == 0) {
+        output('staff_list.no_staff');
+        page_footer();
+        exit;
+    }
+    
+    $staffMembers = [];
+	for ($i = 0; $i < $count; $i++) {
+		$row = db_fetch_assoc($result);
+        $staffMemberName = $row['name'];
+		$loggedIn = (
+            date('U') - strtotime($row['laston']) < getsetting('LOGINTIMEOUT', 900) &&
+            $row['loggedin']
+        );
+        $rowClass = $i % 2 ?
+            loadTranslation('staff_list.row_dark') :
+            loadTranslation('staff_list.row_light');
+        if (get_module_setting('bio_link')) {
+            addnav(
+                '',
+                loadTranslation(
+                    'staff_list.bio_uri',
+                    [
+                        rawurlencode($staffMemberName),
+                        urlencode($_SERVER['REQUEST_URI'])
+                    ]
+                )
+            );
+            $row['name'] = loadTranslation(
+                'staff_list.bio_link',
+                [
+                    rawurlencode($staffMemberName),
+                    urlencode($_SERVER['REQUEST_URI']),
+                    $row['name']
+                ]
+            );
+        }
+        if ($loggedIn && get_module_setting('show_online') == 1) {
+            $row['name'] .= loadTranslation('staff_list.online');
+        }
+        array_push(
+            $staffMembers,
+            loadTranslation(
+                'staff_list.staff_row',
+                [$rowClass, $row['name'], $row['description']]
+            )
+        );
 	}
-	
-	$blurb=get_module_setting("blurb");
-	output_notl("`n`n`c`@%s`0`c", $blurb);
+    output('staff_list.staff_table', join($staffMembers));
+
+    output('staff_list.blurb');
 	page_footer();
 }
-?>
