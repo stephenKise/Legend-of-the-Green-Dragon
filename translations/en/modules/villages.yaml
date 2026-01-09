@@ -67,7 +67,7 @@ faq:
   header: Multiple Villages Questions
   return_link: <a href='petition.php?op=faq'>Return to Contents</a>
   link: |
-    &#149;<a href='runmodule.php?module=cities&op=faq'>
+    &#149;<a href='runmodule.php?module=villages&op=faq'>
       `@Frequently Asked Questions on Multiple Villages`0
     </a>
     <br />

@@ -47,31 +47,6 @@ $fields = [
         'null' => '0',
         'default' => '0',
     ],
-	'text' => [
-        'name' => 'text',
-		'type' => 'text',
-        'null' => '1',
-    ],
-	'stable_text' => [
-        'name' => 'stable_text',
-        'type' => 'text',
-        'null' => '1',
-    ],
-	'armor_text' => [
-        'name' => 'armor_text',
-		'type' => 'text',
-        'null' => '1',
-    ],
-	'weapons_text' => [
-        'name' => 'weapons_text',
-		'type' => 'text',
-        'null' => '1',
-    ],
-	'mercenary_camp_text' => [
-        'name' => 'mercenary_camp_text',
-        'type' => 'text',
-        'null' => '1',
-    ],
 	'block_mods' => [
         'name' => 'block_mods',
 		'type' => 'text',
@@ -131,10 +106,11 @@ module_addhook('cityinvalidatecache');
 module_addhook_priority('everyhit-loggedin', 5);
 module_addhook_priority('header-village', 5);
 module_addhook_priority('villagetext', 10);
-module_addhook_priority('stabletext', 10);
-module_addhook_priority('armortext', 10);
-module_addhook_priority('weaponstext', 10);
-module_addhook_priority('mercenarycamptext', 10);
+// Temporarily disabled while the translations are merged
+// module_addhook_priority('stabletext', 10);
+// module_addhook_priority('armortext', 10);
+// module_addhook_priority('weaponstext', 10);
+// module_addhook_priority('mercenarycamptext', 10);
 module_addhook_priority('travel', 10);
 module_addhook('validlocation');
 module_addhook('validforestloc');

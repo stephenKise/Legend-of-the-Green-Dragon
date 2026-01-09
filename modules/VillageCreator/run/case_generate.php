@@ -1,17 +1,26 @@
 <?php
+/**
+ * Village Creator - Generate View
+ * 
+ * Handles the generation of new villages and their YAML configuration files.
+ */
+
 use Symfony\Component\Yaml\Yaml;
 
 $villagesTable = db_prefix('villages');
 $op = httpget('op');
 $sop = httpget('sop');
+$from = 'runmodule.php?module=villageCreator';
 
 global $language;
 $lang = isset($language) ? $language : 'en';
-$default_yaml_file = "translations/$lang/village.yaml";
-$default_yaml = [];
-if (file_exists($default_yaml_file)) {
+
+$defaultYamlFile = "translations/$lang/village.yaml";
+$defaultYaml = [];
+
+if (file_exists($defaultYamlFile)) {
     try {
-        $default_yaml = Yaml::parseFile($default_yaml_file);
+        $defaultYaml = Yaml::parseFile($defaultYamlFile);
     } catch (Exception $e) {
         // Fallback or empty if parse fails
     }
@@ -23,118 +32,125 @@ if ($sop == "save") {
     $type = httppost('type');
     $chat = httppost('chat');
     $travel = httppost('travel');
-    $block_navs_raw = httppost('block_navs');
-    $block_mods_raw = httppost('block_mods');
+    $blockNavsRaw = httppost('block_navs');
+    $blockModsRaw = httppost('block_mods');
 
     // Basic sanitization similar to install.php
-    $sanitized_name = sanitize($name);
-    $sanitized_name = str_replace(' ', '', $sanitized_name);
-    // $sanitized_name = strtolower($sanitized_name);
-    // Extra safety for filename
-    $sanitized_name = preg_replace('/[^a-zA-Z0-9]/', '', $sanitized_name);
+    $sanitizedName = sanitize($name);
+    $sanitizedName = str_replace(' ', '', $sanitizedName);
+    $sanitizedName = preg_replace('/[^a-zA-Z0-9]/', '', $sanitizedName);
 
-    if ($name == "" || $sanitized_name == "") {
-        output("`\$Error: Name cannot be empty and must contain valid characters.`0`n");
+    if ($name == "" || $sanitizedName == "") {
+        output(loadTranslation('village_creator.messages.gen_error_name'));
     } else {
         // Process textarea inputs into serialized arrays
-        $block_navs_array = explode("\n", str_replace("\r", "", $block_navs_raw));
-        $block_navs_array = array_filter(array_map('trim', $block_navs_array));
-        // Reset keys for clean array
-        $block_navs_array = array_values($block_navs_array);
-        $block_navs = serialize($block_navs_array);
+        $blockNavsArray = explode(",", str_replace(["\r", "\n"], "", $blockNavsRaw));
+        $blockNavsArray = array_filter(array_map('trim', $blockNavsArray));
+        
+        $blockNavsMap = [];
+        foreach ($blockNavsArray as $nav) {
+             $blockNavsMap[$nav] = true;
+        }
+        $blockNavs = serialize($blockNavsMap);
 
-        $block_mods_array = explode("\n", str_replace("\r", "", $block_mods_raw));
-        $block_mods_array = array_filter(array_map('trim', $block_mods_array));
-        $block_mods_array = array_values($block_mods_array);
-        $block_mods = serialize($block_mods_array);
+        $blockModsArray = explode(",", str_replace(["\r", "\n"], "", $blockModsRaw));
+        $blockModsArray = array_filter(array_map('trim', $blockModsArray));
+        $blockModsMap = [];
+        foreach ($blockModsArray as $mod) {
+             $blockModsMap[$mod] = true;
+        }
+        $blockMods = serialize($blockModsMap);
 
-        $sql_name = addslashes($name);
-        $sql_sanitized_name = addslashes($sanitized_name);
-        $sql_type = addslashes($type);
-        $sql_author = addslashes($author);
-        $sql_block_navs = addslashes($block_navs);
-        $sql_block_mods = addslashes($block_mods);
+        $sqlName = addslashes($name);
+        $sqlSanitizedName = addslashes($sanitizedName);
+        $sqlType = addslashes($type);
+        $sqlAuthor = addslashes($author);
+        $sqlBlockNavs = addslashes($blockNavs);
+        $sqlBlockMods = addslashes($blockMods);
 
-        $sql = "INSERT INTO $villagesTable 
-                (name, sanitized_name, type, author, active, chat, travel, block_navs, block_mods, module) 
-                VALUES 
-                ('$sql_name', '$sql_sanitized_name', '$sql_type', '$sql_author', 0, '$chat', '$travel', '$sql_block_navs', '$sql_block_mods', 'city_creator')";
-        db_query($sql);
+        db_query(
+            "INSERT INTO $villagesTable 
+            (name, sanitized_name, type, author, active, chat,
+                travel, block_navs, block_mods, module) 
+            VALUES 
+            ('$sqlName', '$sqlSanitizedName', '$sqlType', '$sqlAuthor', 0, '$chat',
+                '$travel', '$sqlBlockNavs', '$sqlBlockMods', 'village_creator')"
+        );
         
         // Construct new YAML data from form inputs
-        $new_yaml = $default_yaml; // Start with defaults structure
+        $newYaml = $defaultYaml;
         
         // Update top-level simple keys
-        $simple_keys = ['title', 'description', 'clock', 'talk', 'inn_name', 'new_character', 'new_character_is_user'];
-        foreach ($simple_keys as $key) {
+        $simpleKeys = ['title', 'description', 'inn_name', 'clock', 'talk', 'new_character', 'new_character_is_user'];
+        foreach ($simpleKeys as $key) {
             if (httppost("yaml_$key")) {
-                $new_yaml[$key] = str_replace("\r", "", httppost("yaml_$key"));
+                $newYaml[$key] = str_replace("\r", "", httppost("yaml_$key"));
             }
         }
         
         // Auto-set location fields
-        $new_yaml['location'] = $name;
-        $new_yaml['location_clean'] = "village_" . $sanitized_name;
+        $newYaml['location'] = $name;
+        $newYaml['location_clean'] = "village_" . $sanitizedName;
         
-        if (isset($new_yaml['commentary']) && is_array($new_yaml['commentary'])) {
-             $new_yaml['commentary']['section'] = "village-$sanitized_name";
+        if (isset($newYaml['commentary']) && is_array($newYaml['commentary'])) {
+             $newYaml['commentary']['section'] = "village-$sanitizedName";
         }
         
-        $dest = "translations/$lang/modules/village_$sanitized_name.yaml";
-        $dest_dir = dirname($dest);
+        $dest = "translations/$lang/modules/village_$sanitizedName.yaml";
+        $destDir = dirname($dest);
 
         // Ensure destination directory exists
-        if (!file_exists($dest_dir)) {
-            mkdir($dest_dir, 0777, true);
+        if (!file_exists($destDir)) {
+            mkdir($destDir, 0777, true);
         }
 
         try {
-            $yaml_content = Yaml::dump($new_yaml, 4, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK); // inline 4, indent 2, flags
-            if (file_put_contents($dest, $yaml_content) !== false) {
-                output("`@Village generated successfully!`0`n");
-                output("`2Created village '%s' and config file '%s'.`0`n", $name, $dest);
-                output("`^You can edit the translations for this village in the `iTranslation Editor`i (requires superuser access).`0`n");
+            $yamlContent = Yaml::dump($newYaml, 4, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK);
+            if (file_put_contents($dest, $yamlContent) !== false) {
+                output(loadTranslation('village_creator.messages.gen_success'));
+                output(loadTranslation('village_creator.messages.gen_details', [$name, $dest]));
+                output(loadTranslation('village_creator.messages.gen_hint'));
             } else {
-                 output("`\$Error: Failed to save config file.`0`n");
+                 output(loadTranslation('village_creator.messages.gen_save_fail'));
             }
         } catch (Exception $e) {
-             output("`\$Error: Failed to generate YAML content: " . $e->getMessage() . "`0`n");
+             output(loadTranslation('village_creator.messages.gen_yaml_fail', [$e->getMessage()]));
         }
     }
 }
 
-addnav('Menu');
-addnav('Back to Village Creator', $from);
+addnav(loadTranslation('village_creator.nav_headers.menu'));
+addnav(loadTranslation('village_creator.navs.back'), $from);
 
-$form = array(
-    'Generate New Village,title',
-    'name'=>'Name:,string,25',
-    'author'=>'Author:,string,30',
-    'type'=>'Type:,string,30',
-    'chat'=>'Chat Enabled?,bool',
-    'travel'=>'Travel Enabled?,bool',
-    'block_navs'=>'Block Navs (one per line):,textarea,30',
-    'block_mods'=>'Block Mods (one per line):,textarea,30',
-    'Village Text Settings,title',
-);
-
-// Add YAML fields to form
-$yaml_fields = [
-    'title' => 'Title:,string,60',
-    'description' => 'Description:,textarea,50',
-    'inn_name' => 'Inn Name:,string,30',
-    'clock' => 'Clock Text:,string',
-    'talk' => 'Talk Header:,string',
-    'new_character' => 'New Char (Others):,textarea,50',
-    'new_character_is_user' => 'New Char (Self):,textarea,50',
+$form = [
+    loadTranslation('village_creator.form.generate_new') . ',title',
+    'name' => loadTranslation('village_creator.form.name') . ',string,25',
+    'author' => loadTranslation('village_creator.form.author') . ',string,30',
+    'type' => loadTranslation('village_creator.form.type') . ',string,30',
+    'chat' => loadTranslation('village_creator.form.chat') . ',bool',
+    'travel' => loadTranslation('village_creator.form.travel') . ',bool',
+    'block_navs' => loadTranslation('village_creator.form.block_navs') . ' (comma separated):,textarea,30',
+    'block_mods' => loadTranslation('village_creator.form.block_modules') . ' (comma separated):,textarea,30',
+    loadTranslation('village_creator.form.village_text_settings') . ',title',
 ];
 
-foreach ($yaml_fields as $key => $def) {
+// Add YAML fields to form
+$yamlFields = [
+    'title' => loadTranslation('village_creator.form.yaml_title') . ',string,60',
+    'description' => loadTranslation('village_creator.form.yaml_desc') . ',textarea,50',
+    'inn_name' => loadTranslation('village_creator.form.yaml_inn') . ',string,30',
+    'clock' => loadTranslation('village_creator.form.yaml_clock') . ',string',
+    'talk' => loadTranslation('village_creator.form.yaml_talk') . ',string',
+    'new_character' => loadTranslation('village_creator.form.yaml_new_char_others') . ',textarea,50',
+    'new_character_is_user' => loadTranslation('village_creator.form.yaml_new_char_self') . ',textarea,50',
+];
+
+foreach ($yamlFields as $key => $def) {
     $form["yaml_$key"] = $def;
 }
 
 // Pre-fill form
-$row = array(
+$row = [
     'name' => httppost('name'),
     'author' => httppost('author'),
     'type' => httppost('type') ? httppost('type') : 'Village',
@@ -142,21 +158,22 @@ $row = array(
     'travel' => httppost('travel'),
     'block_navs' => httppost('block_navs'),
     'block_mods' => httppost('block_mods'),
-);
+];
 
 // Pre-fill YAML fields
-foreach ($yaml_fields as $key => $val) {
+foreach ($yamlFields as $key => $val) {
     if ($sop == "save") {
          $row["yaml_$key"] = httppost("yaml_$key");
     } else {
-         $row["yaml_$key"] = isset($default_yaml[$key]) ? $default_yaml[$key] : '';
+         $row["yaml_$key"] = isset($defaultYaml[$key]) ? $defaultYaml[$key] : '';
     }
 }
 
 if ($sop != 'save') {
-    rawoutput('<form action="'.$from.'&op=generate&sop=save" method="POST">');
-    addnav('',$from.'&op=generate&sop=save');
+    rawoutput('<form action="' . $from . '&op=generate&sop=save" method="POST">');
+    addnav('', $from . '&op=generate&sop=save');
     require_once('lib/showform.php');
     showform($form, $row);
     rawoutput('</form>');
 }
+?>

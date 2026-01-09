@@ -3,7 +3,8 @@ function city_creator_array_check($city=FALSE)
 {
 	//
 	// Make sure that all the variables exist.
-	//
+	// //
+    // debug($city !== false ? $city : 'city is false');
 	$mods = [
         'all' => 0,
         'other' => '',
@@ -172,8 +173,10 @@ function city_creator_array_check($city=FALSE)
                 if ($is_indexed && is_string($value2)) {
                     // It's a list of strings (e.g. ['weapons.php', 'armor.php'])
                     // Convert to key-based boolean format for the form
-                    // weapons.php -> weapons_php
-                    $new_key = str_replace('.', '_', $value2);
+                    // weapons.php -> weapons
+                    // This matches existing form keys which are defined as 'navsforest', 'navspvp', etc.
+                    $new_key = str_replace('.php', '', $value2);
+                    $new_key = str_replace('.', '_', $new_key); // Just in case other dots exist
                     $city[$key.$new_key] = 1;
                 } else {
                     // Standard associative array or mixed

@@ -1,216 +1,292 @@
 <?php
+/**
+ * Village Creator - Index View
+ * 
+ * Handles listing, deleting, activating, and deactivating villages.
+ */
+
+global $session, $mysqli_resource, $language;
 
 $defaultVillage = getsetting('villagename', LOCATION_FIELDS);
 $accountsTable = db_prefix('accounts');
 $villagesTable = db_prefix('villages');
-//
-// Secondary ops.
-//
-switch ($sop) {
-	case 'del':
-		// Get name of city being deleted.
-		$sql = "SELECT name
-				FROM $villagesTable
-				WHERE id = '$id'";
-		$result = db_query($sql);
-		$row = db_fetch_assoc($result);
-        $sql = "UPDATE $accountsTable SET location = '$defaultVillage' WHERE location = '{$row['name']}'";
-		db_query($sql);
-		db_query("DELETE FROM $villagesTable WHERE id = '$id'");
-		if( db_affected_rows() > 0 )
-		{
-			output('`n`@City successfully deleted.`0`n`n');
-			// Hook to invalidate any cache files.
-			modulehook('village-invalidate-cache',array('id'=>$id,'name'=>$row['name']));
-			// Hook to allow modules to delete any prefs a player might have.
-			modulehook('citydeleted',array('id'=>$id,'name'=>$row['name']));
-			// Delete object prefs for this city.
-			module_delete_objprefs('cities',$id);
-		}
-		else
-		{
-			db_query("UPDATE $villagesTable SET active = 0 WHERE id = '$id'");
-			modulehook('village-invalidate-cache',array('id'=>$id,'name'=>$row['name']));
-			output('`n`$City `#%s `$was not deleted because: `&%s`$, deactivated instead.`0`n`n', $row['name'], db_error(LINK));
-		}
-	break;
+$modulesTable = db_prefix('modules');
 
-	case 'activate':
-		db_query("UPDATE $villagesTable SET active = 1 WHERE id = '$id'");
+$sop = httpget('sop');
+$id = (int)httpget('id');
+$from = 'runmodule.php?module=villageCreator';
 
-		$sql = "SELECT name
-				FROM $villagesTable
-				WHERE id = '$id'";
-		$result = db_query($sql);
-		$row = db_fetch_assoc($result);
-		modulehook('village-invalidate-cache',array('id'=>$id,'name'=>$row['name']));
-		output('`n`2City `#%s `2has been `@Activated`2.`0`n`n', $row['name']);
-	break;
+$lang = isset($language) ? $language : 'en';
 
-	case 'deactivate':
-		db_query("UPDATE $villagesTable SET active = 0 WHERE id = '$id'");
+// --- Secondary Operations (SOP) ---
+if ($sop) {
+    switch ($sop) {
+        case 'del':
+            $result = db_query(
+                "SELECT name, sanitized_name 
+                FROM $villagesTable 
+                WHERE id = '$id'"
+            );
+            if ($row = db_fetch_assoc($result)) {
+                $villageName = $row['name'];
+                $sanitizedName = $row['sanitized_name'];
 
-		$sql = "SELECT name
-				FROM $villagesTable
-				WHERE id = '$id'";
-		$result = db_query($sql);
-		$row = db_fetch_assoc($result);
-		modulehook('village-invalidate-cache',array('id'=>$id,'name'=>$row['name']));
-		output('`n`2City `#%s `2has been `@Deactivated`2.`0`n`n', $row['name']);
-	break;
+                // 1. Move players to default village
+                // 2. Delete village row
+                // 3. Delete YAML file
+                // 4. Invalidate caches
+                // 5. Delete Module Prefs
+
+                $safeDefault = mysqli_real_escape_string(
+                    $mysqli_resource,
+                    $defaultVillage
+                );
+                $safeName = mysqli_real_escape_string(
+                    $mysqli_resource,
+                    $villageName
+                );
+
+                db_query(
+                    "UPDATE $accountsTable
+                    SET location = '$safeDefault'
+                    WHERE location = '$safeName'"
+                );
+                db_query("DELETE FROM $villagesTable WHERE id = '$id'");
+
+                if (db_affected_rows() > 0) {
+                    output(loadTranslation('village_creator.index.delete_success'));
+                    
+                    // Delete YAML
+                    $yamlFile = "translations/$lang/modules/village_{$sanitizedName}.yaml";
+                    if (file_exists($yamlFile)) {
+                        unlink($yamlFile);
+                    }
+
+                    // Cleaning
+                    modulehook(
+                        'village-invalidate-cache',
+                        ['id' => $id, 'name' => $villageName]
+                    );
+                    invalidatedatacache("village_id_{$sanitizedName}");
+                    modulehook(
+                        'village-deleted',
+                        ['id' => $id, 'name' => $villageName]
+                    );
+                    module_delete_objprefs('cities', $id);
+
+                } else {
+                    // Fallback: Soft Deactivate if delete fails
+                    db_query("UPDATE $villagesTable SET active = 0 WHERE id = '$id'");
+                    modulehook('village-invalidate-cache', ['id' => $id, 'name' => $villageName]);
+                    output(
+                        loadTranslation(
+                            'village_creator.index.delete_fail',
+                            [$villageName, db_error(LINK)]
+                        )
+                    );
+                }
+            }
+            break;
+
+        case 'activate':
+            db_query("UPDATE $villagesTable SET active = 1 WHERE id = '$id'");
+            $row = db_fetch_assoc(
+                db_query(
+                    "SELECT name, sanitized_name
+                    FROM $villagesTable
+                    WHERE id = '$id'"
+                )
+            );
+            if ($row) {
+                modulehook(
+                    'village-invalidate-cache',
+                    ['id' => $id, 'name' => $row['name']]
+                );
+                invalidatedatacache("village_id_{$row['sanitized_name']}");
+                output(
+                    loadTranslation(
+                        'village_creator.index.activated',
+                        [$row['name']]
+                    )
+                );
+            }
+            break;
+
+        case 'deactivate':
+            db_query("UPDATE $villagesTable SET active = 0 WHERE id = '$id'");
+            $row = db_fetch_assoc(
+                db_query(
+                    "SELECT name, sanitized_name
+                    FROM $villagesTable
+                    WHERE id = '$id'"
+                )
+            );
+            if ($row) {
+                modulehook(
+                    'village-invalidate-cache',
+                    ['id' => $id, 'name' => $row['name']]
+                );
+                invalidatedatacache("village_id_{$row['sanitized_name']}");
+                output(
+                    loadTranslation(
+                        'village_creator.index.deactivated',
+                        [$row['name']]
+                    )
+                );
+            }
+            break;
+    }
 }
 
-$opshead = translate_inline('Ops');
-$id = translate_inline('City ID');
-$name = translate_inline('City Name');
-$routes = translate_inline('Routes');
-$travel = translate_inline('Travel To');
-$traveltype = translate_inline(array('Safe','Dangerous','Off'));
-$requirements = translate_inline('Requirements');
-$author = translate_inline('Author');
-
-$activity = translate_inline('Activity');
-$edit = translate_inline('Edit');
-$del = translate_inline('Del');
-$deac = translate_inline('Deactivate');
-$act = translate_inline('Activate');
-$visit = translate_inline('Visit');
-$yesno = translate_inline(array('`@Yes','`$No'));
-$conf = translate_inline('This city was installed by another module, to remove it please uninstall the module!');
-$conf2 = translate_inline('Are you sure you wish to delete this city? Any object prefs will also be deleted!');
-
-$city_routes_active = FALSE;
-if( is_module_active('city_routes') )
-{
-	$city_routes_active = TRUE;
-	$sql = "SELECT name
-			FROM $villagesTable
-			WHERE active = 1;";
-	$result = db_query($sql);
-	$active_cities = array();
-	while( $row = db_fetch_assoc($result) ) $active_cities[] = $row['name'];
-}
-
-//
-// Table header links for ordering.
-//
+// --- Sorting ---
 $order = httpget('order');
-$order2 = ( $order == 1 ) ? 'DESC' : 'ASC';
-$sortby = httpget('sortby');
-$orderby = 'name '.$order2;
-if( $sortby != '' )
-{
-	if( $sortby == 'id' ) $orderby = 'id '.$order2;
+$orderDir = ($order == 1) ? 'DESC' : 'ASC';
+$sortBy = httpget('sortby');
+$orderByClause = 'name ' . $orderDir;
+
+if ($sortBy == 'id') {
+    $orderByClause = 'id ' . $orderDir;
 }
 
-addnav('',$from.'&sortby=id&order='.($sortby=='id'?!$order:1));
-addnav('',$from.'&sortby=name&order='.($sortby=='name'?!$order:1));
+// Prepare Sort Links
+$nextOrder = (!$order);
+$linkId = loadTranslation('village_creator.index.id', [$from, $nextOrder]);
+$linkName = loadTranslation('village_creator.index.name', [$from, $nextOrder]);
 
-//
-// Get city data and output to page.
-//
-$sql = "SELECT id, name, sanitized_name, active, author, travel
-		FROM $villagesTable
-		ORDER BY $orderby";
-$result = db_query($sql);
+addnav('', "{$from}&sortby=id&order={$nextOrder}");
+addnav('', "{$from}&sortby=name&order={$nextOrder}");
 
-if( db_num_rows($result) > 0 )
-{
-	rawoutput('<table border="0" cellpadding="2" cellspacing="1" bgcolor="#999999" align="center">');
-	rawoutput("<tr class=\"trhead\"><td>$opshead</td><td align=\"center\"><a href=\"$from&sortby=id&order=".($sortby=='id'?!$order:1)."\">$id</a></td><td align=\"center\"><a href=\"$from&sortby=name&order=".($sortby=='name'?!$order:1)."\">$name</a></td><td align=\"center\">$travel</td>");
-	if( $city_routes_active == TRUE ) rawoutput("<td align=\"center\">$routes</td>");
-	rawoutput("<td align=\"center\">$requirements</td><td align=\"center\">$author</td></tr>");
+// --- Display List ---
+$result = db_query(
+    "SELECT id, name, sanitized_name, active, author, travel, module
+    FROM $villagesTable
+    ORDER BY $orderByClause"
+);
 
-	$i = 0;
-	while( $row = db_fetch_assoc($result) )
-	{
-		rawoutput('<tr class="'.($i%2?'trlight':'trdark').'">');
-		rawoutput('<td align="center" nowrap="nowrap">[ <a href="'.$from.'&op=edit&id='.$row['id'].'">'.$edit.'</a> |');
-		addnav('',$from.'&op=edit&id='.$row['id']);
+if (db_num_rows($result) > 0) {
+    $rowsHtml = '';
+    $i = 0;
+    
+    // Translation strings for reuse
+    $tEdit = loadTranslation('village_creator.index.edit');
+    $tConfUninstall = addslashes(
+        loadTranslation(
+            'village_creator.index.confirm_uninstall'
+        )
+    );
+    $tConfDelete = addslashes(
+        loadTranslation(
+            'village_creator.index.confirm_delete'
+        )
+    );
 
-		if( $row['active'] == 1 )
-		{
-			rawoutput('<a href="'.$from.'&sop=deactivate&id='.$row['id'].'">'.$deac.'</a>');
-			addnav('',$from.'&sop=deactivate&id='.$row['id']);
-		}
-		else
-		{
+    $tTravelTypes = [
+        0 => loadTranslation('village_creator.travel_types.0'),
+        1 => loadTranslation('village_creator.travel_types.1'),
+        2 => loadTranslation('village_creator.travel_types.2'),
+    ];
 
-			if( array_key_exists('module', $row) && $row['module'] )
-			{
-				rawoutput('<a href="'.$from.'&sop=del&id='.$row['id'].'" onClick="return confirm(\''.$conf.'\');">'.$del.'</a> |');
-			}
-			else
-			{
-				rawoutput('<a href="'.$from.'&sop=del&id='.$row['id'].'" onClick="return confirm(\''.$conf2.'\');">'.$del.'</a> |');
-			}
-			addnav('',$from.'&sop=del&id='.$row['id']);
+    while ($row = db_fetch_assoc($result)) {
+        $rowClass = ($i % 2) ? 'trlight' : 'trdark';
+        
+        // Actions Column
+        $editLink = "{$from}&op=edit&id={$row['id']}";
+        addnav('', $editLink);
 
-			rawoutput('<a href="'.$from.'&sop=activate&id='.$row['id'].'">'.$act.'</a>');
-			addnav('',$from.'&sop=activate&id='.$row['id']);
-		}
+        $toggleAction = '';
+        if ($row['active'] == 1) {
+            // Deactivate
+            $link = "{$from}&sop=deactivate&id={$row['id']}";
+            $toggleAction = loadTranslation(
+                'village_creator.index.deactivate',
+                [$link]
+            );
+            addnav('', $link);
+        } else {
+             // Activate / Delete
+            $delLink = "{$from}&sop=del&id={$row['id']}";
+            $confirmMsg = ($row['module'] && $row['module'] !== '_creator') ?
+                $tConfUninstall :
+                $tConfDelete;
+            $deleteAction = loadTranslation(
+                'village_creator.index.delete',
+                [$delLink, $confirmMsg]
+            );
+            addnav('', $delLink);
 
-		rawoutput(' | <a href="runmodule.php?module=villages&op=travel&village='.urlencode($row['name']).'&su=1">'.$visit.'</a>');
-		addnav('','runmodule.php?module=villages&op=travel&village='.urlencode($row['name']).'&su=1');
-		rawoutput(' ]</td><td align="center">'.$row['id'].'</td><td align="center">');
-		output_notl('%s', $row['name']);
-		rawoutput('</td><td align="center">'.$traveltype[$row['travel']].'</td>');
+            $actLink = "{$from}&sop=activate&id={$row['id']}";
+            $activateAction = loadTranslation(
+                'village_creator.index.activate',
+                [$actLink]
+            );
+            addnav('', $actLink);
+             
+            $toggleAction = "{$deleteAction} | {$activateAction}";
+        }
 
-		// Decided to incorporate this piece here in it's own column for easy readability.
-		if( $city_routes_active == TRUE )
-		{
-			rawoutput('<td align="center">');
-			$sql = "SELECT value
-					FROM " . db_prefix('module_objprefs') . "
-					WHERE modulename = 'city_routes'
-						AND objtype = 'city'
-						AND setting = 'routes'
-						AND objid = '{$row['id']}'";
-			$result2 = db_query_cached($sql,'city_routes-'.$row['id'],86400);
-			$row2 = db_fetch_assoc($result2);
-			$routes = $row2['value'];
-			if( $routes != '' )
-			{
-				$routes = explode(',', $routes);
-				foreach( $routes as $route )
-				{
-					if( in_array($route, $active_cities) ) output_notl('`@%s`n', $route);
-					else output_notl('`$%s`n', $route);
-				}
-			}
-			else
-			{
-				output('`&All');
-			}
-			rawoutput('</td>');
-		}
+        $visitLink = "runmodule.php?module=villages&op=travel&village=" .
+            urlencode($row['name']) .
+            "&su=1";
+        addnav('', $visitLink);
+        $visitAction = loadTranslation(
+            'village_creator.index.visit',
+            [$visitLink]
+        );
+        $requirementsInfo = modulehook('village-requirements', ['id' => $row['id']]);
+        // Note: modulehook returns data but usually outputs directly if not gathered. 
+        // Here we can't easily capture the output of the hook if it uses rawoutput/output unless we buffer.
+        // However, the original code called modulehook inside rawoutput('<td>').
+        // Since we are building a string, we cannot do that easily if the hook outputs directly.
+        // BUT `modulehook` mostly returns arrays. Usually modules don't output directly in a hook unless it's a specific display hook.
+        // The previous code did: rawoutput('<td>'); modulehook(...); rawoutput('</td>');
+        // This implies the hook MIGHT output.
+        // If the hook outputs, we can't put it in `sprintf`.
+        // We might have to handle the table construction slightly less purely via sprintf for that column if we want to support direct output hooks.
+        // OR we wrap the hook.
+        // For now, let's assume standard LotGD hooks might output.
+        // To handle this with the YAML template, we might need to break the template row or buffer output.
+        // Buffering modulehook output:
+        ob_start();
+        modulehook('village-requirements', ['id' => $row['id']]);
+        $reqContent = ob_get_contents();
+        ob_end_clean();
 
-		rawoutput('<td>');
-		// Hook to add info to the requirements column.
-		modulehook('cityrequirements', array('id'=>$row['id']));
+        // Construct Row
+        $rowsHtml .= sprintf(
+            loadTranslation('village_creator.index.row'),
+            $rowClass,
+            $editLink,
+            $toggleAction,
+            $visitAction,
+            $row['id'],
+            $row['name'],
+            $tTravelTypes[$row['travel']],
+            $reqContent, // Requirements
+            $row['author']
+        );
+        $i++;
+    }
 
-		rawoutput('</td><td align="center">');
-		output_notl('%s', $row['author']);
-		rawoutput('</td></tr>');
-		$i++;
-	}
-	rawoutput('</table><br />');
+    // Render Table
+    $table = sprintf(
+        loadTranslation('village_creator.index.table'),
+        loadTranslation('village_creator.index.ops'),
+        $linkId,
+        $linkName,
+        loadTranslation('village_creator.index.travel'),
+        loadTranslation('village_creator.index.requirements'),
+        loadTranslation('village_creator.index.author'),
+        $rowsHtml
+    );
+    rawoutput($table);
 
-	if( $city_routes_active == TRUE )
-	{
-		output('`&`bCity Routes:`b `7Green means the city is active, red inactive.`0`n`n');
-	}
-
-	output('`2If you wish to delete a city, you have to deactivate it first. If there is anyone in this city when it is deleted then they will be transported to the Capital, %s.`n`n', getsetting('villagename', LOCATION_FIELDS));
-	output('The city ID is unique to each city. If you change it then just remember that any object prefs assigned to it wont show.');
+} else {
+    output(loadTranslation('village_creator.index.no_cities'));
 }
-else
-{
-	output('`n`3There are no cities installed, how about adding a few?`n`n');
-}
+
 
 addnav('Help');
-addnav('ReadMe',$from.'&op=readme');
+addnav('ReadMe', "{$from}&op=readme");
 
 addnav('New');
 addnav('Generate New Village', "{$from}&op=generate");
