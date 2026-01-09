@@ -90,7 +90,9 @@ function handleSubtranslations(string $string, string $currentNamespace): string
 function getLanguage(): string
 {
     global $session;
-
+    if (!array_key_exists('language', $session['user'])) {
+        return getsetting('defaultlanguage', 'en');
+    }
     return $session['user']['language'] ?? getsetting('defaultlanguage', 'en');
 }
 
@@ -110,10 +112,8 @@ function loadNamespace(string $namespace): array
     global $TRANSLATION_CACHE;
 
     $language = getLanguage();
-    $cacheKey = "{$language}.{$namespace}";
-
-    if (isset($TRANSLATION_CACHE[$cacheKey])) {
-        return $TRANSLATION_CACHE[$cacheKey];
+    if (isset($TRANSLATION_CACHE[$language][$namespace])) {
+        return $TRANSLATION_CACHE[$language][$namespace];
     }
 
     $filePath = "translations/{$language}/{$namespace}.yaml";
@@ -133,7 +133,7 @@ function loadNamespace(string $namespace): array
         }
 
         if (!file_exists($filePath)) {
-            $TRANSLATION_CACHE[$cacheKey] = [];
+            $TRANSLATION_CACHE[$language][$namespace] = [];
             return [];
         }
     }
@@ -145,7 +145,7 @@ function loadNamespace(string $namespace): array
         $translations = [];
     }
 
-    $TRANSLATION_CACHE[$cacheKey] = $translations;
+    $TRANSLATION_CACHE[$language][$namespace] = $translations;
 
     return $translations;
 }
@@ -161,25 +161,20 @@ function loadNamespace(string $namespace): array
  *
  * @return string Translated string
  */
-function getTranslation(string $key, array $replace = [], string $namespace = 'core'): string
+function getTranslation(string $key, array $replace = [], ?string $namespace = null): string
 {
-    static $currentNamespace = null;
-    static $currentTranslations = [];
+    $namespace ??= currentTranslationNamespace() ?? 'core';
 
-    if ($namespace !== $currentNamespace) {
-        $currentTranslations = loadNamespace($namespace);
-        $currentNamespace = $namespace;
-    }
+    $translations = loadNamespace($namespace);
 
-    $translatedString = $currentTranslations[$key] ?? $key;
+    $translatedString = $translations[$key] ?? $key;
 
-    // Apply vsprintf replacements first
     if (!empty($replace) && is_string($translatedString)) {
         $translatedString = vsprintf($translatedString, $replace);
     }
 
-    // Then resolve nested {{}} references
-    if (is_string($translatedString)) {
+    // Resolve {{ }} placeholders
+    if (hasTranslateKey($translatedString)) {
         $translatedString = handleSubtranslations($translatedString, $namespace);
     }
 
@@ -256,7 +251,7 @@ function loadTranslation(string $namespacedKey, array $replace = []): string
     }
 
     // Then resolve {{namespace.key}} placeholders
-    if (is_string($translatedString)) {
+    if (hasTranslateKey($translatedString)) {
         $translatedString = handleSubtranslations($translatedString, $currentNamespace);
     }
 
@@ -297,4 +292,22 @@ function hasTranslateKey($str): bool {
         is_string($str) &&
         preg_match('/\{\{[a-z_\-\.]+\}\}/', $str)
     );
+}
+
+function pushTranslationNamespace(string $namespace): void
+{
+    global $TRANSLATION_NAMESPACE_STACK;
+    $TRANSLATION_NAMESPACE_STACK[] = $namespace;
+}
+
+function popTranslationNamespace(): void
+{
+    global $TRANSLATION_NAMESPACE_STACK;
+    array_pop($TRANSLATION_NAMESPACE_STACK);
+}
+
+function currentTranslationNamespace(): ?string
+{
+    global $TRANSLATION_NAMESPACE_STACK;
+    return end($TRANSLATION_NAMESPACE_STACK) ?: null;
 }

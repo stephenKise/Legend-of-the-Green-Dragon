@@ -33,7 +33,7 @@ $sql = db_query_cached(
 $newCharacter = db_fetch_assoc($sql);
 
 // Pull translations from the cache for local language, more manageable than repeated loadTranslation() calls
-$i18n = $TRANSLATION_CACHE["{$language}.village"];
+$i18n = $TRANSLATION_CACHE[$language]['village'];
 $i18n['title'] = sprintf($i18n['title'], $villageName);
 $i18n['description'] = str_replace('`%', '`%%', $i18n['description']);
 $i18n['description'] = sprintf($i18n['description'], $villageName, $villageName);
