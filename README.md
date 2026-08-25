@@ -12,11 +12,13 @@ Modern versions of PHP and MySQL have rendered version 1.1.2 DragonPrime Edition
 #### Requirements
 - PHP 8.4.0+
 - MySQL 8.0.4+
+- [Composer](https://getcomposer.org/)
 - Your choice of web server
 #### Process
-Installing LotGD is broken down in four major parts, unchanged since version 1.1.2 DragonPrime Edition:
+Installing LotGD is broken down in five major parts:
 - Create a MySQL database for LotGD.
-- Clone the respository
+- Clone the repository.
+- Install the Composer dependencies with `composer install` (new since version 1.1.2 DragonPrime Edition).
 - Create a cache directory with proper permissions inside the repo.
 - Navigate to your `/installer.php` for a graphical installation.
 #### Example

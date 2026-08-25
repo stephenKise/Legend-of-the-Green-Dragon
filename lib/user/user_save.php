@@ -11,6 +11,10 @@ $oldvalues['name'] = $otitle . ' ' . $oldvalues['name'];
 reset($post);
 foreach ($post as $key => $val) {
 	if (isset($userinfo[$key])){
+		if ($key=="maxhitpoints" && (int)$val < 1){
+			$val = "1";
+			output("`\$Max Hitpoints cannot be lower than 1; it has been set to 1.`0`n");
+		}
 		if ($key=="newpassword" ){
 			if ($val>"") {
 				$sql.="password=\"".md5(md5($val))."\",";

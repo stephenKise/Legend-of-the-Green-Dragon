@@ -12,23 +12,21 @@ if (defined('E_DEPRECATED')) {
 
 function set_magic_quotes(&$vars) {
 	if (is_array($vars)) {
-		reset($vars);
-		while (list($key,$val) = each($vars))
+		foreach ($vars as $key => $val) {
 			set_magic_quotes($vars[$key]);
+		}
 	}else{
-		$vars = addslashes($vars);
+		$vars = addslashes($vars ?? '');
 	}
 }
 
 
-//do some cleanup here to make sure magic_quotes_gpc is ON
-if (function_exists("get_magic_quotes_runtime") && function_exists("get_magic_quotes_gpc")) {
+// The codebase expects request data to arrive pre-escaped the way
+// magic_quotes_gpc used to deliver it.  Magic quotes were removed in PHP 5.4
+// and the get_magic_quotes_* functions in PHP 8, so emulate the escaping
+// whenever it isn't already provided by the engine.
+if (!function_exists("get_magic_quotes_gpc") || !get_magic_quotes_gpc()) {
 	set_magic_quotes($_GET);
 	set_magic_quotes($_POST);
-	set_magic_quotes($_SESSION);
 	set_magic_quotes($_COOKIE);
-	set_magic_quotes($HTTP_GET_VARS);
-	set_magic_quotes($HTTP_POST_VARS);
-	set_magic_quotes($HTTP_COOKIE_VARS);
-	ini_set("magic_quotes_gpc",1);
 }

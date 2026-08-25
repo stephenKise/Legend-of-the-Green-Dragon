@@ -80,6 +80,9 @@ require_once("lib/forcednavigation.php");
 require_once("lib/php_generic_environment.php");
 require_once('lib/checkban.php');
 require_once('lib/translations.php');
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+	die("LotGD's Composer dependencies have not been installed yet.  Run \"composer install\" from the game's root directory (" . __DIR__ . ") and then reload this page.");
+}
 require_once('vendor/autoload.php');
 
 session_start();
