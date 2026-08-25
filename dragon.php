@@ -204,11 +204,13 @@ if ($op==""){
         $hpgain['extra'];
     $session['user']['hitpoints']=$session['user']['maxhitpoints'];
 
-    // Sanity check
+    // Sanity check.  A corrupted account (eg maxhitpoints edited below the
+    // DK baseline) used to permanently block the player here; instead,
+    // rebuild a sane baseline and let the dragon kill proceed.
     if ($session['user']['maxhitpoints'] < 1) {
-        // Yes, this is a freaking hack.
-        die("ACK!! Somehow this user would end up perma-dead.. Not allowing DK to proceed!  Notify admin and figure out why this would happen so that it can be fixed before DK can continue.");
-        exit();
+        $session['user']['maxhitpoints'] = 10 + max(0, $hpgain['dkpoints']);
+        $session['user']['hitpoints'] = $session['user']['maxhitpoints'];
+        debuglog("had invalid maxhitpoints after a dragon kill; it was reset to {$session['user']['maxhitpoints']}");
     }
 
     // Set the new title.
